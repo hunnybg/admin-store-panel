@@ -1,0 +1,370 @@
+<form #serviceForm="ngForm" (ngSubmit)="addService(serviceForm.value)" >
+    <input type="hidden" class="form-control" [(ngModel)]="service_id"   name="service_id" />
+    <div class="row wrapper col-sm-12 col-md-12 col-xs-12 col-lg-12 fix_search_bar border-bottom white-bg page-heading">
+        <div class="row">
+            <div *ngIf="type=='add'" class="col-md-3 col-sm-12 pull-right">
+                <input   type="submit"  id="submit" name="submit"  class="btn btn-primary" value="{{button.submit | translate}}" >
+            </div>
+            <div *ngIf="type=='edit'" class="col-md-3 col-sm-12 pull-right">
+                <input type="submit"   id="update" name="update"  class="btn btn-primary" value="{{button.update | translate}}" >
+            </div>
+        </div>
+    </div>
+    <div class="wrapper wrapper-content content_top_bar_view animated fadeInRight">
+        <div class="row">
+
+
+            <div class="col-lg-12">
+                <div class="col-lg-4 col-sm-6">
+
+                    <div class="ibox">
+                        <div class="ibox-title">
+                            <label class="control-label">{{heading_title.service_data | translate}}</label>  
+                        </div>
+                        <div class="ibox-content fix_height_delivery_price scrollbar">
+                            <div class="row">
+
+                                <div class="form-group">
+                                    <label class="col-lg-4 control-label">{{title.vehicle | translate}}</label>
+                                    <div class="col-lg-8 form-group add">
+                                        <select chosen class="chosen-select" id="vehicle" [(ngModel)]="add_service.vehicle_id" #vehicle_id="ngModel" name="vehicle_id" data-placeholder="Select Vehicle"  tabindex="4"  >
+                                            <option *ngFor="let i of vehicle_list" value="{{i._id}}">{{i.name}}</option>
+                                        </select>
+                                    </div>
+                                    <div *ngIf="type=='edit'"  class="col-lg-8 form-group">
+                                        <input type="text" class="form-control" [(ngModel)]="add_service.vehicle_name" #vehicle_name="ngModel"  name="vehicle_name" readonly/>
+                                    </div>
+                                </div>
+
+                                <div class="form-group" [hidden]="delivery_type_list.length<=1">
+                                    <label class="col-lg-4 control-label">{{title.delivery_type | translate}}</label>
+                                    <div class="col-lg-8 form-group">
+                                        <select chosen class="chosen-select" id="delivery_type_id" [(ngModel)]="add_service.delivery_type_id" #delivery_type_id="ngModel" name="delivery_type_id" data-placeholder="Select Delivery Type"  tabindex="4" >
+                                            <option *ngFor="let i of delivery_type_list" value="{{i._id}}">{{i.name}}</option>
+                                        </select>
+                                        <div *ngIf="delivery_type_id.errors">
+                                            <div style="color: red;" [hidden]="!delivery_type_id.errors.required">{{validation_message.select_delivery_required | translate}}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group" *ngIf="delivery_type_list.length<=1">
+                                    <input type="hidden" [(ngModel)]="add_service.delivery_type_id" #delivery_type_id="ngModel" name="delivery_type_id" />
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-lg-9 col-xs-9 control-label">{{title.business | translate}}</label>
+                                    <div class="col-lg-3 col-xs-3 form-group">
+                                        <ui-switch [(ngModel)]="add_service.is_business" #is_business="ngModel" name="is_business"></ui-switch>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-lg-9 col-xs-9 control-label">{{title.is_use_distance_calculation | translate}}</label>
+                                    <div class="col-lg-3 col-xs-3 form-group">
+                                        <ui-switch [(ngModel)]="add_service.is_use_distance_calculation" #is_use_distance_calculation="ngModel" name="is_use_distance_calculation"></ui-switch>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-lg-4 control-label">{{title.profit_mode | translate}}</label>
+                                    <div class="col-lg-8 form-group">
+                                        <select chosen class="chosen-select" id="admin_profit_mode" [(ngModel)]="add_service.admin_profit_mode_on_delivery" #admin_profit_mode_on_delivery="ngModel" name="admin_profit_mode_on_delivery" data-placeholder="Select Admin Profit Mode"  tabindex="4" required >
+                                            <option *ngFor="let i of admin_profit_mode_on_delivery_list" value="{{i.ID}}">{{i.NAME}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-lg-4 control-label">{{title.profit_value | translate}}</label>
+                                    <div class="col-lg-8 form-group">
+                                        <input type="text" class="form-control" (keypress)="helper.number_validation($event)" [(ngModel)]="add_service.admin_profit_value_on_delivery" #admin_profit_value_on_delivery="ngModel"  name="admin_profit_value_on_delivery" required />
+                                        <div *ngIf="admin_profit_value_on_delivery.errors && (admin_profit_value_on_delivery.dirty || admin_profit_value_on_delivery.touched)">
+                                            <div style="color: red;" [hidden]="!admin_profit_value_on_delivery.errors.required">{{validation_message.admin_profit_value_on_delivery_required | translate}}</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="col-lg-4 col-sm-6" [hidden]="add_service.is_use_distance_calculation">
+                    <div class="ibox">
+                        <div class="ibox-title">
+                            <label class="control-label">{{heading_title.service_setting | translate}}</label>  
+                        </div>
+                        <div class="ibox-content wizard  fix_height_delivery_price scrollbar">
+                            <div class="row">
+                                <div class="form-group">
+                                    <label class="col-lg-7 col-xs-6 control-label">{{title.base_price_distance | translate}}</label>
+
+
+                                    <div class="col-lg-5 col-xs-6 input-group">
+                                        <span class="input-group-addon"><span class="" *ngIf='is_distance_unit_mile == true'>{{title.mile}}</span>
+                                            <span class="" *ngIf='is_distance_unit_mile == false'>{{title.km}}</span>
+                                        </span>
+
+                                        <input type="text" class="form-control" (keypress)="helper.number_validation($event)"  [(ngModel)]="add_service.base_price_distance" #base_price_distance="ngModel"  name="base_price_distance" required />
+                                        <span class="input-group-addon" tooltip="{{tooltip_title.base_price_distance}}"
+                                              [tooltipDisabled]="false"
+                                              [tooltipAnimation]="true"
+                                              tooltipPlacement="bottom">
+                                            <span class="fa fa-question"></span>
+                                        </span>
+                                    </div>
+                                    <div *ngIf="base_price_distance.errors && (base_price_distance.dirty || base_price_distance.touched)">
+                                        <div style="color: red;" [hidden]="!base_price_distance.errors.required">{{validation_message.base_price_distance_required | translate}}</div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-lg-7 col-xs-6 control-label">{{title.base_price | translate}}</label>  
+
+                                    <div class="col-lg-5 col-xs-6 input-group">
+                                        <span class="input-group-addon"><span class="">{{currency_sign}}</span></span>
+
+                                        <input type="text" class="form-control" (keypress)="helper.number_validation($event)"  [(ngModel)]="add_service.base_price" #base_price="ngModel"  name="base_price" required />
+                                        <span class="input-group-addon" tooltip="{{tooltip_title.base_price}}"
+                                              [tooltipDisabled]="false"
+                                              [tooltipAnimation]="true"
+                                              tooltipPlacement="bottom">
+                                            <span class="fa fa-question"></span>
+                                        </span>
+                                    </div>
+                                    <div *ngIf="base_price.errors && (base_price.dirty || base_price.touched)">
+                                        <div style="color: red;" [hidden]="!base_price.errors.required">{{validation_message.base_price_required | translate}}</div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-lg-7 col-xs-6 control-label">{{title.price_per_unit_distance | translate}}</label>  
+
+                                    <div class="col-lg-5 col-xs-6 input-group">
+                                        <span class="input-group-addon"><span class="">{{currency_sign}}</span></span>
+
+                                        <input type="text" class="form-control" (keypress)="helper.number_validation($event)"  [(ngModel)]="add_service.price_per_unit_distance" #price_per_unit_distance="ngModel"  name="price_per_unit_distance" required />
+                                        <span class="input-group-addon" tooltip="{{tooltip_title.price_per_unit_distance}}"
+                                              [tooltipDisabled]="false"
+                                              [tooltipAnimation]="true"
+                                              tooltipPlacement="bottom">
+                                            <span class="fa fa-question"></span>
+                                        </span>
+                                    </div>
+                                    <div *ngIf="price_per_unit_distance.errors && (price_per_unit_distance.dirty || price_per_unit_distance.touched)">
+                                        <div style="color: red;" [hidden]="!price_per_unit_distance.errors.required">{{validation_message.price_per_unit_distance_required | translate}}</div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-lg-7 col-xs-6 control-label">{{title.price_per_unit_time | translate}}</label>  
+
+                                    <div class="col-lg-5 col-xs-6 input-group">
+                                        <span class="input-group-addon"><span class="">{{currency_sign}}</span></span>
+
+                                        <input type="text" class="form-control" (keypress)="helper.number_validation($event)"  [(ngModel)]="add_service.price_per_unit_time" #price_per_unit_time="ngModel"  name="price_per_unit_time" required />
+                                        <span class="input-group-addon" tooltip="{{tooltip_title.price_per_unit_time}}"
+                                              [tooltipDisabled]="false"
+                                              [tooltipAnimation]="true"
+                                              tooltipPlacement="bottom">
+                                            <span class="fa fa-question"></span>
+                                        </span>
+                                    </div>
+                                    <div *ngIf="price_per_unit_time.errors && (price_per_unit_time.dirty || price_per_unit_time.touched)">
+                                        <div style="color: red;" [hidden]="!price_per_unit_time.errors.required">{{validation_message.price_per_unit_time_required | translate}}</div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-lg-7 col-xs-6 control-label">{{title.service_tax | translate}}</label>  
+
+                                    <div class="col-lg-5 col-xs-6 input-group">
+                                        <span class="input-group-addon"><span class="">{{currency_sign}}</span></span>
+
+                                        <input type="text" class="form-control" (keypress)="helper.number_validation($event)"  [(ngModel)]="add_service.service_tax" #service_tax="ngModel"  name="service_tax" required />
+                                        <span class="input-group-addon" tooltip="{{tooltip_title.service_tax}}"
+                                              [tooltipDisabled]="false"
+                                              [tooltipAnimation]="true"
+                                              tooltipPlacement="bottom">
+                                            <span class="fa fa-question"></span>
+                                        </span>
+                                    </div>
+                                    <div *ngIf="service_tax.errors && (service_tax.dirty || service_tax.touched)">
+                                        <div style="color: red;" [hidden]="!service_tax.errors.required">{{validation_message.service_tax_required | translate}}</div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-lg-7 col-xs-6 control-label">{{title.min_fare | translate}}</label>  
+
+                                    <div class="col-lg-5 col-xs-6 input-group">
+                                        <span class="input-group-addon"><span class="">{{currency_sign}}</span></span>
+
+                                        <input type="text" class="form-control" (keypress)="helper.number_validation($event)"  [(ngModel)]="add_service.min_fare" #min_fare="ngModel"  name="min_fare" required />
+                                        <span class="input-group-addon" tooltip="{{tooltip_title.min_fare}}"
+                                              [tooltipDisabled]="false"
+                                              [tooltipAnimation]="true"
+                                              tooltipPlacement="bottom">
+                                            <span class="fa fa-question"></span>
+                                        </span>
+                                    </div>
+                                    <div *ngIf="min_fare.errors && (min_fare.dirty || min_fare.touched)">
+                                        <div style="color: red;" [hidden]="!min_fare.errors.required">{{validation_message.min_fare_required | translate}}</div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-sm-6" [hidden]="!add_service.is_use_distance_calculation">
+
+                    <div class="ibox">
+                        <div class="ibox-title">
+                            <label class="control-label">{{heading_title.delivery_price_setting | translate}} (<span class="" *ngIf='is_distance_unit_mile == true'>{{title.mile}}</span>
+                                <span class="" *ngIf='is_distance_unit_mile == false'>{{title.km}}</span>)</label>
+                        </div>
+                        <div class="ibox-content wizard  fix_height_delivery_price scrollbar">
+                            <div class="row">
+                                <div class="table-responseve">
+                                    <table class="table table-striped">
+                                        <thead>
+                                        <tr>
+                                            <th>{{title.from_distance | translate}}</th>
+                                            <th>{{title.to_distance | translate}}</th>
+                                            <th>{{title.delivery_fee | translate}}</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody *ngIf="add_service.delivery_price_setting;">
+                                        <tr *ngFor="let delivery_price of add_service.delivery_price_setting; let index = index;">
+                                            <td>{{delivery_price.from_distance}}</td>
+                                            <td>{{delivery_price.to_distance}}</td>
+                                            <td>{{delivery_price.delivery_fee}}
+                                                <span class="pull-right fa fa-close" (click)="delete_delivery_price_data(index)"></span>
+                                                <span style="margin-right: 10px;" class="pull-right fa fa-pencil" (click)="open_edit_delivery_modal(index)"></span>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="text-center">
+                                    <button type="button" (click)="open_add_delivery_modal()" class="btn add_btn">{{button.add | translate}}<span class="fa fa-plus pull-right" style="margin-top: 2px;"></span></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-sm-6">
+                    <div class="ibox">
+                        <div class="ibox-title">
+                            <label class="control-label">Zone Price</label>
+                        </div>
+                        <div class="ibox-content fix_height_delivery_price scrollbar">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <form #zone_price_form="ngForm" (ngSubmit)="add_zone_price()">
+                                        <div class="col-md-6">
+                                            <select chosen class="chosen-select" id="from_zone_id" [(ngModel)]="add_zone.from_zone_id" #from_zone_id="ngModel" name="from_zone_id" data-placeholder="Select Zone1"  tabindex="4" required >
+                                                <option *ngFor="let zone of from_zone_list;" value="{{zone._id}}">{{zone.title}}</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <select chosen class="chosen-select" id="to_zone_id" [(ngModel)]="add_zone.to_zone_id" #to_zone_id="ngModel" name="to_zone_id" data-placeholder="Select Zone2"  tabindex="4" required >
+                                                <option *ngFor="let zone of to_zone_list;" value="{{zone._id}}">{{zone.title}}</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><span class="">{{currency_sign}}</span></span>
+                                                <input type="text" class="form-control" (keypress)="helper.number_validation($event)" placeholder="" [(ngModel)]="add_zone.price" #price="ngModel"  name="price" required />
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <input type="submit" id="add" name="add"  class="btn btn-primary" value="Add" >
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="col-md-12" style="margin-top: 20px;" *ngFor="let i of zone_price;">
+                                     <form #update_zone_price_form="ngForm" (ngSubmit)="update_zone_price(i)">
+                                        <div class="col-md-6">
+                                            <input type="text" class="form-control" value="{{i.from_zone_detail.title}}" name="price" disabled />
+                                        </div>
+                                        <div class="col-md-6">
+                                            <input type="text" class="form-control" value="{{i.to_zone_detail.title}}" name="price" disabled />
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><span class="">{{currency_sign}}</span></span>
+
+                                                <input type="text" class="form-control" (keypress)="helper.number_validation($event)" placeholder="" [(ngModel)]="i.price" #price="ngModel"  name="price" required />
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <input type="submit" id="add" name="add"  class="btn btn-primary" value="Upate" >
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<modal keyboard="false" backdrop="static" style="top: 25%;" cssClass="modal-sm" #add_delivery_fee_modal id>
+    <form #add_delivery_price_form="ngForm" (ngSubmit)="add_delivery_price_data()">
+        <modal-header [show-close]="true">
+            <h4 class="modal-title">{{title.add_delivery_price_setting | translate}}</h4>
+        </modal-header>
+        <modal-body>
+
+            <div class="form-group">
+                <div class="input-group">
+                    <span class="input-group-addon"><span class="" *ngIf='is_distance_unit_mile == true'>{{title.mile}}</span>
+                                            <span class="" *ngIf='is_distance_unit_mile == false'>{{title.km}}</span>
+                                        </span>
+                    <input type="text" (keypress)="helper.number_validation($event)" placeholder="{{title.from_distance | translate}}" class="form-control" automoplete="off" [(ngModel)]="from_distance" name="from_distance" required/>
+
+                    <!--<div *ngIf="from_distance.errors && (from_distance.dirty || from_distance.touched)">-->
+                    <!--<div style="color: red;" [hidden]="!from_distance.errors.required">{{validation_message.password_required | translate}}-->
+                    <!--</div>-->
+                    <!--</div>-->
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="input-group">
+                    <span class="input-group-addon"><span class="" *ngIf='is_distance_unit_mile == true'>{{title.mile}}</span>
+                                            <span class="" *ngIf='is_distance_unit_mile == false'>{{title.km}}</span>
+                                        </span>
+                    <input type="text" (keypress)="helper.number_validation($event)" placeholder="{{title.to_distance | translate}}" class="form-control" automoplete="off" [(ngModel)]="to_distance" name="to_distance" required/>
+
+                    <!--<div *ngIf="to_distance.errors && (to_distance.dirty || to_distance.touched)">-->
+                    <!--<div style="color: red;" [hidden]="!to_distance.errors.required">{{validation_message.password_required | translate}}-->
+                    <!--</div>-->
+                    <!--</div>-->
+                </div>
+            </div>
+            <div class="form-group">
+                <input type="text" (keypress)="helper.number_validation($event)" placeholder="{{title.delivery_fee | translate}}" class="form-control" automoplete="off" [(ngModel)]="delivery_fee" name="delivery_fee" required/>
+            </div>
+
+            <div>
+                <span *ngIf="distance_calculation_error==1">{{validation_message.from_distance_not_greater_than_to_distance | translate}}</span>
+            </div>
+
+        </modal-body>
+        <modal-footer>
+            <div style="text-align: center">
+                <button type="submit" class="btn btn-primary">{{button.submit | translate}}</button>
+            </div>
+        </modal-footer>
+    </form>
+</modal>

@@ -1,0 +1,163 @@
+<style>
+    .remove_border{
+        border: 0;
+    }
+</style>
+<footer [myLoading]="myLoading" ></footer> 
+<div class="wrapper wrapper-content animated fadeInRight content_top_bar">
+
+
+    <div class="ibox">
+        <div class="ibox-title">
+            <span class="pull-right"><h3>{{title.review_date | translate}} - {{created_at| date: DATE_FORMAT.DD_MMM_YYYY}}</h3></span>
+            <h3>{{title.id | translate}} - {{order_unique_id}}</h3>
+        </div>
+        <div class="ibox-content">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th width="200px">{{title.user | translate}}</th>
+                            <th width="200px">{{title.provider | translate}}</th>
+                            <th>{{title.comment | translate}}</th>
+                            <th>{{title.review_like | translate}}</th>
+                            <th>{{title.review_dislike | translate}}</th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+                        <tr>
+                            <td class="remove_border">{{user_first_name + " " + user_last_name}}</td>
+                            <td class="remove_border">{{provider_first_name + " " + provider_last_name}}</td>
+                            <td class="remove_border">{{user_review_to_provider}}</td>
+                            <td class="remove_border">{{like_count}}</td>
+                            <td class="remove_border">{{dislike_count}}</td>
+                        <tr>
+                        <tr>
+                            <td class="remove_border"></td>
+                            <td class="remove_border">
+                                <span>
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                </span>
+                                {{user_rating_to_provider}}
+                            </td>
+                            <td class="remove_border"></td>
+                        </tr> 
+
+                        <tr>
+                            <td class="remove_border"></td>
+                            <td><strong>{{title.review_store | translate}}</strong></td>
+                            <th>{{title.review_comment | translate}}</th>
+                        </tr> 
+                        <tr>
+                            <td class="remove_border"></td>
+                            <td class="remove_border">{{store_name}}</td>
+                            <td class="remove_border">{{user_review_to_store}}</td>
+
+                        </tr>
+                        <tr>
+                            <td class="remove_border"></td>
+                            <td class="remove_border"><span><i class="fa fa-star" aria-hidden="true"></i></span>
+                                {{user_rating_to_store}}
+                            </td>
+                            <td class="remove_border"></td>
+                        </tr>
+
+                    </tbody>
+
+
+                    <thead>
+                        <tr>
+                            <th width="200px">{{title.review_provider | translate}}</th>
+                            <th width="200px">{{title.review_user | translate}}</th>
+                            <th>{{title.review_comment | translate}}</th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+                        <tr>
+                            <td class="remove_border">{{provider_first_name + " " + provider_last_name}}</td>
+                            <td class="remove_border">{{user_first_name + " " + user_last_name}}</td>
+                            <td class="remove_border">{{provider_review_to_user}}</td>
+                        <tr>
+                        <tr>
+                            <td class="remove_border"></td>
+                            <td class="remove_border">
+                                <span>
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                </span>
+                                {{provider_rating_to_user}}
+                            </td>
+                            <td class="remove_border"></td>
+                        </tr> 
+
+                        <tr>
+                            <td class="remove_border"></td>
+                            <td><strong>{{title.review_store | translate}}</strong></td>
+                            <th>{{title.review_comment | translate}}</th>
+                        </tr> 
+                        <tr>
+                            <td class="remove_border"></td>
+                            <td class="remove_border">{{store_name}}</td>
+                            <td class="remove_border">{{provider_review_to_store}}</td>
+
+                        </tr>
+                        <tr>
+                            <td class="remove_border"></td>
+                            <td class="remove_border"><span><i class="fa fa-star" aria-hidden="true"></i></span>
+                                {{provider_rating_to_store}}
+                            </td>
+                            <td class="remove_border"></td>
+                        </tr>
+
+                    </tbody>
+
+
+
+
+                    <thead>
+                        <tr>
+                            <th width="200px">{{title.review_store | translate}}</th>
+                            <th width="200px">{{title.review_provider | translate}}</th>
+                            <th>{{title.review_comment | translate}}</th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+                        <tr>
+                            <td class="remove_border">{{store_name}}</td>
+                            <td class="remove_border">{{provider_first_name + " " + provider_last_name}}</td>
+                            <td class="remove_border">{{store_review_to_provider}}</td>
+                        <tr>
+                        <tr>
+                            <td class="remove_border"></td>
+                            <td class="remove_border">
+                                <span>
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                </span>
+                                {{store_rating_to_provider}}
+                            </td>
+                            <td class="remove_border"></td>
+                        </tr> 
+
+
+
+                    </tbody>
+
+
+
+
+
+
+
+
+                </table>
+            </div>
+        </div>
+    </div>
+
+
+</div>

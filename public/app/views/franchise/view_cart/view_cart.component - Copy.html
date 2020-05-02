@@ -1,0 +1,109 @@
+<footer [myLoading]="myLoading" ></footer>   
+<!--<div class="row wrapper content_top_bar border-bottom white-bg page-heading">-->
+
+    <!--<div class="col-lg-12">-->
+
+        <!--<div class="col-md-4 col-sm-12 col-xs-12">-->
+            <!--<h3>{{heading_title.invoice_no | translate}}: {{invoice_number}}</h3>-->
+        <!--</div>-->
+        <!--<div class="col-md-4 col-sm-6 col-xs-6">-->
+            <!--<h3>{{title.date | translate}}: {{completed_at| date: "dd MMM yyyy"}}</h3>-->
+        <!--</div>-->
+        <!--<div class="col-md-4 col-sm-6 col-xs-6">-->
+            <!--<span class="pull-right"><a class="btn btn-primary" (click)="viewInvoice(order_id)">{{button.view_full_invoice | translate}}</a></span>-->
+        <!--</div>-->
+    <!--</div>-->
+
+<!--</div>-->
+<div class="wrapper wrapper-content animated fadeInRight ">
+
+    <div class="row">
+
+        <div class="col-md-12 col-sm-12">
+
+            <div class="ibox">
+                <div class="ibox-title" style="font-weight: bold;">
+                    <h4 class="pull-right">{{currency_sign}}{{order_total}}</h4>
+                    <span style="position: absolute; left:48%;">(<strong>{{total_item}}</strong>) {{title.items | translate}}</span>
+                    <h5>{{heading_title.order_detail | translate}}</h5>
+                </div>
+                <div class="ibox-content" *ngFor="let products of order_detail; let product_index=index; ">
+
+                    <!--<div>-->
+
+                        <!--<h4 class="pull-right">{{currency_sign}}{{product_item_total_array[product_index]}}</h4>-->
+                        <!--<span style="position: absolute; left:48%;">(<strong>{{products.items.length}}</strong>) {{title.items | translate}}</span>-->
+                        <!--<h5>{{products.product_name}}</h5>-->
+                    <!--</div>-->
+
+                    <!--<hr/>-->
+
+                    <div class="row" *ngFor="let item of products.items; let odd=odd; let item_index=index; ">
+
+                        <div class="col-md-12 col-sm-12">
+                            <div class="table-responsive">
+                            <table class="table shoping-cart-table">
+
+                                <tbody>
+                                    <tr>
+                                        <td width="90">
+                                            <div class="">
+                                                <img class="" style="height: 80px;width: 80px;"  src="{{item.image_url[0]}}">
+                                            </div>
+                                        </td>
+                                        <td class="desc">
+                                            <h3>
+                                                <a class="text-navy">
+                                                    {{item.item_name}}
+                                                    <div style="text-align: center;margin-top: -18px;"><label style="color: #787b7d;"> {{title.qty | translate}} : {{item.quantity}} </label></div>
+                                                    <div style="margin-top: -18px;float: right;"><label style="color: #787b7d;"> {{currency_sign}}{{item.item_price}} </label></div>
+                                                </a>
+                                            </h3>
+
+                                            <p class="small" style="height: 30px; overflow-y: hidden;">
+                                                {{item.details}}
+                                            </p>
+
+
+                                        </td>
+                                        <td>
+                                            <h4>{{currency_sign}}{{(item.item_price + item.total_specification_price)*item.quantity}}</h4>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        </div>
+
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <div class="col-md-4 col-sm-8 col-xs-8"><h4>{{title.specifications | translate}}</h4></div>
+                            <div class="col-md-2 col-sm-4 col-xs-4"><h4>{{item.total_specification_price}}{{currency_sign}}</h4></div>
+                        </div>
+
+                        <div *ngFor="let specification_group of item.specifications; let odd=odd;" [class.row]="odd" style="margin: 0;">
+                            <div class="col-md-6 col-sm-12 col-xs-12" >
+                                <div class="col-md-12">
+                                    <div class="col-md-8 col-sm-8 col-xs-8" style="color:black;">{{specification_group.name}}</div>
+                                    <div class="col-md-4 col-sm-4 col-xs-4" style="color:black;">{{specification_group.price}}{{currency_sign}}</div>
+                                </div>
+
+                                <div class="col-md-12" *ngFor="let specification of specification_group.list">
+                                    <div style="padding-left: 30px;" class="col-md-8 col-sm-8 col-xs-8">{{specification.name}}</div>
+                                    <div class="col-md-4 col-sm-4 col-xs-4">{{specification.price}}{{currency_sign}}</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <hr/>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+</div>

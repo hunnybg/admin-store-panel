@@ -1,0 +1,646 @@
+<footer [myLoading]="myLoading"></footer>
+<form #settingUpdateForm="ngForm" (ngSubmit)="UpdateSetting(settingUpdateForm.value)">
+    <input type="hidden" class="form-control" [(ngModel)]="store_setting.store_id" #store_id="ngModel"
+        name="store_id" />
+    <input type="hidden" class="form-control" [(ngModel)]="store_setting.server_token" #server_token="ngModel"
+        name="server_token" />
+    <input type="hidden" class="form-control" [(ngModel)]="store_setting.store_time" #store_time="ngModel"
+        name="store_time" />
+
+    <div class="wrapper wrapper-content animated fadeInRight content_top_bar">
+        <div class="row">
+            <!-- <div class="col-lg-4 col-sm-12">
+                <div class="ibox">
+                    <div class="ibox-title" style="padding: 0;min-height: 35px !important;">
+                        <label style="margin-left: 15px;margin-top: 9px;"
+                            class="control-label">{{heading_title.order_price_settings | translate}}</label>
+                        <div class="pull-right">
+                            <input type="submit" id="submit" name="submit" style="border-radius: 0;"
+                                class="btn btn-primary" value="{{button.update | translate}}">
+                        </div>
+                    </div>
+                    <div class="ibox-content total_order_price">
+                        <div class="row">
+                            <div class="form-group">
+                                <label
+                                    class="col-md-9 col-sm-9 col-xs-9 control-label">{{title.is_use_item_tax | translate}}</label>
+                                <div class="col-md-3 col-sm-3 col-xs-3 form-group">
+                                    <ui-switch [(ngModel)]="store_setting.is_use_item_tax" #is_use_item_tax="ngModel"
+                                        name="is_use_item_tax"></ui-switch>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-lg-6 control-label">{{title.item_tax | translate}}</label>
+                                <div class="col-lg-6 form-group">
+                                    <input type="text" class="form-control" [(ngModel)]="store_setting.item_tax"
+                                        #item_tax="ngModel" (keypress)="helper.number_validation($event)"
+                                        name="item_tax" required />
+                                    <div *ngIf="item_tax.errors && (item_tax.dirty || item_tax.touched)">
+                                        <div style="color: red;" [hidden]="!item_tax.errors.required">
+                                            {{validation_message.item_tax_required | translate}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="form-group">
+                                <label class="col-lg-6 control-label">{{title.item_tax | translate}}</label>
+                                <div class="col-lg-6 form-group">
+                                    <input type="text" class="form-control" [(ngModel)]="store_setting.item_tax"
+                                        #item_tax="ngModel" (keypress)="helper.number_validation($event)"
+                                        name="item_tax" required />
+                                    <div *ngIf="item_tax.errors && (item_tax.dirty || item_tax.touched)">
+                                        <div style="color: red;" [hidden]="!item_tax.errors.required">
+                                            {{validation_message.item_tax_required | translate}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> -->
+            <!-- <div class="form-group">
+                                <label class="col-lg-6 control-label">{{title.min_order_price | translate}}</label>
+                                <div class="col-lg-6 form-group">
+                                    <input type="text" class="form-control" [(ngModel)]="store_setting.min_order_price" #min_order_price (keypress)="helper.number_validation($event)" name="min_order_price" required/>
+                                    <div *ngIf="min_order_price.errors && (min_order_price.dirty || min_order_price.touched)">
+                                        <div style="color: red;" [hidden]="!min_order_price.errors.required">{{validation_message.min_order_price_required | translate}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> -->
+            <!-- <div class="form-group">
+                                <label class="col-lg-6 control-label">{{title.max_item_quantity_add_by_user | translate}}</label>
+                                <div class="col-lg-6 form-group">
+                                    <input type="text" class="form-control" [(ngModel)]="store_setting.max_item_quantity_add_by_user" #max_item_quantity_add_by_user (keypress)="helper.number_validation($event)" name="max_item_quantity_add_by_user" required/>
+                                    <div *ngIf="max_item_quantity_add_by_user.errors && (max_item_quantity_add_by_user.dirty || max_item_quantity_add_by_user.touched)">
+                                        <div style="color: red;" [hidden]="!max_item_quantity_add_by_user.errors.required">{{validation_message.max_item_quantity_add_by_user_required | translate}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> -->
+            <!-- <div class="form-group">
+                                <label class="col-md-9 col-sm-9 col-xs-9 control-label">{{title.is_ask_estimated_time_for_ready_order | translate}}</label>
+                                <div class="col-md-3 col-sm-3 col-xs-3 form-group">
+                                    <ui-switch [(ngModel)]="store_setting.is_ask_estimated_time_for_ready_order" #is_ask_estimated_time_for_ready_order="ngModel" name="is_ask_estimated_time_for_ready_order"></ui-switch>
+                                </div>
+                            </div> -->
+            <!-- </div>
+
+                    </div>
+                </div>
+            </div> -->
+
+            <div class="col-lg-4 col-sm-12">
+                <div class="ibox">
+                    <div class="ibox-title" style="padding: 0;min-height: 35px !important;">
+                        <label style="margin-left: 15px;margin-top: 9px;"
+                            class="control-label">{{heading_title.store_avalaible_features | translate}}</label>
+
+                        <div class="pull-right">
+                            <input *ngIf="!edit" type="button" name="button"
+                                style="border-radius: 0;background-color: #bc202b;border-color: #bc202b;"
+                                (click)="edit=true" class="btn btn-primary" value="{{button.edit | translate}}">
+                            <input *ngIf="edit" type="button" name="button" style="border-radius: 0;"
+                                (click)="UpdateSetting()" [disabled]='store_setting.features_available.length == 0'
+                                class="btn btn-primary" value="{{button.update | translate}}">
+                        </div>
+                    </div>
+                    <div class="ibox-content cancellation_setting">
+                        <div class="row">
+                            <!-- <div class="form-group"> -->
+                            <label
+                                class="col-md-12 col-sm-12 col-xs-12 control-label">{{title.avalaible_features | translate}}</label>
+                            <div class="col-md-5 col-sm-5 col-xs-5" *ngFor="let feature of store_features"
+                                style="margin: 5px;">
+                                <label>
+                                    <input class="icheck" id="icheck{{feature.id}}" type="checkbox"
+                                        value="{{feature.id}}" />
+                                    <span style="margin-left: 10px;">{{feature.feature}}</span>
+                                </label>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-sm-12">
+                <div class="ibox">
+                    <div class="ibox-title" style="padding: 0;min-height: 35px !important;">
+                        <label style="margin-left: 15px;margin-top: 9px;"
+                            class="control-label">{{heading_title.auto_transfer_settings | translate}}</label>
+
+                            <div class="pull-right">
+                                <input *ngIf="!edit" type="button" name="button"
+                                    style="border-radius: 0;background-color: #bc202b;border-color: #bc202b;"
+                                    (click)="edit=true" class="btn btn-primary" value="{{button.edit | translate}}">
+                                <input *ngIf="edit" type="button" name="button" style="border-radius: 0;"
+                                    (click)="UpdateSetting()" [disabled]='store_setting.features_available.length == 0'
+                                    class="btn btn-primary" value="{{button.update | translate}}">
+                            </div>
+                    </div>
+                    <div class="ibox-content cancellation_setting">
+                        <div class="row">
+                            <div class="form-group">
+                                <label
+                                    class="col-md-9 col-sm-9 col-xs-9 control-label">{{title.auto_transfer | translate}}</label>
+                                <div class="col-md-3 col-sm-3 col-xs-3 form-group">
+                                    <ui-switch [(ngModel)]="store_setting.auto_transfer" [disabled]='!edit'
+                                        (change)='change_auto_transfer($event)' #auto_transfer="ngModel"
+                                        name="auto_transfer"></ui-switch>
+                                </div>
+                            </div>
+
+
+
+                            <div *ngIf="store_setting.auto_transfer" class="form-group">
+
+                                <label
+                                    class="col-lg-6 col-xs-6 control-label">{{title.time_of_transfer | translate}}</label>
+                                <div class="col-lg-6 col-xs-6 input-group clock-picker" id="clock-picker"
+                                    data-autoclose="true">
+                                    <input type="text" [disabled]='!edit' class="form-control" id="auto_transfer_time"
+                                        [(ngModel)]="store_setting.time_of_transfer" #time_of_transfer="ngModel"
+                                        name="time_of_transfer" readonly required>
+                                    <span class="input-group-addon">
+                                        <span class="fa fa-clock-o"></span>
+                                    </span>
+
+                                </div>
+
+                                <div class="col-lg-6 col-xs-6"
+                                    *ngIf="time_of_transfer.errors && (time_of_transfer.dirty || time_of_transfer.touched)">
+                                    <div style="color: red;" [hidden]="!time_of_transfer.errors.required">
+
+                                        {{validation_message.time_of_transfer_required | translate}}
+                                    </div>
+
+                                </div>
+
+
+
+                                <!-- <label class="col-lg-6 control-label">{{title.time_of_transfer | translate}}</label>
+                                <div class="col-lg-6 form-group">
+                                    <input type="text" class="form-control" [(ngModel)]="store_setting.time_of_transfer"
+                                        #time_of_transfer (keypress)="helper.number_validation($event)"
+                                        name="time_of_transfer" required />
+                                    <div
+                                        *ngIf="time_of_transfer.errors && (time_of_transfer.dirty || time_of_transfer.touched)">
+                                        <div style="color: red;" [hidden]="!time_of_transfer.errors.required">
+                                            {{validation_message.time_of_transfer_required | translate}}
+                                        </div>
+                                    </div>
+                                </div> -->
+                            </div>
+
+                            <!-- <div *ngIf="store_setting.auto_transfer" class="form-group">
+                                <label class="col-lg-6 control-label">{{title.order_cancellation_charge_value | translate}}</label>
+                                <div class="col-lg-6 form-group">
+                                    <input type="text" class="form-control" [(ngModel)]="store_setting.order_cancellation_charge_value" #order_cancellation_charge_value (keypress)="helper.number_validation($event)" name="order_cancellation_charge_value" required/>
+                                    <div *ngIf="order_cancellation_charge_value.errors && (order_cancellation_charge_value.dirty || order_cancellation_charge_value.touched)">
+                                        <div style="color: red;" [hidden]="!order_cancellation_charge_value.errors.required">{{validation_message.order_cancellation_charge_value_required | translate}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-sm-12">
+                <div class="ibox">
+                    <div class="ibox-title" style="padding: 0;min-height: 35px !important;">
+                        <label style="margin-left: 15px;margin-top: 9px;"
+                            class="control-label">{{heading_title.store_time | translate}}</label>
+                        <div class="pull-right">
+                            <input *ngIf="!edit" type="button" name="button"
+                                style="border-radius: 0;background-color: #bc202b;border-color: #bc202b;"
+                                (click)="edit=true" class="btn btn-primary" value="{{button.edit | translate}}">
+                            <input *ngIf="edit" type="button" name="button" style="border-radius: 0;"
+                                (click)="updateStoreTime()" class="btn btn-primary"
+                                value="{{button.update | translate}}">
+                        </div>
+                    </div>
+                    <div class="ibox-content general_setting scrollbar">
+                        <div class="row" style="margin: 0;">
+                            <div class="col-lg-12" style="border-bottom: 1px solid;padding-left: 0; padding-right: 0;">
+                                <div class="wizard" style="border-bottom: 1px solid;padding-left: 0; padding-right: 0;">
+                                    <div class="steps clearfix">
+                                        <ul style="display: table;padding: 0px;">
+
+                                            <li (click)="change_day(0)" style="width: unset !important;"
+                                                [style.border-bottom]="curren_selected_day == 0 ? '1px solid #bc202b' : null"
+                                                class="day_li">
+                                                <a style="border-bottom-right-radius: 0px; border-bottom-left-radius: 0px;border: 0px;"
+                                                    class="btn-default"><span
+                                                        style="margin-left: -5px;font-weight: bold;display:block;"
+                                                        [style.color]="curren_selected_day == 0 ? '#bc202b' : null"
+                                                        class="nav-label">{{title.sunday | translate}}</span></a>
+                                            </li>
+                                            <li (click)="change_day(1)" style="width: unset !important;"
+                                                [style.border-bottom]="curren_selected_day == 1 ? '1px solid #bc202b' : null"
+                                                class="day_li">
+                                                <a style="border-bottom-right-radius: 0px; border-bottom-left-radius: 0px;border: 0px;"
+                                                    class="btn-default"><span
+                                                        style="margin-left: -5px;font-weight: bold;display:block;"
+                                                        [style.color]="curren_selected_day == 1 ? '#bc202b' : null"
+                                                        class="nav-label">{{title.monday | translate}}</span></a>
+                                            </li>
+                                            <li (click)="change_day(2)" style="width: unset !important;"
+                                                [style.border-bottom]="curren_selected_day == 2 ? '1px solid #bc202b' : null"
+                                                class="day_li">
+                                                <a style="border-bottom-right-radius: 0px; border-bottom-left-radius: 0px;border: 0px;"
+                                                    class="btn-default"><span
+                                                        style="margin-left: -5px;font-weight: bold;display:block;"
+                                                        [style.color]="curren_selected_day == 2 ? '#bc202b' : null"
+                                                        class="nav-label">{{title.tuesday | translate}}</span></a>
+                                            </li>
+                                            <li (click)="change_day(3)" style="width: unset !important;"
+                                                [style.border-bottom]="curren_selected_day == 3 ? '1px solid #bc202b' : null"
+                                                class="day_li">
+                                                <a style="border-bottom-right-radius: 0px; border-bottom-left-radius: 0px;border: 0px;"
+                                                    class="btn-default"><span
+                                                        style="margin-left: -5px;font-weight: bold;display:block;"
+                                                        [style.color]="curren_selected_day == 3 ? '#bc202b' : null"
+                                                        class="nav-label">{{title.wednesday | translate}}</span></a>
+                                            </li>
+                                            <li (click)="change_day(4)" style="width: unset !important;"
+                                                [style.border-bottom]="curren_selected_day == 4 ? '1px solid #bc202b' : null"
+                                                class="day_li">
+                                                <a style="border-bottom-right-radius: 0px; border-bottom-left-radius: 0px;border: 0px;"
+                                                    class="btn-default"><span
+                                                        style="margin-left: -5px;font-weight: bold;display:block;"
+                                                        [style.color]="curren_selected_day == 4 ? '#bc202b' : null"
+                                                        class="nav-label">{{title.thursday | translate}}</span></a>
+                                            </li>
+                                            <li (click)="change_day(5)" style="width: unset !important;"
+                                                [style.border-bottom]="curren_selected_day == 5 ? '1px solid #bc202b' : null"
+                                                class="day_li">
+                                                <a style="border-bottom-right-radius: 0px; border-bottom-left-radius: 0px;border: 0px;"
+                                                    class="btn-default"><span
+                                                        style="margin-left: -5px;font-weight: bold;display:block;"
+                                                        [style.color]="curren_selected_day == 5 ? '#bc202b' : null"
+                                                        class="nav-label">{{title.friday | translate}}</span></a>
+                                            </li>
+                                            <li (click)="change_day(6)" style="width: unset !important;"
+                                                [style.border-bottom]="curren_selected_day == 6 ? '1px solid #bc202b' : null"
+                                                class="day_li">
+                                                <a style="border-bottom-right-radius: 0px; border-bottom-left-radius: 0px;border: 0px;"
+                                                    class="btn-default"><span
+                                                        style="margin-left: -5px;font-weight: bold;display:block;"
+                                                        [style.color]="curren_selected_day == 6 ? '#bc202b' : null"
+                                                        class="nav-label">{{title.saturday | translate}}</span></a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="row" style="margin-top: 9px;margin-bottom: 9px;">
+                                    <div class="col-md-6 col-sm-6">
+                                        <label class="col-md-9 col-sm-9 col-xs-9 control-label"
+                                            style="padding-top: 8px;">{{title.open_full_time | translate}}</label>
+
+                                        <div class="col-md-3 col-sm-3 col-xs-3" style="padding-top: 6px;">
+                                            <ui-switch (change)="store_full_time_open($event)" [disabled]="!edit"
+                                                [(ngModel)]="is_store_open_full_time" name="is_store_open_full_time">
+                                            </ui-switch>
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-sm-6">
+                                        <label class="col-md-9 col-sm-9 col-xs-9 control-label"
+                                            style="padding-top: 8px;">{{title.open | translate}}</label>
+
+                                        <div class="col-md-3 col-sm-3 col-xs-3" style="padding-top: 6px;">
+                                            <ui-switch (change)="store_open($event)"
+                                                [disabled]="is_store_open_full_time || !edit"
+                                                [(ngModel)]="is_store_open" name="is_store_open"></ui-switch>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row" style="margin-top: 9px;margin-bottom: 9px;">
+                                    <div class="col-md-12">
+                                        <div class="text-center">
+                                            <button type="button" [disabled]="is_store_open_full_time || !edit"
+                                                (click)="open_add_time_modal()"
+                                                class="btn add_btn">{{button.add_store_time | translate}}<span
+                                                    class="fa fa-plus pull-right"
+                                                    style="margin-top: 2px;"></span></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="">
+                            <table class="table">
+                                <tr>
+                                    <td>{{title.store_open_time | translate}}</td>
+                                    <td>{{title.store_close_time | translate}}</td>
+                                    <td>{{title.action | translate}}</td>
+
+                                </tr>
+                                <tr *ngFor="let i of selected_store_time_array">
+                                    <td>{{i.store_open_time}}</td>
+                                    <td>{{i.store_close_time}}</td>
+                                    <td><span (click)="remove_store_time(i)" class="fa fa-times"></span></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <!-- <div class="col-lg-4 col-sm-12">
+<div class=                "ibox">
+                    <div class="ibox-title" style="padding: 0;min-height: 35px !important;">
+                        <label style="margin-left: 15px;margin-top: 9px;" class="control-label">{{heading_title.schedule_order_settings | translate}}</label>
+                    </div>
+                    <div class="ibox-content cancellation_setting">
+                        <div class="row">
+                            <div class="form-group">
+                                <label class="col-md-9 col-sm-9 col-xs-9 control-label">{{title.is_taking_schedule_order | translate}}</label>
+                                <div class="col-md-3 col-sm-3 col-xs-3 form-group">
+                                    <ui-switch [(ngModel)]="store_setting.is_taking_schedule_order" #is_taking_schedule_order="ngModel" name="is_taking_schedule_order"></ui-switch>
+                                </div>
+                            </div>
+                            <div class="form-group" *ngIf="store_setting.is_taking_schedule_order">
+                                <label class="col-lg-6 control-label">{{title.schedule_order_create_after_minute | translate}}</label>
+                                <div class="col-lg-6 form-group">
+                                    <input type="text" class="form-control" [(ngModel)]="store_setting.schedule_order_create_after_minute" #schedule_order_create_after_minute (keypress)="helper.number_validation($event)" name="schedule_order_create_after_minute" required/>
+                                    <div *ngIf="schedule_order_create_after_minute.errors && (schedule_order_create_after_minute.dirty || schedule_order_create_after_minute.touched)">
+                                        <div style="color: red;" [hidden]="!schedule_order_create_after_minute.errors.required">{{validation_message.schedule_order_create_after_minute_required | translate}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                             <div class="form-group" *ngIf="store_setting.is_taking_schedule_order">
+                                <label class="col-lg-6 control-label">{{title.inform_schedule_order_before_min | translate}}</label>
+                                <div class="col-lg-6 form-group">
+                                    <input type="text" class="form-control" [(ngModel)]="store_setting.inform_schedule_order_before_min" #inform_schedule_order_before_min (keypress)="helper.number_validation($event)" name="inform_schedule_order_before_min" required/>
+                                    <div *ngIf="inform_schedule_order_before_min.errors && (inform_schedule_order_before_min.dirty || inform_schedule_order_before_min.touched)">
+                                        <div style="color: red;" [hidden]="!inform_schedule_order_before_min.errors.required">{{validation_message.inform_schedule_order_before_min_required | translate}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> -->
+            <!-- </div> -->
+            <!-- </div> -->
+            <!-- </div> -->
+            <!-- </div> -->
+        </div>
+
+        <!-- <div class="row"> -->
+        <!-- <div class="col-lg-4 col-sm-12">
+                <div class="ibox">
+                    <div class="ibox-title" style="padding: 0;min-height: 35px !important;">
+                        <label style="margin-left: 15px;margin-top: 9px;" class="control-label">{{heading_title.delivery_settings | translate}}</label>
+                    </div>
+                    <div class="ibox-content delivery_setting">
+                        <div class="row">
+                            <div class="form-group">
+                                <label class="col-md-9 col-sm-9 col-xs-9 control-label">{{title.is_store_pay_delivery_fees | translate}}</label>
+                                <div class="col-md-3 col-sm-3 col-xs-3 form-group">
+                                    <ui-switch [(ngModel)]="store_setting.is_store_pay_delivery_fees" #is_store_pay_delivery_fees="ngModel" name="is_store_pay_delivery_fees"></ui-switch>
+                                </div>
+                            </div>
+                            <div class="form-group" *ngIf="store_setting.is_store_pay_delivery_fees">
+                                <label class="col-lg-6 control-label">{{title.free_delivery_for_above_order_price | translate}}</label>
+                                <div class="col-lg-6 form-group">
+                                    <input type="text" class="form-control" [(ngModel)]="store_setting.free_delivery_for_above_order_price" #free_delivery_for_above_order_price (keypress)="helper.number_validation($event)" name="free_delivery_for_above_order_price" required/>
+                                    <div *ngIf="free_delivery_for_above_order_price.errors && (free_delivery_for_above_order_price.dirty || free_delivery_for_above_order_price.touched)">
+                                        <div style="color: red;" [hidden]="!free_delivery_for_above_order_price.errors.required">{{validation_message.free_delivery_for_above_order_price_required | translate}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group" *ngIf="store_setting.is_store_pay_delivery_fees">
+                                <label class="col-lg-6 control-label">{{title.free_delivery_within_radius | translate}}</label>
+                                <div class="col-lg-6 form-group">
+                                    <input type="text" class="form-control" [(ngModel)]="store_setting.free_delivery_within_radius" #free_delivery_within_radius (keypress)="helper.number_validation($event)" name="free_delivery_within_radius" required/>
+                                    <div *ngIf="free_delivery_within_radius.errors && (free_delivery_within_radius.dirty || free_delivery_within_radius.touched)">
+                                        <div style="color: red;" [hidden]="!free_delivery_within_radius.errors.required">{{validation_message.free_delivery_within_radius_required | translate}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-lg-6 control-label">{{title.delivery_time | translate}}</label>
+                                <div class="col-lg-6 form-group">
+                                    <input type="text" class="form-control" [(ngModel)]="store_setting.delivery_time" #delivery_time="ngModel" (keypress)="helper.number_validation($event)" name="delivery_time" required/>
+                                    <div *ngIf="delivery_time.errors && (delivery_time.dirty || delivery_time.touched)">
+                                        <div style="color: red;" [hidden]="!delivery_time.errors.required">{{validation_message.delivery_time_required | translate}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-lg-6 control-label">{{title.delivery_time_max | translate}}</label>
+                                <div class="col-lg-6 form-group">
+                                    <input type="text" class="form-control" [(ngModel)]="store_setting.delivery_time_max" #delivery_time_max="ngModel" (keypress)="helper.number_validation($event)" name="delivery_time_max" required/>
+                                    <div *ngIf="delivery_time_max.errors && (delivery_time_max.dirty || delivery_time_max.touched)">
+                                        <div style="color: red;" [hidden]="!delivery_time_max.errors.required">{{validation_message.delivery_time_max_required | translate}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-9 col-sm-9 col-xs-9 control-label">{{title.is_provide_pickup_delivery | translate}}</label>
+                                <div class="col-md-3 col-sm-3 col-xs-3 form-group">
+                                    <ui-switch [(ngModel)]="store_setting.is_provide_pickup_delivery" #is_provide_pickup_delivery="ngModel" name="is_provide_pickup_delivery"></ui-switch>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-9 col-sm-9 col-xs-9 control-label">{{title.is_provide_delivery_anywhere | translate}}</label>
+                                <div class="col-md-3 col-sm-3 col-xs-3 form-group">
+                                    <ui-switch [(ngModel)]="store_setting.is_provide_delivery_anywhere" #is_provide_delivery_anywhere="ngModel" name="is_provide_delivery_anywhere"></ui-switch>
+                                </div>
+                            </div>
+                            <div class="form-group" *ngIf="!store_setting.is_provide_delivery_anywhere">
+                                <label class="col-lg-6 control-label">{{title.delivery_radius | translate}}</label>
+                                <div class="col-lg-6 form-group">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" [(ngModel)]="store_setting.delivery_radius" #delivery_radius (keypress)="helper.number_validation($event)" name="delivery_radius" required/>
+                                        <span class="input-group-addon"><span class="">{{title.km}}</span></span>
+                                    </div>
+                                    <div *ngIf="delivery_radius.errors && (delivery_radius.dirty || delivery_radius.touched)">
+                                        <div style="color: red;" [hidden]="!delivery_radius.errors.required">{{validation_message.delivery_radius_required | translate}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-sm-12">
+                <div class="ibox">
+                    <div class="ibox-title" style="padding: 0;min-height: 35px !important;">
+                        <label style="margin-left: 15px;margin-top: 9px;" class="control-label">{{heading_title.general_settings | translate}}</label>
+                    </div>
+                    <div class="ibox-content general_setting">
+                        <div class="row">
+                            <div class="form-group">
+                                <label class="col-lg-6 control-label">{{title.language | translate}}</label>
+                                <div class="col-lg-6 form-group">
+                                    <select chosen class="chosen-select"[(ngModel)]="store_setting.lang" #lang id="lang" name="lang">
+                                        <option value="en">English</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-9 col-sm-9 col-xs-9 control-label">{{title.is_business_store | translate}}</label>
+                                <div class="col-md-3 col-sm-3 col-xs-3 form-group">
+                                    <ui-switch [(ngModel)]="store_setting.is_business" #is_business="ngModel" name="is_business"></ui-switch>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-9 col-sm-9 col-xs-9 control-label">{{title.is_busy | translate}}</label>
+                                <div class="col-md-3 col-sm-3 col-xs-3 form-group">
+                                    <ui-switch [(ngModel)]="store_setting.is_store_busy" #is_store_busy="ngModel" name="is_store_busy"></ui-switch>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-9 col-sm-9 col-xs-9 control-label">{{title.is_visible | translate}}</label>
+                                <div class="col-md-3 col-sm-3 col-xs-3 form-group">
+                                    <ui-switch [(ngModel)]="store_setting.is_visible" #is_visible="ngModel" name="is_visible" disabled></ui-switch>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div> -->
+
+
+        <!-- </div> -->
+
+        <div class="row" *ngIf="famous_for.length>0">
+            <div class="col-lg-12">
+                <div class="col-lg-12">
+                    <div class="ibox">
+                        <div class="ibox-title">
+                            <label style="margin-left: 15px;margin-top: 9px;"
+                                class="control-label">{{heading_title.select_tag | translate}}</label>
+                        </div>
+                        <div class="ibox-content ">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="col-md-3 form-group" *ngFor="let i of famous_for">
+                                        <label><input class="icheck" id="icheck{{check_data(i)}}" type="checkbox"
+                                                value="{{i}}" /><span style="margin-left: 10px;">{{i}}</span></label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<modal keyboard="false" backdrop="static" style="top: 25%;" size="sm" cssClass="modal-sm" #myModal>
+    <form #storeTimeForm="ngForm" novalidate (ngSubmit)="add_store_time()">
+        <modal-header [show-close]="true">
+            <h4 class="modal-title">{{heading_title.add_store_time | translate}}</h4>
+        </modal-header>
+        <modal-body>
+            <div class="row">
+                <div class="form-group">
+                    <label class="col-lg-6 col-xs-6 control-label">{{title.store_open_time | translate}}</label>
+                    <div class="col-lg-6 col-xs-6 input-group clock-picker" id="clock-picker" data-autoclose="true">
+                        <input type="text" class="form-control" id="open" [(ngModel)]="store_setting.store_open_time"
+                            #store_open_time="ngModel" name="store_open_time" readonly required>
+                        <span class="input-group-addon">
+                            <span class="fa fa-clock-o"></span>
+                        </span>
+
+                    </div>
+
+                    <div *ngIf="store_open_time.errors && (store_open_time.dirty || store_open_time.touched)">
+                        <div style="color: red;" [hidden]="!store_open_time.errors.required">
+                            {{validation_message.store_open_time_required | translate}}
+                        </div>
+                    </div>
+
+
+                </div>
+
+                <div class="form-group">
+                    <label class="col-lg-6 col-xs-6 control-label">{{title.store_close_time | translate}}</label>
+                    <div class="col-lg-6 col-xs-6 input-group clock-picker" id="clock-picker" data-autoclose="true">
+                        <input type="text" class="form-control" id="close" [(ngModel)]="store_setting.store_close_time"
+                            #store_close_time="ngModel" name="store_close_time" readonly required>
+                        <span class="input-group-addon">
+                            <span class="fa fa-clock-o"></span>
+                        </span>
+
+                    </div>
+
+                    <div *ngIf="store_close_time.errors && (store_close_time.dirty || store_close_time.touched)">
+                        <div style="color: red;" [hidden]="!store_close_time.errors.required">
+                            {{validation_message.store_close_time_required | translate}}
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div [ngSwitch]="store_open_time_error">
+                <div *ngSwitchCase=1>
+                    <label
+                        style="color: red;">{{validation_message.open_time_not_greater_close_time | translate}}</label>
+                </div>
+                <div *ngSwitchCase=2>
+                    <label style="color: red;">{{validation_message.invalid_open_time | translate}}</label>
+                </div>
+            </div>
+            <div [ngSwitch]="store_close_time_error">
+                <div *ngSwitchCase=1>
+                    <label style="color: red;">{{validation_message.close_time_not_less_open_time | translate}}</label>
+                </div>
+                <div *ngSwitchCase=2>
+                    <label style="color: red;">{{validation_message.invalid_close_time | translate}}</label>
+                </div>
+            </div>
+        </modal-body>
+        <modal-footer>
+            <div style="text-align: center">
+                <button type="submit"
+                    [disabled]="!storeTimeForm.valid || store_close_time_error!='' || store_open_time_error!=''"
+                    class="btn btn-primary">{{button.add | translate}}</button>
+            </div>
+        </modal-footer>
+    </form>
+</modal>
+
+<modal keyboard="false" backdrop="static" style="top: 25%;" cssClass="modal-sm" #oldPasswordModal id="old_passwrod">
+    <form #oldPasswordForm="ngForm" (ngSubmit)="old_password_update(oldPasswordForm.value)">
+        <modal-header [show-close]="true">
+            <h4 class="modal-title">{{title.password | translate}}</h4>
+        </modal-header>
+        <modal-body>
+            <div class="form-group">
+                <input type="password" class="form-control" automoplete="off" [(ngModel)]="store_setting.old_password"
+                    #old_password="ngModel" minlength="6" name="old_password" required />
+
+                <div *ngIf="old_password.errors && (old_password.dirty || old_password.touched)">
+                    <div style="color: red;" [hidden]="!old_password.errors.required">
+                        {{validation_message.password_required | translate}}
+                    </div>
+                    <div style="color: red;" [hidden]="!old_password.errors.minlength">
+                        {{validation_message.password_minlength | translate}}
+                    </div>
+                </div>
+            </div>
+
+        </modal-body>
+        <modal-footer>
+            <div style="text-align: center">
+                <button type="submit" class="btn btn-primary">{{button.submit | translate}}</button>
+            </div>
+        </modal-footer>
+    </form>
+</modal>

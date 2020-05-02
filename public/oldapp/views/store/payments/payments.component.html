@@ -1,0 +1,317 @@
+<footer [myLoading]="myLoading"></footer>
+<div class="wrapper wrapper-content animated fadeInRight content_top_bar">
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="col-lg-12 col-sm-12 no_padding">
+                <div class="ibox product-detail">
+                    <div class="ibox-content profile">
+
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12 profile_data">
+                                <div class="col-md-12 remove_padding align_center1" style="margin-left: 0px;">
+                                    <label class="control-label" style="font-size: 30px;">{{title.bank_account}}</label>
+
+                                    <button type="button"
+                                        *ngIf="add_bank_account==false && bank_detail_list.length == 0"
+                                        class="btn btn-danger pull-right edit_option_mobile_screen profile_update"
+                                        (click)="add_bank_account=true">{{button.add_bank_account | translate}}</button>
+
+                                    <button type="button" *ngIf="add_bank_account==true"
+                                        [disabled]="new_bank_account_form.invalid"
+                                        (click)='open_password_modal(new_bank_account_form)'
+                                        class="btn btn-primary pull-right edit_option_mobile_screen profile_update">{{button.add_account | translate}}</button>
+
+                                </div>
+
+                                <div *ngIf="bank_detail_list.length !== 0 && !add_bank_account">
+                                    <hr style="border-color: red;">
+
+                                    <div class="row col-md-12 remove_padding">
+                                        <table class="table">
+                                            <tr>
+                                                <th>{{title.id | translate}}</th>
+                                                <th>{{title.bank_account_number | translate}}</th>
+                                                <th>{{title.action | translate}}</th>
+                                            </tr>
+                                            <tr *ngFor="let bank_detail of bank_detail_list;">
+                                                <td>{{bank_detail.unique_id}}</td>
+                                                <td>{{bank_detail.account_number}}</td>
+                                                <td><button type="button" class="btn btn-danger"
+                                                        (click)="deletebankaccount(bank_detail._id)">{{button.delete | translate}}</button>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+
+                                <div *ngIf="bank_detail_list.length !== 0 && !add_bank_account">
+
+                                    <div class="row col-md-12 remove_padding">
+                                        <label class="control-label"
+                                            style="font-size: 30px;">{{title.withdrawals}}</label>
+                                    </div>
+                                    <div class="row col-md-12 remove_padding">
+                                        <hr style="border-color: red;margin-top : 0px">
+                                    </div>
+                                    <div class="row col-md-12 remove_padding">
+                                        <table class="table">
+                                            <tr>
+                                                <th>{{title.pulled_out_amount | translate}}</th>
+                                                <th>{{title.availible_for_withdraw | translate}}</th>
+                                                <th>{{title.action | translate}}</th>
+                                            </tr>
+                                            <tr>
+                                                <td>{{currency}}{{paid_to_store}}</td>
+                                                <td>{{currency}}{{pay_to_store}}</td>
+                                                <td><button type="button"
+                                                        *ngIf="pay_to_store !== 0 && !(store_edit.auto_transfer)"
+                                                        (click)="withdrawing_amount()" class="btn btn-danger">
+                                                        {{title.withdraw | translate}}
+                                                    </button>
+
+                                                    <button type="button"
+                                                        *ngIf="pay_to_store == 0 || store_edit.auto_transfer"
+                                                        class="btn btn-danger" disabled>
+                                                        {{title.withdraw | translate}}
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+
+                                </div>
+
+                                <div *ngIf="bank_detail_list.length == 0 && !add_bank_account"
+                                    style="text-align: center;">
+                                    <p>{{helper.messages.no_accounts}}</p>
+                                </div>
+
+                                <div [hidden]="!add_bank_account" class="row col-md-12 remove_padding">
+                                    <hr style="border-color: gray;">
+                                </div>
+
+                                <form #new_bank_account_form="ngForm" [hidden]="!add_bank_account">
+                                    <div class="row col-md-12 remove_padding">
+                                        <label
+                                            class="col-lg-4 col-sm-4 remove_padding control-label">{{title.account_number | translate}}</label>
+                                        <div class="col-lg-8 col-sm-8 form-group">
+                                            <input type="text" class="form-control"
+                                                [(ngModel)]="new_bank_account.account_number" #account_number="ngModel"
+                                                name="account_number" required />
+                                            <div
+                                                *ngIf="account_number.errors && (account_number.dirty || account_number.touched)">
+                                                <div style="color: red;" [hidden]="!account_number.errors.required">
+                                                    {{title.account_number | translate}} is Required.
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row col-md-12 remove_padding">
+                                        <label
+                                            class="col-lg-4 col-sm-4 remove_padding control-label">{{title.routing_number | translate}}</label>
+                                        <div class="col-lg-8 col-sm-8 form-group">
+                                            <input type="text" class="form-control"
+                                                [(ngModel)]="new_bank_account.routing_number" #routing_number="ngModel"
+                                                name="routing_number" required />
+                                            <div
+                                                *ngIf="routing_number.errors && (routing_number.dirty || routing_number.touched)">
+                                                <div style="color: red;" [hidden]="!routing_number.errors.required">
+                                                    {{title.routing_number | translate}} is Required.
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="row col-md-12 remove_padding">
+                                        <!-- <label
+                                            class="col-lg-4 col-sm-4 remove_padding control-label">
+                                            {{title.personal_id_number | translate}}</label> -->
+                                        <label class="col-lg-4 col-sm-4 remove_padding control-label">
+                                            {{title.personal_id_number | translate}}</label>
+                                        <div class="col-lg-8 col-sm-8 form-group">
+                                            <input type="text" class="form-control"
+                                                [(ngModel)]="new_bank_account.personal_id_number"
+                                                #personal_id_number="ngModel" name="personal_id_number" required />
+                                            <div
+                                                *ngIf="personal_id_number.errors && (personal_id_number.dirty || personal_id_number.touched)">
+                                                <div style="color: red;" [hidden]="!personal_id_number.errors.required">
+                                                    {{title.personal_id_number | translate}} is Required.
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row col-md-12 remove_padding">
+                                        <label
+                                            class="col-lg-4 col-sm-4 remove_padding control-label">{{title.state | translate}}</label>
+                                        <div class="col-lg-8 col-sm-8 form-group">
+                                            <input type="text" class="form-control" [(ngModel)]="new_bank_account.state"
+                                                #state="ngModel" name="state" required />
+                                            <div *ngIf="state.errors && (state.dirty || state.touched)">
+                                                <div style="color: red;" [hidden]="!state.errors.required">
+                                                    {{title.state | translate}} is Required.
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row col-md-12 remove_padding">
+                                        <label
+                                            class="col-lg-4 col-sm-4 remove_padding control-label">{{title.postal_code | translate}}</label>
+                                        <div class="col-lg-8 col-sm-8 form-group">
+                                            <input type="text" class="form-control"
+                                                [(ngModel)]="new_bank_account.postal_code" #postal_code="ngModel"
+                                                name="postal_code" required />
+                                            <div
+                                                *ngIf="postal_code.errors && (postal_code.dirty || postal_code.touched)">
+                                                <div style="color: red;" [hidden]="!postal_code.errors.required">
+                                                    {{title.postal_code | translate}} is Required.
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row col-md-12 remove_padding">
+                                        <label
+                                            class="col-lg-4 col-sm-4 remove_padding control-label">{{title.document | translate}}
+                                            <br> Max Size : 20kb , <br>Format : PNG/JPEG</label>
+                                        <div class="col-lg-8 col-sm-8 form-group">
+                                            <span class="btn-file" (change)="change_image($event);">
+                                                <img style="border-radius: 20%; width:80px; height: 80px; margin-right: 15px;"
+                                                    src="{{new_bank_account.document != '' ? helper.CONSTANT.IMAGE_BASE_URL + new_bank_account.document : 'web_images/camera_img.png'}}"
+                                                    alt="profile">
+                                                <input type="file" #document accept="image/*" name="document"
+                                                    style="margin-top: -12px;padding: 13px;" required>
+                                            </span>
+                                            <div style="color: red;" *ngIf="!image_uploaded && show_image_error">
+                                                {{title.document | translate}} is Required.
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="col-lg-12 col-sm-12 no_padding">
+                <div class="ibox product-detail">
+                    <div class="ibox-content profile">
+
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12 profile_data">
+                                <div class="col-md-12 remove_padding align_center1" style="margin-left: 0px;">
+                                    <label class="control-label"
+                                        style="font-size: 30px;">{{title.transferred_history}}</label>
+                                </div>
+
+                                <hr style="border-color: red;">
+                                <div *ngIf="tranferred_history.length == 0" class="lable_center">
+                                    No Records
+                                </div>
+
+                                <div *ngIf="tranferred_history.length !== 0">
+
+                                    <div class="row col-md-12 remove_padding">
+                                        <table class="table">
+                                            <tr>
+                                                <th>{{title.id | translate}}</th>
+                                                <th>{{title.amount | translate}}</th>
+                                                <th>{{title.transfer_type | translate}}</th>
+                                                <th>{{title.status | translate}}</th>
+                                                <th>{{title.date | translate}}</th>
+
+                                            </tr>
+                                            <tr *ngFor="let tranfer_history of tranferred_history;">
+                                                <td>{{tranfer_history.unique_id}}</td>
+                                                <td>{{tranfer_history.currency_code}}{{tranfer_history.amount}}</td>
+                                                <td [ngSwitch]="tranfer_history.transfered_by">
+                                                    <div *ngSwitchCase="helper.ADMIN_DATA_ID.ADMIN">
+                                                        <span
+                                                            class="label label-warning">{{helper.lable_title.auto_transfer}}</span>
+                                                    </div>
+                                                    <div *ngSwitchCase="helper.ADMIN_DATA_ID.STORE">
+                                                        <span
+                                                            class="label label-info_new">{{helper.lable_title.manaul}}</span>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <span class="label label-primary_new"
+                                                        *ngIf="tranfer_history.transfer_status == 1">{{helper.status.success}}</span>
+                                                    <span class="label label-danger"
+                                                        *ngIf="tranfer_history.transfer_status == 0">{{helper.status.failed}}</span>
+                                                </td>
+                                                <td>{{tranfer_history.created_at | date:'dd MMM yyyy hh:mm:ss'}}
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                    <div class="col-md-12 col-sm-12" style="padding-top: 10px;">
+                                        <div class="lable_center">
+
+                                            <ul class="pagination">
+                                                <li *ngIf="page!==1"><a class="btn"
+                                                        (click)="filter(page-1)">{{button.pre | translate}}</a></li>
+                                                <li *ngFor="let index of total_pages" [class.active]="page==index">
+                                                    <a *ngIf="index==1 || index==total_page || index==page || index==page-1 || index==page+1"
+                                                        (click)="filter(index)" class="btn">{{index}}</a>
+                                                    <a *ngIf="(index==1 && (page!==1 && page!==2 && page!==3)) || (index==total_page-1 && (page!==total_page && page!==total_page-1 && page!==total_page-2))"
+                                                        class="btn">...</a>
+
+                                                </li>
+                                                <li *ngIf="page!==total_page && tranferred_history.length!==0"><a
+                                                        class="btn"
+                                                        (click)="filter(page+1)">{{button.next | translate}}</a></li>
+                                            </ul>
+                                            <div class="col-md-2 pull-right">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<modal keyboard="false" cssClass="modal-sm" #oldPasswordModal id="old_passwrod">
+    <form #oldPasswordForm="ngForm" (ngSubmit)="old_password_update(oldPasswordForm.value)">
+        <modal-header [show-close]="true">
+            <!-- <h4 class="modal-title" *ngIf="!add_bank_account && !delete_bank_account">{{title.old_password | translate}}
+            </h4> -->
+            <h4 class="modal-title">{{title.password | translate}}</h4>
+        </modal-header>
+        <modal-body>
+
+            <div class="form-group">
+                <label>{{title.password | translate}}</label>
+                <input type="password" class="form-control" [(ngModel)]="store_edit.old_password"
+                    #old_password="ngModel" minlength="6" name="old_password" required />
+
+                <div *ngIf="old_password.errors && (old_password.dirty || old_password.touched)">
+                    <div style="color: red;" [hidden]="!old_password.errors.required">
+                        {{validation_message.password_required | translate}}
+                    </div>
+                    <div style="color: red;" [hidden]="!old_password.errors.minlength">
+                        {{validation_message.password_minlength | translate}}
+                    </div>
+                </div>
+            </div>
+
+        </modal-body>
+        <modal-footer>
+            <div style="text-align: center">
+                <button type="submit" class="btn btn-primary">{{button.submit | translate}}</button>
+            </div>
+        </modal-footer>
+    </form>
+</modal>

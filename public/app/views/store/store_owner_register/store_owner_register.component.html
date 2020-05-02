@@ -1,0 +1,112 @@
+<footer [myLoading]="myLoading"></footer>
+
+<div class="row full_height">
+    <div class="col-md-5 col-xs-12 col-sm-12 full_height login_left_background">
+        <div class="col-md-12 col-xs-12 col-sm-12 login_left_top_margin animated fadeInLeft">
+            <div class="col-md-12 col-xs-12 col-sm-12">
+                <img style="width: 130px;" src="web_images/store_logo.png">
+            </div>
+
+            <label class="col-md-12 col-xs-12 col-sm-12 login_title"
+                style="margin-top: 20px;">{{title.store_title1 | translate}}</label>
+            <label
+                class="col-md-12 col-xs-12 col-sm-12 login_title">{{title.app_name +" "+title.store_title3 | translate}}</label>
+            <div class="col-md-12 col-xs-12 col-sm-12">
+                <hr class="login_hr">
+            </div>
+
+
+            <label
+                class="col-md-12 col-xs-12 col-sm-12 login_left_bottom_margin">{{title.already_account | translate}}</label>
+            <a class="col-md-12 col-xs-12 col-sm-12" [routerLink]="['/store/login']"
+                style="color:#ffffff;font-size: 20px;font-weight: normal;">{{button.login | translate}}</a>
+        </div>
+    </div>
+    <div class="col-md-7 col-xs-12 col-sm-12 full_height login_right_background">
+        <div class="loginColumns animated fadeInRight" style="max-width: 700px;">
+            <div class="ibox-content login_right_background">
+                <div class="row" style="margin-left: 0px; margin-right: 0px;;">
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <label class='col-lg-12 login_right_title'>{{title.register_your_account2 | translate}}</label>
+                    </div>
+                </div>
+
+
+                <form #storForm="ngForm" (ngSubmit)="storForm.valid && register()">
+
+                    <div class="col-md-12 col-xs-12 col-sm-12 lable_center">
+                        <div class="row lable_center">
+                            <div class="col-lg-6 form-group">
+                                <input type="text" class="form-control register_text_box"
+                                    [(ngModel)]="store_owner_register.name" #name="ngModel"
+                                    placeholder="{{title.name | translate}}" name="name" required />
+                                <div *ngIf="name.errors && (name.dirty || name.touched)">
+                                    <div style="color: red;" [hidden]="!name.errors.required">
+                                        {{validation_message.name_required | translate}}
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="col-lg-6 form-group">
+                                <input type="email" class="form-control register_text_box"
+                                    [(ngModel)]="store_owner_register.email" #email="ngModel"
+                                    placeholder="{{title.email | translate}}" name="email" email required />
+                                <div *ngIf="email.errors && (email.dirty || email.touched)">
+                                    <div style="color: red;" [hidden]="!email.errors.required">
+                                        {{validation_message.email_required | translate}}
+                                    </div>
+                                    <div style="color: red;" [hidden]="!email.errors?.email">
+                                        {{validation_message.valid_email | translate}}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6 form-group">
+                                <input type="password" class="form-control register_text_box"
+                                    [(ngModel)]="store_owner_register.confirm_password" #confirm_password="ngModel"
+                                    placeholder="{{title.password | translate}}" name="password" minlength="6"
+                                    required />
+                                <div
+                                    *ngIf="confirm_password.errors && (confirm_password.dirty || confirm_password.touched)">
+                                    <div style="color: red;" [hidden]="!confirm_password.errors.required">
+                                        {{validation_message.password_required | translate}}
+                                    </div>
+                                    <div style="color: red;" [hidden]="!confirm_password.errors.minlength">
+                                        {{validation_message.password_minlength | translate}}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6 form-group">
+                                <input type="password" class="form-control register_text_box"
+                                    [(ngModel)]="store_owner_register.password" #password="ngModel"
+                                    [equalTo]="confirm_password" placeholder="{{title.confirm_password | translate}}"
+                                    name="confirm_password" required />
+                                <div *ngIf="password.errors && (password.dirty || password.touched)">
+                                    <div style="color: red;" [hidden]="!password.errors.required">
+                                        {{validation_message.password_required | translate}}
+                                    </div>
+                                    <div style="color: red;" [hidden]="!password.errors.minlength">
+                                        {{validation_message.password_minlength | translate}}
+                                    </div>
+                                    <div style="color: red;" [hidden]="!password.errors?.equalTo">
+                                        {{validation_message.match_confirm_password | translate}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+
+                    <div class="col-md-12 col-xs-12 col-sm-12 lable_center" style="margin-top: 20px;">
+                        <button type="submit"
+                            class="btn btn-danger m-b login_submit_button">{{button.sign_up | translate}}</button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

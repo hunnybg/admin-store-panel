@@ -1,0 +1,177 @@
+<footer [myLoading]="myLoading" ></footer> 
+<div class="wrapper wrapper-content animated fadeInRight content_top_bar">
+    <div class="ibox">
+        <div class="ibox-content">
+            <div class="row">
+                <div class="col-md-3 col-sm-12">
+                    <div class="lable_center">
+                        <label>{{title.date_filter | translate}}</label>
+                    </div>
+
+                    <div class="col-md-12 remove_padding">
+                        <div class="form-group">
+                            <div class="input-group">
+
+                                <my-date-picker id="start_date" [options]="helper.myStartDatePickerOptions" placeholder="Start Date" [(ngModel)]="start_date" (dateChanged)="helper.onStartDateChanged($event)"
+                                                readonly></my-date-picker>
+                                <span class="input-group-addon date_filter_icon">To</span>
+
+                                <my-date-picker id="end_date" [options]="helper.myEndDatePickerOptions" placeholder="End Date" [(ngModel)]="end_date" (dateChanged)="helper.onEndDateChanged($event)"
+                                                readonly></my-date-picker>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3 col-sm-12">
+                    <div class="lable_center">
+                        <label>{{title.search | translate}}</label>
+                    </div>
+
+                    <div class="col-md-6 col-sm-6 remove_padding">
+                        <div class="form-group" id="search_fields">
+                            <select chosen class="chosen-select" id="search_field" [(ngModel)]="search_field" name="search_field" tabindex="4">
+
+                                <option value="user_detail.first_name">{{title.user | translate}}</option>
+                                <option value="provider_detail.first_name">{{title.provider | translate}}</option>
+
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-sm-6 remove_padding">
+                        <div class="form-group">
+                            <div class="input-group">
+
+                                <input type="text" class="form-control search_box" [(ngModel)]="search_value"  name="search_value">
+                                <span class="input-group-addon search_icon"><span class="fa fa-search"></span></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3 col-sm-12">
+                    <div class="lable_center">
+                        <label>{{title.sort | translate}}</label>
+                    </div>
+                    <div class="col-md-6 col-sm-6 remove_padding">
+                        <div class="form-group" id="sort_fields">
+                            <select chosen class="chosen-select" id="sort_field" [(ngModel)]="sort_field" name="sort_field" tabindex="4">
+
+                                <option value="unique_id">{{title.id | translate}}</option>
+                                <option value="user_detail.first_name">{{title.user | translate}}</option>
+                                <option value="provider_detail.first_name">{{title.provider | translate}}</option>
+
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-sm-6 remove_padding">
+                        <div class="form-group" id="sort_orders">
+
+                            <select chosen class="chosen-select" id="sort_order" [(ngModel)]="sort_order" name="sort_order" tabindex="4">
+
+                                <option value="1">{{title.ascending | translate}}</option>
+                                <option value="-1">{{title.descending | translate}}</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-12">
+                    <div class="col-md-6 col-sm-6 filter_btn_div">
+                        <!--                        <input type="button" class="btn export_excel_btn pull-right" value="{{button.export_excel}}" >-->
+                    </div>
+                    <div class="col-md-6 col-sm-6 filter_btn_div">
+                        <input type="button" (click)="admin_provider_history(1)" class="btn filter_apply_btn pull-right" value="{{button.apply | translate}}" >
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="ibox">
+        <div class="ibox-title">
+            <h5>{{heading_title.history | translate}}</h5>
+
+        </div>
+        <div class="ibox-content" style="padding-bottom: 40px;">
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>{{title.id |translate}}</th>
+                            <th>{{title.user | translate}}</th>
+                            <th>{{title.store | translate}}</th>
+                            <th>{{title.city | translate}}</th>
+                            <th>{{title.provider | translate}}</th>
+                            <th>{{title.status | translate}}</th>
+                            <th>{{title.amount | translate}}</th>
+                            <th>{{title.payment_by | translate}}</th>
+                            <th>{{title.date | translate}}</th>
+                            <th>{{title.delivery_at | translate}}</th>
+                            <th class="pull-right">{{title.action | translate}}</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let request of request_list; let index=index; let last=last;">
+                            <td>{{request.unique_id}}</td>
+                            <td>{{request.user_detail.first_name + " " + request.user_detail.last_name}}</td>
+                            <td>{{request.store_detail.name}}</td>
+                            <td>{{request.city_detail.city_name}}</td>
+                            <td><div *ngIf="request.provider_detail.length>0">{{request.provider_detail[0].first_name + " " +request.provider_detail[0].last_name}}</div></td>
+                            <td [ngSwitch]="request.delivery_status">
+
+                                <div *ngSwitchCase="ORDER_STATE.STORE_CANCELLED_REQUEST"><span class="label label-danger">{{status.store_cancelled_request}}</span></div>
+                                <div *ngSwitchCase="ORDER_STATE.DELIVERY_MAN_REJECTED"><span class="label label-danger">{{status.delivery_man_rejected}}</span></div>
+                                <div *ngSwitchCase="ORDER_STATE.DELIVERY_MAN_CANCELLED"><span class="label label-danger">{{status.delivery_man_cancelled}}</span></div>
+                                <div *ngSwitchCase="ORDER_STATE.ORDER_COMPLETED"><span class="label label-primary">{{status.completed}}</span></div>
+
+                            </td>
+                            <td>{{((+request.order_payment_detail.total_delivery_price + +request.order_payment_detail.total_order_price).toFixed(2)) }}</td>
+                            
+
+                            <td [ngSwitch]="request.order_payment_detail.is_payment_mode_cash">
+                                <div *ngIf="request.order_payment_detail.is_paid_from_wallet">
+                                    <span class="label label-success">{{title.wallet | translate}}</span>
+                                </div>
+                                <div *ngIf="!request.order_payment_detail.is_paid_from_wallet">
+                                    <div *ngSwitchCase="true"><span class="label label-primary_new">{{title.cash}}</span></div>
+                                    <div *ngSwitchCase="false"><span class="label label-danger" *ngIf="request.payment_gateway_detail.length >0">{{request.payment_gateway_detail[0].name}} </span></div>
+                                </div>
+                            </td>
+                            <td>{{request.created_at| date: DATE_FORMAT.DD_MMM_YYYY}}</td>
+                            <td>{{request.completed_at| date: DATE_FORMAT.DD_MMM_YYYY_HH_MM_A}}</td>
+
+                            <td><div class="dropdown pull-right" [class.dropup]="last && !index==0" dropdown>
+                                    <button class="btn btn-primary" dropdown-open>{{title.action | translate}}<span class="caret"></span></button>
+
+
+                                    <ul class="dropdown-menu">
+                                        <li><a (click)="viewRequestOrder_detail(request._id)"><span style="display:block;" class="nav-label">{{button.detail | translate}}</span> </a></li>
+
+                                    </ul>
+                                </div>
+                            </td>
+
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+
+            <div class="col-md-12 col-sm-12">
+                <div class="lable_center">
+                    <ul class="pagination">
+                        <li *ngIf="page!==1"><a class="btn" (click)="admin_provider_history(page-1)">{{button.pre | translate}}</a></li>
+                        <li *ngFor="let index of total_pages" [class.active]="page==index">
+                            <a *ngIf="index==1 || index==total_page || index==page || index==page-1 || index==page+1" (click)="admin_provider_history(index)" class="btn">{{index}}</a>
+                            <a *ngIf="(index==1 && (page!==1 && page!==2 && page!==3)) || (index==total_page-1 && (page!==total_page && page!==total_page-1 && page!==total_page-2))" class="btn">...</a>
+
+                        </li>
+                        <li *ngIf="page!==total_page && request_list.length!==0"><a class="btn" (click)="admin_provider_history(page+1)">{{button.next | translate}}</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

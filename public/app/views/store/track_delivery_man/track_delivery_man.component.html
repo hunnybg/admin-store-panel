@@ -1,0 +1,19 @@
+<footer [myLoading]="myLoading" ></footer>   
+<div *ngIf="order_id!==''" class="wrapper wrapper-content animated fadeInRight content_top_bar">
+    <div class="row">
+       <div class="ibox">
+            <div class="ibox-content ibox-content-map">
+                    <sebm-google-map [latitude]="latitude" [longitude]="longitude" [draggable]="false" [disableDoubleClickZoom]="false" [streetViewControl]="false" [scrollwheel]="false" [zoom]="zoom">
+                        <sebm-google-map-marker [iconUrl]="'map_pin_images/Deliveryman/deliveryman_online.png'" [latitude]="latitude" [longitude]="longitude">
+                            
+                            <sebm-google-map-info-window>
+                                <p style="font-weight: bold;">{{title.name | translate}}: {{provider_name}}</p>
+                                <p style="font-weight: bold;">{{title.email | translate}}: {{provider_email}}</p>
+                                <p style="font-weight: bold;">{{title.phone | translate}}: {{provider_phone}}</p>
+                            </sebm-google-map-info-window>
+                        </sebm-google-map-marker>
+                    </sebm-google-map>
+            </div>
+       </div>
+    </div>
+</div>

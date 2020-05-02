@@ -1,0 +1,61 @@
+<div class="row wrapper border-bottom white-bg page-heading" style="padding: 80px 20px 10px !important;">
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="col-md-3 col-sm-3">
+                        <div class="form-group" id="search_fields">
+                            <select chosen class="chosen-select" id="country" [(ngModel)]="country_id" name="country_id" tabindex="4">
+
+                                <option *ngFor="let i of country_list" value="{{i._id}}">{{i.country_name}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-3">
+                        <div class="form-group" id="search_fields">
+                            <select chosen class="chosen-select" id="city" [(ngModel)]="city_id" name="city_id" tabindex="4">
+
+                                <option *ngFor="let i of city_list" value="{{i._id}}">{{i.city_name}}</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3 col-sm-3">
+                        <div class="form-group" id="search_fields">
+                            <select chosen class="chosen-select" id="type" [(ngModel)]="type" name="type" tabindex="4">
+
+                                <option value="1">Order</option>
+                                <option value="0">Provider</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3 col-sm-3" [hidden]="type=='0'">
+                        <div class="form-group" id="search_fields">
+                            <select chosen class="chosen-select" id="order" [(ngModel)]="order_id" name="order_id" tabindex="4">
+
+                                <option *ngFor="let i of order_list" value="{{i._id}}">{{i.unique_id}}</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3 col-sm-3" [hidden]="type=='1'">
+                        <div class="form-group" id="search_fields">
+                            <select chosen class="chosen-select" id="provider" [(ngModel)]="provider_id" name="provider_id" tabindex="4">
+
+                                <option *ngFor="let i of provider_list" value="{{i._id}}">{{i.first_name + " " + i.last_name + "(" + i.email + ")" }}</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+</div>
+<div class="wrapper wrapper-content animated fadeInRight " style="padding: 0px 0px 0px !important;">
+    <div style="margin-left: -16px;margin-right: -16px;">
+        <div id="map" style="height: calc(100vh - 146px);"></div>
+    </div>
+</div>
+

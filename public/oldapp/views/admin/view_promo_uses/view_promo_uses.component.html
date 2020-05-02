@@ -1,0 +1,87 @@
+<footer [myLoading]="myLoading" ></footer> 
+<div class="wrapper wrapper-content animated fadeInRight content_top_bar">
+
+
+    <div class="ibox">
+        <div class="ibox-title">
+            <h3>{{heading_title.promo_info | translate }}</h3>
+
+        </div>
+        <div class="ibox-content">
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>{{title.id |translate}}</th>
+                            <th>{{title.promo_code | translate }}</th>
+                            <th>{{title.type | translate }}</th>
+                            <th>{{title.value | translate}}</th>
+                            <th>{{title.country | translate}}</th>
+                            <th>{{title.city | translate}}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr >
+                            <td>{{unique_id}}</td>
+                            <td>{{promo_code_name}}</td>
+                            <td [ngSwitch]="promo_code_type">
+                                <div *ngSwitchCase="1">{{title.percentage}}</div>
+                                <div *ngSwitchCase="2">{{title.absolute}}</div>
+                            </td>
+                            <td>{{promo_code_value}}</td>
+                            <td>{{country_name}}</td>
+                            <td>{{city_name}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="ibox">
+        <div class="ibox-title">
+            <h3>{{heading_title.user_info | translate }}</h3>
+
+        </div>
+        <div class="ibox-content">
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+
+                            <th>{{title.user_id | translate }}</th>
+                            <th>{{title.email | translate }}</th>
+                            <th>{{title.id | translate }}</th>
+                            <th>{{title.payment_by | translate }}</th>
+                            <th>{{title.order_fee | translate }}</th>
+                            <th>{{title.delivery_fee | translate }}</th>
+                            <th>{{title.total | translate }}</th>
+                            <th>{{title.promo_payment | translate }}</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let i of promo_uses_list">
+
+                            <td>{{i.user_details.unique_id}}</td>
+                            <td>{{i.user_details.email}}</td>
+                            <td>{{i.order_unique_id}}</td>
+                            <td [ngSwitch]="i.is_payment_mode_cash">
+                                <div *ngSwitchCase="true"><span class="label label-primary">Cash</span></div>
+                                <div *ngSwitchCase="false"><span class="label label-danger">Card</span></div>
+                            </td>
+                            <td>{{i.total_order_price}}</td>
+                            <td>{{i.total_delivery_price}}</td>
+                            <td>{{i.total}}</td>
+                            <td>{{i.promo_payment}}</td>
+
+
+
+
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

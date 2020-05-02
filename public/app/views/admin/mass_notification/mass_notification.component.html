@@ -1,0 +1,157 @@
+<footer [myLoading]="myLoading" ></footer>
+
+<div class="wrapper wrapper-content content_top_bar animated fadeInRight ">
+
+  <div class="row">
+
+    <div class="col-sm-8">
+      <div class="ibox">
+        <div class="ibox-content">
+          <div class="row">
+            <div class="col-md-12 col-sm-12">
+              <div class="col-md-4">
+                <select chosen class="form-control chosen-select" id="user_type1" [(ngModel)]="create_mass_notification.user_type" #user_type="ngModel" name="user_type" >
+                  <!--<option value="0">{{helper.title.all | translate}}</option>-->
+                  <option value="">{{title.all | translate}}</option>
+                  <option value="7">{{title.user | translate}}</option>
+                  <option value="8">{{title.provider | translate}}</option>
+                  <option value="2">{{title.store | translate}}</option>
+                </select>
+              </div>
+              <div class="lable_center col-md-8">
+                <ul class="pagination">
+                  <li *ngIf="page!==1"><a class="btn" (click)="get_mass_notification_list(page-1)">{{button.pre | translate}}</a></li>
+                  <li *ngFor="let index of total_pages" [class.active]="page==index">
+                    <a *ngIf="index==1 || index==total_page || index==page || index==page-1 || index==page+1" (click)="get_mass_notification_list(index)" class="btn">{{index}}</a>
+                    <a *ngIf="(index==1 && (page!==1 && page!==2 && page!==3)) || (index==total_page-1 && (page!==total_page && page!==total_page-1 && page!==total_page-2))" class="btn">...</a>
+
+                  </li>
+                  <li *ngIf="page!==total_page && mass_notification_list.length!==0"><a class="btn" (click)="get_mass_notification_list(page+1)">{{button.next | translate}}</a></li>
+                  <li *ngIf="total_page>1"><a class="btn" style="margin-left: 15px;" (click)="get_mass_notification_list(page_number)">{{button.goto | translate}}</a></li>
+                  <div *ngIf="total_page>1" class="col-md-2">
+                    <input type="text" placeholder="Page Number" style="height: 29px;" class="form-control" name="page_number" [(ngModel)]="page_number">
+                  </div>
+                </ul>
+              </div>
+            </div>
+            <div class="col-md-12 table-responsive">
+              <table class="table table-striped table-hover">
+                <thead>
+                <tr>
+                  <th>{{title.id |translate}}</th>
+                  <th>{{title.user | translate}}</th>
+                  <th>{{title.device_type | translate}}</th>
+                  <th>{{title.country | translate}}</th>
+                  <th>{{title.city | translate}}</th>
+                  <th>{{title.message | translate}}</th>
+                  <th>{{title.date | translate}}</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let mass_notification of mass_notification_list;">
+                  <td>{{mass_notification.unique_id}}</td>
+                  <td>
+                    <div *ngIf="mass_notification.user_type == 7">{{title.user | translate}}</div>
+                    <div *ngIf="mass_notification.user_type == 8">{{title.provider | translate}}</div>
+                    <div *ngIf="mass_notification.user_type == 2">{{title.store | translate}}</div>
+                  </td>
+                  <td>
+                    {{mass_notification.device_type}}
+                    <div *ngIf="mass_notification.device_type == 5">{{title.device_type_both | translate}}</div>
+                    <div *ngIf="mass_notification.device_type == 0">{{title.device_type_android | translate}}</div>
+                    <div *ngIf="mass_notification.device_type == 1">{{title.device_type_ios | translate}}</div>
+                  </td>
+                  <td>
+                    <div *ngIf="mass_notification.country_detail">{{mass_notification.country_detail.country_name}}</div>
+                    <div *ngIf="!mass_notification.country_detail">{{title.all | translate}}</div>
+                  </td>
+                  <td>
+                    <div *ngIf="mass_notification.city_detail">{{mass_notification.city_detail.city_name}}</div>
+                    <div *ngIf="!mass_notification.city_detail">{{title.all | translate}}</div>
+                  </td>
+                  <td>{{mass_notification.message}}</td>
+                  <td>{{mass_notification.created_at | date: DATE_FORMAT.DD_MMM_YYYY_HH_MM_A}}</td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <form  #add_news_form="ngForm" (ngSubmit)="generate_mass_notification()">
+        <div class="ibox">
+          <div class="ibox-title">
+            <h5>{{heading_title.create_mass_notification | translate}}</h5>
+          </div>
+
+          <div class="ibox-content">
+
+            <div class="full-height-scroll">
+              <ul class="list-group clear-list">
+
+                <li class="list-group-item form_padding">
+                  <select chosen class="form-control chosen-select" id="user_type" [(ngModel)]="create_mass_notification.user_type" #user_type="ngModel" name="user_type" >
+                    <!--<option value="0">{{helper.title.all | translate}}</option>-->
+                    <option value="7">{{title.user | translate}}</option>
+                    <option value="8">{{title.provider | translate}}</option>
+                    <option value="2">{{title.store | translate}}</option>
+                  </select>
+                </li>
+
+                <li class="list-group-item form_padding">
+                  <select chosen class="form-control chosen-select" id="device_type" [(ngModel)]="create_mass_notification.device_type" #device_type="ngModel" name="device_type">
+                    <option value="both">{{title.both | translate}}</option>
+                    <option value="android">{{title.device_type_android | translate}}</option>
+                    <option value="ios">{{title.device_type_ios | translate}}</option>
+                  </select>
+                </li>
+
+                <li class="list-group-item form_padding" [hidden]="create_mass_notification.user_type==2">
+                  <select chosen class="form-control chosen-select" data-placeholder="Select Delivery" id="delivery" [(ngModel)]="create_mass_notification.delivery" #delivery="ngModel" name="delivery">
+
+                    <option *ngFor="let i of delivery_list" value="{{i._id}}">{{i.delivery_name}}</option>
+                  </select>
+                </li>
+
+                <li class="list-group-item form_padding" >
+                  <select chosen class="form-control chosen-select" data-placeholder="Select Country" id="country" [(ngModel)]="create_mass_notification.country" #country="ngModel" name="country" required>
+                    <option value="all">{{title.all | translate}}</option>
+                    <option *ngFor="let i of country_list" value="{{i._id}}">{{i.country_name}}</option>
+                  </select>
+                </li>
+
+
+                <li class="list-group-item form_padding" [hidden]="create_mass_notification.user_type!=7">
+                  <select chosen class="form-control chosen-select" data-placeholder="Select City" id="city" [(ngModel)]="create_mass_notification.city" #city="ngModel" name="city" >
+                    <option value="all">{{title.all | translate}}</option>
+                    <option *ngFor="let i of city_list" value="{{i._id}}">{{i.city_name}}</option>
+                  </select>
+                </li>
+
+
+
+                <li class="list-group-item form_padding">
+                  <textarea class="form-control text_area_news" placeholder="{{title.message | translate}}" [(ngModel)]="create_mass_notification.message" maxlength="500" #message="ngModel" name="message" required></textarea>
+                  <div *ngIf="message.errors && (message.dirty || message.touched)">
+                    <div class="error_message" [hidden]="!message.errors.required">{{validation_message.field_required | translate}}
+                    </div>
+                  </div>
+                </li>
+
+                <li class="list-group-item form_padding">
+                  <button [disabled]="!add_news_form.valid" class="btn btn-orange btn-block" type="submit">{{button.submit | translate}}</button>
+                </li>
+
+              </ul>
+            </div>
+
+          </div>
+
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,215 @@
+<footer [myLoading]="myLoading" ></footer>
+<div class="row wrapper fix_search_bar border-bottom white-bg page-heading">
+    <div class="row">
+                <div class="col-md-3 col-sm-12">
+                    <div class="lable_center">
+                        <label>{{title.date_filter | translate}}</label>
+                    </div>
+
+                    <div class="col-md-12 remove_padding">
+
+
+                        <div class="form-group">
+                            <div class="input-group">
+
+                                <my-date-picker id="start_date" [options]="helper.myStartDatePickerOptions" placeholder="Start Date" [(ngModel)]="start_date" (dateChanged)="helper.onStartDateChanged($event)"
+                                                readonly></my-date-picker>
+                                <span class="input-group-addon date_filter_icon">{{button.to}}</span>
+
+                                <my-date-picker id="end_date" [options]="helper.myEndDatePickerOptions" placeholder="End Date" [(ngModel)]="end_date" (dateChanged)="helper.onEndDateChanged($event)"
+                                                readonly></my-date-picker>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3 col-sm-12">
+                    <div class="lable_center">
+                        <label>{{title.search | translate}}</label>
+                    </div>
+                    <div class="col-md-6 col-sm-6 remove_padding">
+                        <div class="form-group" id="search_fields">
+                            <select chosen class="chosen-select" id="search_field" [(ngModel)]="search_field" name="search_field" tabindex="4">
+
+                                <option value="user_detail.first_name">{{title.filter_user | translate}}</option>
+                                <option value="provider_detail.first_name">{{title.filter_provider | translate}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-sm-6 remove_padding">
+                        <div class="form-group">
+                            <div class="input-group">
+
+                                <input type="text" class="form-control search_box" [(ngModel)]="search_value" #store_open_time="ngModel" name="search_value">
+                                <span class="input-group-addon search_icon"><span class="fa fa-search"></span></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3 col-sm-12">
+                    <div class="lable_center">
+                        <label>{{title.sort | translate}}</label>
+                    </div>
+                    <div class="col-md-6 col-sm-6 remove_padding">
+                        <div class="form-group" id="sort_fields">
+                            <select chosen class="chosen-select" id="sort_field" [(ngModel)]="sort_field" name="sort_field" tabindex="4">
+
+                                <option value="unique_id">{{title.filter_id | translate}}</option>
+                                <option value="user_detail.first_name">{{title.filter_user | translate}}</option>
+                                <option value="provider_detail.first_name">{{title.filter_provider | translate}}</option>
+
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-sm-6 remove_padding">
+                        <div class="form-group" id="sort_orders">
+
+                            <select chosen class="chosen-select" id="sort_order" [(ngModel)]="sort_order" name="sort_order" tabindex="4">
+
+                                <option value="1">{{title.ascending | translate}}</option>
+                                <option value="-1">{{title.descending | translate}}</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-12">
+                    <div class="col-md-6 col-sm-6 filter_btn_div">
+                        <input type="button" (click)="export_excel()" class="btn export_excel_btn pull-right" value="{{button.export_excel | translate}}" >
+                    </div>
+                    <div class="col-md-6 col-sm-6 filter_btn_div">
+                        <input type="button" (click)="store_earning(1)" class="btn filter_apply_btn pull-right" value="{{button.apply | translate}}" >
+                    </div>
+                </div>
+
+            </div>
+</div>
+<div class="wrapper content_top_bar_view1 wrapper-content animated fadeInRight">
+
+    <div class="ibox">
+        <div class="ibox-title">
+            <div>
+                <label>{{heading_title.total_earning | translate}}</label>
+            </div>
+
+        </div>
+        <div class="ibox-content">
+            <div class="row">
+                <div class="col-md-6 no_padding">
+                    <div class="col-md-4">
+                        <span>{{title.total_order | translate}}</span>
+                        <h2 class="font-bold">{{order_total.total_completed_orders}}</h2>
+                    </div>
+                    <div class="col-md-4">
+                        <span>{{title.no_of_item | translate}}</span>
+                        <h2 class="font-bold">{{order_total.total_item_count}}</h2>
+                    </div>
+                    <div class="col-md-4">
+                        <span>{{title.total_order_price | translate}}</span>
+                        <h2 class="font-bold">{{(order_total.store_earn).toFixed(2)}}</h2>
+                    </div>
+                </div>
+                <div class="col-md-6 no_padding">
+                    <div class="col-md-4">
+                        <span>{{title.total_store_income | translate}}</span>
+                        <h2 class="font-bold">{{(order_total.total).toFixed(2)}}</h2>
+                    </div>
+                    <div class="col-md-4">
+                        <span>{{title.store_have_service_payment | translate}}</span>
+                        <h2 class="font-bold">{{(order_total.store_have_service_payment).toFixed(2)}}</h2>
+                    </div>
+                    <div class="col-md-4">
+                        <span>{{title.pay_to_store | translate}}</span>
+                        <h2 class="font-bold">{{(order_total.pay_to_store).toFixed(2)}}</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+    <div class="ibox">
+        <div class="ibox-content" style="padding-bottom: 40px;">
+            <div class="table-responsive table_height">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>{{title.id | translate}}</th>
+                            <th>{{title.completed_at | translate}}</th>
+                            <th>{{title.user | translate}}</th>
+                            <!-- <th>{{title.provider | translate}}</th> -->
+                            <th>{{title.payment_by | translate}}</th>
+                            <th>{{title.payment_status | translate}}</th>
+                            <th>{{title.currency | translate}}</th>
+                            <th>{{title.no_of_item | translate}}</th>
+                            <th>{{title.total_cart_price | translate}}</th>
+                            <th>{{title.total_order_price | translate}}</th>
+                            <th>{{title.total | translate}}</th>
+                            <th>{{title.store_have_service_payment | translate}}</th>
+                            <th>{{title.earning | translate}}</th>
+                            <th>{{title.store_profit | translate}}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let store_earning of store_earning_list; let last=last; ">
+
+                            <td>{{store_earning.unique_id}}</td>
+                            <td>{{store_earning.completed_at| date: "dd MMM yyyy"}}</td>
+                            <td>{{store_earning.user_detail.first_name}} {{store_earning.user_detail.last_name}}</td>
+                            <!-- <td><div *ngIf="store_earning.provider_detail.length >0">{{store_earning.provider_detail[0].first_name}} {{store_earning.provider_detail[0].last_name}}</div></td> -->
+                            <td [ngSwitch]="store_earning.order_payment_detail.is_payment_mode_cash">
+                                
+                                <div *ngIf="!store_earning.order_payment_detail.is_paid_from_wallet">
+                                    <div *ngSwitchCase="true"><span class="label label-primary">{{title.cash | translate}}</span></div>
+                                    <div *ngSwitchCase="false"><span class="label label-danger">{{store_earning.payment_gateway_detail[0].name}} </span></div>
+                                </div>
+                                <div *ngIf="store_earning.order_payment_detail.is_paid_from_wallet">
+                                    <span class="label label-success"> + {{title.wallet | translate}}</span>
+                                </div>
+                            </td>
+                            <td [ngSwitch]="store_earning.order_payment_detail.is_payment_paid">
+                                <div *ngSwitchCase="true"><span class="label label-primary">{{title.completed | translate}}</span></div>
+                                <div *ngSwitchCase="false"><span class="label label-danger">{{title.remaining | translate}}</span></div>
+                            </td>
+                            <td>{{store_earning.country_detail.currency_sign}}</td>
+                            <td>{{store_earning.order_payment_detail.total_item_count}}</td>
+                            <td>{{store_earning.order_payment_detail.total_cart_price.toFixed(2)}}</td>
+                            <td>{{store_earning.order_payment_detail.total_order_price.toFixed(2)}}</td>
+                            <td>{{store_earning.order_payment_detail.total.toFixed(2)}}</td>
+                            <td *ngIf="store_earning.order_payment_detail.is_store_pay_delivery_fees">{{store_earning.order_payment_detail.total_delivery_price}}</td>
+                            <td *ngIf="!store_earning.order_payment_detail.is_store_pay_delivery_fees">0</td>
+                            <td>{{store_earning.order_payment_detail.pay_to_store.toFixed(2)}}</td>
+                            <td>{{store_earning.order_payment_detail.total_store_income.toFixed(2)}}</td>
+                            <!--<td>-->
+                                <!--<div class="dropdown pull-right" [class.dropup]="last" dropdown>-->
+                                    <!--<button class="btn btn-primary" dropdown-open>{{title.action | translate}}<span class="caret"></span></button>-->
+                                    <!--<ul class="dropdown-menu">-->
+
+                                        <!--<li>-->
+                                            <!--<button  type="button" (click)="viewOrderEarningDetail(store_earning._id)" class="btn btn-default action_btn">{{button.view_order_detail | translate}}</button>-->
+
+                                        <!--</li>-->
+                                    <!--</ul>-->
+                                <!--</div>-->
+                            <!--</td>-->
+                        </tr>
+                    </tbody>
+                    
+                </table>
+            </div>
+            <div class="col-md-12 col-sm-12">
+                <div class="lable_center">
+
+                    <ul class="pagination">
+                            <li *ngIf="page!==1"><a class="btn" (click)="store_earning(page-1)">{{button.pre | translate}}</a></li>
+                            <li *ngFor="let index of total_pages" [class.active]="page==index">
+                                <a *ngIf="index==1 || index==total_page || index==page || index==page-1 || index==page+1" (click)="store_earning(index)" class="btn">{{index}}</a>
+                                <a *ngIf="(index==1 && (page!==1 && page!==2 && page!==3)) || (index==total_page-1 && (page!==total_page && page!==total_page-1 && page!==total_page-2))" class="btn">...</a>
+
+                            </li>
+                            <li *ngIf="page!==total_page && store_earning_list.length!==0"><a class="btn" (click)="store_earning(page+1)">{{button.next | translate}}</a></li>
+                     </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

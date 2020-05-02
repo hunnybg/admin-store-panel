@@ -1,0 +1,627 @@
+<footer [myLoading]="myLoading" ></footer>
+<div class="row wrapper fix_search_bar border-bottom white-bg page-heading">
+	<div class="row">
+		<div class="col-md-4 col-sm-12">
+			<div class="lable_center">
+				<label>{{title.date_filter | translate}}</label>
+			</div>
+
+			<div class="col-md-12 remove_padding">
+				<div class="form-group" id="search_fields">
+					<select chosen class="chosen-select" id="week_date" [(ngModel)]="week_date
+                        " name="week_date" tabindex="4">
+
+						<option *ngFor="let date of week_array" value="{{date.value}}">{{date.text}}</option>
+
+					</select>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-4 col-sm-12">
+					<div class="lable_center">
+						<label>{{title.search | translate}}</label>
+					</div>
+					<div class="col-md-6 col-sm-6 remove_padding">
+						<div class="form-group" id="search_fields">
+							<select chosen class="chosen-select" id="search_field" [(ngModel)]="search_field" name="search_field" tabindex="4">
+
+								<option value="user_detail.first_name">{{title.filter_user | translate}}</option>
+								<option value="provider_detail.first_name">{{title.filter_provider | translate}}</option>
+							</select>
+						</div>
+					</div>
+					<div class="col-md-6 col-sm-6 remove_padding">
+						<div class="form-group">
+							<div class="input-group">
+
+								<input type="text" class="form-control search_box" [(ngModel)]="search_value" #store_open_time="ngModel" name="search_value">
+								<span class="input-group-addon search_icon"><span class="fa fa-search"></span></span>
+							</div>
+						</div>
+					</div>
+				</div>
+		<div class="col-md-4 col-sm-12">
+			<div class="col-md-6 col-sm-6 filter_btn_div">
+				<input type="button" (click)="export_excel()" class="btn export_excel_btn pull-right" value="{{button.export_excel | translate}}" >
+			</div>
+			<div class="col-md-6 col-sm-6 filter_btn_div">
+				<input type="button" (click)="store_weekly_earning()" class="btn filter_apply_btn pull-right" value="{{button.apply | translate}}" >
+			</div>
+		</div>
+
+	</div>
+</div>
+<div class="wrapper content_top_bar_view1 wrapper-content animated fadeInRight">
+
+	<div class="row">
+		<div class="col-md-6">
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="ibox" *ngIf="show==true">
+						<div class="ibox-content">
+							<div class="row">
+								<div class="col-md-4 col-sm-6">
+									<div class="lable_center">
+										<div>
+							                <label>{{heading_title.total_order | translate}}</label>
+							                <h2>{{store_analytic_daily.received}}</h2>
+							            </div>
+									</div>
+								</div>
+								<div class="col-md-4 col-sm-6">
+									<div class="lable_center">
+											<div>
+								                <label>{{heading_title.accepted_order | translate}}</label>
+								                <h2>{{store_analytic_daily.accepted}} <span *ngIf="store_analytic_daily.acception_ratio">({{store_analytic_daily.acception_ratio.toFixed(2)}})</span></h2>
+								            </div>
+									</div>
+								</div>
+								<div class="col-md-4 col-sm-6">
+									<div class="lable_center">
+											<div>
+								                <label>{{heading_title.rejected_order | translate}}</label>
+								                <h2>{{store_analytic_daily.rejected}} <span *ngIf="store_analytic_daily.rejection_ratio">({{store_analytic_daily.rejection_ratio.toFixed(2)}})</span></h2>
+								            </div>
+									</div>
+								</div>
+								
+								<div class="col-md-4 col-sm-6">
+									<div class="lable_center">
+											<div>
+
+								                <label>{{heading_title.total_item_sold | translate}}</label>
+								                <h2>{{store_analytic_daily.total_items}}</h2>
+								            </div>
+									</div>
+								</div>
+								<div class="col-md-4 col-sm-6">
+									<div class="lable_center">
+											<div>
+
+								                <label>{{heading_title.completed_order | translate}}</label>
+								                <h2>{{store_analytic_daily.completed}} <span *ngIf="store_analytic_daily.completed_ratio">({{store_analytic_daily.completed_ratio.toFixed(2)}})</span></h2>
+								            </div>
+									</div>
+								</div>
+								<div class="col-md-4 col-sm-6">
+									<div class="lable_center">
+											<div>
+								                <label>{{heading_title.cancelled_order | translate}}</label>
+								                <h2>{{store_analytic_daily.cancelled}} <span *ngIf="store_analytic_daily.cancellation_ratio">({{store_analytic_daily.cancellation_ratio.toFixed(2)}})</span></h2>
+								            </div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="ibox">
+						<div class="ibox-title">
+							<label class="control-label">{{heading_title.order_earning | translate}}</label>
+						</div>
+						<div class="ibox-content">
+							<div class="table-responsive">
+
+								<table class="table table-striped">
+									<tbody>
+									<tr>
+										<td class="remove_border">
+											<div><strong>{{title.item_price | translate}}</strong></div>
+										</td>
+										<td class="remove_border"><span class="pull-right ">{{order_total.total_item_price.toFixed(2)}}</span></td>
+									</tr>
+									<tr>
+										<td class="remove_border">
+											<div><strong>{{title.tax_price | translate}}</strong></div>
+										</td>
+										<td class="remove_border"><span class="pull-right ">{{order_total.total_store_tax_price.toFixed(2)}}</span></td>
+									</tr>
+									<tr>
+										<td class="remove_border">
+											<div><strong>{{title.total_order_price | translate}}</strong></div>
+										</td>
+										<td class="remove_border"><span class="pull-right ">{{order_total.total_order_price.toFixed(2)}}</span></td>
+									</tr>
+									<tr>
+										<td class="remove_border">
+											<div><strong>{{title.admin_profit | translate}}</strong></div>
+										</td>
+										<td class="remove_border"><span class="pull-right ">{{order_total.total_admin_profit_on_store.toFixed(2)}}</span></td>
+									</tr>
+									<tr>
+										<td class="remove_border">
+											<div><strong>{{title.store_profit | translate}}</strong></div>
+										</td>
+										<td class="remove_border"><span class="pull-right ">{{order_total.total_store_income.toFixed(2)}}</span></td>
+									</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="ibox">
+						<div class="ibox-title">
+							<label class="control-label">{{heading_title.store_transactions | translate}}</label>
+						</div>
+						<div class="ibox-content">
+							<div class="table-responsive">
+
+								<table class="table table-striped">
+									<tbody>
+									<tr>
+										<td class="remove_border">
+											<div><strong>{{title.received_order_amount | translate}}</strong></div>
+										</td>
+										<td class="remove_border"><span class="pull-right ">{{order_total.store_have_order_payment.toFixed(2)}}</span></td>
+									</tr>
+									<tr>
+										<td class="remove_border">
+											<div><strong>{{title.paid_service_fee | translate}}</strong></div>
+										</td>
+										<td class="remove_border"><span class="pull-right ">{{order_total.store_have_service_payment.toFixed(2)}}</span></td>
+									</tr>
+									<tr>
+										<td class="remove_border">
+											<div><strong>{{title.deduct_from_wallet | translate}}</strong></div>
+										</td>
+										<td class="remove_border"><span class="pull-right ">{{order_total.total_wallet_income_set_in_cash_order.toFixed(2)}}</span></td>
+									</tr>
+									<tr>
+										<td class="remove_border">
+											<div><strong>{{title.added_in_wallet | translate}}</strong></div>
+										</td>
+										<td class="remove_border"><span class="pull-right ">{{order_total.total_wallet_income_set_in_other_order.toFixed(2)}}</span></td>
+									</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="ibox">
+						<div class="ibox-title">
+							<label class="control-label">{{heading_title.payment | translate}}</label>
+						</div>
+						<div class="ibox-content">
+							<div class="table-responsive">
+
+								<table class="table table-striped">
+									<tbody>
+										<tr>
+											<td class="remove_border">
+												<div><strong>{{title.total_earnings | translate}}</strong></div>
+											</td>
+											<td class="remove_border"><span class="pull-right ">{{order_total.total_earning.toFixed(2)}}</span></td>
+										</tr>
+										<tr>
+											<td class="remove_border">
+												<div><strong>{{title.paid_in_wallet | translate}}</strong></div>
+											</td>
+											<td class="remove_border"><span class="pull-right ">{{order_total.total_wallet_income_set.toFixed(2)}}</span></td>
+										</tr>
+										<tr>
+											<td class="remove_border">
+												<div><strong>{{title.pay_to_store | translate}}</strong></div>
+											</td>
+											<td class="remove_border"><span class="pull-right ">{{order_total.pay_to_store.toFixed(2)}}</span></td>
+										</tr>
+										<tr>
+											<td class="remove_border">
+												<div><strong>{{title.paid | translate}}</strong></div>
+											</td>
+											<td class="remove_border"><span class="pull-right ">{{order_total.total_paid.toFixed(2)}}</span></td>
+										</tr>
+										<tr>
+											<td class="remove_border">
+												<div><strong>{{title.remaining_to_pay | translate}}</strong></div>
+											</td>
+											<td class="remove_border"><span class="pull-right ">{{order_total.total_remaining_to_paid.toFixed(2)}}</span></td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- <div class="row" *ngIf="show==true">
+				<div class="col-lg-12">
+				    <div class="ibox">
+				    	<div class="ibox-title">
+				            <div>
+				                <label>{{heading_title.daily_earning | translate}}</label>
+				            </div>
+
+				        </div>
+				        <div class="ibox-content" style="padding-bottom: 40px;">
+				        	<div class="row">
+                                <div class="col-md-12" style="display: block">
+                                    <canvas baseChart 
+                                            height="200" 
+                                            [datasets]="barChartData" 
+                                            [labels]="barChartLabels" 
+                                            [options]="barChartOptions" 
+                                            [legend]="barChartLegend"
+                                            [chartType]="barChartType" 
+                                            [colors]="barChartColors">
+                                    </canvas>
+                                </div>
+                            </div>
+				            <div class="table-responsive" style="padding-bottom: 50px;">
+				                <table class="table table-striped">
+				                    
+				                    <tbody>
+				                        <tr *ngIf="(date.date1 | amDifference: today :'days' : true) <= 0 " (click)="daily_earning(date.date1)">
+											<td>{{date.date1 | date: "EEE, dd MMM"}}</td>
+				                            <td>{{order_day_total.date1.toFixed(2)}}</td>
+				                        </tr>
+				                        <tr *ngIf="(date.date2 | amDifference: today :'days' : true) <= 0 " (click)="daily_earning(date.date2)">
+											<td>{{date.date2 | date: "EEE, dd MMM"}}</td>
+				                            <td>{{order_day_total.date2.toFixed(2)}}</td>
+				                        </tr>
+				                        <tr *ngIf="(date.date3 | amDifference: today :'days' : true) <= 0 " (click)="daily_earning(date.date3)">
+											<td>{{date.date3 | date: "EEE, dd MMM"}}</td>
+				                            <td>{{order_day_total.date3.toFixed(2)}}</td>
+				                        </tr>
+				                        <tr *ngIf="(date.date4 | amDifference: today :'days' : true) <= 0 " (click)="daily_earning(date.date4)">
+											<td>{{date.date4 | date: "EEE, dd MMM"}}</td>
+				                            <td>{{order_day_total.date4.toFixed(2)}}</td>
+				                        </tr>
+				                        <tr *ngIf="(date.date5 | amDifference: today :'days' : true) <= 0 " (click)="daily_earning(date.date5)">
+											<td>{{date.date5 | date: "EEE, dd MMM"}}</td>
+				                            <td>{{order_day_total.date5.toFixed(2)}}</td>
+				                        </tr>
+				                        <tr *ngIf="(date.date6 | amDifference: today :'days' : true) <= 0 " (click)="daily_earning(date.date6)">
+											<td>{{date.date6 | date: "EEE, dd MMM"}}</td>
+				                            <td>{{order_day_total.date6.toFixed(2)}}</td>
+				                        </tr>
+				                        <tr *ngIf="(date.date7 | amDifference: today :'days' : true) <= 0 " (click)="daily_earning(date.date7)">
+											<td>{{date.date7 | date: "EEE, dd MMM"}}</td>
+				                            <td>{{order_day_total.date7.toFixed(2)}}</td>
+				                        </tr>
+				                    </tbody>
+				                    
+				                </table>
+				            </div>
+				        </div>
+				    </div>
+				</div>
+			</div> -->
+
+			
+		</div>
+		<div class="col-md-6">
+				<div class="row">
+					<div class="col-lg-12">
+						<div class="ibox inline_box" *ngIf="(date.date1 | amDifference: today :'days' : true) <= 0 " (click)="daily_earning(date.date1)">
+							<div class="ibox-title lable_center" [class.box_selected]="date.date1==daily_start_date">
+								<div>
+									<label>{{date.date1 | date: "EEE, dd"}}</label>
+								</div>
+							</div>
+						</div>
+						<div class="ibox inline_box" *ngIf="(date.date2 | amDifference: today :'days' : true) <= 0 " (click)="daily_earning(date.date2)">
+							<div class="ibox-title lable_center" [class.box_selected]="date.date2==daily_start_date">
+								<div>
+									<label>{{date.date2 | date: "EEE, dd"}}</label>
+								</div>
+							</div>
+						</div>
+						<div class="ibox inline_box" *ngIf="(date.date3 | amDifference: today :'days' : true) <= 0 " (click)="daily_earning(date.date3)">
+							<div class="ibox-title lable_center" [class.box_selected]="date.date3==daily_start_date">
+								<div>
+									<label>{{date.date3 | date: "EEE, dd"}}</label>
+								</div>
+							</div>
+						</div>
+						<div class="ibox inline_box" *ngIf="(date.date4 | amDifference: today :'days' : true) <= 0 " (click)="daily_earning(date.date4)">
+							<div class="ibox-title lable_center" [class.box_selected]="date.date4==daily_start_date">
+								<div>
+									<label>{{date.date4 | date: "EEE, dd"}}</label>
+								</div>
+							</div>
+						</div>
+						<div class="ibox inline_box" *ngIf="(date.date5 | amDifference: today :'days' : true) <= 0 " (click)="daily_earning(date.date5)">
+							<div class="ibox-title lable_center" [class.box_selected]="date.date5==daily_start_date">
+								<div>
+									<label>{{date.date5 | date: "EEE, dd"}}</label>
+								</div>
+							</div>
+						</div>
+						<div class="ibox inline_box" *ngIf="(date.date6 | amDifference: today :'days' : true) <= 0 " (click)="daily_earning(date.date6)">
+							<div class="ibox-title lable_center" [class.box_selected]="date.date6==daily_start_date">
+								<div>
+									<label>{{date.date6 | date: "EEE, dd"}}</label>
+								</div>
+							</div>
+						</div>
+						<div class="ibox inline_box" *ngIf="(date.date7 | amDifference: today :'days' : true) <= 0 " (click)="daily_earning(date.date7)">
+							<div class="ibox-title lable_center" [class.box_selected]="date.date7==daily_start_date">
+								<div>
+									<label>{{date.date7 | date: "EEE, dd"}}</label>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-lg-12">
+						<div class="ibox" *ngIf="show==true">
+							<div class="ibox-content">
+								<div class="row">
+								<div class="col-md-4 col-sm-6">
+									<div class="lable_center">
+										<div>
+							                <label>{{heading_title.total_order | translate}}</label>
+							                <h2>{{store_analytic_daily1.received}}</h2>
+							            </div>
+									</div>
+								</div>
+								<div class="col-md-4 col-sm-6">
+									<div class="lable_center">
+											<div>
+								                <label>{{heading_title.accepted_order | translate}}</label>
+								                <h2>{{store_analytic_daily1.accepted}} <span *ngIf="store_analytic_daily1.acception_ratio">({{store_analytic_daily1.acception_ratio.toFixed(2)}})</span></h2>
+								            </div>
+									</div>
+								</div>
+								<div class="col-md-4 col-sm-6">
+									<div class="lable_center">
+											<div>
+								                <label>{{heading_title.rejected_order | translate}}</label>
+								                <h2>{{store_analytic_daily1.rejected}} <span *ngIf="store_analytic_daily1.rejection_ratio">({{store_analytic_daily1.rejection_ratio.toFixed(2)}})</span></h2>
+								            </div>
+									</div>
+								</div>
+								
+								<div class="col-md-4 col-sm-6">
+									<div class="lable_center">
+											<div>
+
+								                <label>{{heading_title.total_item_sold | translate}}</label>
+								                <h2>{{store_analytic_daily1.total_items}}</h2>
+								            </div>
+									</div>
+								</div>
+								<div class="col-md-4 col-sm-6">
+									<div class="lable_center">
+											<div>
+								                <label>{{heading_title.completed_order | translate}}</label>
+								                <h2>{{store_analytic_daily1.completed}} <span *ngIf="store_analytic_daily1.completed_ratio">({{store_analytic_daily1.completed_ratio.toFixed(2)}})</span></h2>
+								            </div>
+									</div>
+								</div>
+								<div class="col-md-4 col-sm-6">
+									<div class="lable_center">
+											<div>
+								                <label>{{heading_title.cancelled_order | translate}}</label>
+								                <h2>{{store_analytic_daily1.cancelled}} <span *ngIf="store_analytic_daily1.cancellation_ratio">({{store_analytic_daily1.cancellation_ratio.toFixed(2)}})</span></h2>
+								            </div>
+									</div>
+								</div>
+							</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-lg-12">
+						<div class="ibox">
+							<div class="ibox-title">
+								<label class="control-label">{{heading_title.order_earning | translate}}</label>
+							</div>
+							<div class="ibox-content">
+								<div class="table-responsive">
+
+									<table class="table table-striped">
+										<tbody>
+											<tr>
+												<td class="remove_border">
+													<div><strong>{{title.item_price | translate}}</strong></div>
+												</td>
+												<td class="emove_border"><span class="pull-right">{{order_total1.total_item_price.toFixed(2)}}</span></td>
+											</tr>
+											<tr>
+												<td class="remove_border">
+													<div><strong>{{title.tax_price | translate}}</strong></div>
+												</td>
+												<td class="emove_border"><span class="pull-right">{{order_total1.total_store_tax_price.toFixed(2)}}</span></td>
+											</tr>
+											<tr>
+												<td class="remove_border">
+													<div><strong>{{title.total_order_price | translate}}</strong></div>
+												</td>
+												<td class="emove_border"><span class="pull-right">{{order_total1.total_order_price.toFixed(2)}}</span></td>
+											</tr>
+											<tr>
+												<td class="remove_border">
+													<div><strong>{{title.admin_profit | translate}}</strong></div>
+												</td>
+												<td class="emove_border"><span class="pull-right">{{order_total1.total_admin_profit_on_store.toFixed(2)}}</span></td>
+											</tr>
+											<tr>
+												<td class="remove_border">
+													<div><strong>{{title.store_profit | translate}}</strong></div>
+												</td>
+												<td class="emove_border"><span class="pull-right">{{order_total1.total_store_income.toFixed(2)}}</span></td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-lg-12">
+						<div class="ibox">
+							<div class="ibox-title">
+								<label class="control-label">{{heading_title.store_transactions | translate}}</label>
+							</div>
+							<div class="ibox-content">
+								<div class="table-responsive">
+
+									<table class="table table-striped">
+										<tbody>
+											<tr>
+												<td class="remove_border">
+													<div><strong>{{title.received_order_amount | translate}}</strong></div>
+												</td>
+												<td class="emove_border"><span class="pull-right">{{order_total1.store_have_order_payment.toFixed(2)}}</span></td>
+											</tr>
+											<tr>
+												<td class="remove_border">
+													<div><strong>{{title.paid_service_fee | translate}}</strong></div>
+												</td>
+												<td class="emove_border"><span class="pull-right">{{order_total1.store_have_service_payment.toFixed(2)}}</span></td>
+											</tr>
+											<tr>
+												<td class="remove_border">
+													<div><strong>{{title.deduct_from_wallet | translate}}</strong></div>
+												</td>
+												<td class="emove_border"><span class="pull-right">{{order_total1.total_wallet_income_set_in_cash_order.toFixed(2)}}</span></td>
+											</tr>
+											<tr>
+												<td class="remove_border">
+													<div><strong>{{title.added_in_wallet | translate}}</strong></div>
+												</td>
+												<td class="emove_border"><span class="pull-right">{{order_total1.total_wallet_income_set_in_other_order.toFixed(2)}}</span></td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-lg-12">
+						<div class="ibox">
+							<div class="ibox-title">
+								<label class="control-label">{{heading_title.payment | translate}}</label>
+							</div>
+							<div class="ibox-content">
+								<div class="table-responsive">
+
+									<table class="table table-striped">
+										<tbody>
+											<tr>
+												<td class="remove_border">
+													<div><strong>{{title.total_earnings | translate}}</strong></div>
+												</td>
+												<td class="emove_border"><span class="pull-right">{{order_total1.total_earning.toFixed(2)}}</span></td>
+											</tr>
+											<tr>
+												<td class="remove_border">
+													<div><strong>{{title.paid_in_wallet | translate}}</strong></div>
+												</td>
+												<td class="emove_border"><span class="pull-right">{{order_total1.total_wallet_income_set.toFixed(2)}}</span></td>
+											</tr>
+											<tr>
+												<td class="remove_border">
+													<div><strong>{{title.pay_to_store | translate}}</strong></div>
+												</td>
+												<td class="emove_border"><span class="pull-right">{{order_total1.pay_to_store.toFixed(2)}}</span></td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-lg-12">
+					    <div class="ibox">
+					    	<div class="ibox-title">
+					            <div>
+					                <label>{{heading_title.orders | translate}}</label>
+					            </div>
+
+					        </div>
+					        <div class="ibox-content" style="padding-bottom: 40px;">
+					            <div class="table-responsive" style="padding-bottom: 50px;">
+					                <table class="table table-striped">
+					                    <thead>
+					                        <tr>
+					                            <th>{{title.order | translate}}</th>
+					                            <th>{{title.payment_by | translate}}</th>
+					                            <th>{{title.total | translate}}</th>
+					                            <th>{{title.service_fees | translate}}</th>
+					                            <th>{{title.order_fees | translate}}</th>
+					                            <th>{{title.store_profit | translate}}</th>
+					                            <th>{{title.paid_service_fee | translate}}</th>
+					                            <th>{{title.recieved_order_payment | translate}}</th>
+					                            <th>{{title.earning | translate}}</th>
+					                        </tr>
+					                    </thead>
+					                    <tbody>
+					                        <tr *ngFor="let order_payment of order_payments">
+					                            <td>{{order_payment.order_unique_id}}</td>
+												<td [ngSwitch]="order_payment.is_payment_mode_cash">
+													
+													<div *ngIf="!order_payment.is_paid_from_wallet">
+														<div *ngSwitchCase="true"><span class="label label-primary">{{title.cash | translate}}</span></div>
+														<div *ngSwitchCase="false"><span class="label label-danger">{{order_payment.payment_gateway_detail[0].name}} </span></div>
+													</div>
+													<div *ngIf="order_payment.is_paid_from_wallet">
+														<span class="label label-success"> + {{title.wallet | translate}}</span>
+													</div>
+												</td>
+					                            <td>{{order_payment.total.toFixed(2)}}</td>
+					                            <td>{{order_payment.total_service_price.toFixed(2)}}</td>
+					                            <td>{{order_payment.total_order_price.toFixed(2)}}</td>
+					                            <td>{{order_payment.total_store_income.toFixed(2)}}</td>
+					                            <td><span *ngIf="order_payment.is_store_pay_delivery_fees">{{order_payment.total_delivery_price.toFixed(2)}}</span>
+					                            	<span *ngIf="!order_payment.is_store_pay_delivery_fees">0</span>
+					                            </td>
+					                            <td><span *ngIf="!order_payment.is_order_price_paid_by_store && order_payment.is_payment_mode_cash">{{order_payment.total_order_price.toFixed(2)}}</span>
+					                            	<span *ngIf="order_payment.is_order_price_paid_by_store || !order_payment.is_payment_mode_cash">0</span>
+					                            </td>
+					                            <td>{{order_payment.pay_to_store.toFixed(2)}}</td>
+					                        </tr>
+					                    </tbody>
+					                    
+					                </table>
+					            </div>
+					        </div>
+					    </div>
+					</div>
+				</div>
+			</div>
+	</div>
+</div>

@@ -1,0 +1,61 @@
+<footer [myLoading]="myLoading" ></footer>
+<div class="row wrapper border-bottom white-bg page-heading" style="padding: 80px 20px 10px !important;">
+
+
+            <div class="row">
+                <div class="col-md-7">
+                    <div class="col-md-3 col-sm-4">
+                        <div class="form-group">
+                            <input type="text" class="form-control" style="border-color: #222222;height: 30px;border-radius: 5px;" placeholder="Enter Address" id="search">
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-4">
+                        <div class="form-group" id="search_fields">
+                            <select chosen class="chosen-select" id="selected_country" [(ngModel)]="selected_country" name="selected_country" tabindex="4">
+
+                                <option value="All">{{title.all | translate}}</option>
+                                <option *ngFor="let i of country_list" value="{{i._id}}">{{i.country_name}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-4">
+                        <div class="form-group" id="search_fields">
+                            <select chosen class="chosen-select" id="type" [(ngModel)]="type" name="type" tabindex="4">
+
+                                <option value="All">{{title.all | translate}}</option>
+                                <option value="open">{{title.open | translate}}</option>
+                                <option value="close">{{title.close | translate}}</option>
+                                <option value="businessoff">{{title.business_off | translate}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    
+                     <div class="col-md-3 col-sm-4">
+                        <div class="form-group" id="search_fields">
+                            <select chosen class="chosen-select" id="selected_delivery" [(ngModel)]="selected_delivery" name="selected_delivery" tabindex="4">
+
+                                <option value="All">{{title.all | translate}}</option>
+                                <option *ngFor="let i of delivery_list" value="{{i._id}}">{{i.delivery_name}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                </div>
+                <div class="col-md-5">
+                    <div class="col-md-6 col-sm-12 col-xs-12"><img src="/map_pin_images/Store/store_open.png" style="height:25px;"/>{{title.open | translate}}</div>
+                    <div class="col-md-6 col-sm-12 col-xs-12"><img src="/map_pin_images/Store/store_close.png" style="height:25px;"/>{{title.close | translate}}</div>
+                    <div class="col-md-6 col-sm-12 col-xs-12"><img src="/map_pin_images/Store/store_business_off.png" style="height:25px;"/>{{title.business_off | translate}}</div>
+
+                </div>
+            </div>
+
+
+</div>
+<div class="wrapper wrapper-content animated fadeInRight " style="padding: 0px 0px 0px !important;">
+    <div style="margin-left: -16px;margin-right: -16px;">
+        <div id="map" style="height: calc(100vh - 141px);" ></div>
+    </div>
+</div>
+
+

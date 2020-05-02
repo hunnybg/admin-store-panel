@@ -1,0 +1,135 @@
+<footer [myLoading]="myLoading"></footer>
+
+<div class="wrapper wrapper-content animated fadeInRight content_top_bar">
+
+
+    <div class="row">
+
+        <div class="col-lg-8">
+            <div class="col-lg-12 col-sm-12 no_padding">
+                <div class="ibox product-detail">
+                    <div class="ibox-content profile">
+                        <div class="row">
+
+                            <div class="lable_center">
+                                <h5 style="font-size: 18px">{{title.tickets_created | translate}}</h5>
+                            </div>
+
+                            <hr>
+
+                            <div *ngIf="ticket_list.length !== 0" class="table-responsive scrollbar"
+                                style="height: calc(100vh - 285px);overflow: auto;">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>{{title.id | translate}}</th>
+                                            <th>{{title.created_at | translate}}</th>
+                                            <th>{{title.regarding | translate}}</th>
+                                            <!-- <th>{{title.ticket_content | translate}}</th> -->
+                                            <th>{{title.status}}</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let ticket of ticket_list; let index=index"
+                                            [class.selected_tr]="ticket._id == ticket_detail._id">
+                                            <td (click)='get_ticket_detail(ticket._id)'>{{ticket.unique_id}}</td>
+                                            <td (click)='get_ticket_detail(ticket._id)'>
+                                                {{ticket.created_at | date: "dd MMM yyyy hh:mm a"}}</td>
+
+                                            <td (click)='get_ticket_detail(ticket._id)'>{{ticket.ticket_title}}</td>
+                                            <!-- <td>{{ticket.ticket_content}}</td> -->
+
+                                            <td [ngSwitch]="ticket.status" (click)='get_ticket_detail(ticket._id)'>
+                                                <div *ngSwitchCase="TICKET_STATUS.PENDING"><span
+                                                        class="label label-danger">{{title.pending | translate}}</span>
+                                                </div>
+                                                <div *ngSwitchCase="TICKET_STATUS.RESOLVED"><span
+                                                        class="label label-primary_new">{{title.resolved | translate}}</span>
+                                                </div>
+                                            </td>
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div class="lable_center" *ngIf="ticket_list.length==0">
+                                <label>No Records</label>
+                            </div>
+
+                            <div class="col-md-12 col-sm-12" style="padding-top: 10px;">
+                                <div class="lable_center">
+
+                                    <ul class="pagination">
+                                        <li *ngIf="page!==1"><a class="btn"
+                                                (click)="filter(page-1)">{{button.pre | translate}}</a></li>
+                                        <li *ngFor="let index of total_pages" [class.active]="page==index">
+                                            <a *ngIf="index==1 || index==total_page || index==page || index==page-1 || index==page+1"
+                                                (click)="filter(index)" class="btn">{{index}}</a>
+                                            <a *ngIf="(index==1 && (page!==1 && page!==2 && page!==3)) || (index==total_page-1 && (page!==total_page && page!==total_page-1 && page!==total_page-2))"
+                                                class="btn">...</a>
+
+                                        </li>
+                                        <li *ngIf="page!==total_page && ticket_list.length!==0"><a class="btn"
+                                                (click)="filter(page+1)">{{button.next | translate}}</a></li>
+                                    </ul>
+                                    <div class="col-md-2 pull-right">
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="col-lg-12 col-sm-12 no_padding">
+                <div class="ibox product-detail">
+                    <div class="ibox-content profile">
+                        <div class="row">
+                            <div class="lable_center" >
+                                <button class="btn btn-light_black btn-block" *ngIf='!creating_ticket'
+                                    (click)='creating_ticket_enable()'>{{title.create_ticket | translate}}</button>
+                                <h5 style="font-size: 18px" *ngIf='creating_ticket'>{{title.create_ticket | translate}}</h5>
+                            </div>
+
+                            <hr *ngIf='creating_ticket'>
+
+                            <div class="col-md-12 col-sm-12" style="padding-top: 10px;">
+                                <label *ngIf='!creating_ticket'>{{title.regarding | translate}}</label>
+                                <p *ngIf='!creating_ticket'>
+                                    {{ticket_detail.ticket_title}}
+                                </p>
+                                <input *ngIf='creating_ticket' placeholder="{{title.title | translate}}" type="text"
+                                    class="form-control" #ticket_title1="ngModel"
+                                    [(ngModel)]="ticket_detail.ticket_title" name="title" required />
+                            </div>
+
+                            <div class="col-md-12 col-sm-12" style="padding-top: 10px;">
+                                <label *ngIf='!creating_ticket'>{{title.ticket_content | translate}}</label>
+
+                                <p *ngIf='!creating_ticket'>
+                                    {{ticket_detail.ticket_content}}
+                                </p>
+                                <textarea *ngIf='creating_ticket' placeholder="{{title.content | translate}}"
+                                    (keyup)='enable_submit_ticket()' rows="20" type="text" class="form-control"
+                                    #ticket_content2="ngModel" [(ngModel)]="ticket_detail.ticket_content" name="title"
+                                    required></textarea>
+                            </div>
+
+                            <div class="col-md-12 col-sm-12" style="padding-top: 10px;">
+
+                                <button class="btn btn-light_black btn-block" *ngIf='creating_ticket'
+                                    [disabled]='submit_disabled'
+                                    (click)='create_ticket()'>{{title.submit | translate}}</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

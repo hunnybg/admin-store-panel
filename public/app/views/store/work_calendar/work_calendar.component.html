@@ -1,0 +1,93 @@
+<footer [myLoading]="myLoading"></footer>
+<div class="row wrapper fix_search_bar border-bottom white-bg page-heading">
+    <div class="row">
+        <div class="col-lg-6 col-md-6 col-sm-12" style="margin: -20px;">
+            <div id="caleandar">
+            </div>
+        </div>
+
+        <div [hidden]='myLoading' class="col-lg-3 col-md-3 col-sm-12" style="margin-top: -40px;margin-left: 15px;">
+            <div class="ibox">
+                <div class="ibox-content scrollbar" style="height: calc(100vh - 75px);overflow: auto;">
+                    <label style="font-size: large; text-align: center;">{{heading_title.shifts}} {{shift_date | date : 'dd MMM yyyy'}}</label>
+                    <hr>
+                    <div style="text-align: center;" *ngIf='shifts.length == 0'>No Records</div>
+                    <div class="row"  *ngFor="let shift of shifts">
+                        <div class="col-md-4" style="margin-top: -15px;margin-bottom: -10px;">
+                            <img style="width: 100%; height: 100%;" class="img-circle m-t-xs"
+                                src="{{shift.vaiter_detail.image_url != '' ? helper.CONSTANT.IMAGE_BASE_URL + shift.vaiter_detail.image_url : 'default.png'}}">
+                        </div>
+                        <div class="col-md-8" style="margin-top: -10px; font-size: 14px; margin-bottom: -10px;">
+                            <!-- <label>{{heading_title.order_by | translate}}</label> -->
+                            <div style="font-weight: bold;">
+                                {{shift.vaiter_detail.first_name + " " + shift.vaiter_detail.last_name}}</div>
+                            <div [ngSwitch]="shift.vaiter_detail.employee_type" style="font-style: italic;">
+                                <div *ngSwitchCase="VAITER_TYPES.EMPLOYEE">
+                                    {{title.employee}}
+                                </div>
+                                <div *ngSwitchCase="VAITER_TYPES.SUPERVISOR">
+                                    {{title.supervisor}}
+                                </div>
+                                <div *ngSwitchCase="VAITER_TYPES.MANAGER">
+                                    {{title.manager}}
+                                </div>
+                            </div>
+                            <div style="font-weight: bold;">
+                                {{shift.shift_time_from}} - {{shift.shift_time_till}}
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <hr style="color: #e7eaec;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div [hidden]='myLoading' class="col-lg-3 col-md-3 col-sm-12" style="margin-top: -40px;margin-left: -5px;">
+            <div class="ibox">
+                <div class="ibox-content scrollbar" style="height: calc(100vh - 75px);overflow: auto;">
+                    
+                    <label style="font-size: large; text-align: center;">{{heading_title.whole_month_schedule}}</label>
+                    <hr>
+                    <div style="text-align: center;" *ngIf='whole_month_schedules.length == 0'>No Records</div>
+                    
+                    <div class="row" *ngFor="let whole_month_schedule of whole_month_schedules">
+                        <div class="col-md-4" style="margin-top: -15px;margin-bottom: -10px;">
+                            <img style="width: 100%; height: 100%;" class="img-circle m-t-xs"
+                                src="{{whole_month_schedule.vaiter_detail.image_url != '' ? helper.CONSTANT.IMAGE_BASE_URL + whole_month_schedule.vaiter_detail.image_url : 'default.png'}}">
+                        </div>
+                        <div class="col-md-8" style="margin-top: -10px; font-size: 14px; margin-bottom: -10px;">
+                            <!-- <label>{{heading_title.order_by | translate}}</label> -->
+                            <div style="font-weight: bold;">
+                                {{whole_month_schedule.vaiter_detail.first_name + " " + whole_month_schedule.vaiter_detail.last_name}}</div>
+                            <div [ngSwitch]="whole_month_schedule.vaiter_detail.employee_type" style="font-style: italic;">
+                                <div *ngSwitchCase="VAITER_TYPES.EMPLOYEE">
+                                    {{title.employee}}
+                                </div>
+                                <div *ngSwitchCase="VAITER_TYPES.SUPERVISOR">
+                                    {{title.supervisor}}
+                                </div>
+                                <div *ngSwitchCase="VAITER_TYPES.MANAGER">
+                                    {{title.manager}}
+                                </div>
+                            </div>
+                            <div style="font-weight: bold;">
+                                {{heading_title.total}} : {{whole_month_schedule.total_work_hour}}{{title.hours}}
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <hr style="color: #e7eaec;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <input type="text" name="date_value" #wwdate_value id="datecontent" hidden [(ngModel)]='date_value'>
+        <button (click)="get_shifts_on_day(wwdate_value.value)" id="date_changed" hidden></button>
+
+        <input type="text" name="month_changed" #wwmonth_changed id="monthchange" hidden>
+        <button (click)="change_month(wwmonth_changed.value)" id="month_changed" hidden></button>
+    </div>
+</div>

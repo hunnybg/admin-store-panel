@@ -1,0 +1,142 @@
+<style type="text/css">
+    .scrollbar
+    {
+        height: 100%;
+        background: #fff;
+        overflow-y: auto;
+    }
+
+    .scrollbar::-webkit-scrollbar-track
+    {
+        -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+        background-color: #fff;
+    }
+
+    .scrollbar::-webkit-scrollbar
+    {
+        width: 3px;
+        background-color: #222222;
+    }
+
+    .scrollbar::-webkit-scrollbar-thumb
+    {
+        background-color: #000000;
+    }
+
+</style>
+<nav class="navbar-default navbar-static-side" role="navigation">
+    <div class="sidebar-collapse scrollbar">
+        <ul class="nav metismenu" id="side-menu">
+            <li class="nav-header" (click)="toggle($event)" id="toggle_header" style="background-color: #222222 !important;transition: all 0.4s;" [routerLink]="['/store/profile']">
+                <div class="dropdown profile-element" style="text-align: center;transition: all 0.4s;"> 
+
+                    <img alt="image" class="img-circle" style="height:50px; width:50px;"  src="{{helper.user_cart.image != '' ? helper.CONSTANT.IMAGE_BASE_URL + helper.user_cart.image : 'default.png'}}"/>
+                    <!-- <a data-toggle="dropdown" class="dropdown-toggle" href="#"> -->
+                        <span class="block m-t-xs"> <strong class="font-bold" style="color: #fff;">{{helper.user_cart.name}}</strong> </span>
+                        <span class="block m-t-xs"> <strong class="font-bold" style="color: #fff;">{{helper.user_cart.store_unique_code}}</strong> </span>
+                        
+                    <!-- </a> -->
+                    <!-- <ul class="dropdown-menu animated fadeInRight m-t-xs">
+                        <li><a [routerLink]="['/store/profile']"><span class="nav-label">{{menu_title.profile | translate}}</span> </a></li>
+                        <li><a [routerLink]="['/store/logout']"><span class="nav-label">{{menu_title.logout | translate}}</span> </a></li>
+                    </ul> -->
+                </div>
+                <div class="logo-element" style="padding: 10px 0;transition: all 0.4s;">
+                    <img alt="image" class="img-circle" style="height:50px; width:50px;"  src="{{helper.user_cart.image != '' ? helper.CONSTANT.IMAGE_BASE_URL + helper.user_cart.image : 'default.png'}}"/>
+                </div>
+            </li>
+
+            <!-- <li [ngClass]="{active: activeRoute('create_order')}" (click)="toggle($event)">
+                <a [routerLink]="['/store/create_order']"><i class="fa fa-edit"></i> <span class="nav-label">{{menu_title.create_order | translate}}</span> </a>
+            </li> -->
+
+            <!--<li (click)="toggle($event)" [ngClass]="{active: activeRoute('upload_document')}">-->
+                <!--<a [routerLink]="['/store/upload_document']"><i class="fa fa-upload"></i> <span class="nav-label">{{menu_title.upload_document | translate}}</span> </a>-->
+            <!--</li>-->
+            <li (click)="toggle($event)" [ngClass]="{active: activeRoute('/store/order')}">
+                <a [routerLink]="['/store/order']"><i class="fa fa-list-alt"></i> <span class="nav-label">{{menu_title.order | translate}}</span> </a>
+            </li>
+            <!-- <li [ngClass]="{active: activeRoute('deliveries')}" (click)="toggle($event)">
+                <a [routerLink]="['/store/deliveries']"><i class="fa fa-list"></i> <span class="nav-label">{{menu_title.deliveries | translate}}</span> </a>
+            </li> -->
+
+            
+
+            <li (click)="toggle($event)" [ngClass]="{active: activeRoute('history')}">
+                <a [routerLink]="['/store/history']"><i class="fa fa-history"></i> <span class="nav-label">{{menu_title.history | translate}}</span> </a>
+            </li>
+            <li (click)="toggle($event)" [ngClass]="{active: activeRoute('product')}">
+                <a [routerLink]="['/store/product']"><i class="fa fa-cube"></i> <span class="nav-label">{{menu_title.menu | translate}}</span> </a>
+            </li>
+
+            
+
+            <li (click)="toggle($event)" [ngClass]="{active: activeRoute('vaiter')}">
+                <a [routerLink]="['/store/vaiter']"><i class="fa fa-id-card"></i> <span class="nav-label">{{menu_title.vaiter | translate}}</span> </a>
+            </li>
+
+            <li (click)="toggle($event)" [ngClass]="{active: activeRoute('request_assistances')}">
+                <a [routerLink]="['/store/request_assistances']"><i class="fa fa-info-circle"></i> <span class="nav-label">{{menu_title.request_assistance | translate}}</span> </a>
+            </li>
+
+            <li (click)="toggle($event)" [ngClass]="{active: activeRoute('table_requests')}">
+                <a [routerLink]="['/store/table_requests']"><i class="fa fa-table"></i> <span class="nav-label">{{menu_title.table_requests | translate}}</span> </a>
+            </li>
+            <!--<li (click)="toggle($event)" [ngClass]="{active: activeRoute('item')}">-->
+                <!--<a [routerLink]="['/store/item']"><i class="fa fa-shopping-cart"></i> <span class="nav-label">{{menu_title.item | translate}}</span> </a>-->
+            <!--</li>-->
+
+            <li (click)="toggle($event)" [ngClass]="{active: activeRoute('promocode')}">
+                <a [routerLink]="['/store/promocode']"><i class="fa fa-shopping-cart"></i> <span class="nav-label">{{menu_title.promocode | translate}}</span> </a>
+            </li>
+
+            <li *ngIf="is_store_can_add_provider" (click)="toggle($event)" [ngClass]="{active: activeRoute('providers')}">
+                <a [routerLink]="['/store/providers']"><i class="fa fa-motorcycle"></i> <span class="nav-label">{{menu_title.providers | translate}}</span> </a>
+            </li>
+            <li *ngIf="is_store_can_complete_order || is_store_can_add_provider" (click)="toggle($event)" [ngClass]="{active: activeRoute('service')}">
+                <a [routerLink]="['/store/service']"><i class="fa fa-truck"></i> <span class="nav-label">{{menu_title.delivery_prices | translate}}</span> </a>
+            </li>
+            
+            <li (click)="toggle($event)" [ngClass]="{active: activeRoute('profile')}">
+                <a [routerLink]="['/store/profile']"><i class="fa fa-address-card"></i> <span class="nav-label">{{menu_title.profile | translate}}</span> </a>
+            </li>
+
+            <li (click)="toggle($event)" [ngClass]="{active: activeRoute('work_calender')}">
+                <a [routerLink]="['/store/work_calender']"><i class="fa fa-calendar-check-o"></i> <span class="nav-label">{{menu_title.work_calender | translate}}</span> </a>
+            </li>
+
+            <li (click)="toggle($event)" [ngClass]="{active: activeRoute('payments')}">
+                <a [routerLink]="['/store/payments']"><i class="fa fa-money"></i> <span class="nav-label">{{menu_title.payments | translate}}</span> </a>
+            </li>
+
+            <li (click)="toggle($event)" [ngClass]="{active: activeRoute('contact_admin')}">
+                <a [routerLink]="['/store/contact_admin']"><i class="fa fa-ticket"></i> <span class="nav-label">{{menu_title.contact_admin | translate}}</span> </a>
+            </li>
+
+            
+
+            <li (click)="toggle($event)" [ngClass]="{active: activeRoute('setting')}">
+                <a [routerLink]="['/store/setting']"><i class="fa fa-cog"></i> <span class="nav-label">{{menu_title.setting | translate}}</span> </a>
+            </li>
+
+            <li>
+                <a href="#" id="click_menu"><i class="fa fa-dollar"></i> <span class="nav-label">{{menu_title.earning | translate}}</span> <span class="fa arrow"></span></a>
+                <ul  id="earning_submenu" class="nav nav-second-level collapse">
+
+                    <li (click)="toggle($event)" [ngClass]="{active: activeRoute('store/earning')}"><a id="1" [routerLink]="['/store/earning']">{{menu_title.sub_earning | translate}}</a></li>
+
+                    <!-- <li (click)="toggle($event)" [ngClass]="{active: activeRoute('daily_earning')}"><a id="2" [routerLink]="['/store/daily_earning']">{{menu_title.sub_daily_earning | translate}}</a></li> -->
+
+                    <li (click)="toggle($event)" [ngClass]="{active: activeRoute('weekly_earning')}"><a id="3" [routerLink]="['/store/weekly_earning']">{{menu_title.sub_weekly_earning | translate}}</a></li>
+                    
+
+                    <li (click)="toggle($event)" [ngClass]="{active: activeRoute('vaiter_earning')}"><a id="3" [routerLink]="['/store/vaiter_earning']">{{menu_title.vaiter_earning | translate}}</a></li>
+
+                </ul>
+            </li>
+
+
+        </ul>
+
+    </div>
+</nav>

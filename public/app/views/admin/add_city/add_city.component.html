@@ -1,0 +1,430 @@
+<style>
+    #panel {
+        width: 200px;
+        font-family: Arial, sans-serif;
+        font-size: 13px;
+        float: right;
+        margin: 10px;
+    }
+
+    #color-palette {
+        clear: both;
+    }
+
+    .color-button {
+        width: 14px;
+        height: 14px;
+        font-size: 0;
+        margin: 2px;
+        float: left;
+        cursor: pointer;
+    }
+</style>
+
+<footer [myLoading]="myLoading" ></footer>
+<form #cityForm="ngForm" (ngSubmit)="addCity(cityForm.value)" >
+    <div class="row wrapper col-sm-12 col-md-12 col-xs-12 col-lg-12 fix_search_bar border-bottom white-bg page-heading">
+        <div class="row">
+            <div *ngIf="type=='add'" class="col-md-3 col-sm-12 pull-right">
+                <input   type="submit"  id="submit" name="submit"  class="btn btn-primary" value="{{button.submit | translate}}" >
+            </div>
+            <div *ngIf="type=='edit'" class="col-md-3 col-sm-12 pull-right">
+                <input type="submit"   id="update" name="update"  class="btn btn-primary" value="{{button.update | translate}}" >
+            </div>
+        </div>
+    </div>
+    <div class="wrapper wrapper-content content_top_bar_view animated fadeInRight">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="ibox">
+                    <div class="ibox-content" style="background-color: #f3f3f4;margin-top: -1px;">
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12">
+                                <ul class="nav nav-tabs">
+                                    <li (click)="selected_tab='city'" [class.active]="selected_tab=='city'" class="uib-tab ng-scope ng-isolate-scope">
+                                        <a class="ng-binding tab_selection">{{title.city | translate}}</a>
+                                    </li>
+                                    <li (click)="selected_tab='zone'" [class.active]="selected_tab=='zone'" class="uib-tab ng-scope ng-isolate-scope">
+                                        <a class="ng-binding tab_selection">{{title.zone | translate}}</a>
+                                    </li>
+                                    <!--<li (click)="selected_tab='price'" [class.active]="selected_tab=='price'" class="uib-tab ng-scope ng-isolate-scope">-->
+                                        <!--<a class="ng-binding tab_selection">{{title.delivery_price | translate}}</a>-->
+                                    <!--</li>-->
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="row" [hidden]="selected_tab!=='city'">
+
+                            <div class="col-lg-12">
+                                <div class="col-lg-4 col-sm-6">
+                                    <div class="ibox">
+                                        <div class="ibox-title">
+                                            <label class="control-label">{{heading_title.city_data | translate}}</label>
+                                        </div>
+                                        <div class="ibox-content">
+                                            <div class="row">
+                                                <input type="hidden" class="form-control" [(ngModel)]="city_id"   name="city_id" />
+                                                <input type="hidden" class="form-control" [(ngModel)]="add_city.deliveries_in_city" #deliveries_in_city="ngModel"  name="deliveries_in_city" />
+                                                <input type="hidden" class="form-control" [(ngModel)]="add_city.payment_gateway" #payment_gateway="ngModel"  name="payment_gateway" />
+
+                                                <div class="form-group">
+                                                    <label class="col-lg-4 control-label">{{title.country | translate}}</label>
+                                                    <div class="col-lg-8 form-group add">
+                                                        <select chosen class="chosen-select" id="country" [(ngModel)]="add_city.country_id" #country_id="ngModel" name="country_id" data-placeholder="Select Country"  tabindex="4" required >
+
+                                                            <option *ngFor="let i of country_list" value="{{i._id}}">{{i.country_name}}</option>
+                                                        </select>
+                                                        <div *ngIf="country_id.errors">
+                                                            <div style="color: red;" [hidden]="!country_id.errors.required">{{validation_message.select_country_required | translate}}</div>
+                                                        </div>
+                                                    </div>
+                                                    <div *ngIf="type=='edit'"  class="col-lg-8 form-group">
+                                                        <input type="text" class="form-control" [(ngModel)]="add_city.country_name" #country_name="ngModel"  name="country_name" readonly/>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="col-lg-4 control-label">{{title.name | translate }}</label>
+                                                    <div class="col-lg-8 form-group">
+                                                        <input type="text" class="form-control" id="city_name"  [(ngModel)]="add_city.city_name" #city_name="ngModel" (keyup)="check_city(add_city.city_name, add_city.city_code)"  name="city_name" required/>
+
+                                                               <label *ngIf="type=='add'" class="col-lg-12 control-label" style="color:red">{{city_exist}}</label>
+                                                        <div *ngIf="city_name.errors && (city_name.dirty || city_name.touched)">
+                                                            <div style="color: red;" [hidden]="!city_name.errors.required">{{validation_message.city_name_required | translate}}</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="col-lg-4 control-label">{{title.full_name | translate}}</label>
+                                                    <div class="col-lg-8 form-group">
+                                                        <input type="text" class="form-control" [(ngModel)]="add_city.city_nick_name" #city_nick_name="ngModel"  name="city_nick_name" required />
+                                                        <div *ngIf="city_nick_name.errors && (city_nick_name.dirty || city_nick_name.touched)">
+                                                            <div style="color: red;" [hidden]="!city_nick_name.errors.required">{{validation_message.city_nick_name_required | translate}}</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-lg-4 control-label">{{title.code | translate}}</label>
+                                                    <div class="col-lg-8 form-group">
+                                                        <input type="text" class="form-control" [(ngModel)]="add_city.city_code" #city_code="ngModel"  name="city_code" required />
+                                                        <div *ngIf="city_code.errors && (city_code.dirty || city_code.touched)">
+                                                            <div style="color: red;" [hidden]="!city_code.errors.required">{{validation_message.city_code_required | translate}}</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group" *ngIf="add_city.is_use_radius==true">
+                                                    <label class="col-lg-4 control-label">{{title.city_radius | translate}}</label>
+                                                    <div class="col-lg-8 form-group">
+                                                        <div class="input-group">
+                                                            <input type="text" class="form-control" (keypress)="helper.number_validation($event)" (keyup)="draw_radius()" [(ngModel)]="add_city.city_radius" #city_radius="ngModel"  name="city_radius" required />
+                                                            <span class="input-group-addon"><span class="">{{title.km}}</span></span>
+
+                                                        </div>
+                                                        <div *ngIf="city_radius.errors && (city_radius.dirty || city_radius.touched)">
+                                                            <div style="color: red;" [hidden]="!city_radius.errors.required">{{validation_message.city_radius_required | translate}}</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-lg-4 control-label">{{title.city_lat | translate}}</label>
+                                                    <div class="col-lg-8 form-group">
+                                                        <input type="text" class="form-control" (keypress)="helper.location_validation($event)" [(ngModel)]="add_city.city_lat" #city_lat="ngModel" id="city_lat" name="city_lat" required />
+                                                        <div *ngIf="city_lat.errors && (city_lat.dirty || city_lat.touched)">
+                                                            <div style="color: red;" [hidden]="!city_lat.errors.required">{{validation_message.latitude_required | translate}}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-lg-4 control-label">{{title.city_lng | translate}}</label>
+                                                    <div class="col-lg-8 form-group">
+                                                        <input type="text" class="form-control" (keypress)="helper.location_validation($event)" [(ngModel)]="add_city.city_lng" #city_lng="ngModel" id="city_lng"  name="city_lng" required />
+                                                        <div *ngIf="city_lng.errors && (city_lng.dirty || city_lng.touched)">
+                                                            <div style="color: red;" [hidden]="!city_lng.errors.required">{{validation_message.longitude_required | translate}}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-lg-4 control-label">{{title.timezone | translate}}</label>
+                                                    <div class="col-lg-8 form-group add">
+
+                                                        <select chosen class="form-control chosen-select" id="timezone" [(ngModel)]="add_city.timezone" data-placeholder="Select Timezone" #timezone="ngModel" name="timezone" tabindex="4"  required>
+                                                            <option selected style="display:none;">{{title.select | translate}}</option>
+                                                            <option *ngFor="let i of timezone_list">{{i}}</option>
+                                                        </select>
+
+                                                        <div *ngIf="timezone.errors && (timezone.dirty || timezone.touched)">
+                                                            <div style="color: red;" [hidden]="!timezone.errors.required">{{validation_message.time_zone_required | translate}}</div>
+                                                        </div>
+
+                                                    </div>
+                                                    <div *ngIf="type=='edit'"  class="col-lg-8 form-group">
+                                                        <input type="text" class="form-control" [(ngModel)]="add_city.timezone" #timezone="ngModel"  name="timezone" readonly/>
+                                                    </div>
+
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="col-lg-4 control-label">{{title.profilt_mode | translate}}</label>
+                                                    <div class="col-lg-8 form-group">
+                                                        <select chosen class="chosen-select" id="admin_profit_mode" [(ngModel)]="add_city.admin_profit_mode_on_delivery" #admin_profit_mode_on_delivery="ngModel" name="admin_profit_mode_on_delivery" data-placeholder="Select Admin Profit Mode"  tabindex="4"  >
+                                                            <option *ngFor="let i of admin_profit_mode_on_delivery_list" value="{{i.ID}}">{{i.NAME}}</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="col-lg-4 control-label">{{title.profit | translate}}</label>
+                                                    <div class="col-lg-8 form-group">
+                                                        <input type="text" class="form-control" (keypress)="helper.number_validation($event)" [(ngModel)]="add_city.admin_profit_value_on_delivery" #admin_profit_value_on_delivery="ngModel"  name="admin_profit_value_on_delivery" required />
+                                                        <div *ngIf="admin_profit_value_on_delivery.errors && (admin_profit_value_on_delivery.dirty || admin_profit_value_on_delivery.touched)">
+                                                            <div style="color: red;" [hidden]="!admin_profit_value_on_delivery.errors.required">{{validation_message.admin_profit_value_on_delivery_required | translate}}</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group" >
+                                                    <label class="col-lg-4 control-label">{{title.provider_min_wallet_amount_for_received_cash_request | translate}}</label>
+                                                    <div class="col-lg-8 form-group" *ngIf="add_city.is_check_provider_wallet_amount_for_received_cash_request==true">
+                                                        <div class="input-group">
+                                                            <input type="text" class="form-control" (keypress)="helper.number_validation($event)" [(ngModel)]="add_city.provider_min_wallet_amount_for_received_cash_request" #provider_min_wallet_amount_for_received_cash_request="ngModel"  name="provider_min_wallet_amount_for_received_cash_request" required />
+
+                                                        </div>
+                                                        <div *ngIf="provider_min_wallet_amount_for_received_cash_request.errors && (provider_min_wallet_amount_for_received_cash_request.dirty || provider_min_wallet_amount_for_received_cash_request.touched)">
+                                                            <div style="color: red;" [hidden]="!provider_min_wallet_amount_for_received_cash_request.errors.required">{{validation_message.min_wallet_amount_required | translate}}</div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-lg-8 form-group" *ngIf="add_city.is_check_provider_wallet_amount_for_received_cash_request==false">
+                                                        <div class="input-group">
+                                                            <input type="text" class="form-control" (keypress)="helper.number_validation($event)" [(ngModel)]="add_city.provider_min_wallet_amount_for_received_cash_request" #provider_min_wallet_amount_for_received_cash_request="ngModel"  name="provider_min_wallet_amount_for_received_cash_request"  />
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-sm-6" >
+                                    <div class="ibox">
+                                        <div class="ibox-title">
+                                            <label class="control-label">{{heading_title.city_setting | translate}}</label>
+                                        </div>
+                                        <div class="ibox-content wizard">
+                                            <div class="row">
+                                                <div class="form-group">
+                                                    <label class="col-lg-9 col-xs-9 control-label">{{title.business | translate}}</label>
+
+                                                    <div class="col-lg-3 col-xs-3 form-group">
+                                                        <ui-switch [(ngModel)]="add_city.is_business" #is_business="ngModel" name="is_business"></ui-switch>
+
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-lg-9 col-xs-9 control-label">{{title.cash | translate}}</label>
+
+                                                    <div class="col-lg-3 col-xs-3 form-group">
+                                                        <ui-switch [(ngModel)]="add_city.is_cash_payment_mode" #is_cash_payment_mode="ngModel" name="is_cash_payment_mode"></ui-switch>
+
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-lg-9 col-xs-9 control-label">{{title.other | translate}}</label>
+
+                                                    <div class="col-lg-3 col-xs-3 form-group">
+                                                        <ui-switch [(ngModel)]="add_city.is_other_payment_mode" #is_other_payment_mode="ngModel" name="is_other_payment_mode"></ui-switch>
+
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-lg-9 col-xs-9 control-label">{{title.zone | translate}}</label>
+
+                                                    <div class="col-lg-3 col-xs-3 form-group">
+                                                        <ui-switch [(ngModel)]="add_city.zone_business" #zone_business="ngModel" name="zone_business"></ui-switch>
+
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-lg-9 col-xs-9 control-label">{{title.use_radius | translate}}</label>
+
+                                                    <div class="col-lg-3 col-xs-3 form-group">
+                                                        <ui-switch [(ngModel)]="add_city.is_use_radius" (change)="change_city_radius()" #is_use_radius="ngModel" name="is_use_radius"></ui-switch>
+
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-lg-9 col-xs-9 control-label">{{title.promo_apply | translate}}</label>
+
+                                                    <div class="col-lg-3 col-xs-3 form-group">
+                                                        <ui-switch [(ngModel)]="add_city.is_promo_apply" #is_promo_apply="ngModel" name="is_promo_apply"></ui-switch>
+
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="col-lg-9 col-xs-9 control-label">{{title.ads | translate}}</label>
+
+                                                    <div class="col-lg-3 col-xs-3 form-group">
+                                                        <ui-switch [(ngModel)]="add_city.is_ads_visible" #is_ads_visible="ngModel" name="is_ads_visible"></ui-switch>
+
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="col-lg-9 col-xs-9 control-label">{{title.is_check_provider_wallet_amount_for_received_cash_request | translate}}</label>
+
+                                                    <div class="col-lg-3 col-xs-3 form-group">
+                                                        <ui-switch [(ngModel)]="add_city.is_check_provider_wallet_amount_for_received_cash_request" #is_check_provider_wallet_amount_for_received_cash_request="ngModel" name="is_check_provider_wallet_amount_for_received_cash_request"></ui-switch>
+
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-lg-9 col-xs-9 control-label">{{title.provider_earning_add_in_wallet_using_cash | translate}}</label>
+
+                                                    <div class="col-lg-3 col-xs-3 form-group">
+                                                        <ui-switch [(ngModel)]="add_city.is_provider_earning_add_in_wallet_on_cash_payment" #is_provider_earning_add_in_wallet_on_cash_payment="ngModel" name="is_provider_earning_add_in_wallet_on_cash_payment"></ui-switch>
+
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-lg-9 col-xs-9 control-label">{{title.provider_earning_add_in_wallet_using_other | translate}}</label>
+
+                                                    <div class="col-lg-3 col-xs-3 form-group">
+                                                        <ui-switch [(ngModel)]="add_city.is_provider_earning_add_in_wallet_on_other_payment" #is_provider_earning_add_in_wallet_on_other_payment="ngModel" name="is_provider_earning_add_in_wallet_on_other_payment"></ui-switch>
+
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-lg-9 col-xs-9 control-label">{{title.store_earning_add_in_wallet_using_cash | translate}}</label>
+
+                                                    <div class="col-lg-3 col-xs-3 form-group">
+                                                        <ui-switch [(ngModel)]="add_city.is_store_earning_add_in_wallet_on_cash_payment" #is_store_earning_add_in_wallet_on_cash_payment="ngModel" name="is_store_earning_add_in_wallet_on_cash_payment"></ui-switch>
+
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-lg-9 col-xs-9 control-label">{{title.store_earning_add_in_wallet_using_other | translate}}</label>
+
+                                                    <div class="col-lg-3 col-xs-3 form-group">
+                                                        <ui-switch [(ngModel)]="add_city.is_store_earning_add_in_wallet_on_other_payment" #is_store_earning_add_in_wallet_on_other_payment="ngModel" name="is_store_earning_add_in_wallet_on_other_payment"></ui-switch>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!--                                        <div class="ibox">
+                                                                                <div class="ibox-title">
+                                                                                    <label class="control-label">{{title.payment_gateway | translate}}</label>
+                                                                                </div>
+
+                                                                                <div class="ibox-content wizard">
+                                                                                    <div class="row">
+
+                                                                                        <div class="form-group">
+                                                                                            <div class="col-lg-12">
+                                                                                                <div *ngFor="let i of payment_gateway_list" style="margin: 5px;">
+
+                                                                                                    <label><input class="icheck_payment_gateway" id="icheck{{i._id}}" type="checkbox" value="{{i._id}}" /><span style="margin-left: 10px;">{{i.name}}</span></label>
+
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>-->
+                                </div>
+                                <div class="col-lg-4 col-sm-6" >
+                                    <div class="ibox">
+                                        <div id="city_radius_map" style="width: 100%; min-height: 415px;"></div>
+                                    </div>
+
+                                    <div class="ibox">
+                                        <div class="ibox-title">
+                                            <label class="control-label">{{title.payments | translate}}</label>
+                                        </div>
+
+                                        <div class="ibox-content wizard">
+                                            <div class="row">
+
+                                                <div class="form-group">
+                                                    <div class="col-lg-12">
+                                                        <div *ngFor="let i of payment_gateway_list" style="margin: 5px;">
+
+                                                            <label><input class="icheck_payment_gateway" id="icheck{{i._id}}" type="checkbox" value="{{i._id}}" /><span style="margin-left: 10px;">{{i.name}}</span></label>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </div>
+
+                            <div class="col-md-12">
+                                <div class="ibox">
+                                    <div class="ibox-title">
+                                        <label class="control-label">{{title.deliveries | translate}}</label>
+                                    </div>
+                                    <div class="ibox-content wizard">
+                                        <div class="row">
+                                            <div class="form-group">
+                                                <div class="col-lg-4" *ngFor="let i of deliveries_in_city_list" style="margin: 5px;">
+                                                     <label><input class="icheck" id="icheck{{i._id}}" type="checkbox" value="{{i._id}}" /><span style="margin-left: 10px;">{{i.delivery_name}}</span></label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="row"  [hidden]="selected_tab!=='zone'" style="margin-top: 20px;">
+                            <div class="col-lg-12">
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="col-md-9 form-group">
+                                            <div id="map" style="width: 100%; min-height: 415px;"></div>
+                                        </div>
+                                        <div class="col-md-3 form-group" style="min-height: 415px;max-height: 415px;overflow-y:auto">
+                                            <div class="row" *ngFor="let city_zone_detail of city_zone;">
+                                                 <div class="col-md-3 form-group">
+                                                    <div [ngStyle]="{ 'width':'30px','height': '30px','background-color':city_zone_detail.color }"></div>
+                                                </div>
+                                                <div class="col-md-9 form-group">
+                                                    {{city_zone_detail.title}}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="row" [hidden]="selected_tab!=='price'">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</form>
+
+
+
+
+

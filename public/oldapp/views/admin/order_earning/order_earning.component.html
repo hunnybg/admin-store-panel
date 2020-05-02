@@ -1,0 +1,541 @@
+<style type="text/css">
+    .scrollbar {
+        height: 100%;
+        background: #fff;
+        overflow-y: auto;
+    }
+
+    .scrollbar::-webkit-scrollbar-track {
+        -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+        background-color: #fff;
+    }
+
+    .scrollbar::-webkit-scrollbar {
+        width: 3px;
+        background-color: #222222;
+    }
+
+    .scrollbar::-webkit-scrollbar-thumb {
+        background-color: #000000;
+    }
+</style>
+<footer [myLoading]="myLoading"></footer>
+<div class="row wrapper fix_search_bar border-bottom white-bg page-heading">
+    <div class="row">
+
+        <div class="col-md-4 col-sm-12">
+            <div class="lable_center">
+                <label>{{title.search | translate}}</label>
+            </div>
+
+            <div class="col-md-6 col-sm-6 remove_padding">
+                <div class="form-group" id="search_fields">
+                    <select chosen class="chosen-select" id="search_field" [(ngModel)]="search_field"
+                        name="search_field" tabindex="4">
+                        <option value="user_detail.first_name">{{title.user | translate}}</option>
+                        <!-- <option value="provider_detail.first_name">{{title.provider | translate}}</option> -->
+                        <option value="store_detail.name">{{title.store | translate}}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-6 remove_padding">
+                <div class="form-group">
+                    <div class="input-group">
+                        <input type="text" class="form-control search_box" [(ngModel)]="search_value"
+                            name="search_value">
+                        <span class="input-group-addon search_icon"><span class="fa fa-search"></span></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--<div class="col-md-3 col-sm-12">-->
+        <!--<div class="lable_center">-->
+        <!--<label>{{title.sort | translate}}</label>-->
+        <!--</div>-->
+        <!--<div class="col-md-6 col-sm-6 remove_padding">-->
+        <!--<div class="form-group" id="sort_fields">-->
+        <!--<select chosen class="chosen-select" id="sort_field" [(ngModel)]="sort_field" name="sort_field" tabindex="4">-->
+
+        <!--<option value="unique_id">{{title.filter_id}}</option>-->
+        <!--<option value="user_detail.first_name">{{title.user | translate}}</option>-->
+        <!--<option value="provider_detail.first_name">{{title.provider | translate}}</option>-->
+        <!--<option value="store_detail.name">{{title.store | translate}}</option>-->
+        <!--</select>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--<div class="col-md-6 col-sm-6 remove_padding">-->
+        <!--<div class="form-group" id="sort_orders">-->
+
+        <!--<select chosen class="chosen-select" id="sort_order" [(ngModel)]="sort_order" name="sort_order" tabindex="4">-->
+
+        <!--<option value="1">{{title.ascending | translate}}</option>-->
+        <!--<option value="-1">{{title.descending | translate}}</option>-->
+        <!--</select>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--</div>-->
+
+        <div class="col-md-4 col-sm-12">
+            <div class="lable_center">
+                <label>{{title.date_filter | translate}}</label>
+            </div>
+            <div class="col-md-12 remove_padding">
+                <div class="form-group">
+                    <div class="input-group">
+                        <my-date-picker id="start_date" [options]="helper.myStartDatePickerOptions"
+                            placeholder="Start Date" [(ngModel)]="start_date"
+                            (dateChanged)="helper.onStartDateChanged($event)" readonly></my-date-picker>
+                        <span class="input-group-addon date_filter_icon">To</span>
+
+                        <my-date-picker id="end_date" [options]="helper.myEndDatePickerOptions" placeholder="End Date"
+                            [(ngModel)]="end_date" (dateChanged)="helper.onEndDateChanged($event)" readonly>
+                        </my-date-picker>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 col-sm-12">
+            <div class="col-md-6 col-sm-6 filter_btn_div">
+                <input type="button" (click)="order_earning_export_csv()" class="btn export_excel_btn pull-right"
+                    value="{{button.export_excel | translate}}">
+            </div>
+            <div class="col-md-6 col-sm-6 filter_btn_div">
+                <input type="button" (click)="order_earning(1)" class="btn filter_apply_btn pull-right"
+                    value="{{button.apply | translate}}">
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="wrapper wrapper-content content_top_bar_view1 animated fadeInRight ">
+    <div class="ibox" *ngIf="order_list.length==0">
+        <div class="ibox-content">
+            <div class="lable_center">
+                <label>No Records</label>
+            </div>
+        </div>
+    </div>
+    <div class="ibox" *ngIf="order_list.length>0">
+        <div class="ibox-title">
+            <div>
+                <label>{{title.earning | translate}}({{admin_currency}})</label>
+            </div>
+
+        </div>
+        <div class="ibox-content">
+            <div class="row">
+                <div class="col-md-6 no_padding">
+                    <div class="col-md-3">
+                        <span>{{title.completed | translate}}</span>
+                        <h2 class="font-bold">{{order_total.total_completed_orders}}</h2>
+                    </div>
+                    <div class="col-md-3">
+                        <span>{{title.cancelled | translate}}</span>
+                        <h2 class="font-bold">{{order_total.total_cancelled_orders}}</h2>
+                    </div>
+                    <div class="col-md-3">
+                        <span>{{title.total | translate}}</span>
+                        <h2 class="font-bold">{{(order_total.total).toFixed(2)}}</h2>
+                    </div>
+                    <div class="col-md-3">
+                        <span>{{title.admin_earn | translate}}</span>
+                        <h2 class="font-bold">{{(order_total.total_admin_earn).toFixed(2)}}</h2>
+                    </div>
+                </div>
+                <div class="col-md-6 no_padding">
+                    <!-- <div class="col-md-3">
+                        <span>{{title.provider_earn | translate}}</span>
+                        <h2 class="font-bold">{{(order_total.provider_earn).toFixed(2)}}</h2>
+                    </div> -->
+                    <div class="col-md-3">
+                        <span>{{title.pay_collect | translate}}</span>
+                        <h2 class="font-bold">{{(order_total.pay_to_provider).toFixed(2)}}</h2>
+                    </div>
+                    <div class="col-md-3">
+                        <span>{{title.store_earn | translate}}</span>
+                        <h2 class="font-bold">{{(order_total.store_earn).toFixed(2)}}</h2>
+                    </div>
+                    <div class="col-md-3">
+                        <span>{{title.pay_collect | translate}}</span>
+                        <h2 class="font-bold">{{(order_total.pay_to_store).toFixed(2)}}</h2>
+                    </div>
+                </div>
+            </div>
+
+            <!--<div class="table-responsive">-->
+            <!--<table class="table table-striped">-->
+            <!--<thead>-->
+            <!--<tr>-->
+            <!--<th>{{title.total_completed_orders | translate}}</th>-->
+            <!--<th>{{title.admin_earn | translate}}</th>-->
+            <!--<th>{{title.admin_earn_in_wallet | translate}}</th>-->
+            <!--<th>{{title.provider_earn | translate}}</th>-->
+            <!--<th>{{title.store_earn | translate}}</th>-->
+            <!--<th>{{title.store_income_set_in_wallet | translate}}</th>-->
+            <!--</tr>-->
+            <!--</thead>-->
+            <!--<tbody>-->
+            <!--<tr>-->
+            <!--<td>{{order_total.total_completed_orders}}</td>-->
+            <!--<td>{{(order_total.total_admin_earn).toFixed(2)}}</td>-->
+            <!--<td>{{(order_total.admin_earn_wallet).toFixed(2)}}</td>-->
+            <!--<td>{{(order_total.provider_earn).toFixed(2)}}</td>-->
+            <!--<td>{{(order_total.store_earn).toFixed(2)}}</td>-->
+            <!--<td>{{(order_total.store_income_set_in_wallet).toFixed(2)}}</td>-->
+
+            <!--</tr>-->
+            <!--</tbody>-->
+            <!--<thead>-->
+            <!--<tr>-->
+            <!--<th>{{title.total_order_amount | translate}}</th>-->
+            <!--<th>{{title.admin_earn_in_cash | translate}}</th>-->
+            <!--<th>{{title.admin_earn_in_other | translate}}</th>-->
+            <!--<th>{{title.pay_to_provider | translate}}</th>-->
+            <!--<th>{{title.pay_to_store | translate}}</th>-->
+            <!--<th>{{title.provider_income_set_in_wallet | translate}}</th>-->
+            <!--</tr>-->
+            <!--</thead>-->
+            <!--<tbody>-->
+            <!--<tr>-->
+            <!--<td>{{(order_total.total).toFixed(2)}}</td>-->
+            <!--<td>{{(order_total.cash_payment).toFixed(2)}}</td>-->
+            <!--<td>{{(order_total.card_payment).toFixed(2)}}</td>-->
+            <!--<td>{{(order_total.pay_to_provider).toFixed(2)}}</td>-->
+            <!--<td>{{(order_total.pay_to_store).toFixed(2)}}</td>-->
+            <!--<td>{{(order_total.provider_income_set_in_wallet).toFixed(2)}}</td>-->
+            <!--</tr>-->
+            <!--</tbody>-->
+            <!--</table>-->
+            <!--</div>-->
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-8">
+            <div class="ibox" *ngIf="order_list.length>0">
+                <div class="ibox-content" style="padding-bottom: 40px;">
+                    <div class="table-responsive scrollbar" style="height: calc(100vh - 255px);overflow-y: auto;">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>{{title.id |translate}}</th>
+                                    <th>{{title.complete_date | translate}}</th>
+                                    <th>{{title.user | translate}}</th>
+                                    <!-- <th>{{title.provider | translate}}</th> -->
+                                    <th>{{title.store | translate}}</th>
+                                    <th>{{title.total | translate}}</th>
+                                    <th>{{title.earning | translate}}</th>
+                                    <!-- <th>{{title.provider_earning | translate}}</th> -->
+                                    <th>{{title.store_earn | translate}}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let order of order_list; let index=index; let last=last;"
+                                    [class.selected_tr]="order._id==order_detail._id" (click)="get_order_detail(index)">
+                                    <td>{{order.unique_id}}</td>
+                                    <td>{{order.completed_at| date: DATE_FORMAT.DD_MMM_YYYY}}</td>
+                                    <td>{{order.user_detail.first_name}} {{order.user_detail.last_name}}</td>
+                                    <!-- <td><div *ngIf="order.provider_detail.length>0">{{order.provider_detail[0].first_name}} {{order.provider_detail[0].last_name}}</div></td> -->
+                                    <td><span *ngIf="order.store_detail">{{order.store_detail.name}}</span></td>
+                                    <td>{{order.country_detail.currency_sign}}{{((order.order_payment_detail.total).toFixed(2)) }}
+                                    </td>
+                                    <td>{{((+order.order_payment_detail.total_admin_profit_on_delivery + +order.order_payment_detail.total_admin_profit_on_store).toFixed(2)) }}
+                                    </td>
+                                    <!-- <td>{{order.order_payment_detail.total_provider_income}}</td> -->
+                                    <td>{{order.order_payment_detail.total_store_income.toFixed(2)}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-md-12 col-sm-12">
+                        <div class="lable_center">
+                            <ul class="pagination">
+                                <li *ngIf="page!==1"><a class="btn"
+                                        (click)="order_earning(page-1)">{{button.pre | translate}}</a></li>
+                                <li *ngFor="let index of total_pages" [class.active]="page==index">
+                                    <a *ngIf="index==1 || index==total_page || index==page || index==page-1 || index==page+1"
+                                        (click)="order_earning(index)" class="btn">{{index}}</a>
+                                    <a *ngIf="(index==1 && (page!==1 && page!==2 && page!==3)) || (index==total_page-1 && (page!==total_page && page!==total_page-1 && page!==total_page-2))"
+                                        class="btn">...</a>
+                                </li>
+                                <li *ngIf="page!==total_page && order_list.length!==0"><a class="btn"
+                                        (click)="order_earning(page+1)">{{button.next | translate}}</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="ibox" *ngIf="order_list.length>0">
+                <div class="ibox-title" style="background-color: #d4d8d8;">
+                    <h5>{{order_detail.order_payment_detail.invoice_number}}</h5>
+                    <h5 class="pull-right">
+                        {{order_detail.country_detail.currency_sign}}{{order_detail.order_payment_detail.total.toFixed(2)}}
+                    </h5>
+                </div>
+                <div class="ibox-content invoice_popup_box scrollbar">
+                    <div class="row" style="margin-bottom: 20px;">
+                        <div class="col-md-6" style="padding-right: 4px;">
+                            <div class="invoice_box">
+                                <div><span>{{title.cash}}</span></div>
+                                <div>
+                                    <label>{{order_detail.country_detail.currency_sign}}{{order_detail.order_payment_detail.cash_payment.toFixed(2)}}</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6" style="padding-left: 4px;">
+                            <div class="invoice_box">
+                                <div><span>{{title.wallet}}</span></div>
+                                <div>
+                                    <label>{{order_detail.country_detail.currency_sign}}{{order_detail.order_payment_detail.wallet_payment.toFixed(2)}}</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-bottom: 20px;">
+                        <div class="col-md-6" style="padding-right: 4px;">
+                            <div class="invoice_box">
+                                <div><span>{{title.other}}</span></div>
+                                <div>
+                                    <label>{{order_detail.country_detail.currency_sign}}{{order_detail.order_payment_detail.card_payment.toFixed(2)}}</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6" style="padding-left: 4px;">
+                            <div class="invoice_box">
+                                <div><span>{{title.promo_bonus}}</span></div>
+                                <div>
+                                    <label>{{order_detail.country_detail.currency_sign}}{{order_detail.order_payment_detail.promo_payment.toFixed(2)}}</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12 col-xs-12" style="padding: 0px;">
+
+                            <div class="row invoice_seperator">
+                                <div class="col-md-12 order_invoice_row">
+                                    <div class="col-md-8 col-sm-8 col-xs-8">
+                                        <h5 style="margin-bottom: 0;">{{title.service_price | translate}}</h5>
+                                    </div>
+                                    <div class="col-md-4 col-sm-4 col-xs-4">
+                                        <h5 style="float: right;margin-bottom: 0;">
+                                            {{order_detail.country_detail.currency_sign}}{{order_detail.order_payment_detail.total_delivery_price.toFixed(2)}}
+                                        </h5>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 order_invoice_row">
+                                    <div class="col-md-8 col-sm-8 col-xs-8">
+                                        <span>{{title.service_price | translate}}</span></div>
+                                    <div class="col-md-4 col-sm-4 col-xs-4">
+                                        <span
+                                            style="float: right;">{{order_detail.country_detail.currency_sign}}{{order_detail.order_payment_detail.total_service_price.toFixed(2)}}</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 order_invoice_row">
+                                    <div class="col-md-8 col-sm-8 col-xs-8"><span>{{title.tax_price | translate}}</span>
+                                    </div>
+                                    <div class="col-md-4 col-sm-4 col-xs-4"><span
+                                            style="float: right;">{{order_detail.country_detail.currency_sign}}{{order_detail.order_payment_detail.total_admin_tax_price.toFixed(2)}}</span>
+                                    </div>
+                                </div>
+                                <!--<div class="col-md-12 order_invoice_row"  *ngIf='order_detail.order_payment_detail.is_promo_for_delivery_service == true'>-->
+                                <!--<div class="col-md-8 col-sm-8 col-xs-8"><span>{{title.promo_bonus | translate}}</span></div>-->
+                                <!--<div class="col-md-4 col-sm-4 col-xs-4"><span style="float: right;">{{order_detail.country_detail.currency_sign}}{{order_detail.order_payment_detail.promo_payment.toFixed(2)}}</span></div>-->
+                                <!--</div>-->
+                            </div>
+
+                            <div class="row invoice_seperator">
+                                <div class="col-md-12 order_invoice_row" style="margin-top: 10px;">
+                                    <div class="col-md-8 col-sm-8 col-xs-8">
+                                        <h5 style="margin-bottom: 0;">{{title.order_price | translate}}</h5>
+                                    </div>
+                                    <div class="col-md-4 col-sm-4 col-xs-4">
+                                        <h5 style="float: right;margin-bottom: 0;">
+                                            {{order_detail.country_detail.currency_sign}}{{order_detail.order_payment_detail.total_order_price.toFixed(2)}}
+                                        </h5>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 order_invoice_row">
+                                    <div class="col-md-8 col-sm-8 col-xs-8">
+                                        <span>{{title.order_price | translate}}</span></div>
+                                    <div class="col-md-4 col-sm-4 col-xs-4"><span
+                                            style="float: right;">{{order_detail.country_detail.currency_sign}}{{order_detail.order_payment_detail.total_cart_price.toFixed(2)}}</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 order_invoice_row">
+                                    <div class="col-md-8 col-sm-8 col-xs-8"><span>{{title.tax_price | translate}}</span>
+                                    </div>
+                                    <div class="col-md-4 col-sm-4 col-xs-4"><span
+                                            style="float: right;">{{order_detail.country_detail.currency_sign}}{{order_detail.order_payment_detail.total_store_tax_price.toFixed(2)}}</span>
+                                    </div>
+                                </div>
+                                <!--<div class="col-md-12 order_invoice_row" *ngIf='order_detail.order_payment_detail.is_promo_for_delivery_service == false'>-->
+                                <!--<div class="col-md-8 col-sm-8 col-xs-8"><span>{{title.promo_bonus | translate}}</span></div>-->
+                                <!--<div class="col-md-4 col-sm-4 col-xs-4"><span style="float: right;">{{order_detail.country_detail.currency_sign}}{{order_detail.order_payment_detail.promo_payment.toFixed(2)}}</span></div>-->
+                                <!--</div>-->
+                            </div>
+
+                            <div class="row invoice_seperator"
+                                *ngIf='order_detail.order_status_id != helper.ORDER_STATUS_ID.CANCELLED && order_detail.order_payment_detail.tip_amount > 0'>
+                                <div class="col-md-12 order_invoice_row" style="margin-top: 10px;">
+                                    <div class="col-md-8 col-sm-8 col-xs-8">
+                                        <h5 style="margin-bottom: 0;">{{title.tip | translate}}</h5>
+                                    </div>
+                                    <div class="col-md-4 col-sm-4 col-xs-4"><span
+                                            style="float: right;">{{currency_sign}}{{order_detail.order_payment_detail.tip_amount.toFixed(2)}}</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row invoice_seperator"
+                                *ngIf="order_detail.order_status_id==helper.ORDER_STATUS_ID.CANCELLED && order_detail.order_payment_detail.order_cancellation_charge>0">
+                                <div class="col-md-12 order_invoice_row" style="margin-top: 10px;">
+                                    <div class="col-md-8 col-sm-8 col-xs-8">
+                                        <h5 style="margin-bottom: 0;">{{title.cancellation_charge | translate}}</h5>
+                                    </div>
+                                    <div class="col-md-4 col-sm-4 col-xs-4">
+                                        <h5 style="margin-bottom: 0; float: right;">
+                                            {{order_detail.country_detail.currency_sign}}{{order_detail.order_payment_detail.order_cancellation_charge.toFixed(2)}}
+                                        </h5>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row invoice_seperator"
+                                *ngIf="order_detail.order_status_id==helper.ORDER_STATUS_ID.COMPLETED">
+                                <div class="col-md-12 order_invoice_row" style="margin-top: 10px;">
+                                    <div class="col-md-8 col-sm-8 col-xs-8">
+                                        <span>{{title.store_bear_delivery_fee | translate}}</span></div>
+                                    <div class="col-md-4 col-sm-4 col-xs-4">
+                                        <span style="float: right;"
+                                            *ngIf="order_detail.order_payment_detail.is_store_pay_delivery_fees">{{title.yes | translate}}</span>
+                                        <span style="float: right;"
+                                            *ngIf="!order_detail.order_payment_detail.is_store_pay_delivery_fees">{{title.no | translate}}</span>
+                                    </div>
+                                </div>
+                                <!-- <div class="col-md-12 order_invoice_row" *ngIf="order_detail.order_payment_detail.is_payment_mode_cash">
+                                    <div class="col-md-8 col-sm-8 col-xs-8"><span>{{title.deliveryman_paid_order_cash_to_store | translate}}</span></div>
+                                    <div class="col-md-4 col-sm-4 col-xs-4">
+                                        <span style="float: right;" *ngIf="order_detail.order_payment_detail.is_order_price_paid_by_store">{{title.yes | translate}}</span>
+                                        <span style="float: right;" *ngIf="!order_detail.order_payment_detail.is_order_price_paid_by_store">{{title.no | translate}}</span>
+                                    </div>
+                                </div> -->
+                                <div class="col-md-12 order_invoice_row"
+                                    *ngIf="order_detail.order_payment_detail.promo_payment>0">
+                                    <div class="col-md-8 col-sm-8 col-xs-8">
+                                        <span>{{title.promo_apply_on | translate}}</span></div>
+                                    <div class="col-md-4 col-sm-4 col-xs-4">
+                                        <span style="float: right;"
+                                            *ngIf="order_detail.order_payment_detail.is_promo_for_delivery_service">{{title.sws_delivery | translate}}</span>
+                                        <span style="float: right;"
+                                            *ngIf="!order_detail.order_payment_detail.is_promo_for_delivery_service">{{title.sws_order | translate}}</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row invoice_seperator"
+                                *ngIf="order_detail.order_status_id==helper.ORDER_STATUS_ID.COMPLETED">
+                                <div class="col-md-12 order_invoice_row" style="margin-top: 10px;">
+                                    <div class="col-md-8 col-sm-8 col-xs-8">
+                                        <span>{{title.store_profit | translate}}</span></div>
+                                    <div class="col-md-4 col-sm-4 col-xs-4"><span
+                                            style="float: right;">{{order_detail.country_detail.currency_sign}}{{order_detail.order_payment_detail.total_store_income.toFixed(2)}}</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 order_invoice_row">
+                                    <div class="col-md-8 col-sm-8 col-xs-8">
+                                        <span *ngIf="order_detail.order_payment_detail.is_store_income_set_in_wallet"
+                                            style="color: green;">{{title.sattlement_with_store | translate}}</span>
+                                        <span *ngIf="!order_detail.order_payment_detail.is_store_income_set_in_wallet">
+                                            <span *ngIf="order_detail.order_payment_detail.is_transfered_to_store"
+                                                style="color: green;">{{title.sattlement_with_store | translate}}</span>
+                                            <span *ngIf="!order_detail.order_payment_detail.is_transfered_to_store"
+                                                style="color: red;">{{title.sattlement_with_store | translate}}</span>
+                                        </span>
+                                    </div>
+                                    <div class="col-md-4 col-sm-4 col-xs-4">
+                                        <span style="float: right;"
+                                            *ngIf="order_detail.order_payment_detail.is_store_income_set_in_wallet">
+                                            <span
+                                                style="color: green;">{{order_detail.country_detail.currency_sign}}{{order_detail.order_payment_detail.store_income_set_in_wallet.toFixed(2)}}
+                                                ({{title.wallet | translate}})</span>
+                                        </span>
+                                        <span style="float: right;"
+                                            *ngIf="!order_detail.order_payment_detail.is_store_income_set_in_wallet">
+                                            <span style="color: green;"
+                                                *ngIf="order_detail.order_payment_detail.is_transfered_to_store">{{order_detail.country_detail.currency_sign}}{{order_detail.order_payment_detail.pay_to_store.toFixed(2)}}</span>
+                                            <span style="color: red;"
+                                                *ngIf="!order_detail.order_payment_detail.is_transfered_to_store">{{order_detail.country_detail.currency_sign}}{{order_detail.order_payment_detail.pay_to_store.toFixed(2)}}</span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row invoice_seperator"
+                                *ngIf="order_detail.order_status_id==helper.ORDER_STATUS_ID.COMPLETED">
+                                <div class="col-md-12 order_invoice_row" style="margin-top: 10px;">
+                                    <div class="col-md-8 col-sm-8 col-xs-8">
+                                        <span>{{title.deliveryman_profit | translate}}</span></div>
+                                    <div class="col-md-4 col-sm-4 col-xs-4"><span
+                                            style="float: right;">{{order_detail.country_detail.currency_sign}}{{order_detail.order_payment_detail.total_provider_income.toFixed(2)}}</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 order_invoice_row">
+                                    <div class="col-md-8 col-sm-8 col-xs-8">
+                                        <span *ngIf="order_detail.order_payment_detail.is_store_income_set_in_wallet"
+                                            style="color: green;">{{title.sattlement_with_deliveryman | translate}}</span>
+                                        <span *ngIf="!order_detail.order_payment_detail.is_store_income_set_in_wallet">
+                                            <span *ngIf="order_detail.order_payment_detail.is_transfered_to_provider"
+                                                style="color: green;">{{title.sattlement_with_deliveryman | translate}}</span>
+                                            <span *ngIf="!order_detail.order_payment_detail.is_transfered_to_provider"
+                                                style="color: red;">{{title.sattlement_with_deliveryman | translate}}</span>
+                                        </span>
+                                    </div>
+                                    <div class="col-md-4 col-sm-4 col-xs-4">
+                                        <span style="float: right;"
+                                            *ngIf="order_detail.order_payment_detail.is_provider_income_set_in_wallet">
+                                            <span
+                                                style="color: green;">{{currency_sign}}{{order_detail.order_payment_detail.provider_income_set_in_wallet.toFixed(2)}}
+                                                ({{title.wallet | translate}})</span>
+                                        </span>
+                                        <span style="float: right;"
+                                            *ngIf="!order_detail.order_payment_detail.is_provider_income_set_in_wallet">
+                                            <span style="color: green;"
+                                                *ngIf="order_detail.order_payment_detail.is_transfered_to_provider">{{order_detail.country_detail.currency_sign}}{{order_detail.order_payment_detail.pay_to_provider.toFixed(2)}}</span>
+                                            <span style="color: red;"
+                                                *ngIf="!order_detail.order_payment_detail.is_transfered_to_provider">{{order_detail.country_detail.currency_sign}}{{order_detail.order_payment_detail.pay_to_provider.toFixed(2)}}</span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row invoice_seperator"
+                                *ngIf="order_detail.order_status_id==helper.ORDER_STATUS_ID.COMPLETED">
+                                <div class="col-md-12 order_invoice_row" style="margin-top: 10px;">
+                                    <div class="col-md-8 col-sm-8 col-xs-8">
+                                        <span>{{title.admin_profit_on_store | translate}}</span></div>
+                                    <div class="col-md-4 col-sm-4 col-xs-4"><span
+                                            style="float: right;">{{order_detail.country_detail.currency_sign}}{{order_detail.order_payment_detail.total_admin_profit_on_store.toFixed(2)}}</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 order_invoice_row">
+                                    <div class="col-md-8 col-sm-8 col-xs-8">
+                                        <span>{{title.admin_profit_on_delivery | translate}}</span></div>
+                                    <div class="col-md-4 col-sm-4 col-xs-4"><span
+                                            style="float: right;">{{order_detail.country_detail.currency_sign}}{{order_detail.order_payment_detail.total_admin_profit_on_delivery.toFixed(2)}}</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

@@ -1,0 +1,394 @@
+<footer [myLoading]="myLoading" ></footer>
+
+<div class="wrapper content_top_bar_view2 wrapper-content animated fadeInRight">
+
+    <div class="row">
+        <div class="col-md-3" *ngIf="is_product_selected">
+            <div class="ibox">
+                <div class="ibox-title">
+                    <h5>{{helper.heading_title.category | translate}}</h5>
+                    <span class="fa fa-check pull-right" (click)="update_sequence_number(1)"></span>
+                    <button class="btn pull-right" (click)="change_product_modifier(false)" style="margin-top: -7px;">{{helper.button.view_modifier_group | translate}}</button>
+                </div>
+                <div class="ibox-content">
+                    <div class="row" style="margin-bottom: 20px;">
+                        <div class="col-md-10 col-sm-10 col-xs-10" style="padding-right: 0;">
+                            <input type="text" colspan="2" placeholder="{{helper.title.enter_category_name | translate}}" (keyup)="check_product()" class="form-control" [(ngModel)]="add_product.name" #name="ngModel"  name="name"  required />
+                        </div>
+                        <div class="col-md-2 col-sm-2 col-xs-2">
+                            <span style="margin-top: 5px;font-size: 25px;float: right;" (click)="addProduct()" class="fa fa-plus-circle"></span>
+                        </div>
+                        <label *ngIf=product_already_exist >{{helper.title.category_already_exist | translate}}</label>
+                    </div>
+                    <ul id="sortable_product" class="sortable-list connectList agile-list product_list_height scrollbar">
+                        <li *ngFor="let product of filtered_product_list; let product_index=index;" (click)="select_product(product._id, $event)" class="product_li show_hover_only" [ngStyle]="{'background-color': !product.is_visible_in_store ? '#f5efef' : '#FAFAFB'}" [class.success-element]="product._id==selected_product_id && selected_product_id_for_specification==''">
+                            <span>{{product.name}}</span>
+                            <a *ngIf="product.is_visible_in_store" (click)="updateProduct(product, false)" class="pull-right"><i class="fa fa-trash-o" style="color:#676a6c;"></i></a>
+                            <a *ngIf="!product.is_visible_in_store" (click)="updateProduct(product, true)" class="pull-right"><i class="fa fa-check" style="color:#676a6c;"></i></a>
+                            <a class="pull-right" (click)="open_edit_product_modal(product)"><i class="fa fa-pencil" style="color:#676a6c;"></i></a>
+                        </li>
+                    </ul>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3" *ngIf="!is_product_selected">
+            <div class="ibox">
+                <div class="ibox-title">
+                    <h5>{{helper.heading_title.modifier_group | translate}}</h5>
+                    <button class="btn pull-right" (click)="change_product_modifier(true)" style="margin-top: -7px;">{{helper.button.view_product | translate}}</button>
+                </div>
+                <div class="ibox-content">
+                    <div class="row" style="margin-bottom: 20px;">
+                        <div class="col-md-10 col-sm-10 col-xs-10" style="padding-right: 0;">
+                            <input type="text" class="form-control" placeholder="{{helper.title.enter_modifier_group_name | translate}}" name="specification_group_name" [(ngModel)]="specification_group_name" />
+                        </div>
+                        <div class="col-md-2 col-sm-2 col-xs-2">
+                            <span style="margin-top: 5px;font-size: 25px;float: right;" (click)="add_specification_group()" class="fa fa-plus-circle"></span>
+                        </div>
+                    </div>
+
+                    <ul  class="sortable-list connectList agile-list product_list_height scrollbar">
+                        <li *ngFor="let sp_group of specification_group_list; let sp_group_index=index;" (click)="get_specification(sp_group._id)" class="product_li show_hover_only" [class.success-element]="sp_group._id==selected_specification_group_id">
+                            <span>{{sp_group.name}}</span>
+                            <a><span (click)="delete_specification_group(sp_group._id, sp_group_index, $event)" class="fa fa-times pull-right"></span></a>
+                        </li>
+                    </ul>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3" *ngIf="!is_product_selected">
+            <div class="ibox">
+                <div class="ibox-title">
+                    <h5>{{selected_specification_group_name}}</h5>
+                    <span class="fa fa-check pull-right" (click)="updateSpecification()"></span>
+                </div>
+                <div class="ibox-content">
+                    <div class="row" style="margin-bottom: 20px;">
+                        <div class="col-md-6 col-sm-6 col-xs-6" style="padding-right: 0;">
+                            <input type="text" placeholder="{{helper.title.enter_specification | translate}}" class="form-control" [(ngModel)]="specification_name" name="specification_name" />
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-xs-4" style="padding-right: 5px; padding-left: 5px;">
+                            <input type="text" placeholder="{{helper.title.item_price | translate}}" class="form-control" [(ngModel)]="specification_price"  name="specification_price"  required />
+                        </div>
+                        <div class="col-md-2 col-sm-2 col-xs-2">
+                            <span style="margin-top: 5px;font-size: 25px;float: right;" (click)="addSpecification()" class="fa fa-plus-circle"></span>
+                        </div>
+                    </div>
+
+                    <div id="spec_list" class="product_list_height scrollbar">
+                        <form #specificationForm="ngForm" enctype='multipart/form-data' >
+                            <ul class="sortable-list connectList agile-list" >
+                                <li class="product_li_sp" *ngFor="let specification of specification_name_array; let specification_index=index;">
+                                    {{specification.name}}
+                                    <span (click)="deleteSpecification('' ,specification_index)" class="fa fa-times pull-right"></span>
+                                </li>
+                            </ul>
+
+                            <ul class="sortable-list connectList agile-list">
+                                <li class="product_li_sp show_hover_only" *ngFor="let specification of specification_list; let specification_index=index; ">
+                                    {{specification.name}}
+                                    <a><span (click)="deleteSpecification(specification._id ,specification_index)" class="fa fa-times pull-right"></span></a>
+                                </li>
+                            </ul>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3" *ngIf="is_product_selected">
+            <div class="ibox">
+                <div class="ibox-title">
+                    <h5>{{helper.heading_title.item | translate}}</h5>
+                    <span class="fa fa-check pull-right" (click)="update_sequence_number(2)"></span>
+                </div>
+                <div class="ibox-content">
+                    <div class="row" style="margin-bottom: 20px;">
+                        <div class="col-md-6 col-sm-6 col-xs-6" style="padding-right: 5px;">
+                            <input type="text" colspan="2" placeholder="{{helper.title.item_name | translate}}" (keyup)="check_item()" class="form-control" [(ngModel)]="add_item.name" #name="ngModel"  name="name"  required />
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-xs-4" style="padding-right: 5px; padding-left: 5px;">
+                            <input type="text" colspan="2" placeholder="{{helper.title.item_price | translate}}" class="form-control" [(ngModel)]="add_item.price" #price="ngModel"  name="price"  required />
+                        </div>
+                        <div class="col-md-2 col-sm-2 col-xs-2">
+                            <span style="margin-top: 5px;font-size: 25px;float: right;" (click)="add_item_data()" class="fa fa-plus-circle"></span>
+                        </div>
+                        <label *ngIf="item_error!=''" >{{item_error | translate}}</label>
+                    </div>
+
+                    <ul id="sortable" class="sortable-list connectList agile-list product_list_height scrollbar">
+                        <li *ngFor="let item of filtered_item_list; let item_index=index;" (click)="select_item(item._id, $event)" class="product_li" [ngStyle]="{'background-color': !item.is_visible_in_store ? '#ece7e7' : '#FAFAFB'}" [class.success-element]="item._id==selected_item_id">
+                            {{item.name}}
+                        </li>
+                    </ul>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6" *ngIf="item_detail.name && is_product_selected">
+            <div class="ibox">
+                <div class="ibox-title">
+                    <h5>{{item_detail.name}}</h5>
+                    <span class="fa fa-check pull-right" (click)="updateItem()"></span>
+                </div>
+                <div class="ibox-content scrollbar" style="height: calc(100vh - 163px);overflow: auto;">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label>{{title.note_for_image | translate}}: </label><span>{{title.image_note1 | translate}} {{image_setting.image_min_width}}x{{image_setting.image_min_height}} {{title.image_note2 | translate}} {{image_setting.image_max_width}}x{{image_setting.image_max_height}}),
+                            {{title.image_note3 | translate}} <label>{{image_setting.image_ratio}}</label> {{title.image_note4 | translate}}</span> <label *ngFor="let i of image_setting.image_type; let last=last;"> {{(i.split('/'))[1]}}<label [hidden]="last">, </label> </label>
+                            <span>{{title.image_note5 | translate}}</span>
+                        </div>
+                        <div class="form-group">
+                            <div class="scrollbar" id="style-3" style="background-color: #fff;width: 100%;height:112px;text-align: center;">
+                                <div style=" display: inline-table;" *ngIf="(item_detail.image_url.length+new_image_array.length) <5">
+                                    <span class="btn-file"><img src="web_images/camera_img.png" style="border-radius: 20%; width:80px; height: 80px; margin-right: 15px;">
+                                    <input type="file" accept="image/*" (change)="image_update($event);" name="image" style="margin-top: -12px;padding: 13px;"></span>
+                                </div>
+
+                                <div *ngFor="let image of new_image_array; let index=index;" style=" display: inline-table;">
+                                    <img [src]="image.base64_image" style="border-radius: 20%; width:80px; height: 80px; margin-right: 15px;">
+                                    <div style="margin-top: -11px;margin-right: -58px;">
+                                        <i aria-hidden="true" (click)="remove_new_image(index)" class="fa fa-times-circle" style="font-size: 25px;cursor: pointer;color:#bc2029;"></i>
+                                    </div>
+                                </div>
+
+                                <div *ngFor="let image of item_detail.image_url; let index=index;" style=" display: inline-table;">
+                                    <img src="{{helper.CONSTANT.IMAGE_BASE_URL + image}}" style="border-radius: 20%; width:80px; height: 80px; margin-right: 15px;">
+                                    <div style="margin-top: -11px;margin-right: -58px;">
+                                        <i aria-hidden="true" (click)="delete_item_image(image , index)" class="fa fa-times-circle" style="font-size: 25px;cursor: pointer;color:#bc2029;"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 col-sm-6 col-xs-6">
+                            <label>{{helper.title.item_name | translate}}</label>
+                            <input type="text" class="form-control" [(ngModel)]="item_detail.name" #name="ngModel"  name="name"  required />
+                        </div>
+                        <div class="col-md-3 col-sm-3 col-xs-3">
+                            <label>{{helper.title.item_price | translate}}</label>
+                            <input type="text" class="form-control" [(ngModel)]="item_detail.price" #price="ngModel"  name="price"  required />
+                        </div>
+                        <div class="col-md-3 col-sm-3 col-xs-3">
+                            <label>{{helper.title.vat | translate}}</label>
+                            <input type="text" class="form-control" [(ngModel)]="item_detail.vat" #vat="ngModel"  name="vat"  required />
+                        </div>
+                        <label *ngIf=item_already_exist >{{helper.message.item_already_exist | translate}}</label>
+                    </div>
+                    <div class="row" style="margin-top: 10px;">
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <label>{{helper.title.details | translate}}</label>
+                            <textarea style="max-width: 100%; max-height: 80px;" class="form-control" [(ngModel)]="item_detail.details" #details="ngModel"  name="details" required ></textarea>
+                        </div>
+                    </div>
+
+                    <div class="row" style="margin-top: 20px;">
+                        <div class="col-md-6 col-sm-6 col-xs-6">
+                            <label class="col-md-8 no_padding">{{helper.title.is_visible_in_store | translate}}</label>
+                            <ui-switch [(ngModel)]="item_detail.is_visible_in_store" #is_visible_in_store="ngModel" name="is_visible_in_store"></ui-switch>
+                        </div>
+                        <div class="col-md-6 col-sm-6 col-xs-6">
+                            <label class="col-md-8 no_padding">{{helper.title.is_item_in_stock | translate}}</label>
+                            <ui-switch [(ngModel)]="item_detail.is_item_in_stock" #is_item_in_stock="ngModel" name="is_item_in_stock"></ui-switch>
+                        </div>
+                    </div>
+
+                    <div class="row" style="margin-top: 10px;">
+                        <div class="col-md-12">
+                            <label>Add Modifier</label>
+                        </div>
+                        <div class="col-md-6">
+                            <select class="chosen-select" [(ngModel)]="selected_spec_group_for_item" name=""selected_spec_group_for_item>
+                                <option value="" hidden>Select Modifier</option>
+                                <option *ngFor="let sp_gp of specification_group_list;" value="{{sp_gp._id}}">{{sp_gp.name}}</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <span class="fa fa-plus-circle" style="font-size: 25px;" (click)="open_specification_modal()"></span>
+                        </div>
+                    </div>
+
+                    <div *ngIf="item_detail.specifications.length>0">
+                        <ul class="sortable-list connectList agile-list">
+                            <li style="padding-right: 0; padding-left: 0;" class="product_li_sp" *ngFor="let specification of item_detail.specifications; let specification_index=index;">
+                                <span class="fa fa-angle-right product_arrow" *ngIf="selected_item_specification!=specification._id" (click)="selected_item_specification=specification._id;"></span>
+                                <span class="fa fa-angle-down product_arrow" *ngIf="selected_item_specification==specification._id" (click)="selected_item_specification=''"></span>
+                                <span>{{specification.name}}</span>
+                                <span class="fa fa-close pull-right" style="padding-right: 10px;" (click)="delete_item_specification(specification_index)"></span>
+                                <span class="fa fa-pencil pull-right" style="padding-right: 10px;" (click)="edit_item_specification(specification, specification_index)"></span>
+                                <ul class="sortable-list connectList agile-list" style="padding-bottom: 0;" *ngIf="selected_item_specification==specification._id">
+                                    <li class="product_li_sp" style="background: #F8F8F9 !important;border: 0;" *ngFor="let list of specification.list; let list_index=index;">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <span>{{list.name}}</span>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <span>{{list.price}}</span>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<modal keyboard="false" backdrop="static" cssClass="modal-xs animated fadeInDownBig" #edit_product_modal>
+    <modal-header [show-close]="true">
+        <h5>Edit Category</h5>
+    </modal-header>
+    <modal-body>
+        <div class="row">
+            <div class="form-group">
+                <input type="text" class="form-control" name="name" [(ngModel)]="product_data.name" #name="ngModel" />
+            </div>
+        </div>
+
+    </modal-body>
+    <modal-footer>
+        <div style="text-align: center">
+            <button type="button" (click)="updateProduct(product_data, product_data.is_visible_in_store)" class="btn btn-primary">{{button.update | translate}}</button>
+        </div>
+    </modal-footer>
+</modal>
+
+<modal keyboard="false" backdrop="static" cssClass="modal-xs animated fadeInDownBig" #add_specification_modal>
+    <modal-header [show-close]="true">
+        <h5>{{helper.heading_title.add_modifier_group | translate}}</h5>
+    </modal-header>
+    <modal-body>
+        <div class="row">
+            <div class="form-group">
+                <input type="text" class="form-control" placeholder="{{helper.title.enter_modifier_group_name | translate}}" name="specification_group_name" [(ngModel)]="specification_group_name" />
+            </div>
+        </div>
+
+    </modal-body>
+    <modal-footer>
+        <div style="text-align: center">
+            <button type="button" (click)="add_specification_group()" class="btn btn-primary">{{button.update | translate}}</button>
+        </div>
+    </modal-footer>
+</modal>
+
+<modal keyboard="false" backdrop="static" cssClass="modal-xl animated fadeInDownBig" #image_crop_modal>
+    <modal-header [show-close]="true">
+
+    </modal-header>
+    <modal-body>
+        <img-cropper #cropper [image]="data" [settings]="cropperSettings"></img-cropper><br>
+        {{cropperSettings.croppedWidth}}
+        {{cropperSettings.croppedHeight}}
+        <div class="col-lg-12 text_center">
+            <span style="color: red;">{{image_error | translate}}</span>
+        </div>
+
+    </modal-body>
+    <modal-footer>
+        <div style="text-align: center">
+            <button type="button" (click)="crop($event)" class="btn btn-primary">{{button.done | translate}}</button>
+        </div>
+    </modal-footer>
+</modal>
+
+
+
+<modal keyboard="false" backdrop="static" cssClass="modal-xl animated fadeInDownBig" #item_spec_modal>
+    <form #modalForm="ngForm" (ngSubmit)="addiItemSpecification(modalForm.value)">
+        <modal-header [show-close]="true">
+            <h4 class="modal-title">{{heading_title.add_item_specification | translate}}</h4>
+        </modal-header>
+        <modal-body>
+            <input type="hidden" [(ngModel)]="index" name="index" >
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="col-md-8 col-sm-8 col-xs-8 no_padding">
+                        <div class="form-group" >
+                            <label style="font-weight: normal;">{{title.item_specification_name | translate}}</label>
+                            <input type="text" class="form-control" [(ngModel)]="item_detail.item_specification_name" #item_specification_name="ngModel" name="item_specification_name" required>
+                            <input type="hidden" class="form-control" [(ngModel)]="item_detail.specification_group_id" #specification_group_id="ngModel" name="specification_group_id">
+                        </div>
+
+                    </div>
+                    <div class="col-md-4 col-sm-4 col-xs-4 no_padding">
+                        <label class="col-md-12 col-sm-12 col-xs-12" style="font-weight: normal;">{{title.is_required | translate}}</label>
+                        <ui-switch class="col-md-12 col-sm-12 col-xs-12" [(ngModel)]="item_detail.is_required" #is_required="ngModel" name="is_required" disabled></ui-switch>
+                    </div>
+
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="col-md-4 col-sm-4 col-xs-8 no_padding">
+                        <select class="form-control" (change)="check_range_validation()" [(ngModel)]="item_detail.type" #type="ngModel" name="type">
+                            <option value="1">Select</option>
+                            <option value="2">Select Range</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4 col-sm-4 col-xs-8">
+                        <div class="form-group" >
+                            <input type="text" (keypress)="check_range_validation()"  class="form-control" [(ngModel)]="item_detail.range" #range="ngModel" name="range" required>
+                        </div>
+                    </div>
+                    <div *ngIf="item_detail.type==2" class="col-md-4 col-sm-4 col-xs-8 no_padding">
+                        <div class="form-group" >
+                            <input type="text" (keypress)="check_range_validation()"  class="form-control" [(ngModel)]="item_detail.max_range" #max_range="ngModel" name="max_range" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12" *ngIf="range_error">
+                    <label class="error" style="font-weight: normal;">{{helper.validation_message.range_validation_error | translate}}</label>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <tr>
+                                    <td style="width: 40%">{{title.add_specification | translate}}</td>
+                                    <td style="width: 120px;">{{title.price | translate}}</td>
+                                    <td style="width: 30%">{{title.default_select | translate}}</td>
+                                </tr>
+                            </table>
+                            <div id="spec_model">
+                                <table class="table">
+                                    <tr *ngFor="let i of product_specification_list;  let index=index; ">
+                                        <td style="width: 5%"><label><input type="checkbox" class="icheck" value="{{i._id}}"/></label></td>
+                                        <td style="width: 35%"><label><span style="margin-left: 10px;">{{i.name}}</span></label></td>
+
+                                        <td style="width: 120px;"><div>
+                                            <input type="text" class="form-control" [disabled]="checked_array[index]!=true" (keypress)="helper.number_validation($event)" [(ngModel)]="i.price" name="{{index}}"></div>
+                                        </td>
+                                        <td style="width: 30%"><ui-switch (change)="onChange($event, i._id)" [(ngModel)]="i.is_default_selected" #is_default_selected="ngModel" [disabled]="checked_array[index]!=true" name="is_default_selected{{i._id}}"></ui-switch></td>
+
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        <div *ngIf="spec_list_error==1">
+                            <label class="error" style="font-weight: normal;">{{title.error_atleast_one_specification | translate}}</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </modal-body>
+        <modal-footer>
+            <div style="text-align: center">
+                <button type="submit" [disabled]="range_error" class="btn btn-primary">{{spec_button | translate}}</button>
+            </div>
+        </modal-footer>
+    </form>
+</modal>

@@ -1,0 +1,149 @@
+<footer [myLoading]="myLoading" ></footer>
+<div class="row wrapper fix_search_bar border-bottom white-bg page-heading">
+
+    <div class="row">
+        <div class="col-md-4 col-sm-12">
+            <div class="lable_center">
+                <label>{{title.search | translate}}</label>
+            </div>
+            <div class="col-md-6 col-sm-6 remove_padding">
+                <div class="form-group" id="search_fields">
+                    <select chosen class="chosen-select" id="search_field" [(ngModel)]="search_field" name="search_field" tabindex="4">
+
+                        <option value="country_details.country_name">{{title.country | translate}}</option>
+                        <option value="city_details.city_name">{{title.city | translate}}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-6 remove_padding">
+                <div class="form-group">
+                    <div class="input-group">
+
+                        <input type="text" class="form-control search_box" [(ngModel)]="search_value" name="search_value">
+                        <span class="input-group-addon search_icon"><span class="fa fa-search"></span></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 col-sm-12">
+            <div class="lable_center">
+                <label>{{title.sort | translate}}</label>
+            </div>
+            <div class="col-md-6 col-sm-6 remove_padding">
+                <div class="form-group" id="sort_fields">
+                    <select chosen class="chosen-select" id="sort_field" [(ngModel)]="sort_field" name="sort_field" tabindex="4">
+
+                        <option value="unique_id">{{title.id | translate}}</option>
+                        <option value="country_details.country_name">{{title.country | translate}}</option>
+                        <option value="city_details.city_name">{{title.city | translate}}</option>
+
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-6 remove_padding">
+                <div class="form-group" id="sort_orders">
+
+                    <select chosen class="chosen-select" id="sort_service" [(ngModel)]="sort_service" name="sort_service" tabindex="4">
+
+                        <option value="1">{{title.ascending | translate}}</option>
+                        <option value="-1">{{title.descending | translate}}</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 col-sm-12">
+            <div class="col-md-6 col-sm-6 col-xs-6 filter_btn_div">
+                <input type="button" (click)="filter(1)" class="btn filter_apply_btn pull-right" value="{{button.apply | translate}}" >
+            </div>
+            <div class="col-md-6 col-sm-6 col-xs-6 filter_btn_div">
+                <button [routerLink]="['/admin/add_service']" class="btn add_btn">{{button.add_service | translate}}<span class="fa fa-plus" style="margin-left: 8px;"></span></button>
+
+            </div>
+        </div>
+
+    </div>
+
+</div>
+<div class="wrapper wrapper-content content_top_bar_view1 animated fadeInRight ">
+    <div class="ibox" *ngIf="service_list.length==0">
+        <div class="ibox-content">
+            <div class="lable_center" >
+                <label>No Records</label>
+            </div>
+        </div>  
+    </div>
+    <div class="ibox" *ngIf="service_list.length>0">
+        <div class="ibox-content">
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>{{title.id |translate}}</th>
+                            <th>{{title.delivery_type | translate }}</th>
+                            <th>{{title.country | translate }}</th>
+                            <th>{{title.city | translate}}</th>
+                            <th>{{title.vehicle | translate }}</th>
+                            <th>{{title.business | translate}}</th>
+                            <th>{{title.default_price | translate}}</th>
+                            <th>{{title.action | translate}}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let i of service_list; let index=index; let last=last;">
+                        <td>{{i.unique_id}}</td>
+                        <td>
+                            <span *ngIf="i.delivery_type==1">{{title.store | translate}}</span>
+                            <span *ngIf="i.delivery_type==2">{{title.courier | translate}}</span>
+                        </td>
+                        <td><span *ngIf="i.country_details.is_business" class="fa fa-circle" style="color: green;"></span>
+                            <span *ngIf="!i.country_details.is_business" class="fa fa-circle" style="color: red;"></span>
+                            {{i.country_details.country_name}}
+                        </td>
+                        <td><span *ngIf="i.city_details.is_business" class="fa fa-circle" style="color: green;"></span>
+                            <span *ngIf="!i.city_details.is_business" class="fa fa-circle" style="color: red;"></span>
+                            {{i.city_details.city_name}}
+                        </td>
+
+                        <td><span *ngIf="i.vehicle_detail.is_business" class="fa fa-circle" style="color: green;"></span>
+                            <span *ngIf="!i.vehicle_detail.is_business" class="fa fa-circle" style="color: red;"></span>
+                            {{i.vehicle_detail.vehicle_name}}
+                        </td>
+                        <td [ngSwitch]="i.is_business">
+                            <div *ngSwitchCase="true"><span class="fa fa-circle" style="color: green;"></span></div>
+                            <div *ngSwitchCase="false"><span class="fa fa-circle" style="color: red;"></span></div>
+                        </td>
+                        <td>
+                            <ui-switch (change)="change_default(index, $event)" [(ngModel)]="i.is_default" #is_default="ngModel" name="is_default"></ui-switch>
+                        </td>
+                        <td class="text-left footable-visible footable-last-column">
+                            <div class="btn-group">
+                                <button (click)="editService(i._id)" class="btn btn-xs btn-light_black">{{helper.button.detail | translate}}</button>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+
+                </table>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="col-md-12 col-sm-12">
+        <div class="lable_center">
+
+            <ul class="pagination">
+                <li *ngIf="page!==1"><a class="btn" (click)="filter(page-1)">{{button.pre | translate}}</a></li>
+                <li *ngFor="let index of total_pages" [class.active]="page==index">
+                    <a *ngIf="index==1 || index==total_page || index==page || index==page-1 || index==page+1" (click)="filter(index)" class="btn">{{index}}</a>
+                    <a *ngIf="(index==1 && (page!==1 && page!==2 && page!==3)) || (index==total_page-1 && (page!==total_page && page!==total_page-1 && page!==total_page-2))" class="btn">...</a>
+
+                </li>
+                <li *ngIf="page!==total_page && service_list.length!==0"><a class="btn" (click)="filter(page+1)">{{button.next | translate}}</a></li>
+            </ul>
+        </div>
+    </div>
+
+</div>
+

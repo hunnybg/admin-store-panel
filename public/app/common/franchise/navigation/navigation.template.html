@@ -1,0 +1,70 @@
+<style type="text/css">
+    .scrollbar
+    {
+        height: 100%;
+        background: #fff;
+        overflow-y: auto;
+    }
+
+    .scrollbar::-webkit-scrollbar-track
+    {
+        -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+        background-color: #fff;
+    }
+
+    .scrollbar::-webkit-scrollbar
+    {
+        width: 3px;
+        background-color: #222222;
+    }
+
+    .scrollbar::-webkit-scrollbar-thumb
+    {
+        background-color: #000000;
+    }
+
+</style>
+<nav class="navbar-default navbar-static-side" role="navigation">
+    <div class="sidebar-collapse scrollbar">
+        <ul class="nav metismenu" id="side-menu">
+            <li class="nav-header" (click)="toggle($event)" style="background-color: #222222 !important;transition: all 0.4s;" [routerLink]="['/franchise/profile']">
+                <div class="dropdown profile-element" style="text-align: center;transition: all 0.4s;"> 
+
+                    <img alt="image" class="img-circle" style="height:50px; width:50px;"  src="{{image != '' ? image : 'default.png'}}"/>
+                    <!-- <a data-toggle="dropdown" class="dropdown-toggle" href="#"> -->
+                        <span class="block m-t-xs"> <strong class="font-bold" style="color: #fff;">{{name}}</strong> </span>
+                        
+                    <!-- </a> -->
+                    <!-- <ul class="dropdown-menu animated fadeInRight m-t-xs">
+                        <li><a [routerLink]="['/store/profile']"><span class="nav-label">{{menu_title.profile | translate}}</span> </a></li>
+                        <li><a [routerLink]="['/store/logout']"><span class="nav-label">{{menu_title.logout | translate}}</span> </a></li>
+                    </ul> -->
+                </div>
+                <div class="logo-element" style="padding: 10px 0;transition: all 0.4s;">
+                    <img alt="image" class="img-circle" style="height:50px; width:50px;"  src="{{image}}"/>
+                </div>
+            </li>
+            <li (click)="toggle($event)" [ngClass]="{active: activeRoute('order')}">
+                <a [routerLink]="['/franchise/order']"><i class="fa fa-list-alt"></i> <span class="nav-label">{{menu_title.order | translate}}</span> </a>
+            </li>
+            <li [ngClass]="{active: activeRoute('deliveries')}" (click)="toggle($event)">
+                <a [routerLink]="['/franchise/deliveries']"><i class="fa fa-list"></i> <span class="nav-label">{{menu_title.deliveries | translate}}</span> </a>
+            </li>
+            <li (click)="toggle($event)" [ngClass]="{active: activeRoute('history')}">
+                <a [routerLink]="['/franchise/history']"><i class="fa fa-history"></i> <span class="nav-label">{{menu_title.history | translate}}</span> </a>
+            </li>
+            <li (click)="toggle($event)" [ngClass]="{active: activeRoute('store')}">
+                <a [routerLink]="['/franchise/stores']"><i class="fa fa-cube"></i> <span class="nav-label">{{menu_title.store | translate}}</span> </a>
+            </li>
+
+            <li (click)="toggle($event)" [ngClass]="{active: activeRoute('item')}">
+                <a [routerLink]="['/franchise/item']"><i class="fa fa-shopping-cart"></i> <span class="nav-label">{{menu_title.item | translate}}</span> </a>
+            </li>
+            <li (click)="toggle($event)" [ngClass]="{active: activeRoute('product')}">
+                <a [routerLink]="['/franchise/product']"><i class="fa fa-cube"></i> <span class="nav-label">{{menu_title.product | translate}}</span> </a>
+            </li>
+
+        </ul>
+
+    </div>
+</nav>

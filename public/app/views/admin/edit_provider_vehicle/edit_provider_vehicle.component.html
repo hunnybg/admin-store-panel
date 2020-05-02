@@ -1,0 +1,100 @@
+<form #providerVehicleForm="ngForm" (ngSubmit)="updateProviderVehicle(providerVehicleForm.value)" >
+    <input type="hidden" class="form-control" [(ngModel)]="provider_vehicle_id"   name="provider_vehicle_id" />
+    <div class="row wrapper col-sm-12 col-md-12 col-xs-12 col-lg-12 fix_search_bar border-bottom white-bg page-heading">
+        <div class="row">
+
+            <div  class="col-md-3 col-sm-12 pull-right new_submit_button">
+                <input *ngIf="edit_provider_vehicle.admin_vehicle_id!=null" type="submit" id="update" name="update"  class="btn btn-primary" value="{{button.update | translate}}" >
+                <input *ngIf="edit_provider_vehicle.admin_vehicle_id==null" type="submit" id="update" name="update"  class="btn btn-primary" value="{{button.update | translate}}" disabled >
+            
+            </div>
+        </div>
+    </div>
+    <div class="wrapper wrapper-content content_top_bar_view animated fadeInRight">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="col-lg-6 col-sm-9">
+                    <div class="ibox">
+                        <div class="ibox-title">
+                            <label class="control-label">Vehicles</label>  
+                        </div>
+                        <div class="ibox-content">
+                            <div class="row">
+
+                                <div class="form-group">
+                                    <label class="col-lg-4 control-label">{{title.name | translate}}</label>
+                                    <div class="col-lg-8 form-group">
+                                        <input type="text" class="form-control" [(ngModel)]="edit_provider_vehicle.vehicle_name" #vehicle_name="ngModel"  name="vehicle_name" required />
+                                        
+                                    </div> 
+                                </div>
+                                
+                                
+                                <div class="form-group">
+                                    <label class="col-lg-4 control-label">{{title.provider_vehicle_plate_no | translate}}</label>  
+                                    <div class="col-lg-8 form-group">
+                                        <input type="text" class="form-control" [(ngModel)]="edit_provider_vehicle.vehicle_plate_no" #vehicle_plate_no="ngModel"  name="vehicle_plate_no" required />
+                                        
+                                    </div> 
+                                </div>
+                                
+                                
+                                <div class="form-group">
+                                    <label class="col-lg-4 control-label">{{title.color | translate}}</label>
+                                    <div class="col-lg-8 form-group">
+                                        <input type="text" class="form-control" [(ngModel)]="edit_provider_vehicle.vehicle_color" #vehicle_color="ngModel"  name="vehicle_color" required />
+                                        
+                                    </div> 
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label class="col-lg-4 control-label">{{title.provider_vehicle_model | translate}}</label>  
+                                    <div class="col-lg-8 form-group">
+                                        <input type="text" class="form-control" [(ngModel)]="edit_provider_vehicle.vehicle_model" #vehicle_model="ngModel"  name="vehicle_model" required />
+                                        
+                                    </div> 
+                                </div>
+
+
+                                  <div class="form-group">
+                                    <label class="col-lg-4 control-label">{{title.year | translate}}</label>
+                                    <div class="col-lg-8 form-group">
+                                        <input type="text" class="form-control" [(ngModel)]="edit_provider_vehicle.vehicle_year" #vehicle_year="ngModel"  name="vehicle_year" required />
+                                        
+                                    </div> 
+                                </div>
+
+
+
+                                <div class="form-group">
+                                    <label class="col-lg-4 control-label">{{title.provider_vehicle_service_type | translate}}</label>  
+                                    <div class="col-lg-8 form-group add">
+                                        <select chosen class="chosen-select" id="admin_vehicle_id" [(ngModel)]="edit_provider_vehicle.admin_vehicle_id" #admin_vehicle_id="ngModel" name="admin_vehicle_id" data-placeholder="Select Vehicle"  tabindex="4"  >
+
+                                            <option *ngFor="let i of vehicle_service_list" value="{{i._id}}">{{i.vehicle_name}}</option>
+                                        </select> 
+
+                                    </div>
+
+                                </div>
+
+
+                                <div class="form-group">
+                                    <label class="col-lg-4 control-label">{{title.approved | translate}}</label>
+
+                                    <div class="col-lg-8 form-group">
+                                        <ui-switch [(ngModel)]="edit_provider_vehicle.is_approved" #is_approved="ngModel" name="is_approved"></ui-switch>
+
+                                    </div>
+                                </div>
+
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

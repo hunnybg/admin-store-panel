@@ -1,0 +1,221 @@
+<footer [myLoading]="this.myLoading" ></footer>
+
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <link rel="stylesheet" type="text/css" href="../../../../assets/user_panel/css/style.css">
+  <link rel="stylesheet" type="text/css" href="../../../../assets/user_panel/css/bootstrap-theme.min.css">
+  <link rel="stylesheet" type="text/css" href="../../../../assets/user_panel/css/bootstrap.min.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <link rel="stylesheet" type="text/css" href="../../../../assets/user_panel/css/font-awesome.min.css">
+</head>
+
+<style>
+  #map_pin{
+    bottom: 50% !important;
+  }
+</style>
+<body>
+
+  <div class="map_first_div mapsection1">
+    <form #userForm="ngForm" (ngSubmit)="update_address()" enctype='multipart/form-data'>
+      <div class="wrap wrap_store">
+        <div class="row">
+          <div class="col-lg-8 col-md-12 col-xs-12" style="overflow: hidden;">
+
+            <div class="adddetails" style="position: absolute;z-index: 999;margin-top: 10px;height: 230px;">
+                <div class=" col-sm-4 col-md-6 col-xs-6" style="margin-top: 10px;">
+                  <input [readonly]="!edit_address" type="text" [(ngModel)]="user_data.first_name" #first_name="ngModel" name="first_name" class="adddetailstext" placeholder="{{title.enter_first_name | translate}}" required>
+                  <div class="adddetailsline1"></div>
+                </div>
+                <div class="col-sm-4 col-md-6 col-xs-6" style="margin-top: 10px;">
+                  <input [readonly]="!edit_address" type="text" [(ngModel)]="user_data.last_name" #last_name="ngModel" name="last_name" class="adddetailstext" placeholder="{{title.enter_last_name | translate}}" required>
+                  <div class="adddetailsline1"></div>
+                </div>
+                <div class=" col-sm-4 col-md-6 col-xs-6" style="margin-top: 10px;">
+                  <input [readonly]="!edit_address" type="email" [(ngModel)]="user_data.email" #email="ngModel" name="email" class="adddetailstext" placeholder="{{title.enter_email | translate}}" required>
+                  <div class="adddetailsline1"></div>
+                </div>
+                <div class="col-sm-4 col-md-6 col-xs-6" style="margin-top: 10px;">
+                  <input [readonly]="!edit_address" type="text" [(ngModel)]="user_data.phone" minlength="{{minimum_phone_number_length}}" maxlength="{{maximum_phone_number_length}}" #phone="ngModel" name="phone" class="adddetailstext" (keypress)="helper.number_validation($event)" placeholder="{{title.enter_mobile_no | translate}}" required>
+                  <div class="adddetailsline1"></div>
+                </div>
+                <div class="col-md-6 col-sm-6 col-xs-12" style="margin-top: 10px;">
+                  <input [readonly]="!edit_address" type="text" style="width: 95%;" name="product_total" (keypress)="helper.number_validation($event)" [(ngModel)]="product_total" class="adddetailstext"
+                         placeholder="{{title.product_price}}" required>
+                  <div class="adddetailsline1"></div>
+                </div>
+                <div class="col-md-6 col-sm-6 col-xs-12" style="margin-top: 10px;">
+                  <select [disabled]="!edit_address" chosen class="chosen-select" id="selected_vehicle_id" [(ngModel)]="selected_vehicle_id" name="selected_vehicle_id" tabindex="4">
+                      <option *ngFor="let vehicle of vehicle_list" value="{{vehicle._id}}">{{vehicle.vehicle_name}}</option>
+                  </select>
+                </div>
+                <div class="row">
+                  <div class="col-md-12 deladd">
+                    <input [readonly]="!edit_address" id="input" type="text" style="width: 95%;" name="delivery_address" [(ngModel)]="delivery_address" class="adddetailstext"
+                           placeholder="{{title.enter_address}}" required>
+                    <span *ngIf="!edit_address" class="fa fa-pencil" (click)="edit_address_field()"></span>
+                    <button style="border: 0;background-color: #fff;" type="submit"><span *ngIf="edit_address" class="fa fa-check"></span></button>
+                    <div class="adddetailsline1"></div>
+                  </div>
+                </div>
+              </div>
+            <div>
+              <div id="map" style="height: calc(100vh - 96px);"></div>
+              <img src="./map_pin_images/Store/store_business_off.png" id="map_pin"/>
+              <img src="./map_pin_images/location.png" id="location_image" (click)="set_current_location()"/>
+            </div>
+
+          </div>
+          <div class="col-lg-4 col-md-12 scroll_invoice" style="marin-top:10px;max-height: calc(100vh - 60px);overflow-y: auto;">
+            <div class="deldes">
+
+              <textarea class="delnote" name="delivery_note" [(ngModel)]="delivery_note" style="width: 100%;max-width: 100%; max-height: 80px;" placeholder="Add Delivery Note"></textarea>
+
+
+              <h1 class="storepaulmap">{{title.order_details | translate}}</h1>
+
+              <div class="priceboxmap" *ngIf="order_payment.total_service_price > 0">
+                <div class="col-md-9 col-sm-9 col-xs-9">
+                  <p class="baseprice">{{title.service_price | translate}}
+
+                  </p>
+                </div>
+                <div class="col-md-3 col-sm-3 col-xs-3 text-right">
+                  <p class="baseprice">{{delivery_currency}}{{(order_payment.total_service_price).toFixed(2)}}</p>
+
+                </div>
+              </div>
+              <div class="adddetailsline" *ngIf="order_payment.total_service_price > 0"></div>
+              <div class="priceboxmap" *ngIf="order_payment.total_admin_tax_price > 0">
+                <div class="col-md-9 col-sm-9 col-xs-9">
+                  <p class="baseprice">{{title.tax_price | translate}} <span> {{order_payment.service_tax}}%</span></p>
+                </div>
+                <div class="col-md-3 col-sm-3 col-xs-3 text-right">
+                  <p class="baseprice">{{delivery_currency}}{{(order_payment.total_admin_tax_price).toFixed(2)}}</p>
+
+                </div>
+              </div>
+              <div class="adddetailsline" *ngIf="order_payment.total_admin_tax_price > 0"></div>
+              <div class="priceboxmap" *ngIf="order_payment.total_surge_price > 0">
+                <div class="col-md-9 col-sm-9 col-xs-9">
+                  <p class="baseprice">{{title.surge_price | translate}} <span> X{{order_payment.surge_charges}}</span></p>
+                </div>
+                <div class="col-md-3 col-sm-3 col-xs-3 text-right">
+                  <p class="baseprice">{{delivery_currency}}{{(order_payment.total_surge_price).toFixed(2)}}</p>
+
+                </div>
+              </div>
+
+              <div class="priceboxmap" *ngIf="order_payment.total_delivery_price > 0">
+                <div class="col-md-9 col-sm-9 col-xs-9">
+                  <p class="servicecost">{{title.total_service_cost | translate}} </p>
+                </div>
+                <div class="col-md-3 col-sm-3 col-xs-3 text-right">
+                  <p class="baseprice">{{delivery_currency}}{{(order_payment.total_delivery_price).toFixed(2)}}</p>
+
+                </div>
+              </div>
+              <div class="adddetailsline" *ngIf="order_payment.total_delivery_price > 0"></div>
+
+              <div class="priceboxmap" *ngIf="order_payment.total_cart_price > 0">
+                <div class="col-md-9 col-sm-9 col-xs-9">
+                  <p class="baseprice">{{title.item_price | translate}}<span> {{order_payment.total_item_count}} item</span></p>
+                </div>
+                <div class="col-md-3 col-sm-3 col-xs-3 text-right">
+                  <p class="baseprice">{{delivery_currency}}{{(order_payment.total_cart_price).toFixed(2)}}</p>
+
+                </div>
+              </div>
+              <div class="adddetailsline" *ngIf="order_payment.total_cart_price > 0"></div>
+
+              <div class="priceboxmap" *ngIf="order_payment.total_store_tax_price > 0">
+                <div class="col-md-9 col-sm-9 col-xs-9">
+                  <p class="baseprice">{{title.tax_price | translate}}</p>
+                </div>
+                <div class="col-md-3 col-sm-3 col-xs-3 text-right">
+                  <p class="baseprice">{{delivery_currency}}{{(order_payment.total_store_tax_price).toFixed(2)}}</p>
+
+                </div>
+              </div>
+
+              <div class="adddetailsline" *ngIf="order_payment.total_store_tax_price > 0"></div>
+
+              <div class="priceboxmap">
+                <div class="col-md-9 col-sm-9 col-xs-9">
+                  <p class="servicecost">{{title.total_item_cost | translate}} </p>
+                </div>
+                <div class="col-md-3 col-sm-3 col-xs-3 text-right">
+                  <p class="baseprice">{{delivery_currency}}{{(order_payment.total_order_price).toFixed(2)}}</p>
+
+                </div>
+              </div>
+            </div>
+
+            <div [hidden]="order_payment.user_pay_payment==0">
+              <button (click)="pay_order_payment()" type="button" style="width: 100%;background-color: black;border: 0;">
+                <div class="col-md-9 col-sm-9 col-xs-9">
+                  <h1 class="totalprice" style="float: left;">{{button.place_order | translate}}</h1>
+                </div>
+                <div class="col-md-3 col-sm-3 col-xs-3">
+                  <h1 class="totalprice">{{delivery_currency}}{{(order_payment.user_pay_payment).toFixed(2)}}</h1>
+                </div>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</body>
+</html>
+
+<modal keyboard="false" backdrop="static" style="z-index: 9999 !important;top: 25%;" cssClass="modal-sm" #orderAmountInvalid id="orderAmountInvalid">
+
+  <modal-body>
+    <div>
+      {{title.invalid_amount | translate}} {{mimimum_amount}}
+    </div>
+  </modal-body>
+  <modal-footer>
+    <div style="text-align: center">
+      <button type="button" (click)="redirect_to_checkout()" class="btn btn-black">{{button.ok | translate}}</button>
+    </div>
+  </modal-footer>
+</modal>
+
+<modal keyboard="false" backdrop="static" style="z-index: 9999 !important;top: 25%;" cssClass="modal-xl" #user_data_modal id="user_data_modal">
+  <form #user_data_form="ngForm" (ngSubmit)="update_address()">
+    <modal-body>
+      <div class="row">
+        <div class=" col-sm-12 col-md-6 col-xs-12" style="margin-top: 10px;">
+          <input type="text" [(ngModel)]="user_data.first_name" #first_name="ngModel" name="first_name" class="adddetailstext" placeholder="{{title.enter_first_name | translate}}" required>
+          <div class="adddetailsline1"></div>
+        </div>
+        <div class="col-sm-12 col-md-6 col-xs-12" style="margin-top: 10px;">
+          <input type="text" [(ngModel)]="user_data.last_name" #last_name="ngModel" name="last_name" class="adddetailstext" placeholder="{{title.enter_last_name | translate}}" required>
+          <div class="adddetailsline1"></div>
+        </div>
+        <div class=" col-sm-12 col-md-6 col-xs-12" style="margin-top: 10px;">
+          <input type="email" [(ngModel)]="user_data.email" #email="ngModel" name="email" class="adddetailstext" placeholder="{{title.enter_email | translate}}" required>
+          <div class="adddetailsline1"></div>
+        </div>
+        <div class="col-sm-12 col-md-6 col-xs-12" style="margin-top: 10px;">
+          <input type="text" [(ngModel)]="user_data.phone" minlength="{{minimum_phone_number_length}}" maxlength="{{maximum_phone_number_length}}" #phone="ngModel" name="phone" class="adddetailstext" (keypress)="helper.number_validation($event)" placeholder="{{title.enter_mobile_no | translate}}" required>
+          <div class="adddetailsline1"></div>
+        </div>
+        <div class="col-sm-12 col-md-12 col-xs-12" style="margin-top: 10px;">
+          <input type="text" style="width: 95%;" name="product_total" (keypress)="helper.number_validation($event)" [(ngModel)]="product_total" class="adddetailstext"
+               placeholder="{{title.product_price}}" required>
+          <div class="adddetailsline1"></div>
+        </div>
+        <div style="color: red;" *ngIf="mimimum_amount>0">{{title.invalid_amount | translate}} {{mimimum_amount}}</div>
+      </div>
+    </modal-body>
+    <modal-footer>
+      <div style="text-align: center">
+        <button type="submit" class="btn btn-black">{{button.submit | translate}}</button>
+      </div>
+    </modal-footer>
+  </form>
+</modal>

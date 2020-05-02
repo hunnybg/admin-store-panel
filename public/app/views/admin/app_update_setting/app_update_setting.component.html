@@ -1,0 +1,263 @@
+<footer [myLoading]="myLoading" ></footer> 
+<form #appversionForm="ngForm" (ngSubmit)="UpdateVersionSetting(appversionForm.value)" >
+    <div class="wrapper wrapper-content animated fadeInRight">
+        <div class="row">
+            <div class="">
+                <div class="col-lg-4 col-sm-6">
+                    <div class="ibox">
+                        <div class="ibox-title">
+                            <label class="control-label">{{heading_title.android_user_app | translate}}</label>  
+                        </div>
+                        <div class="ibox-content">
+                            <div class="row">
+
+                                <div class="form-group">
+                                    <label class="col-lg-9 col-xs-9 control-label">{{title.open_update_dialog | translate}}</label>  
+
+                                    <div class="col-lg-3 col-xs-3 form-group">
+                                        <ui-switch [(ngModel)]="update_version_setting.is_android_user_app_open_update_dialog" #is_android_user_app_open_update_dialog="ngModel" name="is_android_user_app_open_update_dialog"></ui-switch>
+
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-lg-9 col-xs-9 control-label">{{title.force_update | translate}}</label>  
+
+                                    <div class="col-lg-3 col-xs-3 form-group">
+                                        <ui-switch [(ngModel)]="update_version_setting.is_android_user_app_force_update" #is_android_user_app_force_update="ngModel" name="is_android_user_app_force_update"></ui-switch>
+
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-lg-8 col-xs-8 control-label">{{title.app_version | translate}}</label>
+
+                                    <div class="col-lg-4 col-xs-4 form-group " style="padding-right: 5px;">
+                                        <input type="text" class="form-control" onkeypress='return event.charCode >= 48 && event.charCode <= 57' maxlength="3" [(ngModel)]="update_version_setting.android_user_app_version_code" #android_user_app_version_code="ngModel"  name="android_user_app_version_code" required/>
+
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-sm-6" >
+                    <div class="ibox">
+                        <div class="ibox-title">
+                            <label class="control-label">{{heading_title.android_provider_app | translate}}</label>  
+                        </div>
+                        <div class="ibox-content">
+                            <div class="row">
+                                <div class="form-group">
+                                    <label class="col-lg-9 col-xs-9 control-label">{{title.open_update_dialog | translate}}</label>  
+
+                                    <div class="col-lg-3 col-xs-3 form-group">
+                                        <ui-switch [(ngModel)]="update_version_setting.is_android_provider_app_open_update_dialog" #is_android_provider_app_open_update_dialog="ngModel" name="is_android_provider_app_open_update_dialog"></ui-switch>
+
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-lg-9 col-xs-9 control-label">{{title.force_update | translate}}</label>  
+
+                                    <div class="col-lg-3 col-xs-3 form-group">
+                                        <ui-switch [(ngModel)]="update_version_setting.is_android_provider_app_force_update" #is_android_provider_app_force_update="ngModel" name="is_android_provider_app_force_update"></ui-switch>
+
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-lg-8 col-xs-8 control-label">{{title.app_version | translate}}</label>
+
+                                    <div class="col-lg-4 col-xs-4 form-group " style="padding-right: 5px;">
+                                        <input type="text" class="form-control" onkeypress='return event.charCode >= 48 && event.charCode <= 57' maxlength="3" [(ngModel)]="update_version_setting.android_provider_app_version_code" #android_provider_app_version_code="ngModel"  name="android_provider_app_version_code" required/>
+
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+
+                <div class="col-lg-4 col-sm-6" >
+                    <div class="ibox">
+                        <div class="ibox-title">
+                            <label class="control-label">{{heading_title.android_store_app | translate}}</label>  
+                        </div>
+                        <div class="ibox-content">
+                            <div class="row">
+
+
+                                <div class="form-group">
+                                    <label class="col-lg-9 col-xs-9 control-label">{{title.open_update_dialog | translate}}</label>  
+
+                                    <div class="col-lg-3 col-xs-3 form-group">
+                                        <ui-switch [(ngModel)]="update_version_setting.is_android_store_app_open_update_dialog" #is_android_store_app_open_update_dialog="ngModel" name="is_android_store_app_open_update_dialog"></ui-switch>
+
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-lg-9 col-xs-9 control-label">{{title.force_update | translate}}</label>  
+
+                                    <div class="col-lg-3 col-xs-3 form-group">
+                                        <ui-switch [(ngModel)]="update_version_setting.is_android_store_app_force_update" #is_android_store_app_force_update="ngModel" name="is_android_store_app_force_update"></ui-switch>
+
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-lg-8 col-xs-8 control-label">{{title.app_version | translate}}</label>
+
+                                    <div class="col-lg-4 col-xs-4 form-group " style="padding-right: 5px;">
+                                        <input type="text" class="form-control" onkeypress='return event.charCode >= 48 && event.charCode <= 57' maxlength="3" [(ngModel)]="update_version_setting.android_store_app_version_code" #android_store_app_version_code="ngModel"  name="android_store_app_version_code" required/>
+
+                                    </div>
+                                </div>
+
+
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+        <div class="row">
+           
+                <div class="col-lg-4 col-sm-6">
+                    <div class="ibox">
+                        <div class="ibox-title">
+                            <label class="control-label">{{heading_title.ios_user_app | translate}}</label>  
+                        </div>
+                        <div class="ibox-content">
+                            <div class="row">
+
+                                <div class="form-group">
+                                    <label class="col-lg-9 col-xs-9 control-label">{{title.open_update_dialog | translate}}</label>  
+
+                                    <div class="col-lg-3 col-xs-3 form-group">
+                                        <ui-switch [(ngModel)]="update_version_setting.is_ios_user_app_open_update_dialog" #is_ios_user_app_open_update_dialog="ngModel" name="is_ios_user_app_open_update_dialog"></ui-switch>
+
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-lg-9 col-xs-9 control-label">{{title.force_update | translate}}</label>  
+
+                                    <div class="col-lg-3 col-xs-3 form-group">
+                                        <ui-switch [(ngModel)]="update_version_setting.is_ios_user_app_force_update" #is_ios_user_app_force_update="ngModel" name="is_ios_user_app_force_update"></ui-switch>
+
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-lg-8 col-xs-8 control-label">{{title.app_version | translate}}</label>
+
+                                    <div class="col-lg-4 col-xs-4 form-group " style="padding-right: 5px;">
+                                        <input type="text" class="form-control" (keypress)="helper.number_validation($event)" [(ngModel)]="update_version_setting.ios_user_app_version_code" #ios_user_app_version_code="ngModel"  name="ios_user_app_version_code" required/>
+
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-sm-6" >
+                    <div class="ibox">
+                        <div class="ibox-title">
+                            <label class="control-label">{{heading_title.ios_provider_app | translate}}</label>  
+                        </div>
+                        <div class="ibox-content">
+                            <div class="row">
+                                <div class="form-group">
+                                    <label class="col-lg-9 col-xs-9 control-label">{{title.open_update_dialog | translate}}</label>  
+
+                                    <div class="col-lg-3 col-xs-3 form-group">
+                                        <ui-switch [(ngModel)]="update_version_setting.is_ios_provider_app_open_update_dialog" #is_ios_provider_app_open_update_dialog="ngModel" name="is_ios_provider_app_open_update_dialog"></ui-switch>
+
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-lg-9 col-xs-9 control-label">{{title.force_update | translate}}</label>  
+
+                                    <div class="col-lg-3 col-xs-3 form-group">
+                                        <ui-switch [(ngModel)]="update_version_setting.is_ios_provider_app_force_update" #is_ios_provider_app_force_update="ngModel" name="is_ios_provider_app_force_update"></ui-switch>
+
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-lg-8 col-xs-8 control-label">{{title.app_version | translate}}</label>
+
+                                    <div class="col-lg-4 col-xs-4 form-group " style="padding-right: 5px;">
+                                        <input type="text" class="form-control" (keypress)="helper.number_validation($event)" [(ngModel)]="update_version_setting.ios_provider_app_version_code" #ios_provider_app_version_code="ngModel"  name="ios_provider_app_version_code" required/>
+
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <div class="col-lg-4 col-sm-6" >
+                    <div class="ibox">
+                        <div class="ibox-title">
+                            <label class="control-label">{{heading_title.ios_store_app | translate}}</label>  
+                        </div>
+                        <div class="ibox-content">
+                            <div class="row">
+
+                                <div class="form-group">
+                                    <label class="col-lg-9 col-xs-9 control-label">{{title.open_update_dialog | translate}}</label>  
+
+                                    <div class="col-lg-3 col-xs-3 form-group">
+                                        <ui-switch [(ngModel)]="update_version_setting.is_ios_store_app_open_update_dialog" #is_ios_store_app_open_update_dialog="ngModel" name="is_ios_store_app_open_update_dialog"></ui-switch>
+
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-lg-9 col-xs-9 control-label">{{title.force_update | translate}}</label>  
+
+                                    <div class="col-lg-3 col-xs-3 form-group">
+                                        <ui-switch [(ngModel)]="update_version_setting.is_ios_store_app_force_update" #is_ios_store_app_force_update="ngModel" name="is_ios_store_app_force_update"></ui-switch>
+
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-lg-8 col-xs-8 control-label">{{title.app_version | translate}}</label>
+
+                                    <div class="col-lg-4 col-xs-4 form-group " style="padding-right: 5px;">
+                                        <input type="text" class="form-control" (keypress)="helper.number_validation($event)" [(ngModel)]="update_version_setting.ios_store_app_version_code" #ios_store_app_version_code="ngModel"  name="ios_store_app_version_code" required/>
+
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            
+            <div class="col-lg-4">
+            </div>
+            <div class="col-lg-4" style="text-align: center;">
+                <input type="submit" id="submit" [disabled]="edit_button==false" name="submit" style="width: 50%;" class="btn btn-primary" value="{{button.submit | translate}}" >
+            </div>
+
+        </div>
+
+    </div>
+</form>

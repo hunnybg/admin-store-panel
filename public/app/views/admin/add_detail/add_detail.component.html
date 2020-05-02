@@ -1,0 +1,209 @@
+
+<div class="wrapper wrapper-content animated fadeInRight content_top_bar">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="col-lg-4 col-sm-6">
+                <form #adddetailForm="ngForm" (ngSubmit)="AddDetail(adddetailForm.value)">
+
+                    <div class="ibox">
+                        <div class="ibox-title">
+                            <label class="control-label">Add Detail</label>  
+                        </div>
+                        <div class="ibox-content">
+                            <div class="row">
+
+                                <div class="form-group">
+                                    <label class="col-lg-4 control-label">{{title.type | translate}}</label>
+                                    <div class="col-lg-8 form-group ">
+                                        <select chosen class="form-control chosen-select" id="type" [(ngModel)]="add_detail.type" #type="ngModel"  name="type" >
+
+                                            <option value="0" >All</option>
+                                            <option value="2" >{{title.store}}</option>
+                                            <option value="7">{{title.user}}</option>
+                                            <option value="8">{{title.provider}}</option>
+                                        </select>
+                                    </div> 
+
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-lg-4 control-label">{{title.promo_country | translate}}</label>  
+                                    <div class="col-lg-8 form-group ">
+                                        <select chosen class="form-control chosen-select" id="country" [(ngModel)]="add_detail.country_id" #country_id="ngModel" name="country_id" data-placeholder="Select Country"  tabindex="4"  >
+
+                                            <option *ngFor="let i of country_list" value="{{i._id}}">{{i.country_name}}</option>
+                                        </select>
+
+                                    </div> 
+
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-lg-4 control-label">{{title.promo_city | translate}}</label>  
+                                    <div class="col-lg-8 form-group ">
+                                        <select chosen class="form-control chosen-select" id="city" [(ngModel)]="add_detail.city_id" #city_id="ngModel" name="city_id" data-placeholder="Select City"  tabindex="4"  >
+                                            <option selected style="display:none;">{{title.select | translate}}</option>
+
+                                            <option *ngFor="let i of city_list" value="{{i._id}}">{{i.city_name}}</option>
+                                        </select>  
+                                    </div> 
+
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-lg-4 control-label">{{title.delivery | translate}}</label>  
+                                    <div class="col-lg-8 form-group ">
+                                        <select chosen class="form-control chosen-select" id="store_delivery_id" [(ngModel)]="add_detail.store_delivery_id" #store_delivery_id="ngModel" name="store_delivery_id" data-placeholder="Select Delivery"  tabindex="4"  >
+                                            <option selected style="display:none;">{{title.select | translate}}</option>
+
+                                            <option *ngFor="let i of delivery_list" value="{{i._id}}">{{i.delivery_name}}</option>
+                                        </select>  
+                                    </div> 
+                                </div>
+
+
+                                <div class="form-group" >
+                                    <label class="col-lg-4 control-label"></label>  
+                                    <div class="col-lg-8 form-group">
+                                        <input  type="submit" id="submit" name="submit"  style="width: 60%;" class="btn btn-primary" value="{{button.submit | translate}}" >
+
+                                    </div>
+                                </div>
+
+                                <div class="form-group" *ngIf="store_email != ''" >
+                                    <label class="col-lg-4 control-label">Store Email</label>  
+
+                                    <div class="col-lg-8 form-group "  >
+                                        {{store_email}}
+                                    </div>
+                                </div>
+                                <div class="form-group" *ngIf="provider_email != ''" >
+                                    <label class="col-lg-4 control-label">Provider Email</label>  
+
+                                    <div class="col-lg-8 form-group "  >
+                                        {{provider_email}}
+                                    </div>
+                                </div>
+                                <div class="form-group" *ngIf="user_email != ''" >
+                                    <label class="col-lg-4 control-label">User Email</label>  
+
+                                    <div class="col-lg-8 form-group "  >
+                                        {{user_email}}
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="col-lg-4 col-sm-6">
+                <form #addstoredetailForm="ngForm" (ngSubmit)="AddStoreData(addstoredetailForm.value)">
+                    <div class="ibox">
+                        <div class="ibox-title">
+                            <label class="control-label">Add Store Data</label>  
+                        </div>
+                        <div class="ibox-content">
+                            <div class="row">
+
+
+                                <div class="form-group">
+                                    <label class="col-lg-3 control-label">Present Store</label>  
+                                    <div class="col-lg-9 form-group ">
+                                        <select chosen class="form-control chosen-select" id="present_store_id" [(ngModel)]="add_store_data.present_store_id" #present_store_id="ngModel" name="present_store_id" data-placeholder="Select Store"  tabindex="4"  >
+
+                                            <option *ngFor="let i of store_list" value="{{i._id}}">{{i.email}}</option>
+                                        </select>
+                                    </div> 
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-lg-3 control-label">New Store</label>  
+                                    <div class="col-lg-9 form-group ">
+                                        <select chosen class="form-control chosen-select" id="new_store_id" [(ngModel)]="add_store_data.new_store_id" #new_store_id="ngModel" name="new_store_id" data-placeholder="Select Store"  tabindex="4"  >
+
+                                            <option *ngFor="let i of new_store_list" value="{{i._id}}">{{i.email}}</option>
+                                        </select>
+                                    </div> 
+                                </div>
+
+                                <!-- <div class="form-group">
+                                    <label class="col-lg-3 control-label">Api</label>  
+                                    <div class="col-lg-9 form-group ">
+                                        <select chosen class="form-control chosen-select" id="api" [(ngModel)]="add_store_data.api" #api="ngModel"  name="api" >
+
+                                            <option value="1" >Add Item Api</option>
+                                            <option value="2">Add Specification Api</option>
+
+                                        </select>
+                                    </div> 
+                                </div> -->
+
+
+
+
+                                <div class="form-group" >
+                                    <label class="col-lg-4 control-label"></label>  
+                                    <div class="col-lg-8 form-group">
+                                        <input  type="submit" id="submit" name="submit"  style="width: 60%;" class="btn btn-primary" value="{{button.submit | translate}}" >
+
+                                    </div> 
+
+                                </div>
+
+
+
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <!-- <div class="col-lg-4 col-sm-6">
+                <form #addvehicledetailForm="ngForm" (ngSubmit)="AddProviderVehicleData(addvehicledetailForm.value)">
+                    <div class="ibox">
+                        <div class="ibox-title">
+                            <label class="control-label">Add Provider Vehicle</label>  
+                        </div>
+                        <div class="ibox-content">
+                            <div class="row">
+
+
+                                <div class="form-group">
+                                    <label class="col-lg-3 control-label">Provider</label>  
+                                    <div class="col-lg-9 form-group ">
+                                        <select chosen class="form-control chosen-select" id="provider_id" [(ngModel)]="add_provider_vehicle_data.provider_id" #provider_id="ngModel" name="provider_id" data-placeholder="Select Provider"  tabindex="4"  >
+
+                                            <option *ngFor="let i of provider_list" value="{{i._id}}">{{i.email}}</option>
+                                        </select>
+                                    </div> 
+                                </div>
+
+
+                                <div class="form-group" >
+                                    <label class="col-lg-4 control-label"></label>  
+                                    <div class="col-lg-8 form-group">
+                                        <input  type="submit" id="submit" name="submit"  style="width: 60%;" class="btn btn-primary" value="{{button.submit | translate}}" >
+
+                                    </div> 
+
+                                </div>
+
+
+
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div> -->
+
+
+        </div>
+
+    </div>
+</div>
+
+
+
+

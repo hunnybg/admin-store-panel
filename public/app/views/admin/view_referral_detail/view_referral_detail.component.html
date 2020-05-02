@@ -1,0 +1,209 @@
+<footer [myLoading]="myLoading" ></footer> 
+<div class="row wrapper fix_search_bar border-bottom white-bg page-heading">
+    <div class="row">
+        <div class="col-md-3 col-sm-12">
+            <div class="lable_center">
+                <label>{{title.search | translate}}</label>
+            </div>
+
+            <div class="col-md-6 col-sm-6 remove_padding">
+                <div class="form-group" id="search_fields">
+                    <select chosen class="chosen-select" id="search_field" [(ngModel)]="search_field" name="search_field" tabindex="4">
+
+                        <option value="user_details.first_name">{{title.user | translate}}</option>
+                        <option value="provider_details.first_name">{{title.provider | translate}}</option>
+                        <option value="store_details.name">{{title.store | translate}}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-6 remove_padding">
+                <div class="form-group">
+                    <div class="input-group">
+
+                        <input type="text" class="form-control search_box" [(ngModel)]="search_value"  name="search_value">
+                        <span class="input-group-addon search_icon"><span class="fa fa-search"></span></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3 col-sm-12">
+            <div class="lable_center">
+                <label>{{title.sort | translate}}</label>
+            </div>
+            <div class="col-md-6 col-sm-6 remove_padding">
+                <div class="form-group" id="sort_fields">
+                    <select chosen class="chosen-select" id="sort_field" [(ngModel)]="sort_field" name="sort_field" tabindex="4">
+
+                        <option value="user_details.first_name">{{title.user | translate}}</option>
+                        <option value="provider_details.first_name">{{title.provider | translate}}</option>
+                        <option value="store_details.name">{{title.store | translate}}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-6 remove_padding">
+                <div class="form-group" id="sort_orders">
+
+                    <select chosen class="chosen-select" id="sort_referral" [(ngModel)]="sort_referral" name="sort_referral" tabindex="4">
+
+                        <option value="1">{{title.ascending | translate}}</option>
+                        <option value="-1">{{title.descending | translate}}</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-12">
+            <div class="lable_center">
+                <label>{{title.date_filter | translate}}</label>
+            </div>
+
+            <div class="col-md-12 remove_padding">
+
+
+                <div class="form-group">
+                    <div class="input-group">
+
+                        <my-date-picker id="start_date" [options]="helper.myStartDatePickerOptions" placeholder="Start Date" [(ngModel)]="start_date" (dateChanged)="helper.onStartDateChanged($event)"
+                                        readonly></my-date-picker>
+                        <span class="input-group-addon date_filter_icon">To</span>
+
+                        <my-date-picker id="end_date" [options]="helper.myEndDatePickerOptions" placeholder="End Date" [(ngModel)]="end_date" (dateChanged)="helper.onEndDateChanged($event)"
+                                        readonly></my-date-picker>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-12">
+            <div class="col-md-6 col-sm-6 filter_btn_div">
+                <!--                        <input type="button" class="btn export_excel_btn pull-right" value="{{button.export_excel}}" >-->
+            </div>
+            <div class="col-md-6 col-sm-6 filter_btn_div">
+                <input type="button" (click)="referral_list_detail(1)" class="btn filter_apply_btn pull-right" value="{{button.apply | translate}}" >
+            </div>
+        </div>
+
+    </div>
+
+</div>
+<div class="wrapper wrapper-content content_top_bar_view1 animated fadeInRight ">
+
+    <div class="ibox">
+        <div class="ibox-title">
+            <h5>Referral Detail</h5>
+        </div>
+        <div class="ibox-content">
+            <div class="table-responsive scrollbar">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>{{title.id |translate}}</th>
+                            <th>{{title.type | translate}}</th>
+                            <th>{{title.name | translate}}</th>
+                            <th>{{title.email | translate}}</th>
+                            <th>{{title.total_referred | translate}}</th>
+                            <th>{{title.referral_code | translate}}</th>
+                            <th>Value</th>
+
+                        </tr>
+                    </thead>
+                    <tbody *ngFor="let referral of referral_list; let referral_index=index;">
+                        <tr>
+
+
+                            <td *ngIf="referral.referred_user_detail.length>0 && hide_referral_detail[referral_index]=='true'" (click)="show_referral_details(referral_index)"><span class="fa fa-chevron-right">{{referral.referred_user_detail[0].unique_id}}</span></td>
+                            <td *ngIf="referral.referred_user_detail.length>0 && hide_referral_detail[referral_index]=='false'" (click)="hide_referral_details(referral_index)"><span class="fa fa-chevron-down">{{referral.referred_user_detail[0].unique_id}}</span></td>
+
+                            <td *ngIf="referral.referred_provider_detail.length>0 && hide_referral_detail[referral_index]=='true'" (click)="show_referral_details(referral_index)"><span class="fa fa-chevron-right ">{{referral.referred_provider_detail[0].unique_id}}</span></td>
+                            <td *ngIf="referral.referred_provider_detail.length>0 && hide_referral_detail[referral_index]=='false'" (click)="hide_referral_details(referral_index)"><span class="fa fa-chevron-down">{{referral.referred_provider_detail[0].unique_id}}</span></td>
+
+                            <td *ngIf="referral.referred_store_detail.length>0 && hide_referral_detail[referral_index]=='true'" (click)="show_referral_details(referral_index)"><span class="fa fa-chevron-right">{{referral.referred_store_detail[0].unique_id}}</span></td>
+
+                            <td *ngIf="referral.referred_store_detail.length>0 && hide_referral_detail[referral_index]=='false'" (click)="hide_referral_details(referral_index)"><span class="fa fa-chevron-down">{{referral.referred_store_detail[0].unique_id}}</span></td>
+
+                            <td *ngIf="referral.referred_user_detail.length>0">User</td>
+                            <td *ngIf="referral.referred_provider_detail.length>0">Provider</td>
+                            <td *ngIf="referral.referred_store_detail.length>0">Store</td>
+
+
+                            <td *ngIf="referral.referred_user_detail.length>0">{{referral.referred_user_detail[0].first_name +" " + referral.referred_user_detail[0].last_name }}</td>
+                            <td *ngIf="referral.referred_provider_detail.length>0">{{referral.referred_provider_detail[0].first_name + " " + referral.referred_provider_detail[0].last_name}}</td>
+                            <td *ngIf="referral.referred_store_detail.length>0">{{referral.referred_store_detail[0].name}}</td>
+
+
+                            <td *ngIf="referral.referred_user_detail.length>0">{{referral.referred_user_detail[0].email }}</td>
+                            <td *ngIf="referral.referred_provider_detail.length>0">{{referral.referred_provider_detail[0].email }}</td>
+                            <td *ngIf="referral.referred_store_detail.length>0">{{referral.referred_store_detail[0].email}}</td>
+
+                            <td *ngIf="referral.referred_user_detail.length>0">{{referral.referred_user_detail[0].total_referrals }}</td>
+                            <td *ngIf="referral.referred_provider_detail.length>0">{{referral.referred_provider_detail[0].total_referrals }}</td>
+                            <td *ngIf="referral.referred_store_detail.length>0">{{referral.referred_store_detail[0].total_referrals}}</td>
+
+                            <td *ngIf="referral.referred_user_detail.length>0">{{referral.referred_user_detail[0].referral_code }}</td>
+                            <td *ngIf="referral.referred_provider_detail.length>0">{{referral.referred_provider_detail[0].referral_code }}</td>
+                            <td *ngIf="referral.referred_store_detail.length>0">{{referral.referred_store_detail[0].referral_code}}</td>
+                            <td>{{referral.count}}</td>
+                        </tr>
+                        <tr *ngIf="hide_referral_detail[referral_index]=='false'" class="referral{{referral_index}}">
+                            <th></th>
+                            <th>{{title.id |translate}}</th>
+                            <th>{{title.name | translate}}</th>
+                            <th>{{title.email | translate}}</th>
+                            <th>{{title.referred | translate}} </th>
+                            <th>{{title.referral_user | translate}} </th>
+                            <th>{{title.date | translate}}</th>
+                        </tr>
+                        
+                        <tr class="referral{{referral_index}}" *ngFor="let referred_referral of referral.referral_code"  >
+                            <td *ngIf="hide_referral_detail[referral_index]=='false'"></td>
+                            <td *ngIf="referred_referral.user_detail.length>0 && hide_referral_detail[referral_index]=='false'">{{referred_referral.user_detail[0].unique_id}}</td>
+                            <td *ngIf="referred_referral.provider_detail.length>0 && hide_referral_detail[referral_index]=='false'">{{referred_referral.provider_detail[0].unique_id}}</td>
+                            <td *ngIf="referred_referral.store_detail.length>0 && hide_referral_detail[referral_index]=='false'">{{referred_referral.store_detail[0].unique_id}}</td>
+
+                            <td *ngIf="referred_referral.user_detail.length>0 && hide_referral_detail[referral_index]=='false'">{{referred_referral.user_detail[0].first_name + " " + referred_referral.user_detail[0].last_name}}</td>
+                            <td *ngIf="referred_referral.provider_detail.length>0 && hide_referral_detail[referral_index]=='false'">{{referred_referral.provider_detail[0].first_name + " " + referred_referral.provider_detail[0].last_name}}</td>
+                            <td *ngIf="referred_referral.store_detail.length>0 && hide_referral_detail[referral_index]=='false'">{{referred_referral.store_detail[0].name}}</td>
+
+                            <td *ngIf="referred_referral.user_detail.length>0 && hide_referral_detail[referral_index]=='false'">{{referred_referral.user_detail[0].email }}</td>
+                            <td *ngIf="referred_referral.provider_detail.length>0 && hide_referral_detail[referral_index]=='false'">{{referred_referral.provider_detail[0].email }}</td>
+                            <td *ngIf="referred_referral.store_detail.length>0 && hide_referral_detail[referral_index]=='false'">{{referred_referral.store_detail[0].email}}</td>
+                            <td *ngIf="hide_referral_detail[referral_index]=='false'">{{referred_referral.referral_bonus_to_user }}</td>
+                            <td *ngIf="hide_referral_detail[referral_index]=='false'">{{referred_referral.referral_bonus_to_user_friend }}</td>
+                            <td *ngIf="hide_referral_detail[referral_index]=='false'">{{referred_referral.created_at| date: DATE_FORMAT.DD_MMM_YYYY }}</td>
+
+                        </tr>
+                        
+
+
+
+
+
+
+
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+
+        </div>
+    </div>
+
+
+    <div class="col-md-12 col-sm-12" style="margin-top: 6px;">
+        <div class="lable_center">
+            <ul class="pagination">
+                <li *ngIf="page!==1"><a class="btn" (click)="referral_list_detail(page-1)">{{button.pre | translate}}</a></li>
+                <li *ngFor="let index of total_pages" [class.active]="page==index">
+                    <a *ngIf="index==1 || index==total_page || index==page || index==page-1 || index==page+1" (click)="referral_list_detail(index)" class="btn">{{index}}</a>
+                    <a *ngIf="(index==1 && (page!==1 && page!==2 && page!==3)) || (index==total_page-1 && (page!==total_page && page!==total_page-1 && page!==total_page-2))" class="btn">...</a>
+
+                </li>
+                <li *ngIf="page!==total_page && referral_list.length!==0"><a class="btn" (click)="referral_list_detail(page+1)">{{button.next | translate}}</a></li>
+            </ul>
+        </div>
+    </div>
+
+
+</div>

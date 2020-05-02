@@ -1,0 +1,204 @@
+<footer [myLoading]="myLoading"></footer>
+<div class="row wrapper fix_search_bar border-bottom white-bg page-heading">
+    <div class="row">
+        <div class="col-md-4 col-sm-12">
+            <div>
+                <label>{{title.search | translate}}</label>
+            </div>
+            <div class="col-md-6 col-sm-6 remove_padding">
+                <div class="form-group" id="search_fields">
+                    <select chosen class="chosen-select" id="search_field" [(ngModel)]="search_field"
+                        name="search_field" tabindex="4">
+                        <option value="user_detail.unique_id">{{title.user_unique_id | translate}}</option>
+                        <option value="user_detail.first_name">{{title.user_name | translate}}</option>
+                        <option value="user_detail.email">{{title.user_email | translate}}</option>
+                        <option value="user_detail.phone">{{title.user_phone | translate}}</option>
+                        <option value="ra_detail.unique_id">{{title.ra_unique_id | translate}}</option>
+
+                        <!-- <option value="country_details.country_name">{{title.country | translate}}</option> -->
+                        <!-- <option value="city_details.city_name">{{title.city | translate}}</option> -->
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-6 remove_padding">
+                <div class="form-group">
+                    <div class="input-group">
+                        <input type="text" class="form-control search_box" [(ngModel)]="search_value"
+                            name="search_value">
+                        <span (click)="filter(1)" class="input-group-addon search_icon"><span
+                                class="fa fa-search"></span></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 col-sm-12">
+            <div class="col-md-6 col-sm-6">
+                <div>
+                    <label>{{title.no_of_record | translate}}</label>
+                </div>
+                <div class="form-group">
+                    <select chosen class="chosen-select" id="number_of_rec" [(ngModel)]="number_of_rec"
+                        name="number_of_rec" tabindex="4">
+                        <option value="10">10</option>
+                        <option value="20">20</option>
+                        <option value="50">50</option>
+                        <option value="100">100</option>
+                    </select>
+                </div>
+            </div>
+            <!-- <div class="col-md-6 col-sm-6 filter_btn_div">
+                <button type="button" (click)="ra_export_csv(ra_page_type)" class="btn export_excel_btn">
+                    <span class="fa fa-file-excel-o"></span>
+                </button>
+            </div> -->
+        </div>
+        <!-- <div class="col-md-4 col-sm-12">
+            <div class="col-md-6 col-sm-6 filter_btn_div">
+                <button type="button" (click)="add_new_ra()" class="btn export_excel_btn">
+                    <span class="fa fa-plus"></span>Add ra
+                </button>
+            </div>
+        </div> -->
+    </div>
+</div>
+
+<div class="wrapper wrapper-content content_top_bar_view1 animated fadeInRight">
+    <div class="row">
+        <div class="col-md-9">
+
+            <div class="ibox">
+                <div class="ibox-content" style="padding-bottom: 40px;">
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12">
+                            <ul class="nav nav-tabs">
+                                <li (click)="change_page_type(0)" [class.active]="ra_page_type==0"
+                                    class="dsads uib-tab ng-scope ng-isolate-scope" active="tab.active">
+                                    <a
+                                        class="ng-binding tab_selection">{{helper.sub_menu_title.pending_request | translate}}</a>
+                                </li>
+                                <li (click)="change_page_type(1)" [class.active]="ra_page_type==1"
+                                    class="uib-tab ng-scope ng-isolate-scope active">
+                                    <a
+                                        class="ng-binding tab_selection">{{helper.sub_menu_title.resolved | translate}}</a>
+                                </li>
+
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="lable_center" *ngIf="ra_list.length==0">
+                        <label>No Records</label>
+                    </div>
+                    <div *ngIf="ra_list.length !== 0" class="table-responsive scrollbar"
+                        style="height: calc(100vh - 285px);overflow: auto;">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>{{title.id | translate}}</th>
+                                    <!-- <th>{{title.request | translate}}</th> -->
+                                    <th>{{title.table_number | translate}}</th>
+                                    <th>{{title.created_at | translate}}</th>
+                                    <th>{{title.user_name | translate}}</th>
+                                    <th>{{title.order_id | translate}}</th>
+                                    <th>{{title.store | translate}}</th>
+                                </tr>
+                            </thead>
+                            <tbody *ngIf="ra_detail != undefined">
+                                <tr *ngFor="let ra of ra_list; let index=index;"
+                                    [class.selected_tr]="ra._id == ra_detail._id">
+                                    <td (click)="get_ra_detail(ra._id)">{{ra.unique_id}} </td>
+                                    <!-- <td (click)="get_ra_detail(ra._id)">{{ra.comment}}</td> -->
+                                    <td (click)="get_ra_detail(ra._id)">{{ra.table_number}}</td>
+                                    <td (click)="get_ra_detail(ra._id)">{{ra.created_at | date: "dd MMM yyyy hh:mm a"}}
+                                    </td>
+                                    <td (click)="get_ra_detail(ra._id)">{{ra.user_detail.first_name}}
+                                        {{ra.user_detail.last_name}}</td>
+                                    <td (click)="get_ra_detail(ra._id)" *ngIf="ra.order_detail !== undefined">
+                                        {{ra.order_detail.unique_id}}</td>
+                                    <td (click)="get_ra_detail(ra._id)" *ngIf="ra.order_detail == undefined"></td>
+                                    <td (click)="get_ra_detail(ra._id)">
+                                        {{ra.store_details.name}}({{ra.store_details.unique_id}})</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-md-12 col-sm-12" style="padding-top: 10px;">
+                        <div class="lable_center">
+
+                            <ul class="pagination">
+                                <li *ngIf="page!==1"><a class="btn"
+                                        (click)="filter(page-1)">{{button.pre | translate}}</a></li>
+                                <li *ngFor="let index of total_pages" [class.active]="page==index">
+                                    <a *ngIf="index==1 || index==total_page || index==page || index==page-1 || index==page+1"
+                                        (click)="filter(index)" class="btn">{{index}}</a>
+                                    <a *ngIf="(index==1 && (page!==1 && page!==2 && page!==3)) || (index==total_page-1 && (page!==total_page && page!==total_page-1 && page!==total_page-2))"
+                                        class="btn">...</a>
+
+                                </li>
+                                <li *ngIf="page!==total_page && ra_list.length!==0"><a class="btn"
+                                        (click)="filter(page+1)">{{button.next | translate}}</a></li>
+                            </ul>
+                            <div class="col-md-2 pull-right">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3" *ngIf="ra_detail != undefined">
+            <div class="ibox ">
+
+                <div class="ibox-content user_fix_div scrollbar" style="height: calc(100vh - 243px);overflow: auto;">
+                    <div class="tab-content">
+                        <div id="contact-1" class="tab-pane active" ng-show="client == 1" ng-init="client = 1">
+
+
+                            <div class="row">
+                                <div class="col-md-4" style="margin-top: 10px;">
+                                    <img style="width: 80px; height: 80px;" class="img-circle m-t-xs"
+                                        src="{{ra_detail.user_detail.image_url != '' ? helper.CONSTANT.IMAGE_BASE_URL + ra_detail.user_detail.image_url : 'default.png'}}">
+                                </div>
+                                <div class="col-md-8" style="margin-top: 10px;">
+                                    <label>{{heading_title.request_by | translate}}</label>
+                                    <div>
+                                        {{ra_detail.user_detail.first_name + " " + ra_detail.user_detail.last_name}}
+                                        ({{ra_detail.user_detail.unique_id}})</div>
+                                    <div>{{ra_detail.user_detail.email}}</div>
+                                    <div>
+                                        {{ra_detail.user_detail.country_phone_code + " " + ra_detail.user_detail.phone}}
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="row" *ngIf="ra_detail.vaiter_detail !== undefined">
+                                <div class="col-md-4" style="margin-top: 10px;">
+                                    <img style="width: 80px; height: 80px;" class="img-circle m-t-xs"
+                                        src="{{ra_detail.vaiter_detail.image_url != '' ? helper.CONSTANT.IMAGE_BASE_URL + ra_detail.vaiter_detail.image_url : 'default.png'}}">
+                                </div>
+                                <div class="col-md-8" style="margin-top: 10px;">
+                                    <label>{{heading_title.resolved_by | translate}}</label>
+                                    <div>
+                                        {{ra_detail.vaiter_detail.first_name + " " + ra_detail.vaiter_detail.last_name}}
+                                        ({{ra_detail.vaiter_detail.unique_id}})</div>
+                                    <div>{{ra_detail.vaiter_detail.email}}</div>
+                                    <div>
+                                        {{ra_detail.vaiter_detail.country_phone_code + " " + ra_detail.vaiter_detail.phone}}
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="row" style="text-align: justify;margin-top: 15px;">
+                                <div class="col-md-12">
+                                    <label>{{title.request | translate}}</label>
+                                    <div>{{ra_detail.comment}}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

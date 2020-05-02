@@ -1,0 +1,28 @@
+<div class="wrapper wrapper-content animated fadeInRight content_top_bar_view">
+    
+
+<div style="text-align: center;" class="add_btn_bg btn-group">
+    <button *ngFor="let lang of supportedLangs"
+        (click)="selectLang(lang.value)"
+        class="btn btn-default" [class.btn-primary]="isCurrentLang(lang.value)">
+        {{ lang.display }}
+</button>
+</div>
+<div style="margin-top: 20px">
+    
+    <p>
+        Translate with Service: <strong>{{ translatedText }}</strong>
+    </p>
+    
+     <p>
+         Translate with Service: <strong>{{ translatedText1 }}</strong>
+    </p>
+    <p>
+         Translate with Service: <strong>{{ translatedText2 }}</strong>
+    </p>
+</div>
+
+</div>
+
+
+

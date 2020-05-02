@@ -1,0 +1,130 @@
+<form #documentForm="ngForm" (ngSubmit)="AddDocument(documentForm.value)" >
+    <input type="hidden" class="form-control" [(ngModel)]="document_id"   name="document_id" />
+    <div class="row wrapper col-sm-12 col-md-12 col-xs-12 col-lg-12 fix_search_bar border-bottom white-bg page-heading">
+        <div class="row">
+            <div *ngIf="type=='add'" class="col-md-3 col-sm-12 pull-right new_submit_button">
+                <input  type="submit" id="submit" name="submit"  class="btn btn-primary" value="{{button.submit | translate}}" >
+            </div>
+            <div *ngIf="type=='edit'" class="col-md-3 col-sm-12 pull-right new_submit_button">
+                <input type="submit" id="update" name="update"  class="btn btn-primary" value="{{button.update | translate}}" >
+            </div>
+        </div>
+    </div>
+    <div class="wrapper wrapper-content content_top_bar_view animated fadeInRight">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="col-lg-6 col-sm-9">
+                    <div class="ibox">
+                        <div class="ibox-title">
+                            <label class="control-label">{{heading_title.document_data | translate}}</label>  
+                        </div>
+                        <div class="ibox-content">
+                            <div class="row">
+
+                                <div class="form-group">
+                                    <label class="col-lg-4 control-label">{{title.country | translate}}</label>  
+                                    <div class="col-lg-8 form-group add">
+                                        <select chosen class="chosen-select" id="country_id" [(ngModel)]="add_document.country_id" #country_id="ngModel" name="country_id" data-placeholder="Select Country"  tabindex="4"  >
+
+                                            <option *ngFor="let i of country_list" value="{{i._id}}">{{i.country_name}}</option>
+                                        </select> 
+                                        <div *ngIf="country_id.errors">
+                                            <div style="color: red;" [hidden]="!country_id.errors.required">{{validation_message.select_country_required | translate}}</div>
+                                        </div>
+                                    </div> 
+
+                                    <div *ngIf="type=='edit'"  class="col-lg-8 form-group">
+                                        <input type="text" class="form-control" [(ngModel)]="add_document.country_name" #country_name="ngModel"  name="country_name" readonly/>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-lg-4 control-label">{{title.name | translate}}</label>
+                                    <div class="col-lg-8 form-group">
+                                        <input type="text" class="form-control" [(ngModel)]="add_document.document_name" #document_name="ngModel"  name="document_name" required />
+                                        <div *ngIf="document_name.errors && (document_name.dirty || document_name.touched)">
+                                            <div style="color: red;" [hidden]="!document_name.errors.required">{{validation_message.document_name_required | translate}}</div>
+                                        </div>
+                                    </div> 
+                                </div>
+
+
+
+
+
+                                <div class="form-group">
+                                    <label class="col-lg-4 control-label">{{title.type | translate}}</label>
+                                    <div class="col-lg-8 form-group add">
+                                        <select chosen class="form-control chosen-select" id="document_for" [(ngModel)]="add_document.document_for" #document_for="ngModel"  name="document_for" >
+
+                                            <option value="2" >{{title.store}}</option>
+                                            <option value="7">{{title.user}}</option>
+                                            <option value="8">{{title.provider}}</option>
+                                            <option value="9">{{title.provider_vehicle}}</option>
+                                        </select>
+                                    </div> 
+                                    <div *ngIf="type=='edit'"  class="col-lg-8 form-group">
+                                        <input type="text" class="form-control" [(ngModel)]="add_document.document_type_name" #document_type_name="ngModel"  name="document_type_name" readonly/>
+                                    </div>
+                                </div>
+
+
+
+
+
+                                <div class="form-group">
+                                    <label class="col-lg-4 control-label">{{title.visible | translate}}</label>
+
+                                    <div class="col-lg-8 form-group">
+                                        <ui-switch [(ngModel)]="add_document.is_show" #is_show="ngModel" name="is_show"></ui-switch>
+
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-lg-4 control-label">{{title.is_mandatory | translate}}</label>  
+
+                                    <div class="col-lg-8 form-group">
+                                        <ui-switch [(ngModel)]="add_document.is_mandatory" #is_mandatory="ngModel" name="is_mandatory"></ui-switch>
+
+                                    </div>
+                                </div>
+
+
+
+                                <div class="form-group">
+                                    <label class="col-lg-4 control-label">{{title.expiry_date | translate}}</label>
+
+                                    <div class="col-lg-8 form-group">
+                                        <ui-switch [(ngModel)]="add_document.is_expired_date" #is_expired_date="ngModel" name="is_expired_date"></ui-switch>
+
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-lg-4 control-label">{{title.is_unique_code | translate}}</label>  
+
+                                    <div class="col-lg-8 form-group">
+                                        <ui-switch [(ngModel)]="add_document.is_unique_code" #is_unique_code="ngModel" name="is_unique_code"></ui-switch>
+
+                                    </div>
+                                </div>
+
+
+                            </div>
+<!--                            <div class="row">   
+                                <div class="col-lg-4">
+                                </div>
+                                <div *ngIf="type=='add'" class="col-lg-4" style="text-align: center;">
+                                    <input type="submit" name="submit" style="width: 60%;" class="btn btn-primary" value="{{button.submit | translate}}" >
+                                </div>
+                                <div *ngIf="type=='edit'" class="col-lg-4" style="text-align: center;">
+                                    <input type="submit" id="update" name="update" style="width: 60%;" class="btn btn-primary" value="{{button.update | translate}}" >
+                                </div>
+                            </div>-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

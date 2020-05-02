@@ -1,0 +1,85 @@
+<footer [myLoading]="myLoading" ></footer> 
+<div class="row wrapper content_top_bar border-bottom white-bg page-heading">
+    <div class="row">
+        <div class="col-md-3 col-sm-12 pull-right">
+            <div class="col-md-6 col-sm-6 add_btn_div pull-right">
+                 <button (click)="open_add_backup_modal()" class="btn add_btn pull-right" style="margin-bottom: 10px;">Create Backup<span class="fa fa-plus" style="margin-left: 8px;"></span></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="wrapper wrapper-content">
+    <div class="ibox">
+        <div class="ibox-content">
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>{{title.start_date | translate}}</th>
+                            <th>{{title.end_date | translate}}</th>
+                            <th>{{title.created_date | translate}}</th>
+                            <th>{{title.is_deleted_from_db | translate}}</th>
+                            <th>{{title.action | translate}}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let i of backup_list; let index=index; let last=last; ">
+                            <td>{{moment(i.start_date).format('DD MMM YYYY')}}</td>
+                            <td>{{moment(i.end_date).format('DD MMM YYYY')}}</td>
+                            <td>{{moment(i.created_at).format('DD MMM YYYY HH:mm a')}}</td>
+                            <td>
+                                <span *ngIf="i.is_deleted_from_db">Yes</span>
+                                <span *ngIf="!i.is_deleted_from_db">No</span>
+                            </td>
+                            <td>
+                                <a target="_blank" href="{{helper.CONSTANT.IMAGE_BASE_URL + 'db_backup/' + i.file_name + '.tar'}}" ><button style="margin-right: 10px;" class="btn btn-xs btn-light_black">{{button.download | translate}}</button></a>
+                                <button style="margin-right: 10px;" *ngIf="i.is_deleted_from_db" (click)="restore(i._id)" class="btn btn-xs btn-light_black">{{button.restore | translate}}</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+
+<modal keyboard="false" backdrop="static" cssClass="modal-sm animated fadeInUpBig" #add_backup_modal>
+    <form #addBackupForm="ngForm" (ngSubmit)="add_backup()">
+        <modal-header [show-close]="true">
+            <h4 class="modal-title">{{title.create_backup | translate}}</h4>
+        </modal-header>
+        <modal-body>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <my-date-picker  [options]="helper.myStartDatePickerOptions" placeholder="Start Date" [(ngModel)]="add_backup_detail.start_date" #start_date="ngModel" name="start_date" (dateChanged)="helper.onStartDateChanged($event)"
+                                            readonly></my-date-picker>
+                    </div>
+                </div> 
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <my-date-picker  [options]="helper.myEndDatePickerOptions" placeholder="End Date" [(ngModel)]="add_backup_detail.end_date" #end_date="ngModel" name="end_date" (dateChanged)="helper.onEndDateChanged($event)"
+                                            readonly></my-date-picker>
+                    </div>
+                </div> 
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <input type="checkbox" name="is_deleted_from_db" [(ngModel)]="add_backup_detail.is_deleted_from_db" #is_deleted_from_db="ngModel" /> remove from db?
+                    </div>
+                </div>
+                <div class="col-md-12">
+                </div>
+            </div>
+        </modal-body>
+        <modal-footer>
+            <div style="text-align: center">
+                <button type="submit" class="btn btn-primary">{{button.submit | translate}}</button>
+            </div>
+        </modal-footer>
+    </form>
+</modal>

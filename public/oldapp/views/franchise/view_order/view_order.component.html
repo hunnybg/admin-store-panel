@@ -1,0 +1,510 @@
+<footer [myLoading]="myLoading" ></footer>   
+<div class="row wrapper content_top_bar border-bottom white-bg page-heading">
+
+    <div class="col-lg-12">
+        <div class="col-md-4 col-sm-12 col-xs-12">
+            <h3>{{heading_title.invoice_no | translate}}: {{invoice_number}}</h3>
+        </div>
+        <div class="col-md-4 col-sm-6 col-xs-6">
+            <h3>{{title.date | translate}}: {{completed_at| date: "dd MMM yyyy"}}</h3>
+        </div>
+        <div class="col-md-4 col-sm-6 col-xs-6">
+            <span class="pull-right"><a class="btn btn-primary" (click)="viewInvoice(order_id)">{{button.view_full_invoice | translate}}</a></span>
+        </div>
+    </div>
+
+</div>
+<div class="wrapper wrapper-content animated fadeInRight ">
+    <div class="row">
+        <div class="col-lg-4 col-sm-4">
+            <div class="ibox">
+                <div class="ibox-content">
+                    <div class="row">
+                        <div class="col-md-12 lable_center">
+
+                            <h2 >{{total_order_price}}</h2>
+                            <label class="control-label" >{{title.order_payment | translate}}</label> 
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 col-sm-4">
+            <div class="ibox">
+                <div class="ibox-content">
+                    <div class="row">
+                        <div class="col-md-12 lable_center">
+
+                            <h2>{{total_delivery_price}}</h2>
+                            <label class="control-label">{{title.delivery_payment | translate}}</label> 
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 col-sm-4">
+            <div class="ibox">
+                <div class="ibox-content">
+                    <div class="row">
+                        <div class="col-md-12 lable_center">
+
+                            <h2 *ngIf="is_payment_mode_cash == false" >{{card_payment}}</h2>
+                            <h2 *ngIf="is_payment_mode_cash == true" >{{cash_payment}}</h2>
+
+                            <label class="control-label">{{title.user_payment | translate}}</label> 
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4 col-sm-12" style="padding-left: 0px; padding-right: 0px;">
+
+            <div class="col-md-12 col-sm-4" >
+                <div class="ibox">
+                    <div class="ibox-title">
+                        <label class="control-label">{{heading_title.user_detail | translate}}</label>  
+                    </div>
+                    <div class="ibox-content">
+                        <div class="row">
+                            <div class="col-md-12"><label class="col-md-4 col-sm-4 col-xs-4 control-label">{{title.name | translate}}<div class="pull-right">:</div></label>
+
+                                <div class="col-md-8 col-sm-8 col-xs-8 form-group">
+                                    {{user_name}}
+                                </div> 
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12"><label class="col-md-4 col-sm-4 col-xs-4 control-label">{{title.email | translate}}<div class="pull-right">:</div></label>
+
+                                <div class="col-md-8 col-sm-8 col-xs-8 form-group">
+                                    {{user_email}}
+                                </div> 
+                            </div>
+                            
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class=" col-md-12 col-sm-4">
+                <div class="ibox">
+                    <div class="ibox-title">
+                        <label class="control-label">{{heading_title.order_user_detail | translate}}</label>
+                    </div>
+                    <div class="ibox-content">
+                        <div class="row">
+                            <div class="col-md-12"><label class="col-md-4 col-sm-4 col-xs-4 control-label">{{title.name | translate}}<div class="pull-right">:</div></label>
+
+                                <div class="col-md-8 col-sm-8 col-xs-8 form-group">
+                                    {{order_user_name}}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12"><label class="col-md-4 col-sm-4 col-xs-4 control-label">{{title.email | translate}}<div class="pull-right">:</div></label>
+
+                                <div class="col-md-8 col-sm-8 col-xs-8 form-group">
+                                    {{order_user_phone}}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12"><label class="col-md-4 col-sm-4 col-xs-4 control-label">{{title.address | translate}}<div class="pull-right">:</div></label>
+
+                                <div class="col-md-8 col-sm-8 col-xs-8 form-group">
+                                    {{destination_address}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class=" col-md-12 col-sm-4" *ngIf="!is_user_pick_up_order">
+                <div class="ibox">
+                    <div class="ibox-title">
+                        <label class="control-label">{{heading_title.provider_detail | translate}}</label>  
+                    </div>
+                    <div class="ibox-content">
+                        <div class="row">
+                            <div class="col-md-12"><label class="col-md-4 col-sm-4 col-xs-4 control-label">{{title.name | translate}}<div class="pull-right">:</div></label>
+
+                                <div class="col-md-8 col-sm-8 col-xs-8 form-group">
+                                    {{provider_name}}
+                                </div> 
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12"><label class="col-md-4 col-sm-4 col-xs-4 control-label">{{title.email | translate}}<div class="pull-right">:</div></label>
+
+                                <div class="col-md-8 col-sm-8 col-xs-8 form-group">
+                                    {{provider_email}}
+                                </div> 
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12"><label class="col-md-4 col-sm-4 col-xs-4 control-label">{{title.vehicle | translate}}<div class="pull-right">:</div></label>
+
+                                <div class="col-md-8 col-sm-8 col-xs-8 form-group">
+                                    {{provider_vehicle}}
+                                </div> 
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+        <div class="col-md-8 col-sm-12">
+
+            <div class="ibox">
+                <div class="ibox-title">
+                    <h4 class="pull-right">{{currency_sign}}{{order_total}}</h4>
+                    <span style="position: absolute; left:48%;">(<strong>{{total_item}}</strong>) {{title.items | translate}}</span>
+                    <h5>{{heading_title.order_detail | translate}}</h5>
+                </div>
+                <div class="ibox-content" *ngFor="let products of order_detail; let product_index=index; ">
+
+                    <div>
+
+                        <h4 class="pull-right">{{currency_sign}}{{product_item_total_array[product_index]}}</h4>
+                        <span style="position: absolute; left:48%;">(<strong>{{products.items.length}}</strong>) {{title.items | translate}}</span>
+                        <h5>{{products.product_name}}</h5>
+                    </div>
+
+                    <hr/>
+
+                    <div *ngFor="let item of products.items; let odd=odd; let item_index=index; ">
+
+                        <div class="table-responsive">
+                            <table class="table shoping-cart-table">
+                                <thead style="border-bottom: 1px solid;">
+                                    <tr>
+                                        <th style="width: 55%;padding-top: 12px;">{{title.item | translate}}{{item_index+1}}</th>
+                                        <th style="text-align: center;padding-top: 12px;">{{title.spec | translate}} {{title.price | translate}}</th>
+                                        <th style="text-align: center;padding-top: 12px;">{{title.price | translate}}</th>
+                                        <th style="text-align: center;padding-top: 12px;">{{title.qty | translate}}</th>
+                                        <th style="text-align: center;padding-top: 12px;">{{title.total | translate}}</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                <tr>
+                                    <td style="padding-top: 20px;width: 55%;">
+                                        <div style="display: -webkit-box;">
+                                            <img class="" style="height: 80px;width: 80px;border-radius: 10px;"  src="{{item.image_url[0]}}">
+                                            <div style="    margin-left: 10px;">
+                                                <h3>{{item.item_name}}</h3>
+                                                <p class="small" style="height: 30px; overflow-y: hidden;">
+                                                    {{item.details}}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td style="padding-top: 20px;text-align: center;">{{currency_sign}}{{item.total_specification_price}}</td>
+                                    <td style="padding-top: 20px;text-align: center;">{{currency_sign}}{{item.item_price}}</td>
+                                    <td style="padding-top: 20px;text-align: center;">{{item.quantity}}</td>
+                                    <td style="padding-top: 20px;text-align: center;">{{currency_sign}}{{(item.item_price + item.total_specification_price)*item.quantity}}</td>
+                                    <!--<td>-->
+                                    <!--<h4>{{currency_sign}}{{(item.item_price + item.total_specification_price)*item.quantity}}</h4>-->
+                                    <!--</td>-->
+                                </tr>
+                                </tbody>
+
+                                <!--<tbody>-->
+                                    <!--<tr>-->
+                                        <!--<td width="90">-->
+                                            <!--<div class="">-->
+                                                <!--<img class="" style="height: 80px;width: 80px;"  src="{{item.image_url[0]}}">-->
+                                            <!--</div>-->
+                                        <!--</td>-->
+                                        <!--<td class="desc">-->
+                                            <!--<h3>-->
+                                                <!--<a class="text-navy">-->
+                                                    <!--{{item.item_name}}   -->
+                                                    <!--<div style="text-align: center;margin-top: -18px;"><label style="color: #787b7d;"> {{title.qty | translate}} : {{item.quantity}} </label></div>-->
+                                                    <!--<div style="margin-top: -18px;float: right;"><label style="color: #787b7d;"> {{currency_sign}}{{item.item_price}} </label></div>-->
+                                                <!--</a>-->
+                                            <!--</h3>-->
+
+                                            <!--<p class="small" style="height: 30px; overflow-y: hidden;">-->
+                                                <!--{{item.details}}-->
+                                            <!--</p>-->
+
+
+                                        <!--</td>-->
+                                        <!--<td>-->
+                                            <!--<h4>{{currency_sign}}{{(item.item_price + item.total_specification_price)*item.quantity}}</h4>-->
+                                        <!--</td>-->
+                                    <!--</tr>-->
+                                <!--</tbody>-->
+                            </table>
+                        </div>
+                        <!--<div class="col-md-6 col-xs-6"><h4>{{title.specifications | translate}}</h4></div>-->
+                        <!--<div class="col-md-6 col-xs-6"><h4>{{item.total_specification_price}}{{currency_sign}}</h4></div>-->
+
+                        <!--<div *ngFor="let specification of item.specifications">-->
+                            <!--<div class="col-md-6 col-xs-6">{{specification.name}}</div>-->
+                            <!--<div class="col-md-6 col-xs-6">{{specification.price}}{{currency_sign}}</div>-->
+                        <!--</div>-->
+                        <hr/>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox">
+                <div class="ibox-title" style="background-color: #d4d8d8;">
+                    <label class="control-label">{{heading_title.order_status | translate}}</label>  
+                </div>
+                <div class="ibox-content">
+                    <label class="control-label text-navy" style="margin-left:30%">{{title.order_completed | translate}}</label> 
+
+
+                    <div id="vertical-timeline" class="vertical-container dark-timeline center-orientation">
+                        <div class="vertical-timeline-block">
+                            <div class="vertical-timeline-icon navy-bg">
+                                <i class="fa fa-briefcase"></i>
+                            </div>
+
+                            <div class="vertical-timeline-content">
+                                <h2>{{status.created | translate}}</h2>
+                                <span class="vertical-date">
+                                    <small>{{created_at | date: "dd MMM yyyy hh:mm a"}}</small>
+                                </span>
+                            </div>
+                        </div>
+
+                        <div *ngIf="store_accepted_at!=null&&order_status>ORDER_STATE.WAITING_FOR_ACCEPT_STORE" class="vertical-timeline-block">
+                            <div class="vertical-timeline-icon navy-bg">
+                                <i class="fa fa-briefcase"></i>
+                            </div>
+
+                            <div class="vertical-timeline-content">
+                                <h2>{{status.accepted | translate}}</h2>
+                                <span class="vertical-date">
+                                    <small>{{store_accepted_at | date: "dd MMM yyyy hh:mm a"}}</small>
+                                </span>
+                            </div>
+                        </div>
+
+                        <div *ngIf="order_status_id==ORDER_STATUS_ID.REJECTED&&order_status==ORDER_STATE.STORE_REJECTED" class="vertical-timeline-block">
+                            <div class="vertical-timeline-icon navy-bg">
+                                <i class="fa fa-briefcase"></i>
+                            </div>
+
+                            <div class="vertical-timeline-content">
+                                <h2>{{status.rejected | translate}}</h2>
+                                <span class="vertical-date">
+                                    <small>{{completed_at | date: "dd MMM yyyy hh:mm a"}}</small>
+                                </span>
+                            </div>
+                        </div>
+
+                        <div *ngIf="start_preparing_order_at!=null&&order_status>ORDER_STATE.STORE_ACCEPTED" class="vertical-timeline-block">
+                            <div class="vertical-timeline-icon navy-bg">
+                                <i class="fa fa-briefcase"></i>
+                            </div>
+
+                            <div class="vertical-timeline-content">
+                                <h2>{{status.start_preparing_order | translate}}</h2>
+                                <span class="vertical-date">
+                                    <small>{{start_preparing_order_at | date: "dd MMM yyyy hh:mm a"}}</small>
+                                </span>
+                            </div>
+                        </div>
+
+                        <div *ngIf="order_ready_at!=null&&order_status>ORDER_STATE.STORE_PREPARING_ORDER" class="vertical-timeline-block">
+                            <div class="vertical-timeline-icon navy-bg">
+                                <i class="fa fa-briefcase"></i>
+                            </div>
+
+                            <div class="vertical-timeline-content">
+                                <h2>{{status.order_ready | translate}}</h2>
+                                <span class="vertical-date">
+                                    <small>{{order_ready_at | date: "dd MMM yyyy hh:mm a"}}</small>
+                                </span>
+                            </div>
+                        </div>
+
+                        <div *ngIf="store_order_created_at!=null&&order_status>ORDER_STATE.OREDER_READY" class="vertical-timeline-block">
+                            <div class="vertical-timeline-icon navy-bg">
+                                <i class="fa fa-briefcase"></i>
+                            </div>
+
+                            <div class="vertical-timeline-content">
+                                <h2>{{status.assign_order_to_Delivery_man | translate}}</h2>
+                                <span class="vertical-date">
+                                    <small>{{store_order_created_at | date: "dd MMM yyyy hh:mm a"}}</small>
+                                </span>
+                            </div>
+                        </div>
+
+                        <div *ngIf="accepted_at!=null&&order_status>ORDER_STATE.WAITING_FOR_DELIVERY_MAN" class="vertical-timeline-block">
+                            <div class="vertical-timeline-icon navy-bg">
+                                <i class="fa fa-briefcase"></i>
+                            </div>
+
+                            <div class="vertical-timeline-content">
+                                <h2>{{status.delivery_man_accepted | translate}}</h2>
+                                <span class="vertical-date">
+                                    <small>{{accepted_at | date: "dd MMM yyyy hh:mm a"}}</small>
+                                </span>
+                            </div>
+                        </div>
+
+                        <div *ngIf="start_for_pickup_at!=null&&order_status>ORDER_STATE.DELIVERY_MAN_ACCEPTED" class="vertical-timeline-block">
+                            <div class="vertical-timeline-icon navy-bg">
+                                <i class="fa fa-briefcase"></i>
+                            </div>
+
+                            <div class="vertical-timeline-content">
+                                <h2>{{status.delivery_man_coming | translate}}</h2>
+                                <span class="vertical-date">
+                                    <small>{{start_for_pickup_at | date: "dd MMM yyyy hh:mm a"}}</small>
+                                </span>
+                            </div>
+                        </div>
+
+                        <div *ngIf="arrived_on_store_at!=null&&order_status>ORDER_STATE.DELIVERY_MAN_COMING" class="vertical-timeline-block">
+                            <div class="vertical-timeline-icon navy-bg">
+                                <i class="fa fa-briefcase"></i>
+                            </div>
+
+                            <div class="vertical-timeline-content">
+                                <h2>{{status.delivery_man_arrived | translate}}</h2>
+                                <span class="vertical-date">
+                                    <small>{{arrived_on_store_at | date: "dd MMM yyyy hh:mm a"}}</small>
+                                </span>
+                            </div>
+                        </div>
+
+                        <div *ngIf="picked_order_at!=null&&order_status>ORDER_STATE.DELIVERY_MAN_ARRIVED" class="vertical-timeline-block">
+                            <div class="vertical-timeline-icon navy-bg">
+                                <i class="fa fa-briefcase"></i>
+                            </div>
+
+                            <div class="vertical-timeline-content">
+                                <h2>{{status.picked_order | translate}}</h2>
+                                <span class="vertical-date">
+                                    <small>{{picked_order_at | date: "dd MMM yyyy hh:mm a"}}</small>
+                                </span>
+                            </div>
+                        </div>
+
+                        <div *ngIf="start_for_delivery_at!=null&&order_status>ORDER_STATE.DELIVERY_MAN_PICKED_ORDER" class="vertical-timeline-block">
+                            <div class="vertical-timeline-icon navy-bg">
+                                <i class="fa fa-briefcase"></i>
+                            </div>
+
+                            <div class="vertical-timeline-content">
+                                <h2>{{status.started_for_delivery | translate}}</h2>
+                                <span class="vertical-date">
+                                    <small>{{started_for_delivery_at | date: "dd MMM yyyy hh:mm a"}}</small>
+                                </span>
+                            </div>
+                        </div>
+
+                        <div *ngIf="delivered_at!=null&&order_status>ORDER_STATE.DELIVERY_MAN_STARTED_DELIVERY" class="vertical-timeline-block">
+                            <div class="vertical-timeline-icon navy-bg">
+                                <i class="fa fa-briefcase"></i>
+                            </div>
+
+                            <div class="vertical-timeline-content">
+                                <h2>{{status.arrived_at_destination | translate}}</h2>
+                                <span class="vertical-date">
+                                    <small>{{delivered_at | date: "dd MMM yyyy hh:mm a"}}</small>
+                                </span>
+                            </div>
+                        </div>
+
+                        <div *ngIf="delivered_at!=null&&order_status>ORDER_STATE.DELIVERY_MAN_ARRIVED_AT_DESTINATION" class="vertical-timeline-block">
+                            <div class="vertical-timeline-icon navy-bg">
+                                <i class="fa fa-briefcase"></i>
+                            </div>
+
+                            <div class="vertical-timeline-content">
+                                <h2>{{status.delivered_ordered | translate}}</h2>
+                                <span class="vertical-date">
+                                    <small>{{delivered_at | date: "dd MMM yyyy hh:mm a"}}</small>
+                                </span>
+                            </div>
+                        </div>
+
+                        <div *ngIf="order_status_id==ORDER_STATUS_ID.CANCELLED" class="vertical-timeline-block">
+                            <div class="vertical-timeline-icon navy-bg">
+                                <i class="fa fa-briefcase"></i>
+                            </div>
+
+                            <div class="vertical-timeline-content">
+                                <h2 *ngIf="order_status==ORDER_STATE.STORE_CANCELLED">{{status.cancelled | translate}}</h2>
+                                <h2 *ngIf="order_status==ORDER_STATE.DELIVERY_MAN_CANCELLED">{{status.delivery_man_cancelled | translate}}</h2>
+                                <span class="vertical-date">
+                                    <small>{{cancelled_at | date: "dd MMM yyyy hh:mm a": 'Europe/London'}}</small>
+                                </span>
+                            </div>
+                        </div>
+
+                        <div *ngIf="order_status_id==ORDER_STATUS_ID.REJECTED&&order_status==ORDER_STATE.DELIVERY_MAN_REJECTED" class="vertical-timeline-block">
+                            <div class="vertical-timeline-icon navy-bg">
+                                <i class="fa fa-briefcase"></i>
+                            </div>
+
+                            <div class="vertical-timeline-content">
+                                <h2>{{status.delivery_man_rejected | translate}}</h2>
+                                <span class="vertical-date">
+                                    <small>{{store_order_created_at | date: "dd MMM yyyy hh:mm a": 'Europe/London'}}</small>
+                                </span>
+                            </div>
+                        </div>
+
+                        <div *ngIf="order_status_id==ORDER_STATUS_ID.COMPLETED" class="vertical-timeline-block">
+                            <div class="vertical-timeline-icon navy-bg">
+                                <i class="fa fa-briefcase"></i>
+                            </div>
+
+                            <div class="vertical-timeline-content">
+                                <h2>{{status.completed | translate}}</h2>
+                                <span class="vertical-date">
+                                    <small>{{completed_at | date: "dd MMM yyyy hh:mm a": 'Europe/London'}}</small>
+                                </span>
+                            </div>
+                        </div>
+
+                        <div *ngIf="order_status==ORDER_STATE.NO_DELIVERY_MAN_FOUND" class="vertical-timeline-block">
+                            <div class="vertical-timeline-icon navy-bg">
+                                <i class="fa fa-briefcase"></i>
+                            </div>
+
+                            <div class="vertical-timeline-content">
+                                <h2>{{status.no_delivery_man_found | translate}}</h2>
+                                <span class="vertical-date">
+                                    <small>{{completed_at | date: "dd MMM yyyy hh:mm a": 'Europe/London'}}</small>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+</div>

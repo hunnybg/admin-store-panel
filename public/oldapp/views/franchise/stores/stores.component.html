@@ -1,0 +1,229 @@
+<footer [myLoading]="myLoading" ></footer>
+<div class="row wrapper fix_search_bar border-bottom white-bg page-heading">
+
+    <div class="row">
+        <div class="col-md-4 col-sm-12">
+            <div class="lable_center">
+                <label>{{title.search | translate}}</label>
+            </div>
+            <div class="col-md-6 col-sm-6 remove_padding">
+                <div class="form-group" id="search_fields">
+                    <select chosen class="chosen-select" id="search_field" [(ngModel)]="search_field" name="search_field" tabindex="4">
+
+                        <option value="name">{{title.filter_name | translate}}</option>
+                        <option value="email">{{title.filter_email | translate}}</option>
+                        <option value="city_details.city_name">{{title.filter_city | translate}}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-6 remove_padding">
+                <div class="form-group">
+                    <div class="input-group">
+
+                        <input type="text" class="form-control search_box" [(ngModel)]="search_value"  name="search_value">
+                        <span class="input-group-addon search_icon"><span class="fa fa-search"></span></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 col-sm-12">
+            <div class="lable_center">
+                <label>{{title.sort | translate}}</label>
+            </div>
+            <div class="col-md-6 col-sm-6 remove_padding">
+                <div class="form-group" id="sort_fields">
+                    <select chosen class="chosen-select" id="sort_field" [(ngModel)]="sort_field" name="sort_field" tabindex="4">
+
+                        <option value="unique_id">{{title.filter_id | translate}}</option>
+                        <option value="name">{{title.filter_name | translate}}</option>
+                        <option value="email">{{title.filter_email | translate}}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-6 remove_padding">
+                <div class="form-group" id="sort_orders">
+
+                    <select chosen class="chosen-select" id="sort_store" [(ngModel)]="sort_store" name="sort_store" tabindex="4">
+
+                        <option value="1">{{title.ascending | translate}}</option>
+                        <option value="-1">{{title.descending | translate}}</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 col-sm-12">
+            <div class="col-md-6 col-sm-6 filter_btn_div">
+                <input type="button" (click)="filter(1)" class="btn filter_apply_btn pull-right" value="{{button.apply | translate}}" >
+            </div>
+            <div class="col-md-6 col-sm-6 filter_btn_div">
+                <input type="button" (click)="addStore()" class="btn export_excel_btn pull-right" value="{{button.add_store}}" >
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<div class="wrapper wrapper-content content_top_bar_view1 animated fadeInRight ">    
+
+    <div class="ibox" *ngIf="store_list.length==0">
+        <div class="ibox-content">
+            <div class="lable_center" >
+                <label>No Records</label>
+            </div>
+        </div> 
+    </div>
+
+    <div class="row" *ngIf="store_list.length > 0">
+        <div *ngFor="let i of store_list" >
+            <div class="col-lg-2 col-md-3 col-sm-6 col-xs-12 user_profile" style="padding : 0px; padding-right: 16px;">
+                <div class="contact-box center-version">
+
+                    <a>
+                        <div class="dropdown pull-right" dropdown>
+                            <a class="pull-right" dropdown-open><i class="fa fa-ellipsis-v" style="font-size:20px;color:#676a6c;"></i></a>
+
+
+                            <ul class="pull-right dropdown-menu animated fadeIntop m-t-xs" dropdown>
+                                <li><a (click)="editStore(i._id)"><span style="display:block;" class="nav-label">{{button.edit_detail | translate}}</span> </a></li>
+                                <li><a (click)="viewStoreDetail(i._id)"><span class="nav-label">{{button.view_detail}}</span> </a></li>
+                                <!--<li><a (click)="viewHistory(i._id,3)"><span style="display:block;" class="nav-label">{{button.history | translate}}</span> </a></li>-->
+                                <!--<li><a (click)="viewDocument(i._id, 2)"><span style="display:block;" class="nav-label">{{button.view_document | translate}}</span> </a></li>-->
+                                <li *ngIf='i.is_approved == true' ><a (click)="approved_decline(store_page_type,i._id)" ><span style="display:block;" class="nav-label">{{button.decline | translate}}</span> </a></li>
+                                <li *ngIf='i.is_approved == false' ><a (click)="approved_decline(store_page_type,i._id)" ><span style="display:block;" class="nav-label">{{button.approved | translate }}</span> </a></li>
+
+                                <!--<li *ngIf='i.is_approved == true && i.is_business == false'><a (click)="approved_decline(store_page_type,i._id)"><span  style="display:block;" class="nav-label">{{button.decline | translate}}</span> </a></li>-->
+                                <li><a (click)="viewItems(i._id)"><span  style="display:block;" class="nav-label">View Items</span> </a></li>
+
+                                <li><a (click)="open_notification_modal(type,i._id)" ><span style="display:block;" class="nav-label">{{button.send_notification | translate}}</span> </a></li>
+                            </ul>
+                        </div>
+                        <img *ngIf='i.image_url!==""' class="img-circle" src="{{i.image_url}}">
+
+                        <img *ngIf='i.image_url==""' class="img-circle" src="default.png">
+
+                        <div>
+                            <h3 class="m-b-xs"><strong>{{i.name}}</strong></h3>
+
+                            <div class="font-bold" style="height: 50px; overflow-x: hidden;">{{i.email}}</div>
+
+                            <!--                            <div style="height: 60px; overflow-y: hidden;">
+                                                            <address class="m-t-md">
+                                                                {{i.email}}
+                                                            </address>
+                                                        </div>-->
+                            <address class="m-t-md">
+                                <strong>{{i.city_details.city_name}}</strong><br>
+                                <strong>{{i.delivery_details.delivery_name}}</strong><br>
+                                
+                                <abbr title="Phone">{{title.phone | translate}}:</abbr> {{i.country_phone_code + i.phone}}<a class="btn btn-xs btn-white pull-right" tooltip="Send SMS"
+                                                                                                                             [tooltipDisabled]="false"
+                                                                                                                             [tooltipAnimation]="true"
+                                                                                                                             tooltipPlacement="top"  (click)="open_sms_modal(type,i._id)"><i class="fa fa-comments"></i></a>
+                            </address>
+                        </div>
+
+                    </a>
+
+
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+    <div class="ibox" *ngIf="store_list.length>0">
+        <div class="ibox-content">
+            <div class="row">
+
+                <div class="col-md-12 col-sm-12" style="margin-top: 6px;">
+                    <div class="lable_center">
+
+
+                        <ul class="pagination">
+                            <li *ngIf="page!==1"><a class="btn" (click)="filter(page-1)">{{button.pre | translate}}</a></li>
+                            <li *ngFor="let index of total_pages" [class.active]="page==index">
+                                <a *ngIf="index==1 || index==total_page || index==page || index==page-1 || index==page+1" (click)="filter(index)" class="btn">{{index}}</a>
+                                <a *ngIf="(index==1 && (page!==1 && page!==2 && page!==3)) || (index==total_page-1 && (page!==total_page && page!==total_page-1 && page!==total_page-2))" class="btn">...</a>
+
+                            </li>
+                            <li *ngIf="page!==total_page && store_list.length!==0"><a class="btn" (click)="filter(page+1)">{{button.next | translate}}</a></li>
+                        </ul>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<modal keyboard="false" backdrop="static" cssClass="modal-xl" #mysmsModal>
+    <form #modalSmsForm="ngForm" (ngSubmit)="SendSms(modalSmsForm.value)">
+        <modal-header [show-close]="true">
+            <h4 class="modal-title">{{heading_title.admin_sms | translate}}</h4>
+        </modal-header>
+        <modal-body>
+            <div class="row">
+                <input type="hidden" class="form-control" [(ngModel)]="type"   name="type"  />
+                <input type="hidden" class="form-control" [(ngModel)]="store_id"   name="store_id"  />
+                <div class="col-md-12">
+                    <div class="col-md-12 col-sm-12">
+                        <div class="form-group" >
+
+                            <label style="font-weight: normal;"><strong>{{title.content | translate}}</strong></label>
+                            <textarea class="form-control" [(ngModel)]="content"   name="content" required ></textarea>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </modal-body>
+        <modal-footer>
+            <div style="text-align: center">
+                <button type="submit" class="btn btn-primary">{{button.send | translate}}</button>
+            </div>
+        </modal-footer>
+    </form>
+</modal>
+
+
+<modal keyboard="false" backdrop="static" cssClass="modal-xl" #mynotificationModal>
+    <form #modalNotificationForm="ngForm" (ngSubmit)="SendNotification(modalNotificationForm.value)">
+        <modal-header [show-close]="true">
+            <h4 class="modal-title">{{heading_title.admin_send_notification | translate}}</h4>
+        </modal-header>
+        <modal-body>
+            <div class="row">
+                <input type="hidden" class="form-control" [(ngModel)]="type"   name="type"  />
+                <input type="hidden" class="form-control" [(ngModel)]="store_id"   name="store_id"  />
+                <div class="col-md-12">
+                    <div class="col-md-12 col-sm-12">
+                        <div class="form-group" >
+
+                            <label style="font-weight: normal;"><strong>{{title.notification_content | translate}}</strong></label>
+                            <input type="text" class="form-control" [(ngModel)]="content" name="content" required />
+
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+            </div>
+
+        </modal-body>
+        <modal-footer>
+            <div style="text-align: center">
+                <button type="submit" class="btn btn-primary">{{button.send | translate}}</button>
+            </div>
+        </modal-footer>
+    </form>
+</modal>

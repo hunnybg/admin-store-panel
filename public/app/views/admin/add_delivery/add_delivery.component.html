@@ -1,0 +1,428 @@
+<footer [myLoading]="myLoading" ></footer>
+<form #deliveryForm="ngForm" (ngSubmit)="addDelivery(deliveryForm.value)" >
+    <input type="hidden" class="form-control" [(ngModel)]="delivery_id"   name="delivery_id" />
+    <div class="row wrapper col-sm-12 col-md-12 col-xs-12 col-lg-12 fix_search_bar border-bottom white-bg page-heading">
+        <div class="row">
+            <div *ngIf="type=='add'" class="col-md-3 col-sm-12 pull-right new_submit_button">
+                <input  type="submit" id="submit" name="submit"  class="btn btn-primary" value="{{button.submit | translate}}" >
+            </div>
+            <div *ngIf="type=='edit'" class="col-md-3 col-sm-12 pull-right new_submit_button">
+                <input type="submit" id="update" name="update"  class="btn btn-primary" value="{{button.update | translate}}" >
+            </div>
+        </div>
+    </div>
+    <div class="wrapper wrapper-content content_top_bar_view animated fadeInRight">
+        <div class="row">
+            
+            <div class="col-lg-12">
+                <div class="col-lg-6 col-sm-9">
+                    <div class="ibox">
+                        <div class="ibox-title">
+                            <label class="control-label">{{heading_title.delivery_data | translate}}</label>  
+                        </div>
+                        <div class="ibox-content">
+                            <div class="row">
+                                <div class="form-group">
+                                    <label class="col-lg-4 control-label">{{title.name | translate}}</label>
+                                    <div class="col-lg-8 form-group">
+                                        <input type="text" class="form-control" [(ngModel)]="add_delivery.delivery_name" #delivery_name="ngModel"  name="delivery_name" required />
+
+                                        <div *ngIf="delivery_name.errors && (delivery_name.dirty || delivery_name.touched)">
+                                            <div style="color: red;" [hidden]="!delivery_name.errors.required">{{validation_message.delivery_name_required | translate}}</div>
+                                        </div>
+                                    </div> 
+
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-lg-4 control-label">{{title.description | translate}}</label>  
+                                    <div class="col-lg-8 form-group">
+
+                                        <textarea class="form-control" [(ngModel)]="add_delivery.description" #description="ngModel"  name="description" required ></textarea>
+                                        <div *ngIf="description.errors && (description.dirty || description.touched)">
+                                            <div style="color: red;" [hidden]="!description.errors.required">{{validation_message.description_required | translate}}</div>
+                                        </div>
+                                    </div> 
+
+                                </div>
+                                <div class="form-group" [hidden]="delivery_type_list.length<=1">
+                                    <label class="col-lg-4 control-label">{{title.delivery_type | translate}}</label>  
+                                    <div class="col-lg-8 form-group">
+                                        <select chosen class="chosen-select" id="delivery_type" [(ngModel)]="add_delivery.delivery_type" #delivery_type="ngModel" name="delivery_type" data-placeholder="Select Delivery Type"  tabindex="4" >
+
+                                            <option *ngFor="let i of delivery_type_list" value="{{i.value}}">{{i.title}}</option>
+                                        </select> 
+                                        <div *ngIf="delivery_type.errors">
+                                            <div style="color: red;" [hidden]="!delivery_type.errors.required">{{validation_message.select_delivery_required | translate}}</div>
+                                        </div>
+
+
+                                    </div> 
+
+                                </div>
+
+                                <div class="form-group" *ngIf="delivery_type_list.length<=1">
+                                    <input type="hidden" [(ngModel)]="add_delivery.delivery_type" #delivery_type="ngModel" name="delivery_type" />
+                                </div>
+
+
+                                <!--                                <div class="form-group">
+                                                                    <label class="col-lg-4 control-label">{{title.famous_products_tags | translate}}</label>  
+                                                                    <div class="col-lg-8 form-group">
+                                                                        <input type="text" class="form-control" [(ngModel)]="add_delivery.famous_products_tags" #famous_products_tags="ngModel"  name="famous_products_tags" required />
+                                
+                                                                        <div *ngIf="famous_products_tags.errors && (famous_products_tags.dirty || famous_products_tags.touched)">
+                                                                            <div style="color: red;" [hidden]="!famous_products_tags.errors.required">{{validation_message.famous_products_tags_required | translate}}</div>
+                                                                        </div>
+                                                                    </div> 
+                                                                </div>-->
+
+
+
+                                <div class="form-group">
+                                    <label class="col-lg-4 control-label">{{title.sequence_number | translate}}</label>  
+                                    <div class="col-lg-8 form-group">
+                                        <input type="text" class="form-control" [(ngModel)]="add_delivery.sequence_number" #sequence_number="ngModel"  name="sequence_number" required />
+                                        <div *ngIf="sequence_number.errors && (sequence_number.dirty || sequence_number.touched)">
+                                            <div style="color: red;" [hidden]="!sequence_number.errors.required">{{validation_message.delivery_sequence_number_required | translate}}</div>
+                                        </div>
+                                    </div> 
+
+                                </div>
+
+
+
+
+                                <div class="form-group">
+                                    <label class="col-lg-4 control-label">{{title.business | translate}}</label>
+
+                                    <div class="col-lg-8 form-group">
+                                        <ui-switch [(ngModel)]="add_delivery.is_business" #is_business="ngModel" name="is_business"></ui-switch>
+
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+
+                                    <div class="row">
+                                        <label class="col-lg-4 control-label">{{title.image | translate}}</label>
+                                        <label class="col-lg-4 control-label">{{title.icon | translate}}</label>
+                                        <label class="col-lg-4 control-label">{{title.map_pin | translate}}</label>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="form-group col-lg-4">
+                                            <div  style="width: 100%;height:131px;">
+                                                <div class="col-lg-12 profile-images center">
+
+                                                    <span class="btn-file add_img_bg_vehicle no-padding"><img style="" src="{{helper.CONSTANT.IMAGE_BASE_URL + add_delivery.image_url != '' ? add_delivery.image_url : 'plus_box.png'}}" alt=""><input type="file" accept="image/*" (change)="image_update($event);" name="image_url"></span>
+
+                                                </div>
+                                                <div class="col-lg-12 text_center">
+                                                    <span style="color: red;">{{image_error | translate}}</span>
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+
+
+
+                                        <div class="form-group col-lg-4">
+                                            <div  style="width: 100%;height:131px;">
+                                                <div class="col-lg-12 profile-images center">
+
+                                                    <span class="btn-file add_img_bg_vehicle no-padding"><img style="" src="{{helper.CONSTANT.IMAGE_BASE_URL + add_delivery.icon_url != '' ? add_delivery.icon_url : 'plus_box.png'}}" alt=""><input type="file" accept="image/*" (change)="icon_url_update($event);" name="icon_url"></span>
+
+                                                </div>
+                                                <div class="col-lg-12 text_center">
+                                                    <span style="color: red;">{{icon_image_error | translate}}</span>
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+
+                                        <div class="form-group col-lg-4">
+                                            <div  style="width: 100%;height:131px;">
+
+                                                <div class="col-lg-12 profile-images center">
+
+                                                    <span class="btn-file add_img_bg_vehicle no-padding"><img style="" src="{{helper.CONSTANT.IMAGE_BASE_URL + add_delivery.map_pin_url != '' ? add_delivery.map_pin_url : 'plus_box.png'}}" alt=""><input type="file" accept="image/*" (change)="map_pin_url_update($event);" name="map_pin_url"></span>
+
+                                                </div>
+                                                <div class="col-lg-12 text_center">
+                                                    <span style="color: red;">{{map_pin_image_error | translate}}</span>
+                                                </div>
+
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+
+
+
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <label class="control-label" style="color:#bc202b;">{{title.note_for_image | translate}}:-</label>
+                                    </div>
+                                    <div class="row">
+
+                                        <label class="control-label" >{{title.image_note1 | translate}} {{image_setting.image_min_width}}x{{image_setting.image_min_height}}
+                                            {{title.image_note2 | translate}} {{image_setting.image_max_width}}x{{image_setting.image_max_height}}),</label><br>
+                                        <label class="control-label">{{title.image_note3 | translate}} {{image_setting.image_ratio}} {{title.image_note4 | translate}} </label>
+                                        <label *ngFor="let i of image_setting.image_type; let last=last;"> {{(i.split('/'))[1]}}<label [hidden]="last">,</label> </label>
+                                        <label class="control-label"> {{title.image_note5 | translate}}</label>
+
+
+                                    </div> 
+
+                                    <div class="row">
+                                        <label class="control-label" style="color:#bc202b;">{{title.note_for_icon | translate}}:-</label>
+                                    </div>
+                                    <div class="row">
+                                        <label class="control-label" >{{title.icon_image_note | translate}} {{image_setting.icon_minimum_size}}x{{image_setting.icon_maximum_size}}),</label><br>
+                                        <label class="control-label">{{title.image_note3 | translate}} {{image_setting.icon_image_ratio}} {{title.image_note4 | translate}} </label>
+                                       <label *ngFor="let i of image_setting.icon_image_type; let last=last;"> {{(i.split('/'))[1]}}<label [hidden]="last">,</label> </label>
+                                        <label class="control-label"> {{title.image_note5 | translate}}</label>
+
+
+                                    </div> 
+
+                                    <div class="row">
+                                        <label class="control-label" style="color:#bc202b;">{{title.note_for_map_pin | translate}}:-</label>
+                                    </div>
+                                    <div class="row">
+                                        <label class="control-label">{{title.image_note1 | translate}} {{image_setting.map_pin_image_min_width}}x{{image_setting.map_pin_image_min_height}}
+                                            {{title.image_note2 | translate}} {{image_setting.map_pin_image_max_width}}x{{image_setting.map_pin_image_max_height}}),</label><br>
+                                        <label class="control-label">{{title.image_note3 | translate}} {{image_setting.map_pin_image_ratio}} {{title.image_note4 | translate}} </label>
+                                        <label *ngFor="let i of image_setting.map_pin_image_type; let last=last;"> {{(i.split('/'))[1]}}<label [hidden]="last">,</label> </label>
+                                        <label class="control-label"> {{title.image_note5 | translate}}</label>
+
+
+                                    </div> 
+
+                                </div>
+
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-sm-6">
+
+                    <div>
+                        <div>
+
+                            <form #tag="ngForm" enctype='multipart/form-data' >
+                                <div class="ibox float-e-margins">
+                                    <div class="ibox-title">
+
+                                        <h5 style="font-weight: bold;">{{title.famous_products_tags | translate}}</h5>
+
+                                        <span *ngIf="add_tag==false" class="fa fa-pencil pull-right" (click)="add_tag=true"></span>
+
+                                        <span *ngIf="add_tag==true" class="fa fa-check pull-right" (click)="updateTag()" ></span>
+
+
+
+                                    </div>
+                                    <div class="ibox-content no-padding">
+                                        <div class="">
+
+                                            <form #tagForm="ngForm" enctype='multipart/form-data'>
+
+                                                <div>
+                                                    <ul class="list-group" *ngFor="let tag of products_tags_array;let index=index;">
+
+                                                        <li class="list-group-item spec_list">
+                                                            <span  (click)="deleteTag(index, true)" class="fa fa-times pull-right"></span>
+                                                            <div>
+
+                                                                <input type="text" class="" [(ngModel)]="products_tags_arrays[index]" name="{{index}}">
+
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+
+                                                <ul class="list-group" *ngFor="let i of add_delivery.famous_products_tags; let tag_index=index;">
+
+                                                    <li class="list-group-item spec_list">
+                                                        <span (click)="deleteTag(tag_index, false)" class="fa fa-times pull-right"></span>
+                                                        <div *ngIf="i!=='' && add_delivery.famous_products_tags.length>0 && add_delivery.famous_products_tags != undefined" >
+                                                            {{i}}
+                                                        </div>
+                                                    </li>
+                                                </ul>
+
+                                            </form>
+                                        </div>
+                                        <div  class="add_spec_div">
+
+                                            <button (click)="append_tag()" *ngIf="add_tag==true" class="btn add_btn">Add Tag<span class="fa fa-plus" style="margin-left: 8px;"></span></button>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+
+                        </div>
+
+                    </div>
+
+                </div>    
+
+
+
+                <!--                <div>
+                                    <div>
+                                        <div class="col-lg-3 col-sm-6">
+                                            <form #tag="ngForm" enctype='multipart/form-data' >
+                                                <div class="ibox float-e-margins">
+                                                    <div class="ibox-title">
+                                                       
+                                                        <h5 style="font-weight: bold;">Tag</h5>
+                
+                                                        <span *ngIf="product_tag==false" class="fa fa-pencil pull-right" (click)="product_tag=true"></span>
+                
+                                                        <span *ngIf="product_tag==true" class="fa fa-check pull-right" ></span>
+                
+                
+                                                    </div>
+                                                    <div class="ibox-content no-padding">
+                                                        <div class="">
+                                                            <form #tagForm="ngForm" enctype='multipart/form-data'>
+                
+                                                                <ul class="list-group" *ngFor="let tag of add_delivery.famous_products_tags; let tag_index=index; ">
+                
+                                                                    <li class="list-group-item spec_list">
+                                                                        <span (click)="deleteTag(tag_index)"  class="fa fa-times pull-right"></span>
+                                                                        <div >
+                                                                           <input type="text" class=""  *ngIf="product_tag==true"   name="famous_products_tags" />
+                                                                           {{tag}}
+                                                                        </div>
+                                                                    </li>
+                                                                </ul>
+                
+                                                            </form>
+                                                        </div>
+                                                        <div  class="add_spec_div">
+                
+                                                            <button (click)="append_tag()" *ngIf="product_tag==true" class="btn add_btn">Add Tag<span class="fa fa-plus" style="margin-left: 8px;"></span></button>
+                
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                
+                                </div>-->
+
+
+
+
+            </div>
+            <!--            <div class="col-lg-12">
+                            <div class="col-lg-12">
+                                <div class="ibox">
+                                    <div class="ibox-content wizard">
+                                        <div class="row">   
+                                            <div class="col-lg-4">
+                                            </div>
+                                            <div *ngIf="type=='add'" class="col-lg-4" style="text-align: center;">
+                                                <input  type="submit" id="submit" name="submit" style="width: 60%;" class="btn btn-primary" value="{{button.submit | translate}}" >
+                                            </div>
+                                            <div *ngIf="type=='edit'" class="col-lg-4" style="text-align: center;">
+                                                <input type="submit" id="update" name="update" style="width: 60%;" class="btn btn-primary" value="{{button.update | translate}}" >
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>-->
+            <!--            <div class="col-lg-12">
+                            <div class="col-lg-12">
+                                <div class="ibox">
+                                    <div class="ibox-content wizard">
+                                        <div class="row"> 
+                                            <div *ngIf="type=='add'" class="col-lg-4" style="text-align: center;">
+                                                <input type="submit" name="submit" style="width: 60%;margin-top:25%" class="btn btn-primary" value="{{button.submit | translate}}" >
+                                            </div>
+                                            <div *ngIf="type=='edit'" class="col-lg-4" style="text-align: center;">
+                                                <input type="submit" id="update" name="update" style="width:60%;margin-top:25%" class="btn btn-primary" value="{{button.update | translate}}" >
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>-->
+
+        </div>
+    </div>
+</form>
+<modal keyboard="false" backdrop="static" cssClass="modal-xl animated fadeInDownBig" #image_crop_modal>
+    <modal-header [show-close]="true">
+
+    </modal-header>
+    <modal-body>
+        <img-cropper #cropper [image]="data" [settings]="cropperSettings"></img-cropper><br>
+        {{cropperSettings.croppedWidth}}
+        {{cropperSettings.croppedHeight}}
+        <div class="col-lg-12 text_center">
+            <span style="color: red;">{{image_error | translate}}</span>
+        </div>
+
+    </modal-body>
+    <modal-footer>
+        <div style="text-align: center">
+            <button type="button" (click)="crop($event)" class="btn btn-primary">{{button.done | translate}}</button>
+        </div>
+    </modal-footer>
+</modal>
+
+
+
+<modal keyboard="false" backdrop="static" cssClass="modal-xl animated fadeInDownBig" #map_pin_image_crop_modal>
+    <modal-header [show-close]="true">
+
+    </modal-header>
+    <modal-body>
+        <img-cropper #cropper_map_pin [image]="map_pin_data" [settings]="cropperMapPinSettings"></img-cropper><br>
+        {{cropperMapPinSettings.croppedWidth}}
+        {{cropperMapPinSettings.croppedHeight}}
+        <div class="col-lg-12 text_center">
+            <span style="color: red;">{{map_pin_image_error | translate}}</span>
+        </div>
+
+    </modal-body>
+    <modal-footer>
+        <div style="text-align: center">
+            <button type="button" (click)="cropDeliveryMapPin($event)" class="btn btn-primary">{{button.done | translate}}</button>
+        </div>
+    </modal-footer>
+</modal>
+
+
+<modal keyboard="false" backdrop="static" cssClass="modal-xl animated fadeInDownBig" #icon_image_crop_modal>
+    <modal-header [show-close]="true">
+
+    </modal-header>
+    <modal-body>
+        <img-cropper #cropper_icon [image]="icon_data" [settings]="cropperIconSettings"></img-cropper><br>
+        {{cropperIconSettings.croppedWidth}}
+        {{cropperIconSettings.croppedHeight}}
+        <div class="col-lg-12 text_center">
+            <span style="color: red;">{{icon_image_error | translate}}</span>
+        </div>
+    </modal-body>
+    <modal-footer>
+        <div style="text-align: center">
+            <button type="button" (click)="cropIcon($event)" class="btn btn-primary">{{button.done | translate}}</button>
+        </div>
+    </modal-footer>
+</modal>

@@ -1,0 +1,296 @@
+<footer [myLoading]="myLoading" ></footer>
+
+<div class="row wrapper fix_search_bar border-bottom white-bg page-heading">
+  <div class="row">
+    <div class="col-md-3 col-sm-12">
+      <div class="col-md-12 remove_padding">
+        <div class="form-group" id="search_fields">
+          <select chosen class="chosen-select" [(ngModel)]="selected_product
+                                  " name="selected_product" id="selected_product" tabindex="4">
+            <option>{{title.all | translate}}</option>
+            <option *ngFor="let product_data of product_list" value="{{product_data._id}}">{{product_data.name}}</option>
+
+          </select>
+        </div>
+      </div>
+
+    </div>
+    <div class="col-md-3 col-sm-12">
+      <div class="col-md-12 remove_padding">
+        <div class="form-group" id="search_fields">
+          <div class="input-group">
+
+            <input type="text" (keyup)="filter_product(filter_product_name)" class="form-control search_box" [(ngModel)]="filter_product_name" placeholder="{{title.item_name | translate}}" style="color:#000000;" name="filter_product_name">
+            <span class="input-group-addon search_icon"><span class="fa fa-search"></span></span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="col-md-6 col-sm-12 pull-right">
+      <div class="add_btn_div" style="margin-right: 35px;">
+
+        <a> <button (click)="checkbag()" id="checkbag" class="btn add_btn pull-right"><span class="fa fa-shopping-bag pull-left" style="margin-top: 2px;"></span>{{button.cart | translate}}
+          <div *ngIf="helper.user_cart.cart_data.total_item>0" class="cart_button">{{helper.user_cart.cart_data.total_item}}</div></button>
+        </a>
+        <a (click)="helper.create_order_without_item()"> <button class="btn add_btn pull-right" style="margin-right: 10px;">{{button.create_order_without_item | translate}}</button></a>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="daisection">
+  <div class="row">
+
+    <div class="col-md-4 col-xs-12 col-sm-8 pull-right">
+      <div class="checkoutbox" id="outbox" *ngIf="helper.user_cart.cart_data.cart.length>0">
+        <div class="cart_data">
+
+          <div>
+            <a class="clear_all" (click)="helper.clear_cart()">{{button.clear_all | translate}}</a>
+          </div>
+          <div *ngFor="let cart_product of helper.user_cart.cart_data.cart; let product_index=index;">
+            <div class="col-md-12 col-xs-12"
+                 *ngFor="let cart_item of cart_product.items; let item_index=index;">
+              <div class="col-md-8 col-xs-8">
+                <h4 class="cro">{{cart_item.item_name}}</h4>
+                <!--<p class="plain">{{cart_item.details}}</p>-->
+                <h4 class="cro">
+                  {{currency}}{{cart_item.total_item_price}}</h4>
+              </div>
+              <div class="col-md-4 col-xs-4 text-right">
+                <div class="minus" (click)="helper.decrease_qty(product_index, item_index)">
+                  <i class="fa fa-minus" aria-hidden="true"></i>
+                </div>
+                <h4 class="num">{{cart_item.quantity}}</h4>
+                <div class="plus" (click)="helper.increase_qty(product_index, item_index)">
+                  <i class="fa fa-plus" aria-hidden="true"></i>
+                </div>
+                <a class="remove" (click)="helper.remove_from_cart(product_index, item_index)">{{button.remove
+                  | translate}}</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="col-md-12 col-xs-12" (click)="helper.redirect_to_invoice()" style="background-color: black;">
+          <div class="row" style="margin: 0;">
+            <button style="width: 100%;background-color: black;border: 0;">
+              <div class="col-md-9 col-sm-9 col-xs-9">
+                <h1 class="totalprice" style="float: left;">{{button.checkout | translate}}</h1>
+              </div>
+              <div class="col-md-3 col-sm-3 col-xs-3">
+                <h1 class="totalprice">
+                  {{currency}}{{helper.user_cart.total_cart_amount}}</h1>
+              </div>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="wrapper content_top_bar_view1 wrapper-content animated fadeInRight">
+  <div class="row" *ngFor="let product_data of filtered_product_list; let product_index=index;">
+    <div class="col-md-12 " [hidden]="product_data.items.length == 0 || (selected_product!== (title.all | translate) && selected_product!==product_data._id) " style="margin-bottom: 10px; padding: 0px;">
+      <label class="control-label label label-danger" style="font-size: 20px;">{{product_data.name}}</label>
+    </div>
+
+
+    <div *ngFor="let i of product_data.items; let item_index=index;" [hidden]="selected_product !== (title.all | translate) && selected_product!==product_data._id ">
+      <div class="col-lg-4 col-sm-6" style="padding : 0px; padding-right: 2px;">
+        <div class="contact-box" style="padding-left: 0px; padding-right: 0px;">
+          <a (click)="open_item_modal(i , item_index , product_index, $event)" >
+            <div class="col-md-4 col-xs-4 div1" style="text-align: center; padding-left: 0px; padding-right: 0px;">
+              <img class="img-circle m-t-sm img-responsive" src="{{i.image_url[0] != undefined ? helper.CONSTANT.IMAGE_BASE_URL + i.image_url[0] : 'default.png'}}" style="border-radius: 20%; display: inline; width:100px; height: 100px;">
+
+            </div>
+            <div class="col-md-8 col-xs-8 div2" style="padding-left: 0px; padding-right: 0px;">
+              <div class="col-md-9 col-xs-9" style="height: 24px; overflow: hidden;">
+                <h3><strong>{{i.name}}</strong></h3>
+              </div>
+              <div class="col-md-3 col-xs-3" >
+                <h3><strong style="float: right;">{{currency}}{{i.total_item_price}}</strong></h3>
+              </div>
+
+              <div class="col-md-12 col-xs-12" style="height: 57px; overflow: hidden;">
+                <address>
+                  {{i.details}}
+                </address>
+              </div>
+            </div>
+            <div class="clearfix"></div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+<modal keyboard="false" backdrop="static" cssClass="modal-xl animated" #itemModal
+       style="overflow: scroll; z-index: 9999999 !important;">
+
+  <div class="modal-header" style="padding: 0 !important;">
+    <img class="remove_image item_modal_close" (click)="close_item_modal()" src="images/cross_white.png" />
+    <div class="item_modal_image_shaddow">
+
+    </div>
+    <div id="myCarousel" class="carousel slide" data-ride="carousel">
+
+      <ol class="carousel-indicators">
+        <li class="a" *ngFor="let image of current_item.image_url; let image_index=index; let first=first;"
+            id="aa{{image_index}}" [attr.data-target]="'#myCarousel'" [attr.data-slide-to]="image_index"
+            [class.active]="first">
+        </li>
+        <li *ngIf="current_item.image_url.length == 0" class="a active" [attr.data-target]="'#myCarousel'" [attr.data-slide-to]="1">
+        </li>
+      </ol>
+
+      <div class="carousel-inner" (dragstart)="dragstart_image($event)"
+           (dragend)="dragend_image($event, current_item.image_url.length)">
+        <div *ngFor="let image of current_item.image_url; let image_index=index; let first=first;" class="item"
+             [class.active]="first">
+          <img class="animated fadeInRight" src="{{helper.CONSTANT.IMAGE_BASE_URL + image}}" alt="Los Angeles"
+               style="width:100%;height: 230px;object-fit: cover;">
+        </div>
+        <div *ngIf="current_item.image_url.length == 0" class="item active">
+          <img class="animated fadeInRight" src="default.png" alt="Los Angeles"
+               style="width:100%;height: 230px;object-fit: cover;">
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <div class="modal-body" style="padding-bottom: 10px;">
+    <div class="">
+      <h1 class="modalbodyhead">{{current_item.name}}</h1>
+      <p class="modalbodytext">{{current_item.details}}</p>
+
+      <div *ngFor="let specification_group of current_item.specifications; let specification_group_index = index;">
+        <div class="row" style="margin: 0;">
+          <div class="col-md-9 col-sm-9 col-xs-9">
+            <h1 class="radioheader">{{specification_group.name}}</h1>
+            <!--<span  *ngIf="(specification_group.type==1 && (specification_group.range == undefined || specification_group.range==1)) || ((specification_group.type==2 && specification_group.max_range==1))">(choose 1)</span>-->
+            <!--<span  *ngIf="(specification_group.type==1 && specification_group.range!=1 && specification_group.range!=undefined) || (specification_group.type==2 && (specification_group.max_range == undefined || specification_group.max_range!=1))">-->
+            <!--<span *ngIf="specification_group.type==1">-->
+            <!--<span *ngIf="specification_group.range == undefined">(choose 1)</span>-->
+            <!--<span *ngIf="specification_group.range  !== undefined && specification_group.range > 0">(choose {{specification_group.range}})</span>-->
+            <!--</span>-->
+            <!--<span *ngIf="specification_group.type!=1">-->
+            <!--<span *ngIf="specification_group.range == undefined">(choose upto {{specification_group.list.length}})</span>-->
+            <!--<span *ngIf="specification_group.range !== undefined">-->
+            <!--<span *ngIf="specification_group.range > 0">(choose {{specification_group.range}} to {{specification_group.max_range}})</span>-->
+            <!--<span *ngIf="specification_group.range == 0">(choose upto {{specification_group.max_range}})</span>-->
+            <!--</span>-->
+            <!--</span>-->
+            <!--</span>-->
+            <span *ngIf="specification_group.type==1">(choose 1)</span>
+            <span *ngIf="specification_group.type==2">
+                                <span *ngIf="specification_group.range > 0">
+                                  <span *ngIf="specification_group.max_range > 0">
+                                    (choose {{specification_group.range}} to {{specification_group.max_range}})
+                                  </span>
+                                  <span *ngIf="specification_group.max_range == 0 || specification_group.max_range == null">
+                                    (choose {{specification_group.range}})
+                                  </span>
+                                </span>
+                                <span *ngIf="specification_group.range == 0 || specification_group.range == null">
+                                    <span *ngIf="specification_group.max_range > 0">
+                                        (choose upto {{specification_group.max_range}})
+                                    </span>
+                                </span>
+                            </span>
+          </div>
+          <div class="col-md-3 col-sm-3 col-xs-3">
+            <h1 *ngIf="specification_group.is_required" class="radioheader pull-right"
+                style="color: #cb212e;">{{title.required | translate}}</h1>
+          </div>
+        </div>
+        <div class="radio1">
+          <div *ngIf="specification_group.type==1">
+            <div *ngFor="let specification of specification_group.list; let specification_index = index;"
+                 class="radio" style="margin-top: 0px; margin-bottom: 0px;">
+              <div class="row" style="margin: 0;">
+
+                <div class="col-md-9 col-sm-9 col-xs-9" style="padding-left: 0;">
+                  <label style="padding-left: 0;">
+                    <div style="padding-left: 24px;" class="iradio_square-green"
+                         [class.checked]="specification.is_default_selected">
+                      <input type="radio" style="opacity:0"
+                             (change)="changeradio($event, specification_group_index, specification_index)"
+                             [checked]="specification.is_default_selected" class="walnut">
+                    </div>
+                    <span style="margin-left: 10px;">{{specification.name}}</span>
+
+                  </label>
+                </div>
+                <div class="col-md-3 col-sm-3 col-xs-3">
+                  <label *ngIf="specification.price>0" class="pull-right">{{currency}}{{specification.price}}</label>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="specification_group.type==2">
+            <div *ngFor="let specification of specification_group.list; let specification_index = index;"
+                 class="checkbox" style="margin-top: 0px; margin-bottom: 0px;">
+              <div class="row" style="margin: 0;">
+                <div class="col-md-9 col-sm-9 col-xs-9">
+                  <label>
+
+                    <div style="padding-left: 24px;" class="icheckbox_square-green"
+                         [class.checked]="specification.is_default_selected">
+                      <input type="checkbox" style="opacity:0" [disabled]="specification_group.default_selected_count == specification_group.range && specification_group.range !== 0 && !specification.is_default_selected"
+                             (change)="changecheckbox($event, specification_group_index, specification_index)" *ngIf="specification_group.max_range == 0 || specification_group.max_range == null"
+                             [checked]="specification.is_default_selected" class="walnut">
+                      <input type="checkbox" style="opacity:0" [disabled]="specification_group.default_selected_count == specification_group.max_range && !specification.is_default_selected"
+                             (change)="changecheckbox($event, specification_group_index, specification_index)" *ngIf="specification_group.max_range != 0 && specification_group.max_range != null"
+                             [checked]="specification.is_default_selected" class="walnut">
+                    </div>
+                    <span style="margin-left: 10px;">{{specification.name}}</span>
+                  </label>
+                </div>
+                <div class="col-md-3 col-sm-3 col-xs-3">
+                  <label *ngIf="specification.price>0" class="pull-right">{{currency}}{{specification.price}}</label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row" style="margin: 0;text-align: center; color:black; margin-top: 20px;font-family: myFirstFont;">
+        <div class="col-md-4 col-sm-4 col-xs-2"></div>
+        <div class="col-md-4 col-sm-4 col-xs-8" style="border:1px solid;border-radius: 10px;">
+          <div style="display: inline-block;">
+            <i (click)="decrease_qty()" class="fa fa-minus" aria-hidden="true"></i>
+          </div>
+          <div style="display: inline-block;padding-left: 40px;padding-right: 40px;">
+            <h4 class="num" style="margin-top: 10px;">{{qty}}</h4>
+          </div>
+          <div style="display: inline-block;">
+            <i (click)="incerase_qty()" class="fa fa-plus" aria-hidden="true"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-footer" style="background-color: black;">
+    <div class="row" style="margin: 0;">
+
+      <button [disabled]="required_count !== required_temp_count" (click)="addToCart()"
+              style="width: 100%;background-color: black;border: 0;">
+        <div class="col-md-9 col-sm-9 col-xs-9">
+          <h1 class="totalprice" style="float: left;">{{button.add_to_cart | translate}}</h1>
+        </div>
+        <div class="col-md-3 col-sm-3 col-xs-3">
+          <h1 class="totalprice">{{currency}}{{total}}</h1>
+        </div>
+      </button>
+    </div>
+  </div>
+
+</modal>

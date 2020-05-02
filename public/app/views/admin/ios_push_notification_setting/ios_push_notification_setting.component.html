@@ -1,0 +1,230 @@
+<footer [myLoading]="myLoading" ></footer>
+<form #PushNotificationForm="ngForm" (ngSubmit)="IosPushNotificationSetting(PushNotificationForm.value)" >
+    <div class="wrapper wrapper-content animated fadeInRight">
+        <div class="row">
+            <div class="">
+                <div class="col-lg-4 col-sm-6">
+                    <div class="ibox">
+                        <div class="ibox-title">
+                            <label class="control-label">{{heading_title.user_app | translate}}</label>  
+                        </div>
+                        <div class="ibox-content">
+                            <div class="row">
+
+                                <div class="col-xs-12 col-md-12">
+                                    <div class="form-group">
+                                        <label>{{title.certificate_mode | translate}}</label>
+                                        <select chosen class="form-control chosen-select" id="user_certificate_mode" [(ngModel)]="ios_push_notification_setting.user_certificate_mode" #user_certificate_mode="ngModel"  name="user_certificate_mode" >
+
+                                            <option value="sandbox" >{{title.sandbox_mode | translate}}</option>
+                                            <option value="production">{{title.production_mode | translate}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <!-- <div class="col-xs-12 col-md-12">
+                                    <div class="form-group">
+                                        <label>{{title.push_certificate | translate}}</label>
+                                        <div class="fileinput fileinput-new input-group" data-provides="fileinput">
+                                            <div class="form-control" data-trigger="fileinput" style="overflow-x: hidden;"><i class="glyphicon glyphicon-file fileinput-exists"></i> <span class="fileinput-filename"></span></div>
+                                            <span class="input-group-addon btn btn-default btn-file"><span class="fileinput-new">{{button.select_file}}</span><span class="fileinput-exists">{{button.change | translate}}</span>
+                                                <input type="file" (change)="ios_user_cert_file_image($event);"   name="ios_user_cert_file"></span>
+                                            <a href="#" id="remove" class="input-group-addon btn btn-default fileinput-exists" data-dismiss="fileinput">{{button.remove_file | translate}}</a>
+                                        </div> 
+                                    </div>
+                                </div> -->
+
+                                <!-- <div class="col-xs-12 col-md-12">
+                                    <div class="form-group">
+                                        <label>{{title.push_key_file | translate}}</label>
+                                        <div class="fileinput fileinput-new input-group" data-provides="fileinput">
+                                            <div class="form-control" data-trigger="fileinput" style="overflow-x: hidden;"><i class="glyphicon glyphicon-file fileinput-exists"></i> <span class="fileinput-filename"></span></div>
+                                            <span class="input-group-addon btn btn-default btn-file"><span class="fileinput-new">{{button.select_file | translate}}</span><span class="fileinput-exists">{{button.change | translate}}</span>
+                                                <input type="file" (change)="ios_user_key_file_image($event);"  name="ios_user_key_file" ></span>
+                                            <a href="#" id="remove" class="input-group-addon btn btn-default fileinput-exists" data-dismiss="fileinput">{{button.remove_file | translate}}</a>
+                                        </div> 
+                                    </div>
+                                </div> -->
+
+
+
+                                <div class="col-xs-12 col-md-12">
+                                    <div class="form-group">
+                                        <label>{{title.bundle_id | translate}}</label>
+                                        <input type="text" class="form-control" [(ngModel)]="ios_push_notification_setting.user_bundle_id" #user_bundle_id="ngModel"  name="user_bundle_id" required/>
+                                    </div>
+                                </div>
+
+
+
+
+
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-sm-6" >
+                    <div class="ibox">
+                        <div class="ibox-title">
+                            <label class="control-label">{{heading_title.provider_app | translate}}</label>  
+                        </div>
+                        <div class="ibox-content">
+                            <div class="row">
+                                <div class="col-xs-12 col-md-12">
+                                    <div class="form-group">
+                                        <label>{{title.certificate_mode | translate}}</label>
+                                        <select chosen class="form-control chosen-select" id="provider_certificate_mode" [(ngModel)]="ios_push_notification_setting.provider_certificate_mode" #provider_certificate_mode="ngModel" name="provider_certificate_mode" >
+
+                                            <option value="sandbox">{{title.sandbox_mode | translate}}</option>
+                                            <option value="production">{{title.production_mode | translate}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <!-- <div class="col-xs-12 col-md-12">
+                                    <div class="form-group">
+                                        <label>{{title.push_certificate | translate}}</label>
+                                        <div class="fileinput fileinput-new input-group" data-provides="fileinput">
+                                            <div class="form-control" data-trigger="fileinput" style="overflow-x: hidden;"><i class="glyphicon glyphicon-file fileinput-exists"></i> <span class="fileinput-filename"></span></div>
+                                            <span class="input-group-addon btn btn-default btn-file"><span class="fileinput-new">{{button.select_file | translate}}</span><span class="fileinput-exists">{{button.change | translate}}</span>
+                                                <input type="file" (change)="ios_provider_cert_file_image($event);"  name="ios_provider_cert_file" ></span>
+                                            <a href="#" id="remove" class="input-group-addon btn btn-default fileinput-exists" data-dismiss="fileinput">{{button.remove_file | translate}}</a>
+                                        </div> 
+                                    </div>
+                                </div>
+
+                                <div class="col-xs-12 col-md-12">
+                                    <div class="form-group">
+                                        <label>{{title.push_key_file | translate}}</label>
+                                        <div class="fileinput fileinput-new input-group" data-provides="fileinput">
+                                            <div class="form-control" data-trigger="fileinput" style="overflow-x: hidden;"><i class="glyphicon glyphicon-file fileinput-exists"></i> <span class="fileinput-filename"></span></div>
+                                            <span class="input-group-addon btn btn-default btn-file"><span class="fileinput-new">{{button.select_file | translate}}</span><span class="fileinput-exists">{{button.change | translate}}</span>
+                                                <input type="file" (change)="ios_provider_key_file_image($event);"  name="ios_provider_key_file" ></span>
+                                            <a href="#" id="remove" class="input-group-addon btn btn-default fileinput-exists" data-dismiss="fileinput">{{button.remove_file | translate}}</a>
+                                        </div> 
+                                    </div>
+                                </div> -->
+
+
+                                <div class="col-xs-12 col-md-12">
+                                    <div class="form-group">
+                                        <label>{{title.bundle_id | translate}}</label>
+                                        <input type="text" class="form-control" [(ngModel)]="ios_push_notification_setting.provider_bundle_id" #provider_bundle_id="ngModel"  name="provider_bundle_id" required/>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+
+                <div class="col-lg-4 col-sm-6" >
+                    <div class="ibox">
+                        <div class="ibox-title">
+                            <label class="control-label">{{heading_title.store_app | translate}}</label>  
+                        </div>
+                        <div class="ibox-content">
+                            <div class="row">
+
+                                <div class="col-xs-12 col-md-12">
+                                    <div class="form-group">
+                                        <label>{{title.certificate_mode | translate}}</label>
+                                        <select chosen class="form-control chosen-select" id="store_certificate_mode" [(ngModel)]="ios_push_notification_setting.store_certificate_mode" #store_certificate_mode="ngModel" name="store_certificate_mode" >
+
+                                            <option value="sandbox" >{{title.sandbox_mode | translate}}</option>
+                                            <option value="production">{{title.production_mode | translate}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <!-- <div class="col-xs-12 col-md-12">
+                                    <div class="form-group">
+                                        <label>{{title.push_certificate | translate}}</label>
+                                        <div class="fileinput fileinput-new input-group" data-provides="fileinput">
+                                            <div class="form-control" data-trigger="fileinput" style="overflow-x: hidden;"><i class="glyphicon glyphicon-file fileinput-exists"></i> <span class="fileinput-filename"></span></div>
+                                            <span class="input-group-addon btn btn-default btn-file"><span class="fileinput-new">{{button.select_file | translate}}</span><span class="fileinput-exists">{{button.change | translate}}</span>
+                                                <input type="file" (change)="ios_store_cert_file_image($event);"  name="ios_store_cert_file" ></span>
+                                            <a href="#" id="remove" class="input-group-addon btn btn-default fileinput-exists" data-dismiss="fileinput">{{button.remove_file | translate}}</a>
+                                        </div> 
+                                    </div>
+                                </div>
+
+                                <div class="col-xs-12 col-md-12">
+                                    <div class="form-group">
+                                        <label>{{title.push_key_file | translate}}</label>
+                                        <div class="fileinput fileinput-new input-group" data-provides="fileinput">
+                                            <div class="form-control" data-trigger="fileinput" style="overflow-x: hidden;"><i class="glyphicon glyphicon-file fileinput-exists"></i> <span class="fileinput-filename"></span></div>
+                                            <span class="input-group-addon btn btn-default btn-file"><span class="fileinput-new">{{button.select_file | translate}}</span><span class="fileinput-exists">{{button.change | translate}}</span>
+                                                <input type="file" (change)="ios_store_key_file_image($event);"  name="ios_store_key_file" ></span>
+                                            <a href="#" id="remove" class="input-group-addon btn btn-default fileinput-exists" data-dismiss="fileinput">{{button.remove_file | translate}}</a>
+                                        </div> 
+                                    </div>
+                                </div> -->
+
+
+                                <div class="col-xs-12 col-md-12">
+                                    <div class="form-group">
+                                        <label>{{title.bundle_id | translate}}</label>
+                                        <input type="text" class="form-control" [(ngModel)]="ios_push_notification_setting.store_bundle_id" #store_bundle_id="ngModel"  name="store_bundle_id" required/>
+                                    </div>
+                                </div>
+
+
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+        <div class="row" style="margin-top: 15px;">
+            <div class="form-group">
+                <label class="col-sm-3">{{title.push_p8_file | translate}}</label>
+                <div class="col-sm-9 fileinput fileinput-new input-group" data-provides="fileinput">
+                    <div class="form-control" data-trigger="fileinput" style="overflow-x: hidden;"><i class="glyphicon glyphicon-file fileinput-exists"></i> <span class="fileinput-filename"></span></div>
+                    <span class="input-group-addon btn btn-default btn-file"><span class="fileinput-new">{{button.select_file}}</span><span class="fileinput-exists">{{button.change | translate}}</span>
+                        <input type="file" (change)="ios_cert_file_image($event);"   name="ios_user_cert_file"></span>
+                    <a href="#" id="remove" class="input-group-addon btn btn-default fileinput-exists" data-dismiss="fileinput">{{button.remove_file | translate}}</a>
+                </div> 
+            </div>
+        </div>
+
+        <div class="row" style="margin-top: 15px;">
+            <div class="form-group"><label class="col-sm-3 control-label">{{title.team_id | translate}}:</label>
+                <div class="col-sm-9"><input type="text" class="form-control" [(ngModel)]="ios_push_notification_setting.team_id" #team_id="ngModel"  name="team_id" required></div>
+            </div>
+        </div>
+        <div class="row" style="margin-top: 15px;">
+            <div class="form-group"><label class="col-sm-3 control-label">{{title.key_id | translate}}:</label>
+                <div class="col-sm-9"><input type="text" class="form-control" [(ngModel)]="ios_push_notification_setting.key_id" #key_id="ngModel"  name="key_id" required></div>
+            </div>
+        </div>
+        <div class="row" style="margin-top: 15px;">
+            <div class="form-group"><label class="col-sm-3 control-label">IOS Push Certificate Path:</label>
+                <div class="col-sm-9"><input type="text" class="form-control" [(ngModel)]="ios_push_notification_setting.ios_push_certificate_path" #ios_push_certificate_path="ngModel"  name="ios_push_certificate_path" required></div>
+            </div>
+        </div>
+
+
+        <div class="row">
+
+            <div class="col-lg-4">
+            </div>
+            <div class="col-lg-4" style="text-align: center;">
+                <input type="submit" id="submit" [disabled]="edit_button==false" name="submit" style="width:50%;margin-top:10%;" class="btn btn-primary" value="{{button.submit}}" >
+            </div>
+        </div>
+
+
+
+    </div>
+
+</form>

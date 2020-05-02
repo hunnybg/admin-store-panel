@@ -1,0 +1,369 @@
+<footer [myLoading]="myLoading" ></footer> 
+<div class="row wrapper fix_search_bar border-bottom white-bg page-heading">
+
+    <div class="row">
+        <div class="col-md-3 col-sm-12">
+            <div class="lable_center">
+                <label>{{title.search | translate}}</label>
+            </div>
+
+            <div class="col-md-6 col-sm-6 remove_padding">
+                <div class="form-group" id="search_fields">
+                    <select chosen class="chosen-select" id="search_field" [(ngModel)]="search_field" name="search_field" tabindex="4">
+
+                        <option value="user_detail.first_name">{{title.user | translate}}</option>
+                        <option value="provider_detail.first_name">{{title.provider | translate}}</option>
+                        <option value="store_detail.name">{{title.store | translate}}</option>
+
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-6 remove_padding">
+                <div class="form-group">
+                    <div class="input-group">
+
+                        <input type="text" class="form-control search_box" [(ngModel)]="search_value"  name="search_value">
+                        <span class="input-group-addon search_icon"><span class="fa fa-search"></span></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3 col-sm-12">
+            <div class="lable_center">
+                <label>{{title.sort | translate}}</label>
+            </div>
+            <div class="col-md-6 col-sm-6 remove_padding">
+                <div class="form-group" id="sort_fields">
+                    <select chosen class="chosen-select" id="sort_field" [(ngModel)]="sort_field" name="sort_field" tabindex="4">
+
+                        <option value="unique_id">{{title.filter_id}}</option>
+                        <option value="user_detail.first_name">{{title.user | translate}}</option>
+                        <option value="provider_detail.first_name">{{title.provider | translate}}</option>
+                        <option value="store_detail.name">{{title.store | translate}}</option>
+
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-6 remove_padding">
+                <div class="form-group" id="sort_orders">
+
+                    <select chosen class="chosen-select" id="sort_review" [(ngModel)]="sort_review" name="sort_review" tabindex="4">
+
+                        <option value="1">{{title.ascending | translate}}</option>
+                        <option value="-1">{{title.descending | translate}}</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-12">
+            <div class="lable_center">
+                <label>{{title.date_filter | translate}}</label>
+            </div>
+
+            <div class="col-md-12 remove_padding">
+
+
+                <div class="form-group">
+                    <div class="input-group">
+
+                        <my-date-picker id="start_date" [options]="helper.myStartDatePickerOptions" placeholder="Start Date" [(ngModel)]="start_date" (dateChanged)="helper.onStartDateChanged($event)"
+                                        readonly></my-date-picker>
+                        <span class="input-group-addon date_filter_icon">To</span>
+
+                        <my-date-picker id="end_date" [options]="helper.myEndDatePickerOptions" placeholder="End Date" [(ngModel)]="end_date" (dateChanged)="helper.onEndDateChanged($event)"
+                                        readonly></my-date-picker>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-12">
+            <div class="col-md-6 col-sm-6 filter_btn_div">
+                <!--                        <input type="button" class="btn export_excel_btn pull-right" value="{{button.export_excel}}" >-->
+            </div>
+            <div class="col-md-6 col-sm-6 filter_btn_div">
+                <input type="button" (click)="review_history(1)" class="btn filter_apply_btn pull-right" value="{{button.apply | translate}}" >
+            </div>
+        </div>
+
+    </div>
+
+</div>
+<div class="wrapper wrapper-content content_top_bar_view1 animated fadeInRight ">
+    <div class="ibox" *ngIf="review_list.length==0">
+        <div class="ibox-content">
+            <div class="lable_center" >
+                <label>No Records</label>
+            </div>
+        </div>  
+    </div>
+    <div class="ibox" *ngIf="review_list.length>0">
+        <div class="ibox-title">
+            <div class="col-md-12 col-sm-12">
+                <div class="col-md-3 col-sm-3">
+                    <div class="col-md-2 col-sm-3"><label>{{title.id | translate}}</label> </div>
+                    <div class="col-md-2 col-sm-3"><label>{{title.date | translate}}</label></div>
+                </div>
+
+                <div class="col-md-3 col-sm-3"><label>{{title.user | translate}}</label></div>
+                <div class="col-md-3 col-sm-3"><label>{{title.provider | translate}}</label></div>
+                <div class="col-md-3 col-sm-3"><label>{{title.store | translate}}</label></div>
+            </div>
+
+        </div>
+
+
+        <div class="ibox-content">
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+
+                        <tr>
+                            <th>{{title.id | translate}}</th>
+                            <th>{{title.date | translate}}</th>
+                            <th>{{title.provider | translate}}</th>
+                            <th>{{title.store | translate}}</th>
+                            <th>{{title.user | translate}}</th>
+                            <th>{{title.store | translate}}</th>
+                            <th>{{title.provider | translate}}</th>
+                            <!--                            <th>{{title.store_rating_to_user | translate}}</th>-->
+                            <th class="pull-right">{{title.action | translate}}</th>
+
+                        </tr>
+                    </thead>
+
+
+
+                    <tbody>
+                        <tr *ngFor="let review of review_list; let index=index; let last=last;">
+
+                            <td>{{review.order_unique_id}}</td>
+                            <td>{{review.created_at| date: DATE_FORMAT.DD_MMM_YYYY}}</td>
+
+                            <td>
+                        <tr><div *ngIf="review.provider_detail.length>0">
+                        {{review.provider_detail[0].first_name + " " + review.provider_detail[0].last_name}}
+                    </div>
+                </tr>
+                        <tr><span><i class="fa fa-star" aria-hidden="true"></i></span>
+                    {{review.provider}}
+                    <span *ngIf="review.user_review_to_provider != ''" class="text-danger" (click)="review_modal(review._id, index)">{{title.review_read_more}}</span>
+                    </tr>
+
+                    </td>
+
+
+                    <td>
+                    <tr>
+                        {{review.store_detail.name}}
+                    </tr>
+                    <tr><span><i class="fa fa-star" aria-hidden="true"></i></span>
+                    {{review.store}}
+                    <span *ngIf="review.user_review_to_store != ''" class="text-danger" (click)="review_modal1(review._id,index)">{{title.review_read_more}}</span>
+                    </tr>
+                    </td>
+
+
+
+                    <td><tr>
+                        {{review.user_detail.first_name + " " + review.user_detail.last_name}}
+                    </tr>
+                    <tr><span><i class="fa fa-star" aria-hidden="true"></i></span>
+                    {{review.user}}
+                    <span *ngIf="review.provider_review_to_user != ''" class="text-danger" (click)="review_modal2(review._id,index)">{{title.review_read_more}}</span>
+
+                    </tr>
+                    </td>
+
+                    <td><tr>
+                        {{review.store_detail.name}}
+                    </tr>
+                    <tr><span><i class="fa fa-star" aria-hidden="true"></i></span>
+                    {{review.store}}
+                    <span *ngIf="review.provider_review_to_store != ''" class="text-danger" (click)="review_modal3(review._id,index)">{{title.review_read_more}}</span>
+
+                    </tr>
+                    </td>
+
+
+                    <td>
+                    <tr>
+                    <div *ngIf="review.provider_detail.length>0">
+                        {{review.provider_detail[0].first_name + " " + review.provider_detail[0].last_name}}
+                    </div>
+                    </tr>
+                    <tr><span><i class="fa fa-star" aria-hidden="true"></i></span>
+                    {{review.provider}}
+                    <span *ngIf="review.store_review_to_provider != ''" class="text-danger" (click)="review_modal4(review._id,index)">{{title.review_read_more}}</span>
+                    </tr>
+
+                    </td>
+
+                    <!--                    <td><tr>
+                                            {{review.user_detail.first_name + " " + review.user_detail.last_name}}
+                                        </tr>
+                                        <tr><span><i class="fa fa-star" aria-hidden="true"></i></span>
+                                        {{review.store_rating_to_user}}
+                                        </tr>
+                                        <tr *ngIf="review.store_review_to_user != ''"><span class="text-danger" (click)="review_modal5(review._id,index)">{{title.review_read_more}}</span></tr>
+                                        </td>-->
+
+                    <td><div class="dropdown pull-right" [class.dropup]="last && !index==0" dropdown>
+                            <button class="btn btn-primary" dropdown-open>{{title.action | translate}}<span class="caret"></span></button>
+
+
+                            <ul class="pull-right dropdown-menu animated fadeIntop m-t-xs" dropdown>
+
+                                <li><a (click)="viewReviewDetail(review._id)"><span style="display:block;" class="nav-label">{{button.detail | translate}}</span> </a></li>
+                            </ul>
+                        </div>
+                    </td>
+
+
+
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!--            <div class="col-md-12 col-sm-12">
+                            <div class="lable_center">
+            
+                                <ul class="pagination">
+                                    <li *ngIf="page!==1"><a class="btn" (click)="review_history(page-1)">{{button.pre | translate}}</a></li>
+                                    <li *ngFor="let index of total_pages" [class.active]="page==index">
+                                        <a *ngIf="index==1 || index==total_page || index==page || index==page-1 || index==page+1" (click)="review_history(index)" class="btn">{{index}}</a>
+                                        <a *ngIf="(index==1 && (page!==1 && page!==2 && page!==3)) || (index==total_page-1 && (page!==total_page && page!==total_page-1 && page!==total_page-2))" class="btn">...</a>
+            
+                                    </li>
+                                    <li *ngIf="page!==total_page && review_list.length!==0"><a class="btn" (click)="review_history(page+1)">{{button.next | translate}}</a></li>
+                                </ul>
+                            </div>
+                        </div>-->
+        </div>
+    </div>
+
+    <div class="col-md-12 col-sm-12">
+        <div class="lable_center">
+
+            <ul class="pagination">
+                <li *ngIf="page!==1"><a class="btn" (click)="review_history(page-1)">{{button.pre | translate}}</a></li>
+                <li *ngFor="let index of total_pages" [class.active]="page==index">
+                    <a *ngIf="index==1 || index==total_page || index==page || index==page-1 || index==page+1" (click)="review_history(index)" class="btn">{{index}}</a>
+                    <a *ngIf="(index==1 && (page!==1 && page!==2 && page!==3)) || (index==total_page-1 && (page!==total_page && page!==total_page-1 && page!==total_page-2))" class="btn">...</a>
+
+                </li>
+                <li *ngIf="page!==total_page && review_list.length!==0"><a class="btn" (click)="review_history(page+1)">{{button.next | translate}}</a></li>
+            </ul>
+        </div>
+    </div>
+
+
+</div>
+
+<modal keyboard="false" backdrop="static" cssClass="modal-xl" #modal>
+    <modal-header [show-close]="true">
+        <h4 class="modal-title">{{title.review | translate}}</h4>
+    </modal-header>
+    <modal-body *ngIf="review_list.length>0">
+        <div class="row" *ngIf="review_list.length>0">
+            <label style="color:black;">{{review_list[this.selected_review_index].user_review_to_provider}}</label>
+        </div>
+    </modal-body>
+</modal>
+
+
+
+<modal keyboard="false" backdrop="static" cssClass="modal-xl" #modal1>
+    <modal-header [show-close]="true">
+        <h4 class="modal-title">{{title.review | translate}}</h4>
+    </modal-header>
+    <modal-body *ngIf="review_list.length>0">
+        <div class="row" *ngIf="review_list.length>0">
+            <label style="color:black;">{{review_list[this.selected_review_index].user_review_to_store}}</label>
+        </div>
+    </modal-body>
+</modal>
+
+<modal keyboard="false" backdrop="static" cssClass="modal-xl" #modal2>
+    <modal-header [show-close]="true">
+        <h4 class="modal-title">{{title.review | translate}}</h4>
+    </modal-header>
+    <modal-body *ngIf="review_list.length>0">
+        <div class="row" *ngIf="review_list.length>0">
+            <label style="color:black;">{{review_list[this.selected_review_index].provider_review_to_user}}</label>
+        </div>
+    </modal-body>
+</modal>
+
+<modal keyboard="false" backdrop="static" cssClass="modal-xl" #modal3>
+    <modal-header [show-close]="true">
+        <h4 class="modal-title">{{title.review | translate}}</h4>
+    </modal-header>
+    <modal-body *ngIf="review_list.length>0">
+        <div class="row" *ngIf="review_list.length>0">
+            <label style="color:black;">{{review_list[this.selected_review_index].provider_review_to_store}}</label>
+        </div>
+    </modal-body>
+</modal>
+
+<modal keyboard="false" backdrop="static" cssClass="modal-xl" #modal4>
+    <modal-header [show-close]="true">
+        <h4 class="modal-title">{{title.review | translate}}</h4>
+    </modal-header>
+    <modal-body *ngIf="review_list.length>0">
+        <div class="row" *ngIf="review_list.length>0">
+            <label style="color:black;">{{review_list[this.selected_review_index].store_review_to_provider}}</label>
+        </div>
+    </modal-body>
+</modal>
+
+<modal keyboard="false" backdrop="static" cssClass="modal-xl" #modal5>
+    <modal-header [show-close]="true">
+        <h4 class="modal-title">{{title.review | translate}}</h4>
+    </modal-header>
+    <modal-body *ngIf="review_list.length>0">
+        <div class="row" *ngIf="review_list.length>0">
+            <label style="color:black;">{{review_list[this.selected_review_index].store_review_to_user}}</label>
+        </div>
+    </modal-body>
+</modal>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

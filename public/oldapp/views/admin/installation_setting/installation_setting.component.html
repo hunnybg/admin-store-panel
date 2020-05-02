@@ -1,0 +1,136 @@
+<form #imageForm="ngForm" (ngSubmit)="addImage(imageForm.value)" enctype='multipart/form-data' >
+    <div class="panel-body">
+
+        <fieldset class="form-horizontal">
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">{{title.admin_logo | translate}}:</label>
+                <div class="col-sm-3">
+                    <div class="fileinput fileinput-new input-group" data-provides="fileinput">
+                        <div class="form-control" data-trigger="fileinput" style="overflow-x: hidden;"><i class="glyphicon glyphicon-file fileinput-exists"></i> <span class="fileinput-filename"></span></div>
+                        <span class="input-group-addon btn btn-default btn-file"><span class="fileinput-new">{{button.select_file}}</span><span class="fileinput-exists">{{button.change}}</span>
+                            <input type="file" (change)="logo_image($event);"   name="logo_image" placeholder="Select Logo Image"></span>
+                        <a href="#" id="remove" class="input-group-addon btn btn-default fileinput-exists" data-dismiss="fileinput">{{button.remove_file}}</a>
+
+                        <!--                        <input type="submit" id="submit" name="submit"  class="btn btn-primary" value="{{button.submit | translate}}" >-->
+                    </div>
+
+                </div>
+                <div class="col-sm-3">
+                    <button type="submit" id="submit" name="submit" [disabled]="edit_button==false"  class="btn btn-primary">Upload</button>
+                    <img  class="" style="width: 50px;height: 50px;margin-left:60px" src="web_images/logo.png" alt="logo">
+
+                </div>
+
+            </div>
+            <div class="form-group"><label class="col-sm-2 control-label">{{title.admin_title_icon | translate}}:</label>
+                <div class="col-sm-3"><div class="fileinput fileinput-new input-group" data-provides="fileinput">
+                        <div class="form-control" data-trigger="fileinput" style="overflow-x: hidden;"><i class="glyphicon glyphicon-file fileinput-exists"></i> <span class="fileinput-filename"></span></div>
+                        <span class="input-group-addon btn btn-default btn-file"><span class="fileinput-new">{{button.select_file}}</span><span class="fileinput-exists">{{button.change}}</span>
+                            <input type="file" (change)="title_image($event);"  name="title_image" placeholder="Select Logo Image" ></span>
+                        <a href="#" id="remove" class="input-group-addon btn btn-default fileinput-exists" data-dismiss="fileinput">{{button.remove_file}}</a>
+                    </div> 
+
+                </div>
+                <div class="col-sm-3">
+                    <button type="submit" id="submit" name="submit" [disabled]="edit_button==false"  class="btn btn-primary">Upload</button>
+                    <img  class="" style="width: 50px;height: 50px;margin-left:60px" src="web_images/title_image.png" alt="logo">
+
+                </div>
+
+            </div>
+            <div class="form-group"><label class="col-sm-2 control-label">{{title.admin_mail_title_icon | translate}}:</label>
+                <div class="col-sm-3"><div class="fileinput fileinput-new input-group" data-provides="fileinput">
+                        <div class="form-control" data-trigger="fileinput" style="overflow-x: hidden;"><i class="glyphicon glyphicon-file fileinput-exists"></i> <span class="fileinput-filename"></span></div>
+                        <span class="input-group-addon btn btn-default btn-file"><span class="fileinput-new">{{button.select_file}}</span><span class="fileinput-exists">{{button.change}}</span>
+                            <input type="file" (change)="mail_title_image($event);"  name="mail_title_image" placeholder="Select Logo Image"></span>
+                        <a href="#" id="remove" class="input-group-addon btn btn-default fileinput-exists" data-dismiss="fileinput">{{button.remove_file}}</a>
+                    </div>
+
+                </div>
+                <div class="col-sm-3">
+                    <button type="submit" id="submit" name="submit" [disabled]="edit_button==false"  class="btn btn-primary">Upload</button>
+                    <img  class="" style="width: 50px;height: 50px;margin-left:60px" src="email_images/email_vector.png" alt="logo">
+
+                </div>
+
+            </div>
+
+
+
+            <div class="form-group"><label class="col-sm-2 control-label">{{title.admin_mail_logo | translate}}:</label>
+                <div class="col-sm-3"><div class="fileinput fileinput-new input-group" data-provides="fileinput">
+                        <div class="form-control" data-trigger="fileinput" style="overflow-x: hidden;"><i class="glyphicon glyphicon-file fileinput-exists"></i> <span class="fileinput-filename"></span></div>
+                        <span class="input-group-addon btn btn-default btn-file"><span class="fileinput-new">{{button.select_file}}</span><span class="fileinput-exists">{{button.change}}</span>
+                            <input type="file" (change)="mail_logo_image($event);"  name="mail_logo_image" placeholder="Select Logo Image"></span>
+                        <a href="#" id="remove" class="input-group-addon btn btn-default fileinput-exists" data-dismiss="fileinput">{{button.remove_file}}</a>
+                    </div>
+
+                </div>
+                <div class="col-sm-3">
+                    <button type="submit" id="submit" name="submit" [disabled]="edit_button==false"  class="btn btn-primary">Upload</button>
+                    <img  class="" style="width: 50px;height: 50px;margin-left:60px" src="email_images/mail_logo.png" alt="logo">
+
+                </div>
+
+
+            </div>
+
+
+
+
+
+
+            <div class="form-group"><label class="col-sm-2 control-label">{{title.admin_store_logo | translate}}:</label>
+                <div class="col-sm-3"><div class="fileinput fileinput-new input-group" data-provides="fileinput">
+                        <div class="form-control" data-trigger="fileinput" style="overflow-x: hidden;"><i class="glyphicon glyphicon-file fileinput-exists"></i> <span class="fileinput-filename"></span></div>
+                        <span class="input-group-addon btn btn-default btn-file"><span class="fileinput-new">{{button.select_file}}</span><span class="fileinput-exists">{{button.change}}</span>
+                            <input type="file"  (change)="store_logo_image($event);" name="store_logo_image" placeholder="Select Logo Image"></span>
+                        <a href="#" id="remove" class="input-group-addon btn btn-default fileinput-exists" data-dismiss="fileinput">{{button.remove_file}}</a>
+                    </div> 
+
+                </div>
+                <div class="col-sm-3">
+                    <button type="submit" id="submit" name="submit"  [disabled]="edit_button==false" class="btn btn-primary">Upload</button>
+                    <img  class="" style="width: 50px;height: 50px;margin-left:60px" src="web_images/store_logo.png" alt="logo">
+
+                </div>
+
+            </div>
+            
+            
+            
+            
+            <div class="form-group"><label class="col-sm-2 control-label">{{title.admin_user_logo | translate}}:</label>
+                <div class="col-sm-3"><div class="fileinput fileinput-new input-group" data-provides="fileinput">
+                        <div class="form-control" data-trigger="fileinput" style="overflow-x: hidden;"><i class="glyphicon glyphicon-file fileinput-exists"></i> <span class="fileinput-filename"></span></div>
+                        <span class="input-group-addon btn btn-default btn-file"><span class="fileinput-new">{{button.select_file}}</span><span class="fileinput-exists">{{button.change}}</span>
+                            <input type="file"  (change)="user_logo_image($event);" name="user_logo_image" placeholder="Select Logo Image"></span>
+                        <a href="#" id="remove" class="input-group-addon btn btn-default fileinput-exists" data-dismiss="fileinput">{{button.remove_file}}</a>
+                    </div> 
+
+                </div>
+                <div class="col-sm-3">
+                    <button type="submit" id="submit" name="submit"  [disabled]="edit_button==false" class="btn btn-primary">Upload</button>
+                    <img  class="" style="width: 50px;height: 50px;margin-left:60px" src="web_images/user_logo.png" alt="logo">
+
+                </div>
+
+            </div>
+            
+            
+
+            <div class="col-lg-4">
+            </div>
+
+
+
+        </fieldset>
+
+
+
+    </div>
+</form>
+
+
+

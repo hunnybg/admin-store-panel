@@ -1,0 +1,68 @@
+<footer [myLoading]="myLoading" ></footer> 
+<div class="row wrapper content_top_bar border-bottom white-bg page-heading">
+    <div class="row">
+        <div class="col-md-3 col-sm-12 pull-right">
+            <div class="col-md-6 col-sm-6 add_btn_div">
+                 <button [routerLink]="['/admin/add_detail']" class="btn add_btn pull-right" style="margin-bottom: 10px;background-color: #fff; border-color: #fff;">Add Detail<span class="fa fa-plus" style="margin-left: 8px;"></span></button>
+            
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-12 pull-right">
+            <div class="col-md-6 col-sm-6 add_btn_div pull-right">
+                 <button [routerLink]="['/admin/add']" class="btn add_btn pull-right" style="margin-bottom: 10px;margin-right:-130px;">Add Admin<span class="fa fa-plus" style="margin-left: 8px;"></span></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="ibox">
+        <div class="ibox-content">
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>{{title.type | translate}}</th>
+                            <th>{{title.id | translate}}</th>
+                            <th>{{title.name | translate}}</th>
+                            <th>{{title.email | translate}}</th>
+
+                            <th class="pull-right" style="margin-right:35px">{{title.action | translate}}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let i of admin_list; let index=index; let last=last;">
+                            <td [ngSwitch]="i.admin_type">
+                                <div *ngSwitchCase="1">Admin</div>
+                                <div *ngSwitchCase="3">Sub Admin</div>
+
+                            </td>
+                           
+                            <td>{{i.unique_id}}</td>
+                            <td>{{i.username }}</td>
+                            <td>{{i.email}}</td>
+
+                               <td><div class="dropdown pull-right" [class.dropup]="last && !index==0" dropdown>
+                                    <button class="btn btn-primary" dropdown-open>{{title.action | translate}}<span class="caret"></span></button>
+
+
+                                    <ul class="dropdown-menu">
+                                        <li><a (click)="editAdmin(i._id)" ><span style="display:block;" class="nav-label">{{button.edit | translate}}</span> </a></li>
+
+                                        <li><a (click)="deleteAdmin(i._id,index)" ><span style="display:block;" class="nav-label">{{button.delete | translate}}</span> </a></li>
+
+                                    </ul>
+                                </div>
+                            </td>
+
+
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+
+</div>

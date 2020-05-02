@@ -1,0 +1,95 @@
+{
+    "project": {
+        "version": "2.7.0",
+        "name": "Vaiter"
+    },
+    "apps": [
+        {
+            "root": "public",
+            "outDir": "dist",
+            "assets": [
+                "assets",
+                "favicon.ico"
+            ],
+            "index": "index.html",
+            "main": "main.ts",
+            "test": "test.ts",
+            "tsconfig": "tsconfig.json",
+            "prefix": "app",
+            "mobile": false,
+            "styles": [
+                "assets/styles/bootstrap.css",
+                "../node_modules/font-awesome/css/font-awesome.css",
+                "../node_modules/sweetalert2/dist/sweetalert2.css",
+                "assets/styles/styles.css",
+                "assets/styles/newstyle.css",
+                "assets/styles/chosen/bootstrap-chosen.css",
+                "assets/styles/iCheck/custom.css",
+                "assets/styles/animate.css",
+                "../node_modules/owl.carousel/dist/assets/owl.carousel.css",
+                "../node_modules/owl.carousel/dist/assets/owl.theme.default.css",
+
+                "assets/styles/c3.css",
+                "assets/styles/clockpicker/clockpicker.css",
+                "assets/styles/steps/jquery.steps.css",
+                "assets/styles/jasny/jasny-bootstrap.min.css",
+                "../node_modules/ng2-toastr/bundles/ng2-toastr.min.css",
+                "../node_modules/ladda/dist/ladda.min.css",
+                "assets/js/calendar/css/demo.css",
+                "assets/js/calendar/css/theme1.css",
+                "assets/js/calendar/css/theme2.css",
+                "assets/js/calendar/css/theme3.css"
+            ],
+            "scripts": [
+                "../node_modules/jquery/dist/jquery.js",
+                "../node_modules/metismenu/dist/metisMenu.js",
+                "../node_modules/sweetalert2/dist/sweetalert2.js",
+                "../public/vendor/pace/pace.min.js",
+                "../node_modules/bootstrap/dist/js/bootstrap.js",
+                "assets/js/d3.js",
+                "assets/js/c3.js",
+                "assets/js/hammer.js",
+                "assets/js/chosen/chosen.jquery.js",
+                "assets/js/iCheck/icheck.min.js",
+                "assets/js/clockpicker/clockpicker.js",
+                "assets/js/jasny/jasny-bootstrap.min.js",
+                "assets/js/touchspin/jquery.bootstrap-touchspin.min.js",
+                "assets/js/calendar/js/caleandar.js"
+
+            ],
+            "environments": {
+                "source": "environments/environment.ts",
+                "dev": "environments/environment.ts",
+                "prod": "environments/environment.prod.ts"
+            }
+        }
+    ],
+    "addons": [],
+    "packages": [],
+    "e2e": {
+        "protractor": {
+            "config": "./protractor.conf.js"
+        }
+    },
+    "test": {
+        "karma": {
+            "config": "./karma.conf.js"
+        }
+    },
+    "defaults": {
+        "styleExt": "css",
+        "prefixInterfaces": false,
+        "inline": {
+            "style": false,
+            "template": false
+        },
+        "spec": {
+            "class": false,
+            "component": true,
+            "directive": true,
+            "module": false,
+            "pipe": true,
+            "service": true
+        }
+    }
+}

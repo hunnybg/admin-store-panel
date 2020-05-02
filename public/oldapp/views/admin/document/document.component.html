@@ -1,0 +1,165 @@
+<footer [myLoading]="myLoading" ></footer> 
+<div class="row wrapper fix_search_bar border-bottom white-bg page-heading">
+    <div class="row">
+        <div class="col-md-4 col-sm-12">
+            <div class="lable_center">
+                <label>{{title.search | translate}}</label>
+            </div>
+            <div class="col-md-6 col-sm-6 remove_padding">
+                <div class="form-group" id="search_fields">
+                    <select chosen class="chosen-select" id="search_field" [(ngModel)]="search_field" name="search_field" tabindex="4">
+
+                        <option value="document_name">{{title.name | translate}}</option>
+
+                        <option value="country_details.country_name">{{title.country | translate}}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-6 remove_padding">
+                <div class="form-group">
+                    <div class="input-group">
+
+                        <input type="text" class="form-control search_box" [(ngModel)]="search_value"  name="search_value">
+                        <span class="input-group-addon search_icon"><span class="fa fa-search"></span></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 col-sm-12">
+            <div class="lable_center">
+                <label>{{title.sort | translate}}</label>
+            </div>
+            <div class="col-md-6 col-sm-6 remove_padding">
+                <div class="form-group" id="sort_fields">
+                    <select chosen class="chosen-select" id="sort_field" [(ngModel)]="sort_field" name="sort_field" tabindex="4">
+
+                        <option value="unique_id">{{title.id | translate}}</option>
+                        <option value="document_name">{{title.name | translate}}</option>
+                        <option value="country_details.country_name">{{title.country | translate}}</option>
+
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-6 remove_padding">
+                <div class="form-group" id="sort_orders">
+
+                    <select chosen class="chosen-select" id="sort_document" [(ngModel)]="sort_document" name="sort_document" tabindex="4">
+
+                        <option value="1">{{title.ascending | translate}}</option>
+                        <option value="-1">{{title.descending | translate}}</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 col-sm-12">
+            <!--                    <div class="col-md-4 col-sm-4 filter_btn_div">
+                                    <input type="button" class="btn export_excel_btn pull-right" value="{{button.export_excel | translate}}" >
+                                </div>-->
+            <div class="col-md-6 col-sm-6 filter_btn_div">
+                <input type="button" (click)="filter(1)" class="btn filter_apply_btn pull-right" value="{{button.apply | translate}}" >
+            </div>
+            <div class="col-md-6 col-sm-6 filter_btn_div">
+                <button [routerLink]="['/admin/add_document']" class="btn add_btn">{{button.add_document | translate}}<span class="fa fa-plus" style="margin-left: 8px;"></span></button>
+                <!--                        <input type="button" class="btn export_excel_btn pull-right" [routerLink]="['/admin/add_document']" value="{{button.add_document | translate}}" >-->
+
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+<div class="wrapper wrapper-content content_top_bar_view1 animated fadeInRight ">
+
+     <div class="ibox" *ngIf="document_list.length==0">
+        <div class="ibox-content">
+            <div class="lable_center" >
+                <label>No Records</label>
+            </div>
+        </div>  
+    </div>
+    <div class="ibox" *ngIf="document_list.length>0">
+        <div class="ibox-content">
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>{{title.id |translate}}</th>
+                            <th>{{title.name | translate}}</th>
+                            <th>{{title.country | translate}}</th>
+                            <th>{{title.type | translate}}</th>
+                            <th>{{title.is_mandatory | translate}}</th>
+                            <th class="pull-right" style="margin-right:35px">{{title.action | translate}}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let i of document_list; let index=index; let last=last;">
+                            <td>{{i.unique_id}}</td>
+
+                            <td>{{i.document_name }}</td>
+                            <td>{{i.country_details.country_name}}</td>
+                            <td [ngSwitch]="i.document_for">
+                                <div *ngSwitchCase="ADMIN_DATA_ID.USER">{{title.user}}</div>
+                                <div *ngSwitchCase="ADMIN_DATA_ID.PROVIDER">{{title.provider}}</div>
+                                <div *ngSwitchCase="ADMIN_DATA_ID.STORE">{{title.store}}</div>
+                                <div *ngSwitchCase="ADMIN_DATA_ID.PROVIDER_VEHICLE">{{title.provider_vehicle}}</div>
+                            </td>
+                            <td [ngSwitch]="i.is_mandatory">
+                                <div *ngSwitchCase="true">{{title.yes}}</div>
+                                <div *ngSwitchCase="false">{{title.no}}</div>
+
+                            </td>
+
+
+
+                            <td><div class="dropdown pull-right" [class.dropup]="last && !index==0" dropdown>
+                                    <button class="btn btn-primary" dropdown-open>{{title.action | translate}}<span class="caret"></span></button>
+
+
+                                    <ul class="dropdown-menu">
+                                        <li><a (click)="editDocument(i._id)"  ><span style="display:block;" class="nav-label">{{button.edit | translate}}</span> </a></li>
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+
+            <!--            <div class="col-md-12 col-sm-12">
+                            <div class="lable_center">
+            
+                                <ul class="pagination">
+                                    <li *ngIf="page!==1"><a class="btn" (click)="filter(page-1)">{{button.pre | translate}}</a></li>
+                                    <li *ngFor="let index of total_pages" [class.active]="page==index">
+                                        <a *ngIf="index==1 || index==total_page || index==page || index==page-1 || index==page+1" (click)="filter(index)" class="btn">{{index}}</a>
+                                        <a *ngIf="(index==1 && (page!==1 && page!==2 && page!==3)) || (index==total_page-1 && (page!==total_page && page!==total_page-1 && page!==total_page-2))" class="btn">...</a>
+            
+                                    </li>
+                                    <li *ngIf="page!==total_page && document_list.length!==0"><a class="btn" (click)="filter(page+1)">{{button.next | translate}}</a></li>
+                                </ul>
+                            </div>
+                        </div>-->
+
+        </div>
+    </div>
+
+    <div class="col-md-12 col-sm-12">
+        <div class="lable_center">
+
+            <ul class="pagination">
+                <li *ngIf="page!==1"><a class="btn" (click)="filter(page-1)">{{button.pre | translate}}</a></li>
+                <li *ngFor="let index of total_pages" [class.active]="page==index">
+                    <a *ngIf="index==1 || index==total_page || index==page || index==page-1 || index==page+1" (click)="filter(index)" class="btn">{{index}}</a>
+                    <a *ngIf="(index==1 && (page!==1 && page!==2 && page!==3)) || (index==total_page-1 && (page!==total_page && page!==total_page-1 && page!==total_page-2))" class="btn">...</a>
+
+                </li>
+                <li *ngIf="page!==total_page && document_list.length!==0"><a class="btn" (click)="filter(page+1)">{{button.next | translate}}</a></li>
+            </ul>
+        </div>
+    </div>
+
+
+</div>

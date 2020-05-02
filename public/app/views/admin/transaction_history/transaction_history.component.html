@@ -1,0 +1,203 @@
+<style type="text/css">
+    .scrollbar_for_history
+    {
+        height: 100%;
+        background: #fff;
+        overflow-y: auto;
+    }
+
+    .scrollbar::-webkit-scrollbar-track
+    {
+        -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+        background-color: #fff;
+    }
+
+    .scrollbar::-webkit-scrollbar
+    {
+        width: 3px;
+        background-color: #222222;
+    }
+
+    .scrollbar::-webkit-scrollbar-thumb
+    {
+        background-color: #000000;
+    }
+
+</style>
+<footer [myLoading]="myLoading" ></footer> 
+<div class="row wrapper fix_search_bar border-bottom white-bg page-heading">
+
+    <div class="row">
+
+        <div class="col-md-3 col-sm-12">
+            <div class="lable_center">
+                <label>{{title.search | translate}}</label>
+            </div>
+
+            <div class="col-md-6 col-sm-6 remove_padding">
+                <div class="form-group" id="search_fields">
+                    <select chosen class="chosen-select" id="search_field" [(ngModel)]="search_field" name="search_field" tabindex="4">
+
+                       
+                        <!-- <option value="provider_detail.email">{{title.provider | translate}}</option> -->
+                        <option value="store_detail.email">{{title.store | translate}}</option>
+                        
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-6 remove_padding">
+                <div class="form-group">
+                    <div class="input-group">
+
+                        <input type="text" class="form-control search_box" [(ngModel)]="search_value"  name="search_value">
+                        <span class="input-group-addon search_icon"><span class="fa fa-search"></span></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3 col-sm-12">
+            <div class="lable_center">
+                <label>{{title.sort | translate}}</label>
+            </div>
+            <div class="col-md-6 col-sm-6 remove_padding">
+                <div class="form-group" id="sort_fields">
+                    <select chosen class="chosen-select" id="sort_field" [(ngModel)]="sort_field" name="sort_field" tabindex="4">
+
+                        <option value="unique_id">{{title.id}}</option>
+                        <!-- <option value="provider_detail.email">{{title.provider | translate}}</option> -->
+                        <option value="store_detail.eamil">{{title.store | translate}}</option>
+                        
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-6 remove_padding">
+                <div class="form-group" id="sort_orders">
+
+                    <select chosen class="chosen-select" id="sort_transaction_history" [(ngModel)]="sort_transaction_history" name="sort_transaction_history" tabindex="4">
+
+                        <option value="1">{{title.ascending | translate}}</option>
+                        <option value="-1">{{title.descending | translate}}</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-12">
+            <div class="lable_center">
+                <label>{{title.date_filter | translate}}</label>
+            </div>
+            <div class="col-md-12 remove_padding">
+
+                <div class="form-group">
+                    <div class="input-group">
+                        <my-date-picker id="start_date" [options]="helper.myStartDatePickerOptions" placeholder="Start Date" [(ngModel)]="start_date" (dateChanged)="helper.onStartDateChanged($event)"
+                                        readonly></my-date-picker>
+                        <span class="input-group-addon date_filter_icon">To</span>
+
+                        <my-date-picker id="end_date" [options]="helper.myEndDatePickerOptions" placeholder="End Date" [(ngModel)]="end_date" (dateChanged)="helper.onEndDateChanged($event)"
+                                        readonly></my-date-picker>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-12">
+<!--            <div class="col-md-6 col-sm-6 filter_btn_div">
+                <input type="button" (click)="transaction_history_export_excel()" class="btn export_excel_btn pull-right" value="{{button.export_excel}}" >
+            </div>-->
+            <div class="col-md-6 col-sm-6 filter_btn_div">
+                <input type="button" (click)="transaction_history_export_csv()" class="btn export_excel_btn pull-right" value="{{button.export_excel}}" >
+            </div>
+            <div class="col-md-6 col-sm-6 filter_btn_div">
+                <input type="button" (click)="transaction_history(1)" class="btn filter_apply_btn pull-right" value="{{button.apply | translate}}" >
+            </div>
+        </div>
+
+    </div>
+
+</div>
+<div class="wrapper wrapper-content content_top_bar_view1 animated fadeInRight ">
+
+    <div class="ibox" *ngIf="transaction_history_list.length==0">
+        <div class="ibox-content">
+            <div class="lable_center" >
+                <label>No Records</label>
+            </div>
+        </div>  
+    </div>
+    <div class="ibox" *ngIf="transaction_history_list.length>0">
+        <div class="ibox-content">
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>{{title.id |translate}}</th>
+                            <th>{{title.type | translate}}</th>
+                            <!-- <th>{{title.email | translate}}</th> -->
+                            <th>{{title.date | translate}}</th>
+                            <th>{{title.country | translate}}</th>
+                            <th>{{title.currency | translate}}</th>
+                            <th>{{title.amount | translate}}</th>
+                            <th>{{title.transfer_status | translate}}</th>
+                            <th>{{title.transfered_by | translate}}</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let transaction of transaction_history_list">
+                            <td>{{transaction.unique_id}}</td>
+                            <td [ngSwitch]="transaction.user_type">
+                                <div *ngSwitchCase=8>{{title.provider}}
+                                </div>
+                                <div *ngSwitchCase=2>{{title.store}}
+                                </div>
+                            </td>
+                            <!-- <td [ngSwitch]="transaction.user_type">
+                                <div *ngSwitchCase=8>{{transaction.provider_detail[0].email}}
+                                </div>
+                                <div *ngSwitchCase=2>{{transaction.store_detail[0].email}}
+                                </div>
+                            </td> -->
+                            <td>{{transaction.created_at| date: DATE_FORMAT.DD_MMM_YYYY}}</td>
+                            <td>{{transaction.country_details.country_name}}</td>
+
+                            <td [ngSwitch]="transaction.user_type">
+                                <div *ngSwitchCase=8>{{transaction.provider_detail[0].wallet_currency_code}}
+                                </div>
+                                <div *ngSwitchCase=2>{{transaction.store_detail[0].wallet_currency_code}}
+                                </div>
+                            </td>
+                            <td>{{transaction.amount}}</td>
+                           
+                            <td [ngSwitch]="transaction.transfer_status">
+                                <div *ngSwitchCase=1>{{title.transfer}}
+                                </div>
+                                <div *ngSwitchCase=0>{{title.not_transfer}}
+                                </div>
+                            </td>
+                            <td [ngSwitch]="transaction.transfered_by">
+                                <div *ngSwitchCase=1>{{title.transfered_by_admin}}
+                                </div>
+                            </td>
+                            
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-12 col-sm-12">
+        <div class="lable_center">
+            <ul class="pagination">
+                <li *ngIf="page!==1"><a class="btn" (click)="transaction_history(page-1)">{{button.pre | translate}}</a></li>
+                <li *ngFor="let index of total_pages" [class.active]="page==index">
+                    <a *ngIf="index==1 || index==total_page || index==page || index==page-1 || index==page+1" (click)="transaction_history(index)" class="btn">{{index}}</a>
+                    <a *ngIf="(index==1 && (page!==1 && page!==2 && page!==3)) || (index==total_page-1 && (page!==total_page && page!==total_page-1 && page!==total_page-2))" class="btn">...</a>
+
+                </li>
+                <li *ngIf="page!==total_page && transaction_history_list.length!==0"><a class="btn" (click)="transaction_history(page+1)">{{button.next | translate}}</a></li>
+            </ul>
+        </div>
+    </div>
+
+</div>

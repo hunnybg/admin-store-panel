@@ -1,0 +1,966 @@
+<footer [myLoading]="myLoading"></footer>
+<div class="row wrapper fix_search_bar border-bottom white-bg page-heading">
+    <div class="row">
+        <div class="col-md-4 col-sm-12">
+            <div class="lable_center">
+                <label>{{title.search | translate}}</label>
+            </div>
+            <div class="col-md-6 col-sm-6 remove_padding">
+                <div class="form-group" id="search_fields">
+                    <select chosen class="chosen-select" id="search_field" [(ngModel)]="search_field"
+                        name="search_field" tabindex="4">
+
+                        <option value="user_detail.first_name">{{title.filter_user | translate}}</option>
+                        <option value="order_details.product_name">{{title.filter_product | translate}}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-6 remove_padding">
+                <div class="form-group">
+                    <div class="input-group">
+
+                        <input type="text" class="form-control search_box" [(ngModel)]="search_value"
+                            #store_open_time="ngModel" name="search_value">
+                        <span class="input-group-addon search_icon"><span class="fa fa-search"></span></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 
+                <div class="col-md-4 col-sm-12">
+
+                    <div class="col-md-4 col-sm-4">
+                        <div>
+                            <label>{{title.payment_mode | translate}}</label>
+                        </div>
+                        <div class="form-group">
+                            <select chosen class="chosen-select" id="payment_mode" [(ngModel)]="payment_mode" name="payment_mode" tabindex="4">
+                                <option value="">{{title.both | translate}}</option>
+                                <option value="1">{{title.cash | translate}}</option>
+                                <option value="2">{{title.card | translate}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-sm-4">
+                        <div>
+                            <label>{{title.order_type | translate}}</label>
+                        </div>
+                        <div class="form-group" >
+                            <select chosen class="chosen-select" id="order_type" [(ngModel)]="order_type" name="order_type" tabindex="4">
+                                <option value="">{{title.both | translate}}</option>
+                                <option value="{{helper.ADMIN_DATA_ID.USER}}">{{title.user | translate}}</option>
+                                <option value="{{helper.ADMIN_DATA_ID.STORE}}">{{title.store | translate}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-sm-4">
+                        <div>
+                            <label>{{title.pickup | translate}}</label>
+                        </div>
+                        <div class="form-group">
+                            <select chosen class="chosen-select" id="pickup_type" [(ngModel)]="pickup_type" name="pickup_type" tabindex="4">
+                                <option value="">{{title.both | translate}}</option>
+                                <option value="1">{{title.user | translate}}</option>
+                                <option value="2">{{title.delivery_man | translate}}</option>
+                            </select>
+                        </div>
+                    </div>
+                </div> -->
+        <div class="col-md-4 col-sm-12 ">
+            <div class="col-md-6 col-sm-6 filter_btn_div">
+                <input type="button" (click)="filter(1)" class="btn filter_apply_btn pull-right"
+                    value="{{button.apply | translate}}">
+            </div>
+        </div>
+    </div>
+</div>
+<div class="wrapper content_top_bar_view1 wrapper-content animated fadeInRight">
+
+    <div class="row">
+        <div class="col-lg-3 col-sm-6">
+            <div class="ibox">
+                <div class="ibox-title">
+                    <h3>{{helper.heading_title.new_orders | translate}}</h3>
+                </div>
+                <div class="ibox-content">
+                    <ul class="sortable-list connectList agile-list order_fix_div scrollbar" id="sortable-1">
+                        <li *ngFor="let order of order_list; let order_index=index;"
+                            (click)="order.is_show=!order.is_show" style="background-color: #fff;" id="{{order_index}}"
+                            [class.hide]="order.order_status != NEW_ORDER_STATE.NEW_ORDER">
+                            <div *ngIf="order.order_status == NEW_ORDER_STATE.NEW_ORDER">
+                                <span class="fa fa-angle-right product_arrow" *ngIf="order.is_show==false"></span>
+                                <span class="fa fa-angle-down product_arrow"
+                                    *ngIf="order.is_show!==false"></span><span>{{order.unique_id}}</span>
+                                <span class="pull-right">
+                                    <span *ngIf="order.is_schedule_order" class="fa fa-clock-o product_arrow"></span>
+                                    <span *ngIf="order.order_payment_detail.is_user_pick_up_order"
+                                        class="fa fa-user product_arrow"></span>
+                                    <button class="btn btn-xs btn-light_black"
+                                        (click)="get_order_detail(order._id)">{{button.detail | translate}}</button>
+                                    <!-- <button class="btn btn-xs btn-danger" (click)="rejectOrCancleOrder({order_id: order._id, order_status:ORDER_STATE.STORE_REJECTED})">{{button.reject | translate}}</button> -->
+                                </span>
+
+                                <div class="order_li_inner_div">
+                                    <div class="agile-detail">
+                                        <i class="fa fa-user product_arrow"></i>
+                                        <span>{{order.user_detail.first_name}} {{order.user_detail.last_name}}
+                                            ({{order.user_detail.country_phone_code}}
+                                            {{order.user_detail.phone}})</span>
+                                    </div>
+
+                                    <div class="agile-detail" [ngSwitch]="order.order_feature_type">
+                                        <div *ngSwitchCase="ORDER_FEATURE_TYPE.DINE_IN"><span
+                                                class="label label-warning">{{status.dine_in | translate}}</span>
+                                        </div>
+                                        <div *ngSwitchCase="ORDER_FEATURE_TYPE.TAKE_OUT"><span
+                                                class="label label-info_new">{{status.take_out | translate}}</span>
+                                        </div>
+                                        <div *ngSwitchCase="ORDER_FEATURE_TYPE.DRIVE_THRU"><span
+                                                class="label label-primary_new">{{status.take_thru | translate}}</span>
+                                        </div>
+                                        <!-- <div *ngSwitchCase="ORDER_STATE.OREDER_READY"><span class="label label-primary_new">{{status.order_ready1 | translate}}</span></div> -->
+                                        <div *ngSwitchCase="ORDER_FEATURE_TYPE.BAR"><span
+                                                class="label label-danger">{{status.bar | translate}}</span>
+                                        </div>
+                                    </div>
+
+                                    <!-- <div class="agile-detail">
+                                        <i class="fa fa-map-marker product_arrow"></i>
+                                        <span>{{order.cart_detail.destination_addresses[0].address}}<span *ngIf="order.order_payment_detail.total_distance">({{order.order_payment_detail.total_distance.toFixed(2)}}{{title.km | translate}})</span></span>
+                                    </div> -->
+                                    <div *ngIf="order.is_show!==false">
+                                        <div class="agile-detail">
+                                            <i class="fa fa-shopping-cart product_arrow"></i>
+                                            <span
+                                                *ngFor="let product of order.cart_detail.order_details; let last=last;">{{product.product_name}}
+                                                <span *ngIf="!last"> , </span></span>
+                                        </div>
+                                        <div class="agile-detail">
+                                            <i class="fa fa-clock-o product_arrow"></i>
+                                            <span><span *ngIf="order.is_schedule_order==false">{{title.asap}}
+                                                    (</span>{{moment(order.created_at).tz(order.timezone !== '' ? order.timezone: 'Asia/Kolkata').format('DD MMM YYYY HH:mm a')}}<span
+                                                    *ngIf="order.is_schedule_order==false">)</span></span>
+                                        </div>
+                                        <div class="agile-detail" *ngIf="order.is_schedule_order==true">
+                                            <i class="fa fa-clock-o product_arrow"></i>
+                                            <span><span
+                                                    *ngIf="order.is_schedule_order==false"></span>{{moment(order.schedule_order_start_at).tz(order.timezone !== '' ? order.timezone: 'Asia/Kolkata').format('DD MMM YYYY HH:mm a')}}<span
+                                                    *ngIf="order.is_schedule_order==false"></span></span>
+                                        </div>
+                                        <div class="agile-detail">
+                                            <i class="fa fa-dollar product_arrow"></i>
+                                            <span>{{currency_sign}}{{order.order_payment_detail.total.toFixed(2)}}
+                                                <span [ngSwitch]="order.order_payment_detail.is_payment_mode_cash">
+
+                                                    <span *ngIf="!order.order_payment_detail.is_paid_from_wallet">
+                                                        <span *ngSwitchCase="true">({{title.cash | translate}})</span>
+                                                        <span
+                                                            *ngSwitchCase="false">({{order.payment_gateway_detail[0].name}})</span>
+                                                    </span>
+                                                    <span *ngIf="order.order_payment_detail.is_paid_from_wallet">
+                                                        <span class="label label-success"> +
+                                                            {{title.wallet | translate}}</span>
+                                                    </span>
+                                                </span>
+                                            </span>
+                                        </div>
+                                        <!-- <div class="row">
+                                            <span class="pull-right">
+                                                <button *ngIf="order.order_type == helper.ADMIN_DATA_ID.STORE" (click)="edit_order(order._id)" class="btn btn-danger btn-xs">{{button.edit | translate}}</button>
+                                            </span>
+                                        </div> -->
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-sm-6">
+            <div class="ibox">
+                <div class="ibox-title">
+                    <h3>{{helper.heading_title.in_progress | translate}}</h3>
+                </div>
+                <div class="ibox-content">
+                    <ul class="sortable-list connectList agile-list order_fix_div scrollbar" id="sortable-2">
+                        <li *ngFor="let order of order_list; let order_index=index;"
+                            (click)="order.is_show=!order.is_show" id="{{order_index}}"
+                            [class.hide]="order.order_status != NEW_ORDER_STATE.ORDER_PROCESSING">
+                            <div *ngIf="order.order_status == NEW_ORDER_STATE.ORDER_PROCESSING">
+                                <span class="fa fa-angle-right product_arrow" *ngIf="order.is_show==false"></span>
+                                <span class="fa fa-angle-down product_arrow" *ngIf="order.is_show!==false"></span>
+                                <span>{{order.unique_id}}</span>
+                                <span class="pull-right">
+                                    <span *ngIf="order.is_schedule_order" class="fa fa-clock-o product_arrow"></span>
+                                    <span *ngIf="order.order_payment_detail.is_user_pick_up_order"
+                                        class="fa fa-user product_arrow"></span>
+                                    <button class="btn btn-xs btn-light_black"
+                                        (click)="get_order_detail(order._id)">{{button.detail | translate}}</button>
+                                    <!-- <button class="btn btn-xs btn-danger" (click)="rejectOrCancleOrder({order_id: order._id, order_status:ORDER_STATE.STORE_CANCELLED})">{{button.cancel | translate}}</button> -->
+                                </span>
+
+                                <div class="order_li_inner_div">
+                                    <div class="agile-detail">
+                                        <i class="fa fa-user product_arrow"></i>
+                                        <span>{{order.user_detail.first_name}} {{order.user_detail.last_name}}
+                                            ({{order.user_detail.country_phone_code}}
+                                            {{order.user_detail.phone}})</span>
+                                    </div>
+
+                                    <div class="agile-detail" [ngSwitch]="order.order_feature_type">
+                                        <div *ngSwitchCase="ORDER_FEATURE_TYPE.DINE_IN"><span
+                                                class="label label-warning">{{status.dine_in | translate}}</span>
+                                        </div>
+                                        <div *ngSwitchCase="ORDER_FEATURE_TYPE.TAKE_OUT"><span
+                                                class="label label-info_new">{{status.take_out | translate}}</span>
+                                        </div>
+                                        <div *ngSwitchCase="ORDER_FEATURE_TYPE.DRIVE_THRU"><span
+                                                class="label label-primary_new">{{status.take_thru | translate}}</span>
+                                        </div>
+                                        <!-- <div *ngSwitchCase="ORDER_STATE.OREDER_READY"><span class="label label-primary_new">{{status.order_ready1 | translate}}</span></div> -->
+                                        <div *ngSwitchCase="ORDER_FEATURE_TYPE.BAR"><span
+                                                class="label label-danger">{{status.bar | translate}}</span>
+                                        </div>
+                                    </div>
+
+
+                                    <!-- <div class="agile-detail">
+                                        <i class="fa fa-map-marker product_arrow"></i>
+                                        <span>{{order.cart_detail.destination_addresses[0].address}}<span *ngIf="order.order_payment_detail.total_distance">({{order.order_payment_detail.total_distance.toFixed(2)}}{{title.km | translate}})</span></span>
+                                    </div> -->
+                                    <div *ngIf="order.is_show!==false">
+                                        <div class="agile-detail">
+                                            <i class="fa fa-shopping-cart product_arrow"></i>
+                                            <span
+                                                *ngFor="let product of order.cart_detail.order_details; let last=last;">{{product.product_name}}
+                                                <span *ngIf="!last"> , </span></span>
+                                        </div>
+                                        <div class="agile-detail">
+                                            <i class="fa fa-clock-o product_arrow"></i>
+                                            <span><span *ngIf="order.is_schedule_order==false">{{title.asap}}
+                                                    (</span>{{moment(order.created_at).tz(order.timezone !== '' ? order.timezone: 'Asia/Kolkata').format('DD MMM YYYY HH:mm a')}}<span
+                                                    *ngIf="order.is_schedule_order==false">)</span></span>
+                                        </div>
+                                        <div class="agile-detail" *ngIf="order.is_schedule_order==true">
+                                            <i class="fa fa-clock-o product_arrow"></i>
+                                            <span><span
+                                                    *ngIf="order.is_schedule_order==false"></span>{{moment(order.schedule_order_start_at).tz(order.timezone !== '' ? order.timezone: 'Asia/Kolkata').format('DD MMM YYYY HH:mm a')}}<span
+                                                    *ngIf="order.is_schedule_order==false"></span></span>
+                                        </div>
+                                        <div class="agile-detail">
+                                            <i class="fa fa-dollar product_arrow"></i>
+                                            <span>{{currency_sign}}{{order.order_payment_detail.total.toFixed(2)}}
+                                                <span [ngSwitch]="order.order_payment_detail.is_payment_mode_cash">
+
+                                                    <span *ngIf="!order.order_payment_detail.is_paid_from_wallet">
+                                                        <span *ngSwitchCase="true">({{title.cash | translate}})</span>
+                                                        <span
+                                                            *ngSwitchCase="false">({{order.payment_gateway_detail[0].name}})</span>
+                                                    </span>
+                                                    <span *ngIf="order.order_payment_detail.is_paid_from_wallet">
+                                                        <span class="label label-success"> +
+                                                            {{title.wallet | translate}}</span>
+                                                    </span>
+                                                </span>
+                                            </span>
+                                        </div>
+                                        <div class="row" style="margin: 0;margin-top: 5px;">
+                                            <span class="pull-right">
+                                                <button *ngIf="order.order_type == helper.ADMIN_DATA_ID.STORE"
+                                                    (click)="edit_order(order._id)"
+                                                    class="btn btn-danger btn-xs">{{button.edit | translate}}</button>
+                                                <!--<div [hidden]="store_detail.is_store_can_complete_order && !store_detail.is_store_can_add_provider" >-->
+                                                <!--<button (click)="orderAssignProvider(order._id)" class="btn btn-danger btn-xs">{{button.quick_delivery | translate}}</button>-->
+                                                <!--</div>-->
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-sm-6">
+            <div class="ibox">
+                <div class="ibox-title">
+                    <h3>{{helper.heading_title.ready_to_serve | translate}}</h3>
+                </div>
+                <div class="ibox-content">
+                    <ul class="sortable-list connectList agile-list order_fix_div scrollbar" id="sortable-3">
+                        <li *ngFor="let order of order_list; let order_index=index;"
+                            (click)="order.is_show=!order.is_show" id="{{order_index}}"
+                            [class.hide]="order.order_status != NEW_ORDER_STATE.ORDER_MADE">
+                            <div *ngIf="order.order_status == NEW_ORDER_STATE.ORDER_MADE">
+                                <span class="fa fa-angle-right product_arrow" *ngIf="order.is_show==false"></span>
+                                <span class="fa fa-angle-down product_arrow"
+                                    *ngIf="order.is_show!==false"></span><span>{{order.unique_id}}</span>
+                                <span class="pull-right">
+                                    <span *ngIf="order.is_schedule_order" class="fa fa-clock-o product_arrow"></span>
+                                    <span *ngIf="order.order_payment_detail.is_user_pick_up_order"
+                                        class="fa fa-user product_arrow"></span>
+                                    <button class="btn btn-xs btn-light_black"
+                                        (click)="get_order_detail(order._id)">{{button.detail | translate}}</button>
+                                    <!-- <button class="btn btn-xs btn-danger" (click)="rejectOrCancleOrder({order_id: order._id, order_status:ORDER_STATE.STORE_CANCELLED})">{{button.cancel | translate}}</button> -->
+                                </span>
+
+                                <div class="order_li_inner_div">
+                                    <div class="agile-detail">
+                                        <i class="fa fa-user product_arrow"></i>
+                                        <span>{{order.user_detail.first_name}} {{order.user_detail.last_name}}
+                                            ({{order.user_detail.country_phone_code}}
+                                            {{order.user_detail.phone}})</span>
+                                    </div>
+
+                                    <div class="agile-detail" [ngSwitch]="order.order_feature_type">
+                                        <div *ngSwitchCase="ORDER_FEATURE_TYPE.DINE_IN"><span
+                                                class="label label-warning">{{status.dine_in | translate}}</span>
+                                        </div>
+                                        <div *ngSwitchCase="ORDER_FEATURE_TYPE.TAKE_OUT"><span
+                                                class="label label-info_new">{{status.take_out | translate}}</span>
+                                        </div>
+                                        <div *ngSwitchCase="ORDER_FEATURE_TYPE.DRIVE_THRU"><span
+                                                class="label label-primary_new">{{status.take_thru | translate}}</span>
+                                        </div>
+                                        <!-- <div *ngSwitchCase="ORDER_STATE.OREDER_READY"><span class="label label-primary_new">{{status.order_ready1 | translate}}</span></div> -->
+                                        <div *ngSwitchCase="ORDER_FEATURE_TYPE.BAR"><span
+                                                class="label label-danger">{{status.bar | translate}}</span>
+                                        </div>
+                                    </div>
+                                    <!-- <div class="agile-detail">
+                                        <i class="fa fa-map-marker product_arrow"></i>
+                                        <span>{{order.cart_detail.destination_addresses[0].address}}<span *ngIf="order.order_payment_detail.total_distance">({{order.order_payment_detail.total_distance.toFixed(2)}}{{title.km | translate}})</span></span>
+                                    </div> -->
+                                    <div *ngIf="order.is_show!==false">
+                                        <div class="agile-detail">
+                                            <i class="fa fa-shopping-cart product_arrow"></i>
+                                            <span
+                                                *ngFor="let product of order.cart_detail.order_details; let last=last;">{{product.product_name}}
+                                                <span *ngIf="!last"> , </span></span>
+                                        </div>
+                                        <div class="agile-detail">
+                                            <i class="fa fa-clock-o product_arrow"></i>
+                                            <span><span *ngIf="order.is_schedule_order==false">{{title.asap}}
+                                                    (</span>{{moment(order.created_at).tz(order.timezone !== '' ? order.timezone: 'Asia/Kolkata').format('DD MMM YYYY HH:mm a')}}<span
+                                                    *ngIf="order.is_schedule_order==false">)</span></span>
+                                        </div>
+                                        <div class="agile-detail" *ngIf="order.is_schedule_order==true">
+                                            <i class="fa fa-clock-o product_arrow"></i>
+                                            <span><span
+                                                    *ngIf="order.is_schedule_order==false"></span>{{moment(order.schedule_order_start_at).tz(order.timezone !== '' ? order.timezone: 'Asia/Kolkata').format('DD MMM YYYY HH:mm a')}}<span
+                                                    *ngIf="order.is_schedule_order==false"></span></span>
+                                        </div>
+                                        <div class="agile-detail">
+                                            <i class="fa fa-dollar product_arrow"></i>
+                                            <span>{{currency_sign}}{{order.order_payment_detail.total.toFixed(2)}}
+                                                <span [ngSwitch]="order.order_payment_detail.is_payment_mode_cash">
+
+                                                    <span *ngIf="!order.order_payment_detail.is_paid_from_wallet">
+                                                        <span *ngSwitchCase="true">({{title.cash | translate}})</span>
+                                                        <span
+                                                            *ngSwitchCase="false">({{order.payment_gateway_detail[0].name}})</span>
+                                                    </span>
+                                                    <span *ngIf="order.order_payment_detail.is_paid_from_wallet">
+                                                        <span class="label label-success"> +
+                                                            {{title.wallet | translate}}</span>
+                                                    </span>
+                                                </span>
+                                            </span>
+                                        </div>
+                                        <div class="row">
+                                            <span class="pull-right">
+                                                <button *ngIf="order.order_type == helper.ADMIN_DATA_ID.STORE"
+                                                    (click)="edit_order(order._id)"
+                                                    class="btn btn-danger btn-xs">{{button.edit | translate}}</button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-sm-6">
+            <div class="ibox">
+                <div class="ibox-title">
+                    <h3>{{helper.heading_title.cancellation_requested | translate}}</h3>
+                </div>
+                <div class="ibox-content">
+                    <ul class="sortable-list connectList agile-list order_fix_div scrollbar" id="sortable-4">
+                        <li *ngFor="let order of order_list; let order_index=index;"
+                            (click)="order.is_show=!order.is_show" id="{{order_index}}"
+                            [class.hide]="order.order_status != NEW_ORDER_STATE.CANCELLATION_REQUESTED">
+                            <div *ngIf="order.order_status == NEW_ORDER_STATE.CANCELLATION_REQUESTED">
+                                <span class="fa fa-angle-right product_arrow" *ngIf="order.is_show==false"></span>
+                                <span class="fa fa-angle-down product_arrow"
+                                    *ngIf="order.is_show!==false"></span><span>{{order.unique_id}}</span>
+                                <span class="pull-right">
+                                    <span *ngIf="order.is_schedule_order" class="fa fa-clock-o product_arrow"></span>
+                                    <span *ngIf="order.order_payment_detail.is_user_pick_up_order"
+                                        class="fa fa-user product_arrow"></span>
+                                    <button class="btn btn-xs btn-light_black"
+                                        (click)="get_order_detail(order._id)">{{button.detail | translate}}</button>
+                                    <!-- <button class="btn btn-xs btn-danger" (click)="rejectOrCancleOrder({order_id: order._id, order_status:ORDER_STATE.STORE_CANCELLED})">{{button.cancel | translate}}</button> -->
+                                </span>
+
+                                <div class="order_li_inner_div">
+                                    <div class="agile-detail">
+                                        <i class="fa fa-user product_arrow"></i>
+                                        <span>{{order.user_detail.first_name}} {{order.user_detail.last_name}}
+                                            ({{order.user_detail.country_phone_code}}
+                                            {{order.user_detail.phone}})</span>
+                                    </div>
+
+
+                                    <div class="agile-detail" [ngSwitch]="order.order_feature_type">
+                                        <div *ngSwitchCase="ORDER_FEATURE_TYPE.DINE_IN"><span
+                                                class="label label-warning">{{status.dine_in | translate}}</span>
+                                        </div>
+                                        <div *ngSwitchCase="ORDER_FEATURE_TYPE.TAKE_OUT"><span
+                                                class="label label-info_new">{{status.take_out | translate}}</span>
+                                        </div>
+                                        <div *ngSwitchCase="ORDER_FEATURE_TYPE.DRIVE_THRU"><span
+                                                class="label label-primary_new">{{status.take_thru | translate}}</span>
+                                        </div>
+                                        <!-- <div *ngSwitchCase="ORDER_STATE.OREDER_READY"><span class="label label-primary_new">{{status.order_ready1 | translate}}</span></div> -->
+                                        <div *ngSwitchCase="ORDER_FEATURE_TYPE.BAR"><span
+                                                class="label label-danger">{{status.bar | translate}}</span>
+                                        </div>
+                                    </div>
+
+                                    
+                                    <!-- <div class="agile-detail">
+                                        <i class="fa fa-map-marker product_arrow"></i>
+                                        <span>{{order.cart_detail.destination_addresses[0].address}}<span *ngIf="order.order_payment_detail.total_distance">({{order.order_payment_detail.total_distance.toFixed(2)}}{{title.km | translate}})</span></span>
+                                    </div> -->
+                                    <div *ngIf="order.is_show!==false">
+                                        <div class="agile-detail">
+                                            <i class="fa fa-shopping-cart product_arrow"></i>
+                                            <span
+                                                *ngFor="let product of order.cart_detail.order_details; let last=last;">{{product.product_name}}
+                                                <span *ngIf="!last"> , </span></span>
+                                        </div>
+                                        <div class="agile-detail">
+                                            <i class="fa fa-clock-o product_arrow"></i>
+                                            <span><span *ngIf="order.is_schedule_order==false">{{title.asap}}
+                                                    (</span>{{moment(order.created_at).tz(order.timezone !== '' ? order.timezone: 'Asia/Kolkata').format('DD MMM YYYY HH:mm a')}}<span
+                                                    *ngIf="order.is_schedule_order==false">)</span></span>
+                                        </div>
+                                        <div class="agile-detail" *ngIf="order.is_schedule_order==true">
+                                            <i class="fa fa-clock-o product_arrow"></i>
+                                            <span><span
+                                                    *ngIf="order.is_schedule_order==false"></span>{{moment(order.schedule_order_start_at).tz(order.timezone !== '' ? order.timezone: 'Asia/Kolkata').format('DD MMM YYYY HH:mm a')}}<span
+                                                    *ngIf="order.is_schedule_order==false"></span></span>
+                                        </div>
+                                        <div class="agile-detail">
+                                            <i class="fa fa-dollar product_arrow"></i>
+                                            <span>{{currency_sign}}{{order.order_payment_detail.total.toFixed(2)}}
+                                                <span [ngSwitch]="order.order_payment_detail.is_payment_mode_cash">
+
+                                                    <span *ngIf="!order.order_payment_detail.is_paid_from_wallet">
+                                                        <span *ngSwitchCase="true">({{title.cash | translate}})</span>
+                                                        <span
+                                                            *ngSwitchCase="false">({{order.payment_gateway_detail[0].name}})</span>
+                                                    </span>
+                                                    <span *ngIf="order.order_payment_detail.is_paid_from_wallet">
+                                                        <span class="label label-success"> +
+                                                            {{title.wallet | translate}}</span>
+                                                    </span>
+                                                </span>
+                                            </span>
+                                        </div>
+                                        <!-- <div class="row text-center" [hidden]="store_detail.is_store_can_complete_order && !store_detail.is_store_can_add_provider" *ngIf="!order.order_payment_detail.is_user_pick_up_order && order.request_id==null" style="margin: 0;margin-top: 5px;">
+                                            <span class="pull-right">
+                                                <button (click)="orderAssignProvider(order._id, order.delivery_type)" class="btn btn-danger btn-xs">{{button.assign_delivery_for_provider | translate}}</button>
+                                            </span>
+                                        </div> -->
+                                        <!-- <div class="row text-center" *ngIf="store_detail.is_store_can_complete_order || order.order_payment_detail.is_user_pick_up_order " style="margin: 0;margin-top: 5px;">
+                                            <span class="pull-right">
+                                                <button (click)="completeDeliveryModal(order._id, order.confirmation_code_for_complete_delivery, order.order_payment_detail.is_user_pick_up_order)" class="btn btn-danger btn-xs">{{button.complete_order | translate}}</button>
+                                            </span>
+                                        </div> -->
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<modal keyboard="false" backdrop="static" cssClass="modal-sm animated fadeInUpBig" #vehicle_list_modal>
+
+    <modal-header [show-close]="true">
+        <h4 class="modal-title">{{title.select_vehicle | translate}}</h4>
+    </modal-header>
+    <modal-body>
+        <div class="row">
+            <div class="form-group">
+                <label class="col-md-6">{{title.select_vehicle | translate}}</label>
+                <div class="col-md-6">
+                    <select class="form-control" [(ngModel)]="vehicle_id" name="vehicle_id"
+                        data-placeholder="Select Vehicle" tabindex="4">
+                        <option *ngFor="let i of vehicles;" value="{{i._id}}">{{i.vehicle_name}}</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </modal-body>
+    <modal-footer>
+        <div style="text-align: center">
+            <button type="button" (click)="create_request()"
+                class="btn btn-primary">{{button.submit | translate}}</button>
+        </div>
+    </modal-footer>
+</modal>
+
+<modal keyboard="false" backdrop="static" cssClass="modal-sm animated fadeInUpBig" #cancel_order_modal>
+
+    <modal-header [show-close]="true">
+        <h4 class="modal-title">{{heading_title.cancel_order | translate}}</h4>
+    </modal-header>
+    <modal-body>
+        <div class="row">
+            <div class="radio">
+                <label><input type="radio" class="iradio" id="default_reason" name="cancel_reason"
+                        value="Enter Your Reason"><span style="margin-left: 10px;">Too busy to deliver on
+                        time</span></label>
+            </div>
+            <div class="radio">
+                <label><input type="radio" class="iradio" name="cancel_reason" value="Enter Your Reason"><span
+                        style="margin-left: 10px;">Service is not in list</span></label>
+            </div>
+            <div class="radio">
+                <label><input type="radio" class="iradio" name="cancel_reason" value="1"><span
+                        style="margin-left: 10px;">.....</span></label>
+            </div>
+            <div style="display: none;" id="text_box">
+                <input type="text" class="form-control" placeholder="Reason" [(ngModel)]="cancel_reason"
+                    name="cancel_reason" required />
+            </div>
+        </div>
+    </modal-body>
+    <modal-footer>
+        <div style="text-align: center;">
+            <button type="button" class="btn btn-black" (click)="cancelservice()">{{button.submit | translate}}</button>
+        </div>
+    </modal-footer>
+</modal>
+
+<modal keyboard="false" backdrop="static" cssClass="modal-sm animated fadeInUpBig" #complete_order_modal>
+
+    <modal-header [show-close]="true">
+        <h4 class="modal-title">{{heading_title.complete_order | translate}}</h4>
+    </modal-header>
+    <modal-body>
+        <div class="row">
+            <div *ngIf="conf_code_error_message">
+                <label style="color: red;">{{helper.validation_message.confirmation_code_wrong | translate}}</label>
+            </div>
+
+            <div class="form-group" id="otp_for_sms">
+                <label>{{title.confirmation_code | translate}}</label>
+                <input type="text" class="form-control" [(ngModel)]="confirmation_code" name="confirmation_code">
+            </div>
+
+        </div>
+    </modal-body>
+    <modal-footer>
+        <div style="text-align: center;">
+            <button type="button" class="btn btn-black"
+                (click)="completeDelivery()">{{button.submit | translate}}</button>
+        </div>
+    </modal-footer>
+</modal>
+
+<modal keyboard="false" backdrop="static" cssClass="modal-sm animated fadeInUpBig" #estimated_time_modal>
+    <form method="post" #orderAssignProviderForm="ngForm" (ngSubmit)="orderAssignProvider(order_id, delivery_type)">
+        <modal-header>
+            <label>{{heading_title.estimated_time_for_ready_order | translate}}</label>
+        </modal-header>
+        <modal-body>
+            <div class="row">
+
+                <div class="form-group">
+
+                    <input type="text" class="form-control" (keypress)="helper.number_validation($event)"
+                        [(ngModel)]="estimated_time" name="estimated_time" required>
+                </div>
+
+            </div>
+        </modal-body>
+        <modal-footer>
+            <div style="text-align: center;">
+                <button type="submit" class="btn btn-black">{{button.submit | translate}}</button>
+            </div>
+        </modal-footer>
+    </form>
+</modal>
+
+<modal cssClass="modal-invoice animated fadeInUpBig" #order_detail_modal>
+    <modal-header [show-close]="true">
+        <label>{{heading_title.order_detail | translate}}</label>
+    </modal-header>
+    <modal-body>
+        <div class="row" *ngIf="order_detail.cart_detail">
+            <div class="col-md-4">
+                <div class="ibox">
+                    <div class="ibox-title">
+                        <h4 class="pull-right">{{currency_sign}}{{order_total.toFixed(2)}}</h4>
+                        <span style="position: absolute; left:48%;">(<strong>{{total_item}}</strong>)
+                            {{title.items | translate}}</span>
+                        <h5>{{heading_title.order_detail | translate}}</h5>
+                    </div>
+                    <div class="ibox-content invoice_popup_box">
+                        <div *ngFor="let products of order_detail.cart_detail.order_details; let product_index=index; ">
+                            <div style="border-bottom: 1px solid brown;">
+                                <h4 class="pull-right">{{currency_sign}}{{product_item_total_array[product_index]}}
+                                    <span *ngIf="hide_specification_group[product_index]=='true'"
+                                        (click)="show_specifications_group(product_index)"
+                                        class="fa fa-chevron-left"></span>
+                                    <span *ngIf="hide_specification_group[product_index]=='false'"
+                                        (click)="hide_specifications_group(product_index)"
+                                        class="fa fa-chevron-down"></span>
+                                </h4>
+                                <span style="position: absolute; left:48%;">(<strong>{{products.items.length}}</strong>)
+                                    {{title.items | translate}}</span>
+                                <h5>{{products.product_name}}</h5>
+                            </div>
+
+                            <div id="spec_list{{product_index}}" class="table-responsive" style="    width: 100%;">
+                                <table class="table">
+                                    <thead style="border-bottom: 1px solid;">
+                                        <tr>
+                                            <th>{{title.item | translate}}</th>
+                                            <th>{{title.spec | translate}} {{title.price | translate}}</th>
+                                            <th>{{title.price | translate}}</th>
+                                            <th>{{title.qty | translate}}</th>
+                                            <th>{{title.total | translate}}</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                                        <tr style="cursor: pointer;"
+                                            *ngFor="let item of products.items; let odd=odd; let item_index=index; "
+                                            (click)="get_specification(product_index, item_index)">
+                                            <td>{{item.item_name}}</td>
+                                            <td>{{currency_sign}}{{item.total_specification_price}}</td>
+                                            <td>{{currency_sign}}{{item.item_price}}</td>
+                                            <td>{{item.quantity}}</td>
+                                            <td>{{currency_sign}}{{((item.item_price + item.total_specification_price)*item.quantity).toFixed(2)}}
+                                            </td>
+                                        </tr>
+                                    </tbody>
+
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4" *ngIf="is_show_specification">
+                <div class="ibox">
+                    <div class="ibox-title">
+                        <h5>{{title.specifications | translate}}</h5>
+                        <span class="fa fa-remove pull-right" (click)="is_show_specification=false;"></span>
+                    </div>
+
+                    <div class="ibox-content invoice_popup_box">
+
+                        <div *ngFor="let specification_group of specifications; let odd=odd;" [class.row]="odd"
+                            style="margin: 0;">
+                            <div class="row">
+                                <div class="col-md-12 col-sm-12 col-xs-12" style="padding: 0px;">
+                                    <div class="col-md-12" style="padding: 0;border-bottom: 1px solid #dcdcdc;">
+                                        <div class="col-md-8 col-sm-8 col-xs-8">
+                                            <h5>{{specification_group.name}}</h5>
+                                        </div>
+                                        <div *ngIf="specification_group.price > 0" class="col-md-4 col-sm-4 col-xs-4">
+                                            <h5 style="float: right;">{{currency_sign}}{{specification_group.price}}
+                                            </h5>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12" *ngFor="let specification of specification_group.list">
+                                        <div style="padding: 0;" class="col-md-8 col-sm-8 col-xs-8">
+                                            <h6 style="font-size: 13px;">{{specification.name}}</h6>
+                                        </div>
+                                        <div *ngIf="specification.price > 0" class="col-md-4 col-sm-4 col-xs-4"
+                                            style="padding: 0;">
+                                            <h6 style="font-size: 13px;float: right;">
+                                                {{currency_sign}}{{specification.price.toFixed(2)}}</h6>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" style="border-top: 1px solid;padding-top: 15px;" *ngIf="item_note!=''">
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <label>{{title.item_note_here}}</label>
+                                <div>
+                                    <h6 style="font-size: 13px;">{{item_note}}</h6>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4" *ngIf="!is_show_specification">
+                <div class="ibox">
+                    <div class="ibox-title" style="background-color: #d4d8d8;">
+                        <h5>{{heading_title.order_status | translate}}</h5>
+                    </div>
+                    <div class="ibox-content invoice_popup_box">
+
+                        <div id="vertical-timeline" class="vertical-container dark-timeline">
+
+                            <div *ngFor="let date of order_detail.date_time;" class="vertical-timeline-block">
+                                <div class="vertical-timeline-icon gray-bg">
+                                </div>
+                                <div class="vertical-timeline-content" [ngSwitch]="date.status"
+                                    style="padding-top: 1px;">
+                                    <p *ngSwitchCase="NEW_ORDER_STATE.NEW_ORDER">
+                                        <span>{{status.new_order | translate}}</span></p>
+                                    <p *ngSwitchCase="NEW_ORDER_STATE.ORDER_PROCESSING">
+                                        <span>{{status.order_processing | translate}}</span></p>
+                                    <p *ngSwitchCase="NEW_ORDER_STATE.ORDER_MADE">
+                                        <span>{{status.ready | translate}}</span></p>
+                                    <p *ngSwitchCase="NEW_ORDER_STATE.ORDER_COMPLETED">
+                                        <span>{{status.completed | translate}}</span></p>
+                                    <p *ngSwitchCase="NEW_ORDER_STATE.CANCELLATION_REQUESTED">
+                                        <span>{{status.cancel_requested | translate}}</span></p>
+                                    <p *ngSwitchCase="NEW_ORDER_STATE.CANCELLATION_CONFIRMED">
+                                        <span>{{status.order_refunded | translate}}</span></p>
+                                    <p *ngSwitchCase="NEW_ORDER_STATE.CANCELLATION_REJECTED">
+                                        <span>{{status.cancel_rejected | translate}}</span></p>
+                                    <span
+                                        class="vertical-date small text-muted">{{moment(date.date).tz(order_detail.timezone !== '' ? order_detail.timezone: 'Asia/Kolkata').format('DD MMM YYYY hh:mm a')}}</span>
+                                    <br><span
+                                        *ngIf="date.status !== NEW_ORDER_STATE.NEW_ORDER && date.status !== NEW_ORDER_STATE.CANCELLATION_REQUESTED"
+                                        class="vertical-date small text-muted">{{status.changed_by}} -
+                                        {{date.vaitername}}({{date.vaiter_uniqueid}})</span>
+
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="ibox">
+                    <div class="ibox-title" style="background-color: #d4d8d8;">
+                        <h5>{{order_detail.order_payment_detail.invoice_number}}</h5>
+                        <h5 class="pull-right">{{currency_sign}}{{order_detail.order_payment_detail.total.toFixed(2)}}
+                        </h5>
+                    </div>
+                    <div class="ibox-content invoice_popup_box">
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12 col-xs-12" style="padding: 0px;">
+                                <div class="col-md-12 no_padding">
+                                    <label style="margin-top: 10px;">{{title.service_price | translate}}</label>
+                                </div>
+                                <div class="col-md-12" style="padding: 0;border-bottom: 1px solid #dcdcdc;">
+                                    <div class="col-md-8 col-sm-8 col-xs-8">
+                                        <h5>{{title.service_price | translate}}</h5>
+                                    </div>
+                                    <div class="col-md-4 col-sm-4 col-xs-4">
+                                        <h5 style="float: right;">
+                                            {{currency_sign}}{{order_detail.order_payment_detail.total_service_price.toFixed(2)}}
+                                        </h5>
+                                    </div>
+                                </div>
+                                <div class="col-md-12" style="padding: 0;border-bottom: 1px solid #dcdcdc;">
+                                    <div class="col-md-8 col-sm-8 col-xs-8">
+                                        <h5>{{title.tax_price | translate}}</h5>
+                                    </div>
+                                    <div class="col-md-4 col-sm-4 col-xs-4">
+                                        <h5 style="float: right;">
+                                            {{currency_sign}}{{order_detail.order_payment_detail.total_admin_tax_price.toFixed(2)}}
+                                        </h5>
+                                    </div>
+                                </div>
+                                <!--<div class="col-md-12" style="padding: 0;border-bottom: 1px solid #dcdcdc;">-->
+                                <!--<div class="col-md-8 col-sm-8 col-xs-8"><h5>{{title.total_delivery_price | translate}}</h5></div>-->
+                                <!--<div class="col-md-4 col-sm-4 col-xs-4"><h5 style="float: right;">{{currency_sign}}{{order_detail.order_payment_detail.total_delivery_price}}</h5></div>-->
+                                <!--</div>-->
+                                <div class="col-md-12"
+                                    *ngIf='order_detail.order_payment_detail.is_promo_for_delivery_service == true'
+                                    style="padding: 0;border-bottom: 1px solid #dcdcdc;">
+                                    <div class="col-md-8 col-sm-8 col-xs-8">
+                                        <h5>{{title.promo_bonus | translate}}</h5>
+                                    </div>
+                                    <div class="col-md-4 col-sm-4 col-xs-4">
+                                        <h5 style="float: right;">
+                                            {{currency_sign}}{{order_detail.order_payment_detail.promo_payment.toFixed(2)}}
+                                        </h5>
+                                    </div>
+                                </div>
+                                <div class="col-md-12" style="padding: 0;border-bottom: 1px solid #dcdcdc;">
+                                    <div class="col-md-8 col-sm-8 col-xs-8" style="color: red;">
+                                        <h5>{{title.service_price | translate}}</h5>
+                                    </div>
+                                    <div class="col-md-4 col-sm-4 col-xs-4" style="color: red;">
+                                        <h5 style="float: right;">
+                                            {{currency_sign}}{{order_detail.order_payment_detail.total_delivery_price.toFixed(2)}}
+                                        </h5>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12 no_padding">
+                                    <label style="margin-top: 10px;">{{heading_title.order_fees | translate}}</label>
+                                </div>
+                                <div class="col-md-12" style="padding: 0;border-bottom: 1px solid #dcdcdc;">
+                                    <div class="col-md-8 col-sm-8 col-xs-8">
+                                        <h5>{{title.cart_price | translate}}</h5>
+                                    </div>
+                                    <div class="col-md-4 col-sm-4 col-xs-4">
+                                        <h5 style="float: right;">
+                                            {{currency_sign}}{{order_detail.order_payment_detail.total_cart_price.toFixed(2)}}
+                                        </h5>
+                                    </div>
+                                </div>
+                                <div class="col-md-12" style="padding: 0;border-bottom: 1px solid #dcdcdc;">
+                                    <div class="col-md-8 col-sm-8 col-xs-8">
+                                        <h5>{{title.tax_price | translate}}</h5>
+                                    </div>
+                                    <div class="col-md-4 col-sm-4 col-xs-4">
+                                        <h5 style="float: right;">
+                                            {{currency_sign}}{{order_detail.order_payment_detail.total_store_tax_price.toFixed(2)}}
+                                        </h5>
+                                    </div>
+                                </div>
+                                <!--<div class="col-md-12" style="padding: 0;border-bottom: 1px solid #dcdcdc;">-->
+                                <!--<div class="col-md-8 col-sm-8 col-xs-8"><h5>{{title.total_order_price | translate}}</h5></div>-->
+                                <!--<div class="col-md-4 col-sm-4 col-xs-4"><h5 style="float: right;">{{currency_sign}}{{order_detail.order_payment_detail.total_order_price}}</h5></div>-->
+                                <!--</div>-->
+                                <div class="col-md-12"
+                                    *ngIf='order_detail.order_payment_detail.is_promo_for_delivery_service == false'
+                                    style="padding: 0;border-bottom: 1px solid #dcdcdc;">
+                                    <div class="col-md-8 col-sm-8 col-xs-8">
+                                        <h5>{{title.promo_bonus | translate}}</h5>
+                                    </div>
+                                    <div class="col-md-4 col-sm-4 col-xs-4">
+                                        <h5 style="float: right;">
+                                            {{currency_sign}}{{order_detail.order_payment_detail.promo_payment.toFixed(2)}}
+                                        </h5>
+                                    </div>
+                                </div>
+                                <div class="col-md-12" style="padding: 0;border-bottom: 1px solid #dcdcdc;">
+                                    <div class="col-md-8 col-sm-8 col-xs-8" style="color: red;">
+                                        <h5>{{title.total_order_price | translate}}</h5>
+                                    </div>
+                                    <div class="col-md-4 col-sm-4 col-xs-4" style="color: red;">
+                                        <h5 style="float: right;">
+                                            {{currency_sign}}{{order_detail.order_payment_detail.total_order_price.toFixed(2)}}
+                                        </h5>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12 no_padding">
+                                    <label style="margin-top: 10px;">{{heading_title.payment | translate}}</label>
+                                </div>
+                                <div class="col-md-12" style="padding: 0;border-bottom: 1px solid #dcdcdc;">
+                                    <div class="col-md-8 col-sm-8 col-xs-8">
+                                        <h5>{{title.wallet_payment | translate}}</h5>
+                                    </div>
+                                    <div class="col-md-4 col-sm-4 col-xs-4">
+                                        <h5 style="float: right;">
+                                            {{currency_sign}}{{order_detail.order_payment_detail.wallet_payment.toFixed(2)}}
+                                        </h5>
+                                    </div>
+                                </div>
+                                <div class="col-md-12" style="padding: 0;border-bottom: 1px solid #dcdcdc;">
+                                    <div class="col-md-8 col-sm-8 col-xs-8">
+                                        <h5>{{title.cash_payment | translate}}</h5>
+                                    </div>
+                                    <div class="col-md-4 col-sm-4 col-xs-4">
+                                        <h5 style="float: right;">
+                                            {{currency_sign}}{{order_detail.order_payment_detail.cash_payment.toFixed(2)}}
+                                        </h5>
+                                    </div>
+                                </div>
+                                <div class="col-md-12" style="padding: 0;border-bottom: 1px solid #dcdcdc;">
+                                    <div class="col-md-8 col-sm-8 col-xs-8">
+                                        <h5>{{title.other_payment | translate}}</h5>
+                                    </div>
+                                    <div class="col-md-4 col-sm-4 col-xs-4">
+                                        <h5 style="float: right;">
+                                            {{currency_sign}}{{order_detail.order_payment_detail.card_payment.toFixed(2)}}
+                                        </h5>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12 no_padding">
+                                    <label style="margin-top: 10px;">{{heading_title.earning | translate}}</label>
+                                </div>
+                                <div class="col-md-12" style="padding: 0;border-bottom: 1px solid #dcdcdc;">
+                                    <div class="col-md-8 col-sm-8 col-xs-8">
+                                        <h5>{{title.service_price | translate}}</h5>
+                                    </div>
+                                    <div class="col-md-4 col-sm-4 col-xs-4">
+                                        <h5 *ngIf="order_detail.order_payment_detail.is_store_pay_delivery_fees"
+                                            style="float: right;">
+                                            {{currency_sign}}{{order_detail.order_payment_detail.total_delivery_price.toFixed(2)}}
+                                        </h5>
+                                        <h5 *ngIf="!order_detail.order_payment_detail.is_store_pay_delivery_fees"
+                                            style="float: right;">0</h5>
+                                    </div>
+                                </div>
+                                <div class="col-md-12" style="padding: 0;border-bottom: 1px solid #dcdcdc;">
+                                    <div class="col-md-8 col-sm-8 col-xs-8">
+                                        <h5>{{title.order_payment | translate}}</h5>
+                                    </div>
+                                    <div class="col-md-4 col-sm-4 col-xs-4">
+                                        <h5 *ngIf="order_detail.order_payment_detail.is_payment_mode_cash && !order_detail.order_payment_detail.is_order_price_paid_by_store"
+                                            style="float: right;">
+                                            {{currency_sign}}{{order_detail.order_payment_detail.total_order_price.toFixed(2)}}
+                                        </h5>
+                                        <h5 *ngIf="!order_detail.order_payment_detail.is_payment_mode_cash || order_detail.order_payment_detail.is_order_price_paid_by_store"
+                                            style="float: right;">0</h5>
+                                    </div>
+                                </div>
+                                <div class="col-md-12" style="padding: 0;border-bottom: 1px solid #dcdcdc;">
+                                    <div class="col-md-8 col-sm-8 col-xs-8">
+                                        <h5>{{title.profit | translate}}</h5>
+                                    </div>
+                                    <div class="col-md-4 col-sm-4 col-xs-4">
+                                        <h5 style="float: right;">
+                                            {{currency_sign}}{{order_detail.order_payment_detail.total_store_income.toFixed(2)}}
+                                        </h5>
+                                    </div>
+                                </div>
+                                <div class="col-md-12" style="padding: 0;border-bottom: 1px solid #dcdcdc;">
+                                    <div class="col-md-8 col-sm-8 col-xs-8">
+                                        <h5>{{title.pay_by_admin | translate}}</h5>
+                                    </div>
+                                    <div class="col-md-4 col-sm-4 col-xs-4">
+                                        <h5 style="float: right;">
+                                            {{currency_sign}}{{order_detail.order_payment_detail.pay_to_store.toFixed(2)}}
+                                        </h5>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </modal-body>
+</modal>

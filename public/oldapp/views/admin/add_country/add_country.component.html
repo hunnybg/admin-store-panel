@@ -1,0 +1,398 @@
+<footer [myLoading]="myLoading" ></footer> 
+<form #countryForm="ngForm" (ngSubmit)="addCountry(countryForm.value)" >
+
+
+    <input type="hidden" class="form-control" [(ngModel)]="add_country.country_timezone" #country_timezone="ngModel"  name="country_timezone" />
+
+    <input type="hidden" class="form-control" [(ngModel)]="country_id"   name="country_id" />
+
+    <input type="hidden" class="form-control" [(ngModel)]="add_country.country_phone_code" #country_phone_code="ngModel"  name="country_phone_code" />
+    <div class="row wrapper col-sm-12 col-md-12 col-xs-12 col-lg-12 fix_search_bar border-bottom white-bg page-heading">
+        <div class="row">
+            <div *ngIf="type=='add'" class="col-md-3 col-sm-12 pull-right new_submit_button">
+                <input  type="submit" id="submit" name="submit"  class="btn btn-primary" value="{{button.submit | translate}}" >
+            </div>
+            <div *ngIf="type=='edit'" class="col-md-3 col-sm-12 pull-right new_submit_button">
+                <input type="submit" id="update" name="update"  class="btn btn-primary" value="{{button.update | translate}}" >
+            </div>
+        </div>
+    </div>
+    <div class="wrapper wrapper-content content_top_bar_view animated fadeInRight">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="col-lg-4 col-sm-6">
+                    <div class="ibox">
+                        <div class="ibox-title">
+                            <label class="control-label">{{heading_title.country_data | translate}}</label>  
+                        </div>
+                        <div class="ibox-content country_setting" style="overflow: auto;">
+                            <div class="row">
+                                <div class="form-group">
+                                    <label class="col-lg-4 control-label">{{title.name | translate}}</label>
+
+                                    <div id='add' class="col-lg-8 form-group">
+                                        <select chosen class="form-control chosen-select" id="country" [(ngModel)]="add_country.country_name" #country_name="ngModel" name="country_name" >
+                                            <option selected style="display:none;">{{title.select_country | translate}}</option>
+                                            <option *ngFor="let i of country_list">{{i.name}}</option>
+                                        </select>
+                                        <label class="control-label" style="color: red">{{country_exist}}</label>  
+                                    </div>
+                                    <div *ngIf="type=='edit'"  class="col-lg-8 form-group">
+                                        <input type="text" class="form-control" [(ngModel)]="add_country.country_name" #country_name="ngModel"  name="country_name" readonly/>
+                                    </div>
+
+                                </div>
+
+
+                                <div class="form-group">
+                                    <label class="col-lg-4 control-label">{{title.code | translate}}</label>
+                                    <div class="col-lg-4 form-group">
+                                        <input type="text" class="form-control" [(ngModel)]="add_country.country_code" #country_code="ngModel"  name="country_code" required readonly/>
+                                    </div>
+                                    <div class="col-lg-4 form-group">
+                                        <input type="text" class="form-control" [(ngModel)]="add_country.country_code_2" #country_code_2="ngModel"  name="country_code_2" required readonly/>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-lg-4 control-label">{{title.currency | translate}}</label>
+
+                                    <div class="col-lg-8 form-group">
+                                        <input type="text" class="form-control" [(ngModel)]="add_country.currency_sign" #currency_sign="ngModel"  name="currency_sign" required />
+                                        <div *ngIf="currency_sign.errors && (currency_sign.dirty || currency_sign.touched)">
+                                            <div style="color: red;" [hidden]="!currency_sign.errors.required">{{validation_message.currency_sign_required | translate}}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                 <div class="form-group">
+                                    <label class="col-lg-4 control-label">1 {{this.admin_currency_code}} To</label>
+                                    <div class="col-lg-4 form-group">
+                                        <input type="text" class="form-control" (keypress)="helper.number_validation($event)" [(ngModel)]="add_country.currency_rate" #currency_rate="ngModel"  name="currency_rate" required />
+                                    </div>
+                                     <div class="col-lg-4 form-group">
+                                         <input type="text" class="form-control" [(ngModel)]="add_country.currency_code" #currency_code="ngModel"  name="currency_code" required readonly/>
+                                     </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-lg-7 col-xs-7 control-label">{{title.minimum_phone_number_length | translate}}</label>
+                                    <div class="col-lg-5 col-xs-5 input-group">
+                                        <input  class="form-control" type="number" min="6" max="13"  [(ngModel)]="add_country.minimum_phone_number_length" #minimum_phone_number_length="ngModel"  name="minimum_phone_number_length"  required />
+                                        <span class="input-group-addon" tooltip="{{tooltip_title.minimum_phone_number_length}}"
+                                              [tooltipDisabled]="false"
+                                              [tooltipAnimation]="true"
+                                              tooltipPlacement="bottom">
+                                            <span class="fa fa-question"></span>
+                                        </span>
+
+                                    </div>
+                                    <div *ngIf="minimum_phone_number_length.errors && (minimum_phone_number_length.dirty || minimum_phone_number_length.touched)">
+                                        <div style="color: red;" [hidden]="!minimum_phone_number_length.errors.required">{{validation_message.phone_minlength_required | translate}}</div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-lg-7 col-xs-7 control-label">{{title.maximum_phone_number_length | translate}}</label>
+                                    <div class="col-lg-5 col-xs-5 input-group">
+                                        <input type="text" class="form-control"  type="number" min="6" max="13" [(ngModel)]="add_country.maximum_phone_number_length" #maximum_phone_number_length="ngModel"  name="maximum_phone_number_length"  required />
+                                        <span class="input-group-addon" tooltip="{{tooltip_title.maximum_phone_number_length}}"
+                                              [tooltipDisabled]="false"
+                                              [tooltipAnimation]="true"
+                                              tooltipPlacement="top">
+                                            <span class="fa fa-question"></span>
+                                        </span>
+                                    </div>
+                                    <div *ngIf="maximum_phone_number_length.errors && (maximum_phone_number_length.dirty || maximum_phone_number_length.touched)">
+                                        <div style="color: red;" [hidden]="!maximum_phone_number_length.errors.required">{{validation_message.phone_maxlength_required | translate}}</div>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-sm-6">
+                    <div class="ibox">
+                        <div class="ibox-title">
+                            <label class="control-label">{{heading_title.referral_setting | translate}}</label>
+                        </div>
+                        <div class="ibox-content referral_setting">
+                            <div class="row">
+                                <div class="form-group">
+                                    <label class="col-lg-7 col-xs-7 control-label">{{title.referral_for_user | translate}}</label>
+                                    <div class="col-lg-2 col-xs-2 form-group">
+                                        <ui-switch [(ngModel)]="add_country.is_referral_user" #is_referral_user="ngModel" name="is_referral_user"></ui-switch>
+                                    </div>
+                                    <div class="col-lg-3 col-xs-3 input-group">
+                                        <input [disabled]="add_country.is_referral_user==false" type="text" class="form-control" [(ngModel)]="add_country.no_of_user_use_referral" #no_of_user_use_referral="ngModel" (keypress)="helper.number_validation($event)"  name="no_of_user_use_referral"  />
+                                        <span class="input-group-addon" tooltip="{{tooltip_title.no_of_user_use_referral}}"
+                                              [tooltipDisabled]="false"
+                                              [tooltipAnimation]="true"
+                                              tooltipPlacement="bottom">
+                                            <span class="fa fa-question"></span>
+                                        </span>
+                                    </div>
+                                    <div *ngIf="no_of_user_use_referral.errors && (no_of_user_use_referral.dirty || no_of_user_use_referral.touched)">
+                                        <div style="color: red;" [hidden]="!no_of_user_use_referral.errors.required">{{validation_message.no_of_user_use_referral_required | translate}}</div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-lg-7 col-xs-6 control-label">{{title.referral_bonus_to_user | translate}}</label>
+                                    <div class="col-lg-5 col-xs-6 input-group">
+                                        <span class="input-group-addon"><span class="">{{add_country.currency_sign}}</span></span>
+                                        <input [disabled]="add_country.is_referral_user==false" type="text" class="form-control" [(ngModel)]="add_country.referral_bonus_to_user" #referral_bonus_to_user="ngModel" (keypress)="helper.number_validation($event)" name="referral_bonus_to_user"  />
+                                        <span class="input-group-addon" tooltip="{{tooltip_title.referral_bonus_to_user}}"
+                                              [tooltipDisabled]="false"
+                                              [tooltipAnimation]="true"
+                                              tooltipPlacement="bottom">
+                                            <span class="fa fa-question"></span>
+                                        </span>
+                                    </div>
+                                    <div *ngIf="referral_bonus_to_user.errors && (referral_bonus_to_user.dirty || referral_bonus_to_user.touched)">
+                                        <div style="color: red;" [hidden]="!referral_bonus_to_user.errors.required">{{validation_message.referral_bonus_to_user_required | translate}}</div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-lg-7 col-xs-6 control-label">{{title.bonus_to_user_referral | translate}}</label>  
+                                    <div class="col-lg-5 col-xs-6 input-group">
+                                        <span class="input-group-addon"><span class="">{{add_country.currency_sign}}</span></span>
+                                        <input  [disabled]="add_country.is_referral_user==false" type="text" class="form-control" [(ngModel)]="add_country.referral_bonus_to_user_friend" #referral_bonus_to_user_friend="ngModel" (keypress)="helper.number_validation($event)" name="referral_bonus_to_user_friend"  />
+                                        <span class="input-group-addon" tooltip="{{tooltip_title.referral_bonus_to_user_friend}}"
+                                              [tooltipDisabled]="false"
+                                              [tooltipAnimation]="true"
+                                              tooltipPlacement="bottom">
+                                            <span class="fa fa-question"></span>
+                                        </span>
+                                    </div>
+                                    <div *ngIf="referral_bonus_to_user_friend.errors && (referral_bonus_to_user_friend.dirty || referral_bonus_to_user_friend.touched)">
+                                        <div style="color: red;" [hidden]="!referral_bonus_to_user_friend.errors.required">{{validation_message.referral_bonus_to_user_friend_required | translate}}</div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-lg-7 col-xs-7 control-label">{{title.referral_for_store | translate}}</label>
+                                    <div class="col-lg-2 col-xs-2 form-group">
+                                        <ui-switch [(ngModel)]="add_country.is_referral_store" #is_referral_store="ngModel" name="is_referral_store"></ui-switch>
+                                    </div>
+                                    <div class="col-lg-3 col-xs-3 input-group">
+                                        <input  [disabled]="add_country.is_referral_store==false" type="text" class="form-control" [(ngModel)]="add_country.no_of_store_use_referral" #no_of_store_use_referral="ngModel" (keypress)="helper.number_validation($event)" name="no_of_store_use_referral"  />
+                                        <span class="input-group-addon" tooltip="{{tooltip_title.no_of_store_use_referral}}"
+                                              [tooltipDisabled]="false"
+                                              [tooltipAnimation]="true"
+                                              tooltipPlacement="bottom">
+                                            <span class="fa fa-question"></span>
+                                        </span>
+                                    </div>
+                                    <div *ngIf="no_of_store_use_referral.errors && (no_of_store_use_referral.dirty || no_of_store_use_referral.touched)">
+                                        <div style="color: red;" [hidden]="!no_of_store_use_referral.errors.required">{{validation_message.no_of_store_use_referral_required | translate}}</div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-lg-7 col-xs-6 control-label">{{title.referral_bonus_to_store | translate}}</label>  
+                                    <div class="col-lg-5 col-xs-6 input-group">
+                                        <span class="input-group-addon"><span class="">{{add_country.currency_sign}}</span></span>
+                                        <input  [disabled]="add_country.is_referral_store==false" type="text" class="form-control" [(ngModel)]="add_country.referral_bonus_to_store" #referral_bonus_to_store="ngModel" (keypress)="helper.number_validation($event)"  name="referral_bonus_to_store"  />
+                                        <span class="input-group-addon" tooltip="{{tooltip_title.referral_bonus_to_store}}"
+                                              [tooltipDisabled]="false"
+                                              [tooltipAnimation]="true"
+                                              tooltipPlacement="bottom">
+                                            <span class="fa fa-question"></span>
+                                        </span>
+                                    </div>
+                                    <div *ngIf="referral_bonus_to_store.errors && (referral_bonus_to_store.dirty || referral_bonus_to_store.touched)">
+                                        <div style="color: red;" [hidden]="!referral_bonus_to_store.errors.required">{{validation_message.referral_bonus_to_store_required | translate}}</div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-lg-7 col-xs-6 control-label">{{title.bonus_to_store_referral | translate}}</label>  
+                                    <div class="col-lg-5 col-xs-6 input-group">
+                                        <span class="input-group-addon"><span class="">{{add_country.currency_sign}}</span></span>
+                                        <input [disabled]="add_country.is_referral_store==false" type="text" class="form-control" [(ngModel)]="add_country.referral_bonus_to_store_friend" #referral_bonus_to_store_friend="ngModel" (keypress)="helper.number_validation($event)"  name="referral_bonus_to_store_friend"  />
+                                        <span class="input-group-addon" tooltip="{{tooltip_title.referral_bonus_to_store_friend}}"
+                                              [tooltipDisabled]="false"
+                                              [tooltipAnimation]="true"
+                                              tooltipPlacement="bottom">
+                                            <span class="fa fa-question"></span>
+                                        </span>
+                                    </div>
+                                    <div *ngIf="referral_bonus_to_store_friend.errors && (referral_bonus_to_store_friend.dirty || referral_bonus_to_store_friend.touched)">
+                                        <div style="color: red;" [hidden]="!referral_bonus_to_store_friend.errors.required">{{validation_message.referral_bonus_to_store_friend_required | translate}}</div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-lg-7 col-xs-7 control-label">{{title.referral_for_provider | translate}}</label>
+                                    <div class="col-lg-2 col-xs-2 form-group">
+                                        <ui-switch [(ngModel)]="add_country.is_referral_provider" #is_referral_provider="ngModel" name="is_referral_provider"></ui-switch>
+                                    </div>
+                                    <div class="col-lg-3 col-xs-3 input-group">
+                                        <input type="text" [disabled]="add_country.is_referral_provider==false" class="form-control" [(ngModel)]="add_country.no_of_provider_use_referral" #no_of_provider_use_referral="ngModel" (keypress)="helper.number_validation($event)"  name="no_of_provider_use_referral"  />
+                                        <span class="input-group-addon" tooltip="{{tooltip_title.no_of_provider_use_referral}}"
+                                              [tooltipDisabled]="false"
+                                              [tooltipAnimation]="true"
+                                              tooltipPlacement="bottom">
+                                            <span class="fa fa-question"></span>
+                                        </span>
+                                    </div>
+                                    <div *ngIf="no_of_provider_use_referral.errors && (no_of_provider_use_referral.dirty || no_of_provider_use_referral.touched)">
+                                        <div style="color: red;" [hidden]="!no_of_provider_use_referral.errors.required">{{validation_message.no_of_provider_use_referral_required | translate}}</div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-lg-7 col-xs-6 control-label">{{title.referral_bonus_to_provider | translate}}</label>  
+                                    <div class="col-lg-5 col-xs-6 input-group">
+                                        <span class="input-group-addon"><span class="">{{add_country.currency_sign}}</span></span>
+                                        <input [disabled]="add_country.is_referral_provider==false" type="text" class="form-control" [(ngModel)]="add_country.referral_bonus_to_provider" #referral_bonus_to_provider="ngModel" (keypress)="helper.number_validation($event)"  name="referral_bonus_to_provider"  />
+                                        <span class="input-group-addon" tooltip="{{tooltip_title.referral_bonus_to_provider}}"
+                                              [tooltipDisabled]="false"
+                                              [tooltipAnimation]="true"
+                                              tooltipPlacement="bottom">
+                                            <span class="fa fa-question"></span>
+                                        </span>
+                                    </div>
+                                    <div *ngIf="referral_bonus_to_provider.errors && (referral_bonus_to_provider.dirty || referral_bonus_to_provider.touched)">
+                                        <div style="color: red;" [hidden]="!referral_bonus_to_provider.errors.required">{{validation_message.referral_bonus_to_provider_required | translate}}</div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-lg-7 col-xs-6 control-label">{{title.bonus_to_provider_referral | translate}}</label>  
+                                    <div class="col-lg-5 col-xs-6 input-group">
+                                        <span class="input-group-addon"><span class="">{{add_country.currency_sign}}</span></span>
+                                        <input [disabled]="add_country.is_referral_provider==false" type="text" class="form-control" [(ngModel)]="add_country.referral_bonus_to_provider_friend" #referral_bonus_to_provider_friend="ngModel" (keypress)="helper.number_validation($event)" name="referral_bonus_to_provider_friend"  />
+                                        <span class="input-group-addon" tooltip="{{tooltip_title.referral_bonus_to_provider_friend}}"
+                                              [tooltipDisabled]="false"
+                                              [tooltipAnimation]="true"
+                                              tooltipPlacement="bottom">
+                                            <span class="fa fa-question"></span>
+                                        </span>
+                                    </div>
+                                    <div *ngIf="referral_bonus_to_provider_friend.errors && (referral_bonus_to_provider_friend.dirty || referral_bonus_to_provider_friend.touched)">
+                                        <div style="color: red;" [hidden]="!referral_bonus_to_provider_friend.errors.required">{{validation_message.referral_bonus_to_provider_friend_required | translate}}</div>
+                                    </div>
+                                </div>
+
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-sm-6">
+                    <div class="ibox">
+                        <div class="ibox-title">
+                            <label class="control-label">{{heading_title.country_setting | translate}}</label>  
+                        </div>
+                        <div class="ibox-content country_setting">
+                            <div class="row">
+                                <div class="form-group">
+                                    <label class="col-lg-9 col-xs-9 control-label">{{title.business | translate}}</label>
+
+                                    <div class="col-lg-3 col-xs-3 form-group">
+                                        <ui-switch [(ngModel)]="add_country.is_business" #is_business="ngModel" name="is_business"></ui-switch>
+
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-lg-9 col-xs-9 control-label">{{title.is_distance_unit_mile | translate}}</label>
+                                    <div class="col-lg-3 col-xs-3 form-group">
+                                        <ui-switch [(ngModel)]="add_country.is_distance_unit_mile"  #is_distance_unit_mile="ngModel" name="is_distance_unit_mile"></ui-switch>
+                                    </div> 
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-lg-9 col-xs-9 control-label">{{title.ads | translate}}</label>
+
+                                    <div class="col-lg-3 col-xs-3 form-group">
+                                        <ui-switch [(ngModel)]="add_country.is_ads_visible"  #is_ads_visible="ngModel" name="is_ads_visible"></ui-switch>
+                                    </div> 
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-lg-9 col-xs-9 control-label">{{title.is_auto_transfer_for_store | translate}}</label>
+                                    <div class="col-lg-3 col-xs-3 form-group">
+                                        <ui-switch [(ngModel)]="add_country.is_auto_transfer_for_store"  #is_auto_transfer_for_store="ngModel" name="is_auto_transfer_for_store"></ui-switch>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-lg-9 col-xs-9 control-label">{{title.is_auto_transfer_for_deliveryman | translate}}</label>
+                                    <div class="col-lg-3 col-xs-3 form-group">
+                                        <ui-switch [(ngModel)]="add_country.is_auto_transfer_for_deliveryman"  #is_auto_transfer_for_deliveryman="ngModel" name="is_auto_transfer_for_deliveryman"></ui-switch>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-lg-7 col-xs-7 control-label">{{title.auto_transfer_day_for_store | translate}}</label>
+                                    <div class="col-lg-5 col-xs-5 input-group">
+                                        <input type="text" [disabled]="add_country.is_auto_transfer_for_store==false" class="form-control" [(ngModel)]="add_country.auto_transfer_day_for_store" #auto_transfer_day_for_store="ngModel" (keypress)="helper.number_validation($event)"  name="auto_transfer_day_for_store"  />
+                                        <span class="input-group-addon" tooltip="{{tooltip_title.auto_transfer_day_for_store}}"
+                                              [tooltipDisabled]="false"
+                                              [tooltipAnimation]="true"
+                                              tooltipPlacement="bottom">
+                                            <span class="fa fa-question"></span>
+                                        </span>
+                                    </div>
+
+                                    <div *ngIf="auto_transfer_day_for_store.errors && (auto_transfer_day_for_store.dirty || auto_transfer_day_for_store.touched)">
+                                        <div style="color: red;" [hidden]="!auto_transfer_day_for_store.errors.required">{{validation_message.no_of_provider_use_referral_required | translate}}</div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-lg-7 col-xs-7 control-label">{{title.auto_transfer_day_for_deliveryman | translate}}</label>
+                                    <div class="col-lg-5 col-xs-5 input-group">
+                                        <input type="text" [disabled]="add_country.is_auto_transfer_for_deliveryman==false" class="form-control" [(ngModel)]="add_country.auto_transfer_day_for_deliveryman" #auto_transfer_day_for_deliveryman="ngModel" (keypress)="helper.number_validation($event)"  name="auto_transfer_day_for_deliveryman"  />
+                                        <span class="input-group-addon" tooltip="{{tooltip_title.auto_transfer_day_for_deliveryman}}"
+                                              [tooltipDisabled]="false"
+                                              [tooltipAnimation]="true"
+                                              tooltipPlacement="bottom">
+                                            <span class="fa fa-question"></span>
+                                        </span>
+                                    </div>
+
+                                    <div *ngIf="auto_transfer_day_for_deliveryman.errors && (auto_transfer_day_for_deliveryman.dirty || auto_transfer_day_for_deliveryman.touched)">
+                                        <div style="color: red;" [hidden]="!auto_transfer_day_for_deliveryman.errors.required">{{validation_message.no_of_provider_use_referral_required | translate}}</div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-lg-7 col-xs-7 control-label">{{title.tip_payment | translate}}</label>
+                                    <div class="col-lg-5 col-xs-5 input-group">
+                                        <input type="text" class="form-control" [(ngModel)]="add_country.tip_payment_percentage" #tip_payment_percentage="ngModel" (keypress)="helper.number_validation($event)"  name="tip_payment_percentage"/>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+<!--            <div class="col-lg-12" >
+                <div class="col-lg-12" >
+                    <div class="ibox">
+                        <div class="ibox-content wizard">
+                            <div class="row">   
+                                <div class="col-lg-4">
+                                </div>
+                                <div *ngIf="type=='add'" class="col-lg-4" style="text-align: center;">
+                                    <input type="submit" id="submit" name="submit" style="width: 60%;" class="btn btn-primary" value="{{button.submit | translate}}" >
+                                </div>
+                                <div *ngIf="type=='edit'" class="col-lg-4" style="text-align: center;">
+                                    <input type="submit" id="update" name="update" style="width: 60%;" class="btn btn-primary" value="{{button.update | translate}}" >
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>-->
+        </div>
+    </div>
+</form>

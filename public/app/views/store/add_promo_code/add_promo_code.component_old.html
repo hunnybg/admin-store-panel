@@ -1,0 +1,277 @@
+<style>
+    #clock-picker{
+        padding-right: 15px !important;
+        padding-left: 15px !important;
+    }
+</style>
+
+<div class="wrapper wrapper-content animated fadeInRight content_top_bar" style="padding-top: 5px;">
+    <div class="row">
+        <form #promocodeForm="ngForm" (ngSubmit)="AddPromocode(promocodeForm.value)" >
+            <input type="hidden" class="form-control" [(ngModel)]="promo_id"   name="promo_id" />
+            <input type="hidden" class="form-control" [(ngModel)]="add_promo_code.store_id" #store_id="ngModel"  name="store_id" />
+            <input type="hidden" class="form-control" [(ngModel)]="add_promo_code.server_token" #server_token="ngModel"   name="server_token" />
+            <input type="hidden" class="form-control" [(ngModel)]="add_promo_code.promo_apply_on" #promo_apply_on="ngModel"  name="promo_apply_on" />
+
+            <div class="col-md-6">
+                <div class="col-md-12 no_padding">
+                    <div class="ibox" >
+                        <div class="ibox-content">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <label class="col-lg-4 control-label">{{title.promo_code_name | translate}}</label>
+                                    <div class="col-lg-8 form-group add">
+                                        <input type="text" class="form-control"  style="text-transform: uppercase" [(ngModel)]="add_promo_code.promo_code_name" #promo_code_name="ngModel" (keyup)="check_promo_code(promo_code_name.value)"  name="promo_code_name" required />
+                                        <label class="col-lg-12 control-label" style="color:red">{{promo_exist}}</label>
+                                        <div *ngIf="promo_code_name.errors && (promo_code_name.dirty || promo_code_name.touched)">
+                                            <div style="color: red;" [hidden]="!promo_code_name.errors.required">{{validation_message.promo_code_name_required | translate}}</div>
+                                        </div>
+                                    </div>
+                                    <div *ngIf="type=='edit'"  class="col-lg-8 form-group">
+                                        <input type="text" class="form-control" [(ngModel)]="add_promo_code.promo_code_name" #promo_code_name="ngModel"  name="promo_code_name" readonly/>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <label class="col-lg-4 control-label">{{title.details | translate}}</label>
+                                    <div class="col-lg-8 form-group">
+                                        <textarea class="form-control" [(ngModel)]="add_promo_code.promo_details" #promo_details="ngModel"  name="promo_details" required ></textarea>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <label class="col-lg-4 control-label">{{title.promo_code_type | translate}}</label>
+                                    <div class="col-lg-8 form-group">
+                                        <select chosen class="form-control chosen-select" id="promo_code_type" [(ngModel)]="add_promo_code.promo_code_type" #promo_code_type="ngModel"  name="promo_code_type" >
+                                            <option value="2">{{lable_title.absolute}}</option>
+                                            <option value="1">{{lable_title.percentage}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class=" col-md-12" >
+                                    <label class="col-lg-4 control-label">{{title.promo_code_value | translate}}</label>
+                                    <div class="col-lg-8 form-group">
+                                        <input type="text" class="form-control" [(ngModel)]="add_promo_code.promo_code_value" #promo_code_value="ngModel" (keypress)="helper.number_validation($event)"   name="promo_code_value" required />
+                                        <div *ngIf="promo_code_value.errors && (promo_code_value.dirty || promo_code_value.touched)">
+                                            <div style="color: red;" [hidden]="!promo_code_value.errors.required">{{validation_message.promo_code_value_required | translate}}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <label class="col-lg-4 control-label">{{title.promo_for | translate}}</label>
+                                    <div class="col-lg-8 form-group">
+                                        <select chosen class="form-control chosen-select" id="promo_for" [(ngModel)]="add_promo_code.promo_for" #promo_for="ngModel"  name="promo_for" >
+                                            <option *ngFor="let i of helper.PROMO_FOR;" value="{{i.ID}}" >{{i.NAME}}</option>
+                                        </select>
+                                        <input type="text" class="form-control edit" [(ngModel)]="add_promo_code.promo_for" #promo_for="ngModel"  name="promo_for" readonly />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12 no_padding">
+                    <div class="ibox" >
+                        <div class="ibox-content">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <label class="col-lg-5 control-label">{{title.is_active | translate}}</label>
+                                    <div class="col-lg-3 form-group">
+                                        <ui-switch class="pull-right" [(ngModel)]="add_promo_code.is_active" #is_active="ngModel" name="is_active"></ui-switch>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <label class="col-lg-5 control-label">{{title.is_promo_apply_on_completed_order | translate}}</label>
+                                    <div class="col-lg-3 form-group">
+                                        <ui-switch class="pull-right" [(ngModel)]="add_promo_code.is_promo_apply_on_completed_order" #is_promo_apply_on_completed_order="ngModel" name="is_promo_apply_on_completed_order"></ui-switch>
+                                    </div>
+                                    <div class="col-lg-4 form-group">
+                                        <input type="text" [disabled]="!add_promo_code.is_promo_apply_on_completed_order" class="form-control" [(ngModel)]="add_promo_code.promo_apply_after_completed_order" #promo_apply_after_completed_order="ngModel" (keypress)="helper.number_validation($event)"  name="promo_apply_after_completed_order" required />
+                                        <div *ngIf="promo_apply_after_completed_order.errors && (promo_apply_after_completed_order.dirty || promo_apply_after_completed_order.touched)">
+                                            <div style="color: red;" [hidden]="!promo_apply_after_completed_order.errors.required">{{validation_message.promo_code_uses_required | translate}}</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12">
+                                    <label class="col-lg-5 control-label">{{title.is_promo_required_uses | translate}}</label>
+                                    <div class="col-lg-3 form-group">
+                                        <ui-switch class="pull-right" [(ngModel)]="add_promo_code.is_promo_required_uses" #is_promo_required_uses="ngModel" name="is_promo_required_uses"></ui-switch>
+                                    </div>
+                                    <div class="col-lg-4 form-group">
+                                        <input type="text" [disabled]="!add_promo_code.is_promo_required_uses" class="form-control" [(ngModel)]="add_promo_code.promo_code_uses" #promo_code_uses="ngModel" (keypress)="helper.number_validation($event)"  name="promo_code_uses" required />
+                                        <div *ngIf="promo_code_uses.errors && (promo_code_uses.dirty || promo_code_uses.touched)">
+                                            <div style="color: red;" [hidden]="!promo_code_uses.errors.required">{{validation_message.promo_code_uses_required | translate}}</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12">
+                                    <label class="col-lg-5 control-label">{{title.is_promo_have_minimum_amount_limit | translate}}</label>
+                                    <div class="col-lg-3 form-group">
+                                        <ui-switch class="pull-right" [(ngModel)]="add_promo_code.is_promo_have_minimum_amount_limit" #is_promo_have_minimum_amount_limit="ngModel" name="is_promo_have_minimum_amount_limit"></ui-switch>
+                                    </div>
+                                    <div class="col-lg-4 form-group">
+                                        <input type="text" [disabled]="!add_promo_code.is_promo_have_minimum_amount_limit" class="form-control" [(ngModel)]="add_promo_code.promo_code_apply_on_minimum_amount" #promo_code_apply_on_minimum_amount="ngModel" (keypress)="helper.number_validation($event)"  name="promo_code_apply_on_minimum_amount" required />
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12">
+                                    <label class="col-lg-5 control-label">{{title.is_promo_have_max_discount_limit | translate}}</label>
+                                    <div class="col-lg-3 form-group">
+                                        <ui-switch class="pull-right" [(ngModel)]="add_promo_code.is_promo_have_max_discount_limit" #is_promo_have_max_discount_limit="ngModel" name="is_promo_have_max_discount_limit"></ui-switch>
+                                    </div>
+                                    <div class="col-lg-4 form-group">
+                                        <input type="text" [disabled]="!add_promo_code.is_promo_have_max_discount_limit" class="form-control" [(ngModel)]="add_promo_code.promo_code_max_discount_amount" #promo_code_max_discount_amount="ngModel" (keypress)="helper.number_validation($event)"  name="promo_code_max_discount_amount" required />
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12">
+                                    <label class="col-lg-5 control-label">{{title.is_promo_have_item_count_limit | translate}}</label>
+                                    <div class="col-lg-3 form-group">
+                                        <ui-switch class="pull-right" [(ngModel)]="add_promo_code.is_promo_have_item_count_limit" #is_promo_have_item_count_limit="ngModel" name="is_promo_have_item_count_limit"></ui-switch>
+                                    </div>
+                                    <div class="col-lg-4 form-group">
+                                        <input type="text" [disabled]="!add_promo_code.is_promo_have_item_count_limit" class="form-control" [(ngModel)]="add_promo_code.promo_code_apply_on_minimum_item_count" #promo_code_apply_on_minimum_item_count="ngModel" (keypress)="helper.number_validation($event)"  name="promo_code_apply_on_minimum_item_count" required />
+                                        <div *ngIf="promo_code_apply_on_minimum_item_count.errors && (promo_code_apply_on_minimum_item_count.dirty || promo_code_apply_on_minimum_item_count.touched)">
+                                            <div style="color: red;" [hidden]="!promo_code_apply_on_minimum_item_count.errors.required">{{validation_message.promo_code_uses_required | translate}}</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12">
+                                    <label class="col-lg-5 control-label">{{title.is_promo_have_date | translate}}</label>
+                                    <div class="col-lg-3 form-group">
+                                        <ui-switch class="pull-right" (change)="change_switch()" [(ngModel)]="add_promo_code.is_promo_have_date" #is_promo_have_date="ngModel" name="is_promo_have_date"></ui-switch>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="col-md-12 no_padding" [hidden]="!add_promo_code.is_promo_have_date">
+                    <div class="ibox" >
+                        <div class="ibox-content">
+                            <div class="row">
+
+                                <div class="col-md-12">
+                                    <label class="col-lg-6 control-label">{{title.promo_recursion_type | translate}}</label>
+                                    <div class="col-lg-6 form-group">
+                                        <select chosen class="form-control chosen-select" id="promo_recursion_type" [(ngModel)]="add_promo_code.promo_recursion_type" #promo_recursion_type="ngModel"  name="promo_recursion_type" required>
+                                            <option *ngFor="let i of helper.PROMO_RECURSION;" value="{{i.ID}}" >{{i.NAME}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12" [hidden]="!add_promo_code.is_promo_have_date">
+                                    <label class="col-lg-6 control-label">{{title.start_date | translate}}</label>
+                                    <div class="col-lg-6 form-group" >
+                                        <my-date-picker [options]="helper.promocodeStartDatePickerOptions" placeholder="{{title.start_date | translate}}"   [(ngModel)]="add_promo_code.promo_start_date" #promo_start_date="ngModel" (dateChanged)="helper.promocodeOnStartDateChanged($event)"
+                                                        name="promo_start_date" required ></my-date-picker>
+                                    </div>
+                                </div>
+                                <div class="col-md-12" [hidden]="!add_promo_code.is_promo_have_date">
+                                    <label class="col-lg-6 control-label">{{title.code_expiry | translate}}</label>
+                                    <div class="col-lg-6 form-group">
+                                        <my-date-picker id="expiry_date" [options]="helper.promocodeEndDatePickerOptions" placeholder="{{title.end_date | translate}}" [(ngModel)]="add_promo_code.promo_expire_date" #promo_expire_date="ngModel" (dateChanged)="helper.promocodeOnEndDateChanged($event)"
+                                                        name="promo_expire_date" required></my-date-picker>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12" [hidden]="add_promo_code.promo_recursion_type == 0">
+                                    <label class="col-lg-6 control-label">{{title.start_time | translate}}</label>
+                                    <div class="col-lg-6 col-xs-6 form-group input-group clock-picker" id="clock-picker"  data-autoclose="true">
+                                        <input type="text" class="form-control" id="promo_start_time" [(ngModel)]="add_promo_code.promo_start_time" #promo_start_time="ngModel" name="promo_start_time" readonly required>
+                                        <span class="input-group-addon">
+                                          <span class="fa fa-clock-o"></span>
+                                    </span>
+                                    </div>
+                                </div>
+                                <div class="col-md-12" [hidden]="add_promo_code.promo_recursion_type < 1">
+                                    <label class="col-lg-6 control-label">{{title.end_time | translate}}</label>
+                                    <div class="col-lg-6 col-xs-6 form-group input-group clock-picker" id="clock-picker"  data-autoclose="true">
+                                        <input type="text" class="form-control" id="promo_end_time" [(ngModel)]="add_promo_code.promo_end_time" #promo_end_time="ngModel" name="promo_end_time" readonly required>
+                                        <span class="input-group-addon">
+                                          <span class="fa fa-clock-o"></span>
+                                    </span>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12" *ngIf="add_promo_code.is_promo_have_date && add_promo_code.promo_recursion_type >=4" [hidden]="!add_promo_code.is_promo_have_date || add_promo_code.promo_recursion_type < 4">
+                                    <label class="col-lg-6 control-label">{{title.months | translate}}</label>
+                                    <div class="col-lg-6 form-group">
+                                        <select chosen class="form-control chosen-select" id="months" [(ngModel)]="add_promo_code.months" #months="ngModel" multiple name="months" required>
+                                            <option *ngFor="let i of helper.MONTH;"  value="{{i}}">{{i | translate}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-12" *ngIf="add_promo_code.is_promo_have_date && add_promo_code.promo_recursion_type >=3">
+                                    <label class="col-lg-6 control-label">{{title.weeks | translate}}</label>
+                                    <div class="col-lg-6 form-group">
+                                        <select chosen class="form-control chosen-select" id="weeks" [(ngModel)]="add_promo_code.weeks" #weeks="ngModel" multiple name="weeks" required>
+                                            <option *ngFor="let i of helper.WEEK;"  value="{{i}}">{{i | translate}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-12" *ngIf="add_promo_code.is_promo_have_date && add_promo_code.promo_recursion_type >=2">
+                                    <label class="col-lg-6 control-label">{{title.days | translate}}</label>
+                                    <div class="col-lg-6 form-group">
+                                        <select chosen class="form-control chosen-select" id="days" [(ngModel)]="add_promo_code.days" #days="ngModel" multiple name="days" required>
+                                            <option *ngFor="let i of helper.DAY;" value="{{i}}" >{{i | translate}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12 no_padding" [hidden]="add_promo_code.promo_for==helper.PROMO_FOR_ID.STORE">
+                    <div class="ibox">
+                        <div class="ibox-content">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group" *ngIf="add_promo_code.promo_for == helper.PROMO_FOR_ID.PRODUCT">
+                                        <div class="col-md-12"  style="margin: 5px;" *ngFor="let i of product_list;">
+                                            <label><input class="icheckproduct" id="icheckproduct{{i._id}}"  type="checkbox" value="{{i._id}}" /><span style="margin-left: 10px;">{{i.name}}</span></label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group" *ngIf="add_promo_code.promo_for == helper.PROMO_FOR_ID.ITEM">
+                                        <div  *ngFor="let product of item_list;">
+                                            <div class="col-md-12" style="margin: 5px;" *ngFor="let i of product.items;">
+                                                <label><input class="icheckitem" id="icheckitem{{i._id}}"  type="checkbox" value="{{i._id}}" /><span style="margin-left: 10px;">{{i.name}}</span></label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-12">
+                <div class="ibox">
+                    <div class="ibox-content wizard">
+                        <div class="row">
+                            <div class="col-lg-4">
+                            </div>
+                            <div *ngIf="promo_id==''" class="col-lg-4" style="text-align: center;">
+                                <input  type="submit" id="submit" name="submit" style="width: 60%;" class="btn btn-primary" value="{{button.submit | translate}}" >
+                            </div>
+                            <div *ngIf="promo_id!==''" class="col-lg-4" style="text-align: center;">
+                                <input type="submit" id="update" name="update" style="width: 60%;" class="btn btn-primary" value="{{button.update | translate}}" >
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </form>
+    </div>
+
+
+
+</div>

@@ -1,0 +1,126 @@
+<form  #emailConfigurationForm="ngForm" (ngSubmit)="EmailConfiguration(emailConfigurationForm.value)">
+    
+    <div class="wrapper wrapper-content animated fadeInRight content_top_bar">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="col-lg-10 col-sm-10">
+                    <div class="ibox">
+                        <div class="ibox-title">
+                            <label class="control-label">{{heading_title.email_configuration | translate}}</label>  
+                        </div>
+                        <div class="ibox-content">
+                            <div class="row">
+
+                                <div class="form-group">
+                                    <label class="col-lg-4 control-label">{{title.email | translate}}</label>
+                                    <div class="col-lg-8 form-group">
+                                        <input type="text" class="form-control" [(ngModel)]="email_configuration.email" #email="ngModel"  name="email" required />
+
+                                    </div> 
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-lg-4 control-label">{{title.password | translate}}</label>
+                                    <div class="col-lg-8 form-group">
+                                        <input type="password" class="form-control" [(ngModel)]="email_configuration.password" #password="ngModel"  name="password" required />
+
+                                    </div> 
+                                </div>
+
+
+                            </div>
+                            <div class="row">   
+                                <div class="col-lg-4">
+                                </div>
+
+                                <div class="col-lg-4" style="text-align: center;">
+                                    <input type="submit" id="update" name="update" style="width: 50%;" class="btn btn-primary" value="{{button.update | translate}}" >
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</form>
+
+
+<form #emailForm="ngForm" (ngSubmit)="UpdateEmail(emailForm.value)" >
+    <input type="hidden" class="form-control" [(ngModel)]="email_id"   name="email_id" />
+    <div class="wrapper wrapper-content animated fadeInRight" style="margin-top: -50px;">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="col-lg-10 col-sm-10">
+                    <div class="ibox">
+                        <div class="ibox-title">
+                            <label class="control-label">{{heading_title.email_data | translate}}</label>  
+                        </div>
+                        <div class="ibox-content">
+                            <div class="row">
+
+                                <div class="form-group">
+                                    <label class="col-lg-4 control-label">{{title.email_unique_title | translate}}</label>  
+                                    <div class="col-lg-8 form-group">
+                                        <select chosen class="chosen-select" id="email" [(ngModel)]="update_email.email_unique_title" #email_unique_title="ngModel" name="email" data-placeholder="Email Content"  tabindex="4"  >
+
+                                            <option *ngFor="let i of email_list" value="{{i._id}}">{{i.email_unique_title}}</option>
+                                        </select> 
+                                    </div> 
+
+
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-lg-4 control-label">{{title.email_title | translate}}</label>  
+                                    <div class="col-lg-8 form-group">
+                                        <input type="text" class="form-control" [(ngModel)]="update_email.email_title" #email_title="ngModel"  name="email_title" required />
+
+                                    </div> 
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-lg-4 control-label">{{title.email_admin_info | translate}}</label>  
+                                    <div class="col-lg-8 form-group">
+                                        <input type="text" class="form-control" [(ngModel)]="update_email.email_admin_info" #email_admin_info="ngModel"  name="email_admin_info" required />
+
+                                    </div> 
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-lg-4 control-label">{{title.email_content | translate}}</label>  
+                                    <div class="col-lg-8 form-group">
+                                       
+                                        <textarea class="form-control" [(ngModel)]="update_email.email_content" #email_content="ngModel"  name="email_content"  required ></textarea>
+                                    </div> 
+                                </div>
+
+
+                                <div class="form-group">
+                                    <label class="col-lg-4 control-label">{{title.is_send | translate}}</label>  
+
+                                    <div class="col-lg-8 form-group">
+                                        <ui-switch [(ngModel)]="update_email.is_send" #is_send="ngModel" name="is_send"></ui-switch>
+
+                                    </div>
+                                </div>
+
+
+                            </div>
+                            <div class="row">   
+                                <div class="col-lg-4">
+                                </div>
+
+                                <div class="col-lg-4" style="text-align: center;">
+                                    <input type="submit" id="update" name="update" style="width: 50%;"  class="btn btn-primary" value="{{button.update | translate}}" >
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</form>

@@ -1,0 +1,550 @@
+<footer [myLoading]="myLoading"></footer>
+<div class="row wrapper fix_search_bar border-bottom white-bg page-heading">
+    <div class="row">
+        <div class="col-md-4 col-sm-12">
+            <div>
+                <label>{{title.search | translate}}</label>
+            </div>
+            <div class="col-md-6 col-sm-6 remove_padding">
+                <div class="form-group" id="search_fields">
+                    <select chosen class="chosen-select" id="search_field" [(ngModel)]="search_field"
+                        name="search_field" tabindex="4">
+                        <option value="first_name">{{title.name | translate}}</option>
+                        <option value="email">{{title.email | translate}}</option>
+                        <option value="phone">{{title.phone | translate}}</option>
+                        <option value="unique_id">{{title.unique_id | translate}}</option>
+                        <!-- <option value="country_details.country_name">{{title.country | translate}}</option> -->
+                        <!-- <option value="city_details.city_name">{{title.city | translate}}</option> -->
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-6 remove_padding">
+                <div class="form-group">
+                    <div class="input-group">
+                        <input type="text" class="form-control search_box" [(ngModel)]="search_value"
+                            name="search_value">
+                        <span (click)="filter(1)" class="input-group-addon search_icon"><span
+                                class="fa fa-search"></span></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 col-sm-12">
+            <div class="col-md-6 col-sm-6">
+                <div>
+                    <label>{{title.no_of_record | translate}}</label>
+                </div>
+                <div class="form-group">
+                    <select chosen class="chosen-select" id="number_of_rec" [(ngModel)]="number_of_rec"
+                        name="number_of_rec" tabindex="4">
+                        <option value="10">10</option>
+                        <option value="20">20</option>
+                        <option value="50">50</option>
+                        <option value="100">100</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-6 filter_btn_div">
+                <button type="button" (click)="vaiter_export_csv(vaiter_page_type)" class="btn export_excel_btn">
+                    <span class="fa fa-file-excel-o"></span>
+                </button>
+            </div>
+        </div>
+        <div class="col-md-4 col-sm-12">
+            <div class="col-md-6 col-sm-6 filter_btn_div">
+                <button type="button" (click)="add_new_vaiter()" class="btn export_excel_btn">
+                    <span class="fa fa-plus"></span>{{title.add_vaiter | translate}}
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="wrapper wrapper-content content_top_bar_view1 animated fadeInRight">
+    <div class="row">
+        <div class="col-md-8">
+
+            <div class="ibox">
+                <div class="ibox-content" style="padding-bottom: 40px;">
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12">
+                            <ul class="nav nav-tabs">
+                                <li (click)="change_page_type(2)" [class.active]="vaiter_page_type==2"
+                                    class="uib-tab ng-scope ng-isolate-scope active">
+                                    <a
+                                        class="ng-binding tab_selection">{{helper.sub_menu_title.approved_providers | translate}}</a>
+                                </li>
+                                <li (click)="change_page_type(3)" [class.active]="vaiter_page_type==3"
+                                    class="uib-tab ng-scope ng-isolate-scope active">
+                                    <a
+                                        class="ng-binding tab_selection">{{helper.sub_menu_title.declined_providers | translate}}</a>
+                                </li>
+                                <!-- <li (click)="change_page_type(1)" [class.active]="vaiter_page_type==1"
+                                    class="dsads uib-tab ng-scope ng-isolate-scope" active="tab.active">
+                                    <a
+                                        class="ng-binding tab_selection">{{helper.sub_menu_title.online_providers | translate}}</a>
+                                </li> -->
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="lable_center" *ngIf="vaiter_list.length==0">
+                        <label>No Records</label>
+                    </div>
+                    <div [hidden]="vaiter_list.length==0" class="table-responsive scrollbar"
+                        style="height: calc(100vh - 285px);overflow: auto;">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>{{title.id | translate}}</th>
+                                    <th>{{title.name | translate}}</th>
+                                    <th>{{title.email | translate}}</th>
+                                    <th>{{title.phone | translate}}</th>
+                                    <th>{{title.employee_type | translate}}</th>
+                                    <!-- <th>{{title.wallet | translate}}</th> -->
+                                    <th>{{title.hourly_vage | translate}}</th>
+                                    <th>Action</th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let vaiter of vaiter_list; let index=index;"
+                                    [class.selected_tr]="vaiter._id == vaiter_detail._id">
+                                    <td (click)="get_vaiter_detail(vaiter._id)">{{vaiter.unique_id}} </td>
+                                    <td (click)="get_vaiter_detail(vaiter._id)">{{vaiter.first_name}}
+                                        {{vaiter.last_name}}</td>
+                                    <td (click)="get_vaiter_detail(vaiter._id)">{{vaiter.email}}</td>
+                                    <td (click)="get_vaiter_detail(vaiter._id)">{{vaiter.country_phone_code}}
+                                        {{vaiter.phone}}</td>
+                                    <td [ngSwitch]='vaiter.employee_type'>
+                                        <div *ngSwitchCase="helper.VAITER_TYPES.EMPLOYEE">{{title.employee | translate}}
+                                        </div>
+                                        <div *ngSwitchCase="helper.VAITER_TYPES.SUPERVISOR">
+                                            {{title.supervisor | translate}}</div>
+                                        <div *ngSwitchCase="helper.VAITER_TYPES.MANAGER">{{title.manager | translate}}
+                                        </div>
+                                    </td>
+                                    <!-- <td (click)="get_vaiter_detail(vaiter._id)">{{vaiter.wallet}}
+                                        {{vaiter.wallet_currency_code}}</td> -->
+                                    <td (click)="get_vaiter_detail(vaiter._id)" style="text-align: center;">
+                                        <div *ngIf='vaiter.hourly_vage !== 0'>{{vaiter.wallet_currency_code}}{{vaiter.hourly_vage}}</div>
+                                        <div *ngIf='vaiter.hourly_vage == 0'>-</div>
+                                    </td>
+                                    <td><button class="btn btn-sm export_excel_btn"
+                                            (click)="delete_vaiter(vaiter._id , index)">DELETE</button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-md-12 col-sm-12" style="padding-top: 10px;">
+                        <div class="lable_center">
+
+                            <ul class="pagination">
+                                <li *ngIf="page!==1"><a class="btn"
+                                        (click)="filter(page-1)">{{button.pre | translate}}</a></li>
+                                <li *ngFor="let index of total_pages" [class.active]="page==index">
+                                    <a *ngIf="index==1 || index==total_page || index==page || index==page-1 || index==page+1"
+                                        (click)="filter(index)" class="btn">{{index}}</a>
+                                    <a *ngIf="(index==1 && (page!==1 && page!==2 && page!==3)) || (index==total_page-1 && (page!==total_page && page!==total_page-1 && page!==total_page-2))"
+                                        class="btn">...</a>
+
+                                </li>
+                                <li *ngIf="page!==total_page && vaiter_list.length!==0"><a class="btn"
+                                        (click)="filter(page+1)">{{button.next | translate}}</a></li>
+                            </ul>
+                            <div class="col-md-2 pull-right">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4" *ngIf="vaiter_detail.phone && !adding_vaiter">
+            <div class="ibox ">
+
+                <div class="ibox-content user_fix_div scrollbar" style="height: calc(100vh - 243px);overflow: auto;">
+                    <div class="tab-content">
+                        <div id="contact-1" class="tab-pane active" ng-show="client == 1" ng-init="client = 1">
+                            <div class="row m-b-lg">
+                                <span *ngIf="is_edit && selected_tab==1" class="fa fa-check pull-right"
+                                    (click)="update_vaiter_detail()"></span>
+                                <div class="row no_margin">
+                                    <div class="col-sm-3" *ngIf="is_edit">
+                                        <div class="text-center">
+                                            <span class="btn-file"><img style="width: 80px; height: 80px;"
+                                                    class="img-circle m-t-xs"
+                                                    src="{{vaiter_detail.image_url != '' ? helper.CONSTANT.IMAGE_BASE_URL + vaiter_detail.image_url : 'default.png'}}"
+                                                    alt="">
+                                                <input type="file" (change)="change_image($event);" accept="image/*"
+                                                    name="image_url">
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12" *ngIf="!is_edit">
+                                        <span *ngIf="!is_edit && selected_tab==1" (click)="edit_vaiter()"
+                                            class="fa fa-pencil pull-right"></span>
+                                        <div class="text-center">
+                                            <img *ngIf="!is_edit" alt="image" style="width: 120px; height: 120px;"
+                                                class="img-circle m-t-xs"
+                                                src="{{vaiter_detail.image_url != '' ? helper.CONSTANT.IMAGE_BASE_URL + vaiter_detail.image_url : 'default.png'}}">
+                                            <div style="margin-top: 10px;font-size: 18px;">
+                                                {{vaiter_detail.first_name}} {{vaiter_detail.last_name}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-8" *ngIf="is_edit">
+
+                                        <div class="col-lg-6 form-group">
+                                            <input type="text" class="form-control"
+                                                [(ngModel)]="vaiter_detail.first_name" #first_name="ngModel"
+                                                name="first_name" />
+                                        </div>
+                                        <div class="col-lg-6 form-group">
+                                            <input type="text" class="form-control"
+                                                [(ngModel)]="vaiter_detail.last_name" #last_name="ngModel"
+                                                name="last_name" />
+                                        </div>
+                                        <div class="col-lg-12 form-group">
+                                            <input type="text" class="form-control" [(ngModel)]="vaiter_detail.email"
+                                                #email="ngModel" name="email" />
+                                        </div>
+                                        <div class="col-lg-12 form-group">
+                                            <input type="text" class="form-control" [(ngModel)]="vaiter_detail.phone"
+                                                #phone="ngModel" name="phone" />
+                                        </div>
+
+                                        <div class="col-lg-12 form-group">
+                                            <select chosen class="chosen-select" id="update_employee_type_id"
+                                                [(ngModel)]="vaiter_detail.employee_type"
+                                                (ngModelChange)="option_change($event)" #employee_type="ngModel"
+                                                name="employee_type" tabindex="4" required>
+                                                <option value='{{helper.VAITER_TYPES.EMPLOYEE}}'>
+                                                    {{title.employee | translate}}</option>
+                                                <option value='{{helper.VAITER_TYPES.SUPERVISOR}}'>
+                                                    {{title.supervisor | translate}}</option>
+                                                <option value='{{helper.VAITER_TYPES.MANAGER}}'>
+                                                    {{title.manager | translate}}</option>
+                                            </select>
+                                        </div>
+
+
+                                        <div class="col-lg-12 form-group" [hidden]='vaiter_detail.employee_type !== 1'>
+                                            <input type="text" class="form-control"
+                                                [(ngModel)]="vaiter_detail.hourly_vage" min="1" maxlength='4'
+                                                (keypress)="helper.number_validation_with_minus($event)"
+                                                placeholder="{{title.hourly_vage | translate}} in {{wallet_currency_code}}" #hourly_vage="ngModel"
+                                                name="hourly_vage" />
+                                        </div>
+
+
+                                    </div>
+                                </div>
+                                <div class="row no_margin" *ngIf="!is_edit" style="margin-top: 10px;">
+                                    <!-- <div class="col-md-6 col-sm-6 col-xs-6 remove_left_right_padding">
+                                        <button (click)="open_notification_modal(type,vaiter_detail._id)" type="button"
+                                            class="btn btn-light_black btn-sm btn-block"
+                                            tooltip="{{helper.button.send_notification | translate}}"
+                                            [tooltipDisabled]="false" [tooltipAnimation]="true" tooltipPlacement="top">
+                                            <i class="fa fa-bell"></i>
+                                        </button>
+                                    </div> -->
+                                    <div class="col-md-6 col-sm-6 col-xs-6 remove_left_padding"
+                                        *ngIf="!vaiter_detail.is_approved">
+                                        <button (click)="approved(vaiter_page_type,vaiter_detail._id)" type="button"
+                                            class="btn btn-light_black btn-sm btn-block"
+                                            tooltip="{{helper.button.approved | translate}}" [tooltipDisabled]="false"
+                                            [tooltipAnimation]="true" tooltipPlacement="top">
+                                            <i class="fa fa-check"></i>
+                                        </button>
+                                    </div>
+                                    <div class="col-md-6 col-sm-6 col-xs-6 remove_left_padding"
+                                        *ngIf="vaiter_detail.is_approved">
+                                        <button (click)="approved(vaiter_page_type,vaiter_detail._id)" type="button"
+                                            class="btn btn-light_black btn-sm btn-block"
+                                            tooltip="{{helper.button.decline | translate}}" [tooltipDisabled]="false"
+                                            [tooltipAnimation]="true" tooltipPlacement="top">
+                                            <i class="fa fa-ban"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="client-detail">
+                                <div class="full-height-scroll">
+
+                                    <ul class="nav nav-tabs">
+                                        <li (click)="selected_tab=1" [class.active]="selected_tab==1"
+                                            class="dsads uib-tab ng-scope ng-isolate-scope" active="tab.active">
+                                            <a class="ng-binding tab_selection">{{helper.title.details | translate}}</a>
+                                        </li>
+                                    </ul>
+                                    <ul class="list-group clear-list" *ngIf="selected_tab==1">
+                                        <li class="list-group-item">
+                                            <span
+                                                class="pull-right">{{vaiter_detail.device_type + " - " +  vaiter_detail.app_version}}</span>
+                                            {{title.app_version | translate}}
+                                        </li>
+                                        <!-- <li class="list-group-item">
+                                            <span class="pull-right">{{vaiter_detail.address}}</span>
+                                            {{title.address | translate}}
+                                        </li> -->
+                                        <!-- <li class="list-group-item">
+                                            <span class="pull-right">{{vaiter_detail.address}}</span>
+                                            {{title.address | translate}}
+                                        </li> -->
+                                        <!-- <li class="list-group-item ">
+                                            <span class="pull-right ">
+                                                <ui-switch [(ngModel)]="vaiter_detail.is_phone_number_verified"
+                                                    #is_phone_number_verified="ngModel" name="is_phone_number_verified"
+                                                    disabled></ui-switch>
+                                            </span>
+                                            {{title.phone_number_verified | translate}}
+                                        </li> -->
+                                        <!-- <li class="list-group-item ">
+                                            <span class="pull-right ">
+                                                <ui-switch [(ngModel)]="vaiter_detail.is_email_verified"
+                                                    #is_email_verified="ngModel" name="is_email_verified" disabled>
+                                                </ui-switch>
+                                            </span>
+                                            {{title.email_verified | translate}}
+                                        </li> -->
+                                        <!-- <li class="list-group-item ">
+                                            <span class="pull-right ">
+                                                <ui-switch [(ngModel)]="vaiter_detail.is_document_uploaded"
+                                                    #is_document_uploaded="ngModel" name="is_document_uploaded"
+                                                    disabled></ui-switch>
+                                            </span>
+                                            {{title.document_uploaded | translate}}
+                                        </li> -->
+                                        <!-- <li class="list-group-item ">
+                                            <span class="pull-right ">
+                                                <ui-switch [(ngModel)]="vaiter_detail.is_active_for_job"
+                                                    #is_active_for_job="ngModel" name="is_active_for_job" disabled>
+                                                </ui-switch>
+                                            </span>
+                                            {{title.active_for_job | translate}}
+                                        </li> -->
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<modal keyboard="false" backdrop="static" cssClass="modal-xs fadeInRight" (onClose)="modalClosed(AddVaiterForm)"
+    (onDismiss)="modalClosed(AddVaiterForm)" #add_new_vaiter_modal>
+    <form #AddVaiterForm="ngForm" (ngSubmit)="AddVaiter(AddVaiterForm)" novalidate>
+        <modal-header [show-close]="true">
+            <h4 class="modal-title">{{heading_title.add_vaiter | translate}}</h4>
+        </modal-header>
+        <modal-body>
+            <div class="row">
+                <div class="col-md-12 text-center" style="margin-bottom: 10px;">
+                    <span class="btn-file"><img style="width: 120px; height: 120px;" class="img-circle m-t-xs"
+                            src="{{vaiter_detail.image_url != '' ? helper.CONSTANT.IMAGE_BASE_URL + vaiter_detail.image_url : 'default.png'}}"
+                            alt="">
+                        <input type="file" (change)="change_image($event);" accept="image/*" name="image_url">
+                    </span>
+                </div>
+                <div class="col-md-12">
+                    <div class="col-md-6 col-sm-6">
+                        <div class="form-group">
+                            <label
+                                style="font-weight: normal;"><strong>{{title.first_name | translate}}</strong></label>
+                            <input type="text" class="form-control" [(ngModel)]="add_vaiter.first_name"
+                                #first_name="ngModel" name="first_name" required minlength="1">
+                            <div *ngIf="first_name.invalid && (first_name.dirty || first_name.touched)"
+                                class="alert alert-danger">
+
+                                <div *ngIf="first_name.errors.required">
+                                    {{title.first_name | translate}} is required.
+                                </div>
+                                <div *ngIf="first_name.errors.minlength">
+                                    {{title.first_name | translate}} must be at least 4 characters long.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-sm-6">
+                        <div class="form-group">
+                            <label style="font-weight: normal;"><strong>{{title.last_name | translate}}</strong></label>
+                            <input type="text" class="form-control" [(ngModel)]="add_vaiter.last_name"
+                                #last_name="ngModel" name="last_name" required minlength="1">
+                            <div *ngIf="last_name.invalid && (last_name.dirty || last_name.touched)"
+                                class="alert alert-danger">
+
+                                <div *ngIf="last_name.errors.required">
+                                    {{title.last_name | translate}} is required.
+                                </div>
+                                <div *ngIf="last_name.errors.minlength">
+                                    {{title.last_name | translate}} must be at least 4 characters long.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-sm-6">
+                        <div class="form-group">
+                            <label style="font-weight: normal;"><strong>{{title.email | translate}}</strong></label>
+                            <input type="email" class="form-control" [(ngModel)]="add_vaiter.email" #email="ngModel"
+                                name="email" required>
+                            <div *ngIf="email.invalid && (email.dirty || email.touched)" class="alert alert-danger">
+
+                                <div *ngIf="email.errors.required">
+                                    {{title.email | translate}} is required.
+                                </div>
+                                <div *ngIf="email.errors.email">
+                                    {{title.email | translate}} entered is invalid.
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-md-6 col-sm-6">
+                        <div class="form-group">
+                            <label style="font-weight: normal;"><strong>{{title.phone | translate}}</strong></label>
+                            <input type="text" class="form-control" minlength="8" maxlength="12"
+                                (keypress)="helper.number_validation_with_minus($event)" autocomplete="off"
+                                [(ngModel)]="add_vaiter.phone" #phone="ngModel" name="phone" required>
+                            <div *ngIf="phone.invalid && (phone.dirty || phone.touched)" class="alert alert-danger">
+
+                                <div *ngIf="phone.errors.required">
+                                    {{title.phone | translate}} is required.
+                                </div>
+                                <div *ngIf="phone.errors.minlength">
+                                    {{title.phone | translate}} must be at least 8 digit.
+                                </div>
+                                <div *ngIf="phone.errors.maxlength">
+                                    {{title.phone | translate}} must not be more than 12 digit.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                    <div class="col-md-6 col-sm-6">
+                        <div class="form-group">
+                            <label
+                                style="font-weight: normal;"><strong>{{title.employee_type | translate}}</strong></label>
+                            <select chosen class="chosen-select" id="employee_type_id"
+                                [(ngModel)]="add_vaiter.employee_type" (ngModelChange)="option_change($event)"
+                                #employee_type="ngModel" name="employee_type" tabindex="4" required>
+                                <option value='{{helper.VAITER_TYPES.EMPLOYEE}}'>{{title.employee | translate}}</option>
+                                <option value='{{helper.VAITER_TYPES.SUPERVISOR}}'>{{title.supervisor | translate}}
+                                </option>
+                                <option value='{{helper.VAITER_TYPES.MANAGER}}'>{{title.manager | translate}}</option>
+                            </select>
+                            <div *ngIf="employee_type.invalid && (employee_type.dirty || employee_type.touched)"
+                                class="alert alert-danger">
+                                {{title.employee_type | translate}} is required.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-sm-6" [hidden]='add_vaiter.employee_type !== 1'>
+                        <div class="form-group">
+                            <label
+                                style="font-weight: normal;"><strong>{{title.hourly_vage | translate}} in {{wallet_currency_code}}</strong></label>
+                            <input type="text" class="form-control" [(ngModel)]="add_vaiter.hourly_vage"
+                                #hourly_vage="ngModel" min="1" maxlength='4'
+                                (keypress)="helper.number_validation_with_minus($event)" name="hourly_vage">
+                            <div *ngIf="hourly_vage.invalid && (hourly_vage.dirty || hourly_vage.touched)"
+                                class="alert alert-danger">
+                                {{title.hourly_vage | translate}} is required.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-sm-6">
+                        <div class="form-group">
+                            <label style="font-weight: normal;"><strong>{{title.password | translate}}</strong></label>
+                            <input type="password" class="form-control" [(ngModel)]="add_vaiter.password"
+                                #password="ngModel" name="password" required>
+                            <div *ngIf="password.invalid && (password.dirty || password.touched)"
+                                class="alert alert-danger">
+                                {{title.password | translate}} is required.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12" *ngIf="errors">
+                    <p style="color: red;">{{error_msg}}</p>
+                </div>
+            </div>
+        </modal-body>
+        <modal-footer>
+            <div style="text-align: center">
+                <button type="submit" class="btn btn-primary"
+                    [disabled]="email.invalid || first_name.invalid || last_name.invalid || phone.invalid || !add_vaiter.employee_type">{{button.submit | translate}}</button>
+            </div>
+        </modal-footer>
+    </form>
+</modal>
+
+<modal keyboard="false" backdrop="static" cssClass="modal-sm" #myModal>
+    <form #modalForm="ngForm" (ngSubmit)="AddWallet(modalForm.value)">
+        <modal-header [show-close]="true">
+            <h4 class="modal-title">{{heading_title.add_wallet_amount | translate}}</h4>
+        </modal-header>
+        <modal-body>
+            <div class="row">
+                <input type="hidden" class="form-control" [(ngModel)]="type" name="type" />
+                <input type="hidden" class="form-control" [(ngModel)]="vaiter_id" name="vaiter_id" />
+                <div class="col-md-12">
+                    <div class="col-md-12 col-sm-12">
+                        <div class="form-group">
+
+                            <label style="font-weight: normal;"><strong>{{title.amount | translate}}</strong></label>
+                            <input type="text" class="form-control" [(ngModel)]="wallet"
+                                (keypress)="helper.number_validation_with_minus($event)" maxlength="6" name="wallet"
+                                required>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </modal-body>
+        <modal-footer>
+            <div style="text-align: center">
+                <button type="submit" class="btn btn-primary">{{button.save | translate}}</button>
+            </div>
+        </modal-footer>
+    </form>
+</modal>
+
+<modal keyboard="false" backdrop="static" cssClass="modal-xl" #mynotificationModal>
+    <form #modalNotificationForm="ngForm" (ngSubmit)="SendNotification(modalNotificationForm.value)">
+        <modal-header [show-close]="true">
+            <h4 class="modal-title">{{heading_title.admin_send_notification | translate}}</h4>
+        </modal-header>
+        <modal-body>
+            <div class="row">
+                <input type="hidden" class="form-control" [(ngModel)]="type" name="type" />
+                <input type="hidden" class="form-control" [(ngModel)]="vaiter_id" name="vaiter_id" />
+                <div class="col-md-12">
+                    <div class="col-md-12 col-sm-12">
+                        <div class="form-group">
+                            <label
+                                style="font-weight: normal;"><strong>{{title.notification_content | translate}}</strong></label>
+                            <input type="text" class="form-control" [(ngModel)]="content" name="content" required />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </modal-body>
+        <modal-footer>
+            <div style="text-align: center">
+                <button type="submit" class="btn btn-primary">{{button.send | translate}}</button>
+            </div>
+        </modal-footer>
+    </form>
+</modal>
+
+<script>
+    function option_change(event) {
+        console.log(event)
+    }
+</script>

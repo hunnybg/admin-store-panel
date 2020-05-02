@@ -1,0 +1,104 @@
+<form #adminForm="ngForm" (ngSubmit)="AddAdmin(adminForm.value)" >
+    <input type="hidden" class="form-control" [(ngModel)]="admin_id"   name="admin_id" />
+    <input type="hidden" class="form-control" [(ngModel)]="add_admin.urls" #urls="ngModel"  name="urls" />
+
+    <div class="row wrapper col-sm-12 col-md-12 col-xs-12 col-lg-12 fix_search_bar border-bottom white-bg page-heading">
+        <div class="row">
+            <div *ngIf="type=='add'" class="col-md-3 col-sm-12 pull-right new_submit_button">
+                <input  type="submit" id="submit" name="submit"  class="btn btn-primary" value="{{button.submit | translate}}" >
+            </div>
+            <div *ngIf="type=='edit'" class="col-md-3 col-sm-12 pull-right new_submit_button">
+                <input type="submit" id="update" name="update"  class="btn btn-primary" value="{{button.update | translate}}" >
+            </div>
+        </div>
+    </div>
+    <div class="wrapper wrapper-content content_top_bar_view animated fadeInRight">
+        <div class="row">
+            <div class="ibox">
+                <div class="ibox-title">
+                    <label class="control-label">{{heading_title.admin_data}}</label>
+
+                </div>
+                <div class="ibox-content">
+
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label class="control-label">{{title.type | translate}}</label>
+                            <div class="form-group">
+                                <select chosen class="form-control chosen-select" id="admin_type" [(ngModel)]="add_admin.admin_type" #admin_type="ngModel"  name="admin_type" required>
+
+                                    <option value="1">{{title.admin | translate}}</option>
+                                    <option value="3">{{title.sub_admin | translate}}</option>
+
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="control-label">{{title.name | translate}}</label>
+                            <div class="form-group">
+                                <input type="text" class="form-control" [(ngModel)]="add_admin.username" #username="ngModel"  name="username" required />
+                                <div *ngIf="username.errors && (username.dirty || username.touched)">
+                                    <div style="color: red;" [hidden]="!username.errors.required">{{validation_message.admin_name_required | translate}}</div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label class="control-label">{{title.email | translate}}</label>
+                            <div class="form-group" *ngIf="type=='add'">
+                                <input type="text" class="form-control" [(ngModel)]="add_admin.email" #email="ngModel"  name="email" required />
+                                <div *ngIf="email.errors && (email.dirty || email.touched)">
+                                    <div style="color: red;" [hidden]="!email.errors.required">{{validation_message.admin_email_required | translate}}</div>
+                                </div>
+                            </div>
+
+                            <div class="form-group" *ngIf="type=='edit'">
+                                <input type="text" class="form-control" [(ngModel)]="add_admin.email" #email="ngModel"  name="email" readonly />
+
+                            </div> 
+                        </div>
+                        <div class="col-md-3">
+                            <label class="control-label">{{title.password | translate}}</label>
+                            <input type="password" class="form-control" [(ngModel)]="add_admin.password" #password="ngModel" placeholder="{{title.password}}" name="password" required />
+                            <div *ngIf="password.errors && (password.dirty || password.touched)">
+                                <div style="color: red;" [hidden]="!password.errors.required">{{validation_message.admin_password_required | translate}}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ibox"  style="margin-top:35px;" *ngIf="add_admin.admin_type == 3">
+                <div class="ibox-title">
+                    <label class="control-label">{{heading_title.admin_menu}}</label>
+
+                </div>
+                <div class="ibox-content" style="padding-bottom: 0px;">
+                    <div class="row form-group">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <div class="col-md-3" *ngFor="let i of url_list" style="margin: 5px;">
+                                         <label><input class="icheck" [checked]="add_admin.urls.indexOf(i.ID)!==-1" type="checkbox" value="{{i.ID}}" /><span style="margin-left: 10px;">{{i.NAME}}</span></label>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
+
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
+</form>
+

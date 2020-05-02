@@ -1,0 +1,79 @@
+ <footer [myLoading]="myLoading" ></footer>
+    <div class="row wrapper fix_search_bar border-bottom white-bg page-heading">
+
+        <div class="row">
+            <div class="col-md-3 col-sm-12">
+                <div class="col-md-12 remove_padding">
+                    <div class="form-group" id="search_fields">
+                        <select chosen class="chosen-select" [(ngModel)]="selected_product
+                                " name="selected_product" id="selected_product" tabindex="4">
+                            <option>{{title.all | translate}}</option>
+                            <option *ngFor="let product_data of product_list" value="{{product_data._id}}">{{product_data.name}}</option>
+
+                        </select>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-md-3 col-sm-12">
+                <div class="col-md-12 remove_padding">
+                    <div class="form-group" id="search_fields">
+                        <div class="input-group">
+
+                            <input type="text" (keyup)="filter_product(filter_product_name)" class="form-control search_box" [(ngModel)]="filter_product_name" placeholder="{{title.item_name | translate}}" style="color:#000000;" name="filter_product_name">
+                            <span class="input-group-addon search_icon"><span class="fa fa-search"></span></span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-md-3 col-sm-12 pull-right">
+                <div class="col-md-6 col-sm-6 add_btn_div">
+                    <a [routerLink]="['/franchise/add_item']" class="pull-right"> <button class="btn add_btn pull-right">{{button.add_item | translate}}<span class="fa fa-plus pull-right" style="margin-top: 2px;"></span></button></a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="wrapper content_top_bar_view wrapper-content animated fadeInRight">
+
+              
+        <div class="row" *ngFor="let product_data of filtered_product_list">
+            <div class="col-md-12 " [hidden]="product_data.items.length == 0 || (selected_product!== (title.all | translate) && selected_product!==product_data._id) " style="margin-bottom: 10px; padding: 0px;">
+                <label class="control-label label label-danger" style="font-size: 20px;">{{product_data.name}}</label>  
+            </div>
+             
+             
+            <div *ngFor="let i of product_data.items" [hidden]="selected_product !== (title.all | translate) && selected_product!==product_data._id ">
+                <div class="col-md-4 col-sm-6" style="padding : 0px; padding-right: 2px;">
+                    <div class="contact-box" style="padding-left: 0px; padding-right: 0px;">
+                        <a (click)="editItem(i._id, $event)" >
+                            <div class="col-md-4 col-xs-4 div1" style="text-align: center; padding-left: 0px; padding-right: 0px;">
+                                     <img class="img-circle m-t-sm img-responsive" src="{{i.image_url[0] != undefined ? i.image_url[0] : 'default.png'}}" style="border-radius: 20%; display: inline; width:100px; height: 100px;">
+
+                            </div>
+                            <div class="col-md-8 col-xs-8 div2" style="padding-left: 0px; padding-right: 0px;">
+                                <div class="col-md-9 col-xs-9" style="height: 24px; overflow: hidden;">
+                                    <h3><strong>{{i.name}}</strong></h3>
+                                </div>
+                                <div class="col-md-3 col-xs-3" >
+                                    <h3><strong style="float: right;">{{currency}}{{i.price}}</strong></h3>
+                                </div>
+                                <div class="col-md-9 col-xs-9">
+                                    <p>{{i.specifications.length}} {{title.specifications | translate}}</p>
+                                </div>
+                                <div class="col-md-3 col-xs-3">
+                                    <ui-switch (change)="onChange(i._id, $event)" style="float: right;" [(ngModel)]="i.is_item_in_stock" name="is_item_in_stock"></ui-switch>
+                                </div>
+                                <div class="col-md-12 col-xs-12" style="height: 57px; overflow: hidden;">
+                                    <address>
+                                        {{i.details}}
+                                    </address>
+                                </div>
+                            </div>
+                            <div class="clearfix"></div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+</div>

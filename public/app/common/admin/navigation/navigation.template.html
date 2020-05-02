@@ -1,0 +1,152 @@
+<style type="text/css">
+    .scrollbar
+    {
+        height: 100%;
+        background: #fff;
+        overflow-y: auto;
+    }
+
+    .scrollbar::-webkit-scrollbar-track
+    {
+        -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+        background-color: #fff;
+    }
+
+    .scrollbar::-webkit-scrollbar
+    {
+        width: 3px;
+        background-color: #222222;
+    }
+
+    .scrollbar::-webkit-scrollbar-thumb
+    {
+        background-color: #000000;
+    }
+
+    [hidden], template{
+        display: none !important;
+    }
+
+</style>
+<nav class="navbar-default navbar-static-side" role="navigation">
+    <div class="sidebar-collapse scrollbar">
+        <ul class="nav metismenu" id="side-menu">
+
+            <li class="nav-header" style="background-color: #222222 !important;transition: all 0.4s;" >
+                <div class="dropdown profile-element" style="text-align: center;transition: all 0.4s;">
+                    <img alt="image" class="" style="height:50px; width:50px;"  src="web_images/logo.png"/>
+                    <span class="block m-t-xs"> <strong class="font-bold" style="color: #fff;">{{app_name}}</strong> </span>
+                </div>
+                <div class="logo-element" style="padding: 10px 0;transition: all 0.4s;">
+                    <img alt="image" class="" style="height:50px; width:50px;"  src="web_images/logo.png"/>
+                </div>
+            </li>
+
+            <li [ngClass]="{active: activeRoute('dashboard')}" (click)="toggle($event)">
+                <a [routerLink]="['/admin/dashboard']"><i class="fa fa-tachometer"></i> <span class="nav-label">{{title.dashboard | translate}}</span> </a>
+            </li>
+
+            <li [ngClass]="{active:activeRoute('orders') }" [hidden]="(admin_type==3  && (urls_array.indexOf('/admin/orders')<0 && urls_array.indexOf('/admin/deliveries')<0 && urls_array.indexOf('/admin/history')<0 && urls_array.indexOf('/admin/request_cancel_reason')<0)) && admin_type !=1">
+                <a href="#"><i class="fa fa-history"></i> <span class="nav-label">{{title.orders | translate }}</span> <span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level collapse">
+                    <li (click)="toggle()" *ngIf="admin_type==3  && urls_array.indexOf('/admin/orders')>=0 || admin_type==1" [ngClass]="{active: activeRoute('orders')}"><a [routerLink]="['/admin/orders']">{{title.orders | translate}}</a></li>
+                    <!-- <li (click)="toggle()" *ngIf="admin_type==3  && urls_array.indexOf('/admin/deliveries')>=0 || admin_type==1" [ngClass]="{active: activeRoute('deliveries')}"><a [routerLink]="['/admin/deliveries']">{{title.deliveries | translate}}</a></li> -->
+                    <li (click)="toggle()" *ngIf="admin_type==3  && urls_array.indexOf('/admin/history')>=0 || admin_type==1" [ngClass]="{active: activeRoute('history')}"><a [routerLink]="['/admin/history']">{{title.history | translate}}</a></li>
+                    <!-- <li (click)="toggle()" *ngIf="admin_type==3  && urls_array.indexOf('/admin/request_cancel_reason')>=0 || admin_type==1" [ngClass]="{active: activeRoute('request_cancel_reason')}"><a [routerLink]="['/admin/request_cancel_reason']">{{title.request_cancellation_reason | translate}}</a></li> -->
+                </ul>
+            </li>
+
+            <li [ngClass]="{active: activeRoute('users')}" *ngIf="admin_type==3  && urls_array.indexOf('/admin/users')>=0 || admin_type==1" (click)="toggle($event)">
+                <a [routerLink]="['/admin/users']"><i class="fa fa-user"></i> <span class="nav-label">{{title.users | translate}}</span> </a>
+            </li>
+
+            <li [ngClass]="{active: activeRoute('stores')}" *ngIf="admin_type==3  && urls_array.indexOf('/admin/stores')>=0 || admin_type==1" (click)="toggle($event)">
+                <a [routerLink]="['/admin/stores']"><i class="fa fa-building"></i> <span class="nav-label">{{title.stores | translate}}</span> </a>
+            </li>
+
+            <li [ngClass]="{active: activeRoute('vaiters')}" *ngIf="admin_type==3  && urls_array.indexOf('/admin/vaiters')>=0 || admin_type==1" (click)="toggle($event)">
+                <a [routerLink]="['/admin/vaiters']"><i class="fa fa-id-card"></i> <span class="nav-label">{{title.vaiters | translate}}</span> </a>
+            </li>
+
+            <li [ngClass]="{active: activeRoute('request_assistance')}" *ngIf="admin_type==3  && urls_array.indexOf('/admin/request_assistance')>=0 || admin_type==1" (click)="toggle($event)">
+                <a [routerLink]="['/admin/request_assistance']"><i class="fa fa-info-circle"></i> <span class="nav-label">{{title.request_assistances | translate}}</span> </a>
+            </li>
+
+            <li [ngClass]="{active: activeRoute('tickets')}" *ngIf="admin_type==3  && urls_array.indexOf('admin/tickets')>=0 || admin_type==1" (click)="toggle($event)">
+                <a [routerLink]="['/admin/tickets']"><i class="fa fa-question-circle"></i> <span class="nav-label">{{title.tickets | translate}}</span> </a>
+            </li>
+            
+
+            <!-- <li [ngClass]="{active: activeRoute('providers')}" *ngIf="admin_type==3  && urls_array.indexOf('/admin/providers')>=0 || admin_type==1" (click)="toggle($event)">
+                <a [routerLink]="['/admin/providers']"><i class="fa fa-motorcycle"></i> <span class="nav-label">{{title.provider | translate}}</span> </a>
+            </li> -->
+
+            <li [ngClass]="{active:activeRoute('store_location')} || {active:activeRoute('provider_location')} || {active:activeRoute('location_track')} " [hidden]="(admin_type==3  && (urls_array.indexOf('/admin/store_location')<0 && urls_array.indexOf('/admin/provider_location')<0 && urls_array.indexOf('/admin/location_track')<0)) && admin_type!=1" >
+
+                <a href="#"><i class="fa fa-map"></i> <span class="nav-label">{{title.map_view | translate }}</span> <span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level collapse">
+                    <li (click)="toggle()" *ngIf="admin_type==3  && urls_array.indexOf('/admin/store_location')>=0 || admin_type==1" [ngClass]="{active: activeRoute('store_location')}"><a [routerLink]="['/admin/store_location']">{{title.store_location | translate}} </a></li>
+                    <!-- <li (click)="toggle()" *ngIf="admin_type==3  && urls_array.indexOf('/admin/provider_location')>=0 || admin_type==1" [ngClass]="{active: activeRoute('provider_location')}"><a [routerLink]="['/admin/provider_location']">{{title.provider_location | translate}}</a></li> -->
+                    <!-- <li (click)="toggle()" *ngIf="admin_type==3  && urls_array.indexOf('/admin/location_track')>=0 || admin_type==1" [ngClass]="{active: activeRoute('location_track')}"><a [routerLink]="['/admin/location_track']">{{title.provider_track | translate}}</a></li> -->
+                    <!--<li (click)="toggle()" *ngIf="admin_type==3  && urls_array.indexOf('/admin/all-city')>=0 || admin_type==1" [ngClass]="{active: activeRoute('all-city')}"><a [routerLink]="['/admin/all-city']">{{title.view_all_city | translate}}</a></li>-->
+                </ul>
+            </li>
+
+            <li [ngClass]="{active:activeRoute('earnings') }" [hidden]="(admin_type==3  && (urls_array.indexOf('/admin/order_earning')<0 && urls_array.indexOf('/admin/provider_weekly_earning')<0 && urls_array.indexOf('/admin/store_weekly_earning')<0 && urls_array.indexOf('/admin/wallet_detail')<0 && urls_array.indexOf('/admin/wallet_request')<0 && urls_array.indexOf('/admin/transaction_history')<0) )&& admin_type!=1">
+                <a href="#"><i class="fa fa-money"></i> <span class="nav-label">{{title.payments | translate }}</span> <span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level collapse">
+                    <!--<li (click)="toggle()" *ngIf="admin_type==3  && urls_array.indexOf('/admin/earnings')>=0 || admin_type==1" [ngClass]="{active: activeRoute('earnings')}"><a [routerLink]="['/admin/earnings']">{{title.earning | translate}}</a></li>-->
+                    <li (click)="toggle()" *ngIf="admin_type==3  && urls_array.indexOf('/admin/order_earning')>=0 || admin_type==1" [ngClass]="{active: activeRoute('order_earning')}"><a [routerLink]="['/admin/order_earning']">{{title.order_earning | translate}}</a></li>
+                    <!-- <li (click)="toggle()" *ngIf="admin_type==3  && urls_array.indexOf('/admin/provider_weekly_earning') >=0 || admin_type==1"   [ngClass]="{active: activeRoute('provider_weekly_earning')}"><a [routerLink]="['/admin/provider_weekly_earning']">{{title.provider_weekly_earning | translate}}</a></li> -->
+                    <li (click)="toggle()" *ngIf="admin_type==3  && urls_array.indexOf('/admin/store_weekly_earning')>=0 || admin_type==1"  [ngClass]="{active: activeRoute('store_weekly_earning')}"><a [routerLink]="['/admin/store_weekly_earning']">{{title.store_weekly_earning | translate}}</a></li>
+                    <li (click)="toggle()" *ngIf="admin_type==3  && urls_array.indexOf('/admin/wallet_detail')>=0 || admin_type==1" [ngClass]="{active: activeRoute('wallet_detail')}"><a [routerLink]="['/admin/wallet_detail']">{{title.wallet_history | translate}}</a></li>
+                    <li (click)="toggle()" *ngIf="admin_type==3  && urls_array.indexOf('/admin/wallet_request')>=0 || admin_type==1" [ngClass]="{active: activeRoute('wallet_request')}"><a [routerLink]="['/admin/wallet_request']">{{title.wallet_request | translate}}</a></li>
+                    <li (click)="toggle()" *ngIf="admin_type==3  && urls_array.indexOf('/admin/transaction_history')>=0 || admin_type==1" [ngClass]="{active: activeRoute('transaction_history')}"><a [routerLink]="['/admin/transaction_history']">{{title.transaction_history | translate}}</a></li>
+                </ul>
+            </li>
+
+            <li  [ngClass]="{active:activeRoute('delivery')}" [hidden]="(admin_type==3  && (urls_array.indexOf('/admin/service')<0 && urls_array.indexOf('/admin/delivery')<0 && urls_array.indexOf('/admin/vehicle')<0 && urls_array.indexOf('/admin/country')<0 && urls_array.indexOf('/admin/city')<0)) && admin_type!=1" >
+                <a href="#"><i class="fa fa-truck"></i> <span class="nav-label">{{title.delivery_info | translate }}</span> <span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level collapse">
+                    <li (click)="toggle()" *ngIf="admin_type==3  && urls_array.indexOf('/admin/delivery')>=0 || admin_type==1" [ngClass]="{active: activeRoute('delivery')}"><a [routerLink]="['/admin/delivery']">{{title.delivery | translate}}</a></li>
+                    <li (click)="toggle()" *ngIf="admin_type==3  && urls_array.indexOf('/admin/vehicle')>=0 || admin_type==1" [ngClass]="{active: activeRoute('vehicle')}"><a [routerLink]="['/admin/vehicle']">{{title.vehicle | translate}}</a></li>
+                    <li (click)="toggle()" *ngIf="admin_type==3  && urls_array.indexOf('/admin/country')>=0 || admin_type==1" [ngClass]="{active: activeRoute('country')}"><a [routerLink]="['/admin/country']">{{title.country | translate}}</a></li>
+                    <li (click)="toggle()" *ngIf="admin_type==3  && urls_array.indexOf('/admin/city')>=0 || admin_type==1" [ngClass]="{active: activeRoute('city')}"><a [routerLink]="['/admin/city']">{{title.city | translate}}</a></li>
+                    <li (click)="toggle()" *ngIf="admin_type==3  && urls_array.indexOf('/admin/service')>=0 || admin_type==1" [ngClass]="{active: activeRoute('service')}"><a [routerLink]="['/admin/service']">{{title.deliveries_prices | translate}}</a></li>
+                </ul>
+            </li>
+
+            <li [ngClass]="{active:activeRoute('setting') }" [hidden]="(admin_type==3  && (urls_array.indexOf('/admin/basic_setting')<0 && urls_array.indexOf('/admin/advertise')<0 && urls_array.indexOf('/admin/promotions')<0 && urls_array.indexOf('/admin/referral_detail')<0 && urls_array.indexOf('/admin/document')<0)) && admin_type!=1"> 
+
+                <a href="#"><i class="fa fa-cog"></i> <span class="nav-label">{{title.settings | translate }}</span> <span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level collapse">
+                    <li (click)="toggle()" *ngIf="admin_type==3  && urls_array.indexOf('/setting/basic_setting')>=0 || admin_type==1" [ngClass]="{active: activeRoute('basic_setting')}"><a [routerLink]="['/setting/basic_setting']">{{title.admin_settings | translate}}</a></li>
+                    <!-- <li (click)="toggle()" *ngIf="admin_type==3  && urls_array.indexOf('/admin/advertise')>=0 || admin_type==1" [ngClass]="{active: activeRoute('advertise')}"><a [routerLink]="['/admin/advertise']">Advertise</a></li> -->
+
+                    <li (click)="toggle()" *ngIf="admin_type==3  && urls_array.indexOf('/admin/promotions')>=0 || admin_type==1" [ngClass]="{active: activeRoute('promotions')}"><a [routerLink]="['/admin/promotions']">{{title.promo_code | translate}}</a></li>
+                    <li (click)="toggle()" *ngIf="admin_type==3  && urls_array.indexOf('/admin/referral_detail')>=0 || admin_type==1" [ngClass]="{active: activeRoute('referral_detail')}"><a [routerLink]="['/admin/referral_detail']">{{title.referral_detail | translate}}</a></li>
+                    <!-- <li (click)="toggle()" *ngIf="admin_type==3  && urls_array.indexOf('/admin/document')>=0 || admin_type==1" [ngClass]="{active: activeRoute('document')}"><a [routerLink]="['/admin/document']">{{title.documents | translate}}</a></li> -->
+                    <li (click)="toggle()" *ngIf="admin_type==1" [ngClass]="{active: activeRoute('list')}"><a [routerLink]="['/admin/list']">{{title.admin | translate}}</a></li>
+                    <li (click)="toggle()" *ngIf="admin_type==1" [ngClass]="{active: activeRoute('database_backup')}"><a [routerLink]="['/admin/database_backup']">{{title.database_backup | translate}}</a></li>
+
+                </ul>
+            </li>
+
+            <li [ngClass]="{active:activeRoute('sms')}" [hidden]="(admin_type==3  && (urls_array.indexOf('/admin/email')<0 && urls_array.indexOf('/admin/sms')<0 && urls_array.indexOf('/admin/mass_notification')<0)) && admin_type!=1">
+                <a href="#"><i class="fa fa-envelope"></i> <span class="nav-label">{{title.templates | translate }}</span> <span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level collapse">
+
+                    <li (click)="toggle()" *ngIf="admin_type==3  && urls_array.indexOf('/admin/email')>=0 || admin_type==1" [ngClass]="{active: activeRoute('email')}"><a [routerLink]="['/admin/email']">{{title.mail | translate}}</a></li>
+
+                    <li (click)="toggle()" *ngIf="admin_type==3  && urls_array.indexOf('/admin/sms')>=0 || admin_type==1" [ngClass]="{active: activeRoute('sms')}"><a [routerLink]="['/admin/sms']">{{title.sms | translate}}</a></li>
+                    <!--                                        <li><a>{{title.send_mass_sms | translate}}</a></li>-->
+                    <li (click)="toggle()" *ngIf="admin_type==3  && urls_array.indexOf('/admin/mass_notification')>=0 || admin_type==1" [ngClass]="{active: activeRoute('mass_notification')}"><a [routerLink]="['/admin/mass_notification']">{{title.send_mass_notification | translate}}</a></li>
+                </ul>
+            </li>
+
+
+
+        </ul>
+
+    </div>
+</nav>

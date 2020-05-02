@@ -1,0 +1,495 @@
+<footer [myLoading]="myLoading"></footer>
+<div class="row wrapper fix_search_bar border-bottom white-bg page-heading">
+
+    <div class="row">
+        <div class="col-md-4 col-sm-12">
+            <div class="col-md-12 remove_padding">
+                <div class="form-group" id="search_fields">
+                    <select chosen class="chosen-select" [(ngModel)]="selected_country
+                            " name="selected_country" id="selected_country" tabindex="4">
+                        <option value="all">{{title.all | translate}}</option>
+                        <option *ngFor="let country of country_list" value="{{country._id}}">{{country.country_name}}
+                        </option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 col-sm-12">
+            <div class="col-md-12 remove_padding">
+                <div class="form-group">
+                    <div class="input-group">
+
+                        <my-date-picker id="start_date" [options]="helper.myStartDatePickerOptions"
+                            placeholder="{{title.start_date | translate}}" [(ngModel)]="start_date"
+                            (dateChanged)="helper.onStartDateChanged($event)" readonly></my-date-picker>
+                        <span class="input-group-addon date_filter_icon">To</span>
+
+                        <my-date-picker id="end_date" [options]="helper.myEndDatePickerOptions"
+                            placeholder="{{title.end_date | translate}}" [(ngModel)]="end_date"
+                            (dateChanged)="helper.onEndDateChanged($event)" readonly></my-date-picker>
+
+                    </div>
+                    <div [ngSwitch]="date_error">
+                        <div *ngSwitchCase=1>
+                            <label style="color: red;">{{validation_message.start_date_required}}</label>
+                        </div>
+                        <div *ngSwitchCase=2>
+                            <label style="color: red;">{{validation_message.end_date_required}}</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 col-sm-12">
+            <div class="col-md-6 col-sm-6 filter_btn_div" style="margin-top: 0;">
+
+            </div>
+            <div class="col-md-6 col-sm-6 filter_btn_div" style="margin-top: 0;">
+                <input type="button" (click)="date_filter()" class="btn filter_apply_btn pull-right"
+                    value="{{button.apply | translate}}">
+            </div>
+        </div>
+    </div>
+
+
+</div>
+<div class="wrapper content_top_bar_view wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-4">
+            <div class="ibox">
+                <div class="ibox-title">
+                    <h5>{{heading_title.dashboard_register_detail  | translate}}
+                    </h5>
+                </div>
+                <div class="ibox-content">
+                    <div class="row">
+                        <div class="col-md-6 col-sm-6 col-xs-12 dashboard_margin">
+                            <div class="col-md-4 col-sm-4 col-xs-4">
+                                <img class="dashboard_icon_width" src="dashboard_graphics/register_details/users.png">
+                            </div>
+                            <div class="col-md-8 col-sm-8 col-xs-8">
+                                <span>{{title.user  | translate}}</span><br>
+                                <span class="dashboard_total_lable">{{list.total_users}}</span>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 col-sm-6 col-xs-12 dashboard_margin">
+                            <div class="col-md-4 col-sm-4 col-xs-4">
+                                <img class="dashboard_icon_width" src="dashboard_graphics/register_details/store.png">
+                            </div>
+                            <div class="col-md-8 col-sm-8 col-xs-8">
+                                <span>{{title.store  | translate}}</span><br>
+                                <span class="dashboard_total_lable">{{list.total_store}}</span>
+                            </div>
+                        </div>
+                        <!-- <div class="col-md-6 col-sm-6 col-xs-12 dashboard_margin">
+                            <div class="col-md-4 col-sm-4 col-xs-4">
+                                <img class="dashboard_icon_width" src="dashboard_graphics/register_details/deliveryman.png">
+                            </div>
+                            <div class="col-md-8 col-sm-8 col-xs-8">
+                                <span>{{title.provider  | translate}}</span><br>
+                                <span class="dashboard_total_lable">{{list.total_providers}}</span>
+                            </div>
+                        </div> -->
+                        <div class="col-md-6 col-sm-6 col-xs-12 dashboard_margin">
+                            <div class="col-md-4 col-sm-4 col-xs-4">
+                                <img class="dashboard_icon_width" src="dashboard_graphics/register_details/country.png">
+                            </div>
+                            <div class="col-md-8 col-sm-8 col-xs-8">
+                                <span>{{title.country  | translate}}</span><br>
+                                <span class="dashboard_total_lable">{{list.total_countries}}</span>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-sm-6 col-xs-12 dashboard_margin">
+                            <div class="col-md-4 col-sm-4 col-xs-4">
+                                <img class="dashboard_icon_width" src="dashboard_graphics/register_details/city.png">
+                            </div>
+                            <div class="col-md-8 col-sm-8 col-xs-8">
+                                <span>{{title.city  | translate}}</span><br>
+                                <span class="dashboard_total_lable">{{list.total_cities}}</span>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="ibox">
+                <div class="ibox-title">
+                    <h5>{{heading_title.dashboard_order_detail  | translate}}
+                    </h5>
+                </div>
+                <!-- <button style="background-color: #bc1a2b;border: 0;height: 41px;width: 41px;border-radius: 4px;"><span
+                        style="font-size: 20px;color: #fff;" class="fa fa-user-o"></span></button> -->
+                <div class="ibox-content">
+                    <div class="row">
+                        <div class="col-md-6 col-sm-6 col-xs-12 dashboard_margin">
+                            <div class="col-md-4 col-sm-4 col-xs-4">
+                                <img class="dashboard_icon_width"
+                                    src="dashboard_graphics/order_details/total_orders.png">
+                            </div>
+                            <div class="col-md-8 col-sm-8 col-xs-8">
+                                <span>{{title.orders  | translate}}</span><br>
+                                <span class="dashboard_total_lable">{{order_detail1.total_orders}}</span>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 col-sm-6 col-xs-12 dashboard_margin">
+                            <div class="col-md-4 col-sm-4 col-xs-4">
+                                <img class="dashboard_icon_width" src="dashboard_graphics/order_details/cancelled.png">
+                            </div>
+                            <div class="col-md-8 col-sm-8 col-xs-8">
+                                <span>{{title.cancelled  | translate}}</span><br>
+                                <span class="dashboard_total_lable">{{order_detail1.cancelled_order}}</span>
+                            </div>
+                        </div>
+                        <!-- <div class="col-md-6 col-sm-6 col-xs-12 dashboard_margin">
+                            <div class="col-md-4 col-sm-4 col-xs-4">
+                                <img class="dashboard_icon_width" src="dashboard_graphics/order_details/deliveries.png">
+                            </div>
+                            <div class="col-md-8 col-sm-8 col-xs-8">
+                                <span>{{title.deliveries  | translate}}</span><br>
+                                <span class="dashboard_total_lable">{{order_detail1.total_deliveries}}</span>
+                            </div>
+                        </div> -->
+                        <div class="col-md-6 col-sm-6 col-xs-12 dashboard_margin">
+                            <div class="col-md-4 col-sm-4 col-xs-4">
+                                <img class="dashboard_icon_width" src="dashboard_graphics/order_details/sold_items.png">
+                            </div>
+                            <div class="col-md-8 col-sm-8 col-xs-8">
+                                <span>{{title.total_item_sold  | translate}}</span><br>
+                                <span class="dashboard_total_lable">{{order_detail.total_item_sold}}</span>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-sm-6 col-xs-12 dashboard_margin">
+                            <div class="col-md-4 col-sm-4 col-xs-4">
+                                <img class="dashboard_icon_width" src="dashboard_graphics/order_details/completed.png">
+                            </div>
+                            <div class="col-md-8 col-sm-8 col-xs-8">
+                                <span>{{title.completed  | translate}}</span><br>
+                                <span class="dashboard_total_lable">{{order_detail.completed_order}}</span>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="ibox">
+                <div class="ibox-title">
+                    <h5>{{heading_title.dashboard_payment_detail  | translate}}
+                    </h5>
+                </div>
+
+                <div class="ibox-content">
+                    <div class="row">
+                        <div class="col-md-6 col-sm-6 col-xs-12 dashboard_margin">
+                            <div class="col-md-4 col-sm-4 col-xs-4">
+                                <img class="dashboard_icon_width" src="dashboard_graphics/payment_details/total.png">
+                            </div>
+                            <div class="col-md-8 col-sm-8 col-xs-8">
+                                <span>{{title.total  | translate}}</span><br>
+                                <span class="dashboard_total_lable">{{order_detail.total_payments.toFixed(2)}}</span>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 col-sm-6 col-xs-12 dashboard_margin">
+                            <div class="col-md-4 col-sm-4 col-xs-4">
+                                <img class="dashboard_icon_width" src="dashboard_graphics/payment_details/wallet.png">
+                            </div>
+                            <div class="col-md-8 col-sm-8 col-xs-8">
+                                <span>{{title.wallet  | translate}}</span><br>
+                                <span class="dashboard_total_lable">{{order_detail.wallet_payment.toFixed(2)}}</span>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-sm-6 col-xs-12 dashboard_margin">
+                            <div class="col-md-4 col-sm-4 col-xs-4">
+                                <img class="dashboard_icon_width"
+                                    src="dashboard_graphics/payment_details/other_payments.png">
+                            </div>
+                            <div class="col-md-8 col-sm-8 col-xs-8">
+                                <span>{{title.other  | translate}}</span><br>
+                                <span class="dashboard_total_lable">{{order_detail.other_payment.toFixed(2)}}</span>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-sm-6 col-xs-12 dashboard_margin">
+                            <div class="col-md-4 col-sm-4 col-xs-4">
+                                <img class="dashboard_icon_width" src="dashboard_graphics/payment_details/promo.png">
+                            </div>
+                            <div class="col-md-8 col-sm-8 col-xs-8">
+                                <span>{{title.promo  | translate}}</span><br>
+                                <span class="dashboard_total_lable">{{order_detail.promo_payment.toFixed(2)}}</span>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-sm-6 col-xs-12 dashboard_margin">
+                            <div class="col-md-4 col-sm-4 col-xs-4">
+                                <img class="dashboard_icon_width"
+                                    src="dashboard_graphics/payment_details/cash_payments.png">
+                            </div>
+                            <div class="col-md-8 col-sm-8 col-xs-8">
+                                <span>{{title.cash  | translate}}</span><br>
+                                <span class="dashboard_total_lable">{{order_detail.cash_payment.toFixed(2)}}</span>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+
+
+
+    </div>
+    <div class="row">
+        <div class="col-lg-4">
+            <div class="ibox">
+                <div class="ibox-title">
+                    <h5>{{heading_title.dashboard_admin_payment  | translate}}
+                    </h5>
+                </div>
+                <div class="ibox-content">
+                    <div class="row">
+
+                        <div class="col-md-12" style="display: block">
+                            <div id="a" class="c3"> </div>
+                        </div>
+                        <div class="col-md-12" style="margin-top: 28px;">
+                            <div class="col-md-1 col-xs-1 col-sm-1" style="padding-right: 0">
+
+                                <span class="fa fa-square" style="font-size: 20px;color: #e0e0e0;"></span>
+
+                            </div>
+                            <div class="col-md-5 col-xs-5 col-sm-5">
+                                <span style="font-size: 15px; ">{{title.total  | translate}}<br><span
+                                        style="font-size: 20px;color: black;">{{order_detail.total_payments.toFixed(2)}}</span></span>
+
+                            </div>
+                            <div class="col-md-1 col-xs-1 col-sm-1" style="padding: 0">
+
+                                <span class="fa fa-square" style="font-size: 20px;color: #1e1e1e;"></span>
+
+
+                            </div>
+                            <div class="col-md-5 col-xs-5 col-sm-5" style="padding: 0">
+                                <span style="font-size: 15px; ">{{title.admin_earn  | translate}}<br><span
+                                        style="font-size: 20px;color: black;">{{order_detail.admin_earning.toFixed(2)}}</span></span>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="ibox">
+                <div class="ibox-title">
+                    <h5>{{heading_title.dashboard_store_payment  | translate}}
+                    </h5>
+                </div>
+                <div class="ibox-content">
+
+
+                    <div class="row">
+                        <div class="col-md-12" style="display: block">
+                            <div id="b1" class="c3"> </div>
+                            <div id="b2" class="c3" style="position: absolute; height: 0px;top: -100px;"> </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12" style="margin-top: 28px;">
+                            <div class="col-md-1 col-xs-1 col-sm-1" style="padding-right: 0">
+                                <span class="fa fa-square" style="font-size: 20px;color: #bb212b;"></span>
+
+                            </div>
+                            <div class="col-md-5 col-xs-5 col-sm-5">
+                                <span style="font-size: 15px; ">{{title.order_payment  | translate}}<br><span
+                                        style="font-size: 20px;color: black;">{{order_detail.order_payment.toFixed(2)}}</span></span>
+
+                            </div>
+                            <div class="col-md-1 col-xs-1 col-sm-1" style="padding: 0">
+                                <span class="fa fa-square" style="font-size: 20px;color: #1e1e1e;"></span>
+
+
+                            </div>
+                            <div class="col-md-5 col-xs-5 col-sm-5" style="padding: 0">
+                                <span style="font-size: 15px; ">{{title.store_earn  | translate}}<br><span
+                                        style="font-size: 20px;color: black;">{{order_detail.store_earning.toFixed(2)}}</span></span>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- <div class="row"> -->
+
+    <!-- <div class="col-lg-4">
+            <div class="ibox">
+                <div class="ibox-title">
+                    <h5>{{heading_title.dashboard_provider_payment  | translate}}
+                    </h5>
+                </div>
+                <div class="ibox-content">
+                    <div class="row">
+
+                        <div class="col-md-12" style="display: block">
+                            <div id="c1" class="c3"> </div>
+                            <div id="c2" class="c3" style="position: absolute; height: 0px;top: -100px;"> </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12" style="margin-top: 28px;">
+                            <div class="col-md-1 col-xs-1 col-sm-1" style="padding-right: 0">
+                                <span class="fa fa-square" style="font-size: 20px;color: #bb212b;" ></span>
+
+
+                            </div>
+                            <div class="col-md-5 col-xs-5 col-sm-5">
+                                <span style="font-size: 15px; ">{{title.delivery_payment  | translate}}<br><span style="font-size: 20px;color: black;">{{order_detail.delivery_payment.toFixed(2)}}</span></span>
+
+                            </div>
+                            <div class="col-md-1 col-xs-1 col-sm-1" style="padding: 0">
+                                <span class="fa fa-square" style="font-size: 20px;color: #1e1e1e;" ></span>
+
+
+                            </div>
+                            <div class="col-md-5 col-xs-5 col-sm-5" style="padding: 0">
+                                <span style="font-size: 15px; ">{{title.provider_earn  | translate}}<br><span style="font-size: 20px;color: black;">{{order_detail.provider_earning.toFixed(2)}}</span></span>
+
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div> -->
+    <div class="row">
+
+        <div class="col-lg-12">
+            <div class="ibox">
+                <div class="ibox-title">
+                    <h5>{{heading_title.dashboard_title  | translate}}
+                    </h5>
+                </div>
+                <div class="ibox-content">
+                    <div class="row">
+
+                        <div class="col-md-12" style="display: block">
+                            <canvas baseChart [datasets]="lineChartData" [labels]="lineChartLabels"
+                                [options]="lineChartOptions" [colors]="lineChartColors" [legend]="lineChartLegend"
+                                [chartType]="lineChartType">
+
+                            </canvas>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-12">
+            <div class="ibox">
+                <div class="ibox-title">
+                    <h5>{{heading_title.dashboard_order_chart | translate}}
+                    </h5>
+                </div>
+                <div class="ibox-content">
+                    <div class="row">
+
+
+                        <div class="col-md-12" style="display: block">
+                            <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels"
+                                [options]="barChartOptions" [legend]="barChartLegend" [chartType]="barChartType"
+                                [colors]="barChartColors"></canvas>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="ibox">
+                <div class="ibox-title">
+                    <h5>{{heading_title.dashboard_last_six_month_payment_detail | translate}}
+                    </h5>
+                </div>
+                <div class="ibox-content">
+                    <div class="row">
+
+
+                        <div class="col-md-6 col-sm-6 col-xs-12" style="display: block">
+                            <canvas baseChart [data]="pieChartData" [labels]="pieChartLabels" [legend]="pieChartLegend"
+                                [colors]="pieChartColors" [chartType]="pieChartType">
+                            </canvas>
+                        </div>
+
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+
+                            <ul style="margin-top: 10%; margin-left: 10%;list-style-type: none;">
+                                <li *ngFor="let pieChartLabel of pieChartLabels; let index=index; "><span
+                                        class="fa fa-square" style="font-size: 20px;"
+                                        [style.color]="pieChartColors[0].backgroundColor[index]"></span><span
+                                        style="margin-left: 10px;    font-size: 15px;">{{pieChartLabel}}</span></li>
+                            </ul>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6">
+            <div class="ibox">
+                <div class="ibox-title">
+                    <h5>{{heading_title.dashboard_last_six_month_payment_detail | translate}}
+                    </h5>
+                </div>
+                <div class="ibox-content">
+                    <div class="row">
+
+                        <div id="bar_chart_group" class="c3"> </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox">
+                <div class="ibox-title">
+                    <h5>{{heading_title.dashboard_last_six_month_payment_detail | translate}}
+                    </h5>
+                </div>
+                <div class="ibox-content">
+                    <div class="row">
+                        <div id="country_chart" class="c3"> </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

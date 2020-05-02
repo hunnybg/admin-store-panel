@@ -1,0 +1,170 @@
+<footer [myLoading]="myLoading" ></footer>   
+<div class="wrapper wrapper-content animated fadeInRight content_top_bar">
+<!--    <div>
+        <label>{{title.provider_vehicle_service_type | translate}}</label>
+        <select chosen class="chosen-select" id="admin_vehicle_id" [(ngModel)]="provider_vehicle_list.admin_vehicle_id" #admin_vehicle_id="ngModel" name="admin_vehicle_id" data-placeholder="Select Vehicle"  tabindex="4"  >
+
+            <option *ngFor="let i of vehicle_service_list" value="{{i._id}}">{{i.vehicle_name}}</option>
+        </select> 
+    </div>-->
+    <div *ngFor="let vehicle of vehicle_list; let vehicle_index=index;">
+        <div class="col-lg-3 col-sm-6" style="padding-left: 10px; padding-right: 10px;">
+            <form #spec="ngForm" enctype='multipart/form-data'>
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <input type="hidden" [(ngModel)]="edit_vehicle[vehicle_index]" name="edit_vehicle">
+
+                        <span  class="fa fa-pencil pull-right" (click)="editProviderVehicle(vehicle._id)" style="font-size:15px;color:#060606"></span>
+                        <!--                        <span *ngIf="edit_vehicle[vehicle_index]=='false'" class="fa fa-pencil pull-right" (click)="editVehicle(vehicle,vehicle_index)"></span>
+                                                <span *ngIf="edit_vehicle[vehicle_index]=='true'" class="fa fa-check pull-right" (click)="UpdateVehicle(vehicle,vehicle_index)"></span>-->
+                        <ui-switch *ngIf="vehicle.admin_vehicle_id!=null" (change)="onChangeVehicle(vehicle._id, $event)"  [(ngModel)]="vehicle.is_approved" name="is_approved"></ui-switch>
+                        <ui-switch *ngIf="vehicle.admin_vehicle_id==null"  [(ngModel)]="vehicle.is_approved" name="is_approved" disabled></ui-switch>
+                    </div>
+
+                    <div class="ibox-content no-padding" style="height: 150px;">
+                        <div class="row" style="padding-top: 18px;padding-bottom: 18px;">
+                            <div class="col-md-6 col-xs-6 col-sm-6" style="padding-left: 28px;">
+                                <div>
+
+                                    <label>{{title.name | translate}}</label>
+                                    <div *ngIf="edit_vehicle[vehicle_index]!=='true'">
+                                        <label style="font-weight: normal;color:black;">{{vehicle.vehicle_name}}</label>
+                                    </div>
+                                    <div *ngIf="edit_vehicle[vehicle_index]=='true'">
+                                        <input type="text" [(ngModel)]="provider_vehicle_list.vehicle_name" #vehicle_name="ngModel"  name="vehicle_name" style="border-radius: 5px;border-color: #060606;height: 30px;" class="form-control" value="{{vehicle.vehicle_name}}">
+                                    </div>
+                                </div> 
+                                <div>
+                                    <label>{{title.provider_vehicle_plate_no | translate}}</label>
+                                    <div *ngIf="edit_vehicle[vehicle_index]!=='true'">
+                                        <label style="font-weight: normal;color:black;">{{vehicle.vehicle_plate_no}}</label>
+                                    </div>
+                                    <div *ngIf="edit_vehicle[vehicle_index]=='true'">
+                                        <input type="text" [(ngModel)]="provider_vehicle_list.vehicle_plate_no" #vehicle_plate_no="ngModel"  name="vehicle_plate_no" style="border-radius: 5px;border-color: #060606;height: 30px;" class="form-control" value="{{vehicle.vehicle_plate_no}}">
+                                    </div>
+                                </div> 
+                                <div>
+                                    <label>{{title.year | translate}}</label>
+                                    <div *ngIf="edit_vehicle[vehicle_index]!=='true'">
+                                        <label style="font-weight: normal;color:black;">{{vehicle.vehicle_year}}</label>
+                                    </div>
+                                    <div *ngIf="edit_vehicle[vehicle_index]=='true'">
+                                        <input type="text" [(ngModel)]="provider_vehicle_list.vehicle_year" #vehicle_year="ngModel"  name="vehicle_year" style="border-radius: 5px;border-color: #060606;height: 30px;" class="form-control" value="{{vehicle.vehicle_year}}">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-xs-6 col-sm-6" style="padding-right: 28px;">
+                                <div>
+                                    <label>{{title.provider_vehicle_model | translate}}</label>
+                                    <div *ngIf="edit_vehicle[vehicle_index]!=='true'">
+                                        <label style="font-weight: normal;color:black;">{{vehicle.vehicle_model}}</label>
+                                    </div>
+                                    <div *ngIf="edit_vehicle[vehicle_index]=='true'">
+                                        <input type="text" [(ngModel)]="provider_vehicle_list.vehicle_model" #vehicle_model="ngModel"  name="vehicle_model" style="border-radius: 5px;border-color: #060606;height: 30px;" class="form-control" value="{{vehicle.vehicle_model}}">
+                                    </div>
+                                </div>  
+
+                                <div>
+                                    <label>{{title.color | translate}}</label>
+                                    <div *ngIf="edit_vehicle[vehicle_index]!=='true'">
+                                        <label style="font-weight: normal;color:black;">{{vehicle.vehicle_color}}</label>
+                                    </div>
+                                    <div *ngIf="edit_vehicle[vehicle_index]=='true'">
+                                        <input type="text" [(ngModel)]="provider_vehicle_list.vehicle_color" #vehicle_color="ngModel"  name="vehicle_color" style="border-radius: 5px;border-color: #060606;height: 30px;" class="form-control" value="{{vehicle.vehicle_color}}">
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label>{{title.provider_vehicle_service_type | translate}}</label>
+                                    <label style="font-weight: normal;color:black;" *ngIf="vehicle.vehicle_detail.length>0">{{vehicle.vehicle_detail[0].vehicle_name}}</label>
+                                    
+<!--                                    <select chosen class="chosen-select" id="admin_vehicle_id" [(ngModel)]="provider_vehicle_list.admin_vehicle_id" #admin_vehicle_id="ngModel" name="admin_vehicle_id" data-placeholder="Select Vehicle"  tabindex="4">
+
+                                        <option *ngFor="let i of vehicle_service_list" value="{{i._id}}">{{i.vehicle_name}}</option>
+                                    </select> -->
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <div class="ibox-title">
+                        <h5 style="font-weight: bold;">Documents</h5>
+                    </div>
+                    <div *ngFor="let document of document_list">
+                        <div class="ibox-content no-padding" style="height: 150px;">
+
+
+                            <div class="row" style="padding-top: 18px;padding-bottom: 18px;">
+                                <div class="col-md-6 col-xs-6 col-sm-6" style="padding-left: 28px;">
+                                    <!--                                <div *ngIf="edit_document[document_index]!=='true'">
+                                                                        <img src="default.png" class="document{{document_index}}" style="width: 100%;max-width: 135px; height: 85px; border-radius: 12px;">
+                                                                    </div>-->
+                                    <div >
+                                        <span class="btn-file"><img src="default.png"  style="width: 100%;    max-width: 135px; height: 85px; border-radius: 12px;"><input type="file"  name="image"></span>
+                                    </div>
+
+                                    <div >
+                                        <div>
+                                            <!--                                        {{document.document_details.document_name}}-->
+                                        </div>
+
+
+                                        <!--                                    <div [ngSwitch]="error_message">
+                                                                                <div *ngSwitchCase=1>
+                                                                                    <label style="color: red;margin-bottom: 0px;">{{validation_message.image_required | translate}}</label>
+                                                                                </div>
+                                                                                <div *ngSwitchCase=2>
+                                                                                    <label style="color: red;margin-bottom: 0px;">{{validation_message.expired_date_required | translate}}</label>
+                                                                                </div>
+                                                                                <div *ngSwitchCase=3>
+                                                                                    <label style="color: red;margin-bottom: 0px;">{{validation_message.unique_code_required  | translate}}</label>
+                                                                                </div>
+                                                                            </div>-->
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-xs-6 col-sm-6" style="padding-right: 28px;">
+                                    <label>{{document.document_details.document_name}}</label> 
+                                    <label>{{title.unique_code | translate}}</label>
+                                    <div>
+                                        <label style="font-weight: normal;color:black;">{{document.unique_code}}</label>
+                                    </div>
+                                    <label>{{title.expired_date | translate}}</label>
+                                    <div>
+                                        <label style="font-weight: normal;color:black;">{{document.expired_date | date: "MM-dd-yyyy"}}</label>
+                                    </div>
+                                    <!--                                
+    <div *ngIf="document.document_details.is_unique_code">
+                                        <label>{{title.unique_code | translate}}</label>
+                                        <div *ngIf="edit_document[document_index]!=='true'">
+                                            <label style="font-weight: normal;color:black;">{{document.unique_code}}</label>
+                                        </div>
+                                        <div *ngIf="edit_document[document_index]=='true'">
+                                            <input type="text" [(ngModel)]="documentlist.unique_code" #unique_code="ngModel"  name="unique_code" style="border-radius: 5px;border-color: #060606;height: 30px;" class="form-control" value="{{document.unique_code}}">
+                                        </div>
+                                    </div>
+    
+                                    <div *ngIf="document.document_details.is_expired_date">
+                                        <label style="margin-top: 10px;">{{title.expired_date | translate}}</label>
+                                        <div *ngIf="edit_document[document_index]!=='true'">
+                                            <label style="font-weight: normal;color:black;">{{document.expired_date | date: "MM-dd-yyyy"}}</label>
+                                        </div>
+                                        <div *ngIf="edit_document[document_index]=='true'">
+                                            <my-date-picker [(ngModel)]="documentlist.expired_date" #expired_date="ngModel"  name="expired_date" id="expiry_date" value="" [options]="helper.ExpiryDatePickerOptions" placeholder="{{title.exp_date | translate}}" readonly></my-date-picker>
+                                        </div>
+                                    </div>-->
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+
+                </div>
+            </form>
+        </div>
+    </div>

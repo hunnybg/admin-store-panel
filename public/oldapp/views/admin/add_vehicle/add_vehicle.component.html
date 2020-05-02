@@ -1,0 +1,190 @@
+<footer [myLoading]="myLoading" ></footer>
+<form #vehicleForm="ngForm" (ngSubmit)="addVehicle(vehicleForm.value)" >
+    <input type="hidden" class="form-control" [(ngModel)]="vehicle_id"   name="vehicle_id" />
+    <div class="row wrapper col-sm-12 col-md-12 col-xs-12 col-lg-12 fix_search_bar border-bottom white-bg page-heading">
+        <div class="row">
+            <div *ngIf="type=='add'" class="col-md-3 col-sm-12 pull-right new_submit_button">
+                <input  type="submit" id="submit" name="submit"  class="btn btn-primary" value="{{button.submit | translate}}" >
+            </div>
+            <div *ngIf="type=='edit'" class="col-md-3 col-sm-12 pull-right new_submit_button">
+                <input type="submit" id="update" name="update"  class="btn btn-primary" value="{{button.update | translate}}" >
+            </div>
+        </div>
+    </div>
+    <div class="wrapper wrapper-content content_top_bar_view animated fadeInRight">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="col-lg-6 col-sm-9">
+                    <div class="ibox">
+                        <div class="ibox-title">
+                            <label class="control-label">{{heading_title.vehicle_data | translate}}</label>  
+                        </div>
+                        <div class="ibox-content">
+                            <div class="row">
+                                <div class="form-group">
+                                    <label class="col-lg-4 control-label">{{title.name | translate}}</label>
+                                    <div class="col-lg-8 form-group">
+                                        <input type="text" class="form-control" [(ngModel)]="add_vehicle.vehicle_name" #vehicle_name="ngModel"  name="vehicle_name" required />
+                                        <div *ngIf="vehicle_name.errors && (vehicle_name.dirty || vehicle_name.touched)">
+                                            <div style="color: red;" [hidden]="!vehicle_name.errors.required">{{validation_message.vehicle_name_required | translate}}</div>
+                                        </div>
+                                    </div> 
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-lg-4 control-label">{{title.description | translate}}</label>  
+                                    <div class="col-lg-8 form-group">
+                                        <textarea class="form-control" [(ngModel)]="add_vehicle.description" #description="ngModel"  name="description" required ></textarea>
+                                        <div *ngIf="description.errors && (description.dirty || description.touched)">
+                                            <div style="color: red;" [hidden]="!description.errors.required">{{validation_message.vehicle_description_required | translate}}</div>
+                                        </div>
+                                    </div> 
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-lg-4 control-label">{{title.business | translate}}</label>
+
+                                    <div class="col-lg-8 form-group">
+                                        <ui-switch [(ngModel)]="add_vehicle.is_business" #is_business="ngModel" name="is_business" ></ui-switch>
+
+                                    </div>
+                                </div>
+
+
+
+
+                                <div class="col-md-12">
+
+                                    <div class="row">
+                                        <label class="col-lg-6 control-label">{{title.image | translate}}</label>
+                                        <label class="col-lg-6 control-label">{{title.map_pin | translate}}</label>
+
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="form-group col-lg-6 col-md-6 col-xs-6">
+                                            <div  style="width: 100%;height:131px;">
+                                                <div class="col-lg-12 profile-images center">
+
+                                                    <span class="btn-file add_img_bg_vehicle no-padding"><img style="" src="{{helper.CONSTANT.IMAGE_BASE_URL + add_vehicle.image_url != '' ? add_vehicle.image_url : 'plus_box.png'}}" alt=""><input type="file" accept="image/*" (change)="main_image_update($event);" name="image_url"></span>
+<!--                                                    <span class="btn-file"><img style="width: 110px;height: 110px;" src="{{add_vehicle.image_url != '' ? add_vehicle.image_url : 'plus_box.png'}}" alt=""><input type="file" accept="image/*" (change)="main_image_update($event);" name="image_url"></span>-->
+
+                                                </div>
+                                                <div class="col-lg-12 text_center">
+                                                    <span style="color: red;">{{image_error | translate}}</span>
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+
+                                        <div class="form-group col-lg-6 col-md-6 col-xs-6">
+                                            <div  style="width: 100%;height:131px;">
+                                                <div class="col-lg-12 profile-images center"> 
+
+                                                    <span class="btn-file add_img_bg_vehicle no-padding"><img style="" src="{{helper.CONSTANT.IMAGE_BASE_URL + add_vehicle.map_pin_image_url != '' ? add_vehicle.map_pin_image_url : 'plus_box.png'}}" alt=""><input type="file" accept="image/*" (change)="map_pin_image_update($event);" name="map_pin_image_url"></span>
+
+                                                </div>
+                                                <div class="col-lg-12 text_center">
+                                                    <span style="color: red;">{{map_pin_image_error | translate}}</span>
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+
+
+                                    </div>
+                                </div>
+
+
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <label class="control-label" style="color:#bc202b;">{{title.note_for_image | translate}}:-</label>
+                                    </div>
+                                    <div class="row">
+                                        <label class="control-label" >{{title.image_note1 | translate}} {{image_setting.image_min_width}}x{{image_setting.image_min_height}}
+                                            {{title.image_note2 | translate}} {{image_setting.image_max_width}}x{{image_setting.image_max_height}}),</label><br>
+                                        <label class="control-label">{{title.image_note3 | translate}} {{image_setting.image_ratio}} {{title.image_note4 | translate}} </label>
+                                        <label *ngFor="let i of image_setting.image_type; let last=last;"> {{(i.split('/'))[1]}}<label [hidden]="last">,</label> </label>
+                                        <label class="control-label"> {{title.image_note5 | translate}}</label>
+
+<!--                                        <p>{{image_note}}</p>
+                                        <p>{{image_note_ratio}}</p>-->
+
+                                    </div> 
+
+                                    <div class="row">
+                                        <label class="control-label" style="color:#bc202b;">{{title.note_for_map_pin | translate}}:-</label>
+                                    </div>
+                                    <div class="row">
+                                        <label class="control-label">{{title.image_note1 | translate}} {{image_setting.map_pin_image_min_width}}x{{image_setting.map_pin_image_min_height}}
+                                            {{title.image_note2 | translate}} {{image_setting.map_pin_image_max_width}}x{{image_setting.map_pin_image_max_height}}),</label><br>
+                                        <label class="control-label">{{title.image_note3 | translate}} {{image_setting.map_pin_image_ratio}} {{title.image_note4 | translate}} </label>
+                                       <label *ngFor="let i of image_setting.map_pin_image_type; let last=last;"> {{(i.split('/'))[1]}}<label [hidden]="last">,</label> </label>
+                                        <label class="control-label"> {{title.image_note5 | translate}}</label>
+                                        <!--                                        <p>{{map_pin_note}}</p>
+                                                                                <p>{{map_pin_note_ratio}}</p>-->
+
+                                    </div> 
+
+                                </div>
+
+                            </div>
+<!--                            <div class="row">   
+                                <div class="col-lg-4">
+                                </div>
+                                <div *ngIf="type=='add'" class="col-lg-4" style="text-align: center;">
+                                    <input type="submit" name="submit" style="width: 60%;" class="btn btn-primary" value="{{button.submit | translate}}" >
+                                </div>
+                                <div *ngIf="type=='edit'" class="col-lg-4" style="text-align: center;">
+                                    <input type="submit" id="update" name="update" style="width: 60%;" class="btn btn-primary" value="{{button.update | translate}}" >
+                                </div>
+                            </div>-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+
+<modal keyboard="false" backdrop="static" cssClass="modal-xl animated fadeInDownBig" #image_crop_modal>
+    <modal-header [show-close]="true">
+
+    </modal-header>
+    <modal-body>
+        <img-cropper #cropper [image]="data" [settings]="cropperSettings"></img-cropper><br>
+        {{cropperSettings.croppedWidth}}
+        {{cropperSettings.croppedHeight}}
+        <div class="col-lg-12 text_center">
+            <span style="color: red;">{{image_error | translate}}</span>
+        </div>
+
+    </modal-body>
+    <modal-footer>
+        <div style="text-align: center">
+            <button type="button" (click)="crop($event)" class="btn btn-primary">{{button.done | translate}}</button>
+        </div>
+    </modal-footer>
+</modal>
+
+<modal keyboard="false" backdrop="static" cssClass="modal-xl animated fadeInDownBig" #map_pin_image_crop_modal>
+    <modal-header [show-close]="true">
+
+    </modal-header>
+    <modal-body>
+        <img-cropper #cropper_map_pin [image]="map_pin_data" [settings]="cropperMapPinSettings"></img-cropper><br>
+        {{cropperMapPinSettings.croppedWidth}}
+        {{cropperMapPinSettings.croppedHeight}}
+        <div class="col-lg-12 text_center">
+            <span style="color: red;">{{map_pin_image_error | translate}}</span>
+        </div>
+
+    </modal-body>
+    <modal-footer>
+        <div style="text-align: center">
+            <button type="button" (click)="cropDeliveryMapPin($event)" class="btn btn-primary">{{button.done | translate}}</button>
+        </div>
+    </modal-footer>
+</modal>

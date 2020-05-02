@@ -1,0 +1,322 @@
+<style type="text/css">
+    .scrollbar
+{
+    height: 140px;
+    background: #F5F5F5;
+    overflow-x: auto;
+}
+
+#style-3::-webkit-scrollbar-track
+{
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    background-color: #F5F5F5;
+}
+
+#style-3::-webkit-scrollbar
+{
+    width: 3px;
+    background-color: #F5F5F5;
+}
+
+#style-3::-webkit-scrollbar-thumb
+{
+    background-color: #000000;
+}
+
+</style>
+<footer [myLoading]="myLoading" ></footer>   
+<form #itemForm="ngForm" (ngSubmit)="addItem(itemForm.value)" id="myForm" enctype='multipart/form-data' >
+    
+        <div class="wrapper wrapper-content animated fadeInRight content_top_bar">
+        
+        
+            <div class="row">
+                
+                <div class="col-md-12 col-sm-6">
+                    <div class="ibox">
+                        <div class="ibox-title">
+                            <label class="control-label">{{heading_title.item_images | translate}}</label>
+                            <label style="font-weight: 100;" >Note:  Upload image size within width x height (  min {{image_setting.image_min_width}}x{{image_setting.image_min_height}}
+                                and max {{image_setting.image_max_width}}x{{image_setting.image_max_height}}),</label><br>
+                            <label style="font-weight: 100;margin-left: 32px;">Image ratio should be {{image_setting.image_ratio}} and upload only </label>
+                            <label *ngFor="let i of image_setting.image_type"> {{(i.split('/'))[1]}} </label><label style="font-weight: 100;"> file</label>
+                        </div>
+                        <div class="ibox-content">
+                            <div class="row" *ngIf="new_image_array.length>0">
+                                <div class="form-group">
+                                        <div class="scrollbar" id="style-3" style="width: 100%;height:131px;text-align: center;">
+
+                                                <div *ngFor="let image of new_image_array; let index=index;" style=" display: inline-table;">
+                                                    <img [src]="image.base64_image" style="border-radius: 20%; width:100px; height: 100px; margin-right: 30px;">
+
+                                                    <div style="text-align: center;width: 100px;margin-top: 5px;">
+                                                        <i aria-hidden="true" (click)="remove_new_image(index)" class="fa fa-times-circle" style="font-size: 25px;cursor: pointer;color:#bc2029;"></i>
+                                                    </div>
+                                                </div>
+                                        </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3 text_center">
+                                    <span style="color: red;">{{image_error | translate}}</span>
+                                </div>
+                                <div class="col-md-6" style="text-align: center;">
+                                    <span class="btn-file"><i class="fa fa-plus-circle" style="font-size: 30px;cursor: pointer"></i>
+                                        <input type="file"  (change)="image_update($event);" accept="image/*" name="image[]" multiple style="margin-top: -12px;padding: 13px;"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        
+                    </div>
+                </div>
+            </div>
+            <div class="row">        
+                    <div class="col-md-12 col-sm-12">     
+                        <div class="ibox">    
+                            <div class="ibox-title">
+                                <label class="control-label">{{heading_title.store_list | translate}}</label>
+                            </div>       
+                            <div class="ibox-content">
+                                <div class="row">
+                                    <div *ngFor="let i of store_list; " style="padding-left: 30px;" class="col-md-4 col-sm-4 col-xs-4">
+                                            <input type="checkbox" class="icheck1" value="{{i._id}}"/>
+                                            <label><span style="margin-left: 10px;">{{i.name}}</span></label>
+                                    </div>
+                                </div>
+                            </div>                                    
+                        </div>                                    
+                    </div>                                    
+            </div>
+    	    <div class="row">
+                    <div class="col-md-4 col-sm-6">
+                        <div class="ibox">
+                            <div class="ibox-title">
+                                <label class="control-label">{{heading_title.item_title | translate}}</label>
+                            </div>
+                            <div class="ibox-content">
+                                <div class="row">
+                                    <input type="hidden" class="form-control" [(ngModel)]="add_item.franchise_id" #franchise_id="ngModel"  name="franchise_id" />
+                                    <input type="hidden" class="form-control" [(ngModel)]="add_item.server_token" #server_token="ngModel"  name="server_token" />
+                                    <input type="hidden" class="form-control" [(ngModel)]="add_item.specifications_unique_id_count" #specifications_unique_id_count="ngModel"  name="specifications_unique_id_count" />
+
+                                    <input type="hidden" class="form-control" [(ngModel)]="item_specification_list" name="specifications" />
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label">{{title.product | translate}}</label>
+                                        <div class="col-md-8 form-group">
+                                            <select chosen class="chosen-select" [(ngModel)]="add_item.product_id" #product_id="ngModel" id="product" tabindex="4" name="product_id" required>
+                                                <option selected disabled hidden style="display:none;">Select Product</option>
+                                                <option *ngFor="let i of product_list" value="{{i._id}}">{{i.name}}</option>
+                                            </select>
+                                            <div *ngIf="product_id.errors">
+                                                <div style="color: red;" [hidden]="!product_id.errors.required">{{validation_message.select_product_required | translate}}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label">{{title.name | translate}}</label>
+                                        <div class="col-md-8 form-group">
+                                            <input type="text" class="form-control" [(ngModel)]="add_item.name" #name="ngModel" (keyup)="check_item()"  name="name" required />
+                                            <label *ngIf=item_already_exist >{{message.item_already_exist | translate}}</label>
+                                            <div *ngIf="name.errors && (name.dirty || name.touched)">
+                                                <div style="color: red;" [hidden]="!name.errors.required">{{validation_message.item_name_required | translate}}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label">{{title.details | translate}}</label>
+                                        <div class="col-md-8 form-group">
+                                            <textarea style="max-width: 100%; max-height: 80px;" class="form-control" [(ngModel)]="add_item.details" #details="ngModel"  name="details" required ></textarea>
+                                            <div *ngIf="details.errors && (details.dirty || details.touched)">
+                                                <div style="color: red;" [hidden]="!details.errors.required">{{validation_message.item_detail_required | translate}}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label">{{title.price | translate}}</label>
+                                        <div class="col-md-8 form-group">
+                                            <input type="text" (keypress)="helper.number_validation($event)" class="form-control" [(ngModel)]="add_item.price" #price="ngModel"  name="price" required />
+                                            <div *ngIf="price.errors && (price.dirty || price.touched)">
+                                                <div style="color: red;" [hidden]="!price.errors.required">{{validation_message.item_price_required | translate}}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-6">
+                        <div class="ibox">
+                            <div class="ibox-title">
+                                <label class="control-label">{{heading_title.item_setting | translate}}</label>
+                            </div>
+                            <div class="ibox-content">
+                                <div class="row">
+                                    <div class="form-group">
+                                        <label class="col-md-8 col-sm-8 col-xs-8 control-label">{{title.is_default | translate}}</label>
+
+                                        <div class="col-md-4 col-sm-4 col-xs-4 form-group">
+                                            <ui-switch [(ngModel)]="add_item.is_visible_in_store" #is_visible_in_store="ngModel" name="is_visible_in_store"></ui-switch>
+
+                                        </div>
+                                    </div>
+
+
+                                    <div class="form-group">
+                                        <label class="col-md-8 col-sm-8 col-xs-8 control-label">{{title.is_item_in_stock | translate}}</label>
+
+                                        <div class="col-md-4 col-sm-4 col-xs-4 form-group">
+                                            <ui-switch [(ngModel)]="add_item.is_item_in_stock" #is_item_in_stock="ngModel" name="is_item_in_stock"></ui-switch>
+
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-8 col-sm-8 col-xs-8 control-label">{{title.is_most_popular | translate}}</label>
+
+                                        <div class="col-md-4 col-sm-4 col-xs-4 form-group">
+                                            <ui-switch [(ngModel)]="add_item.is_most_popular" #is_most_popular="ngModel" name="is_most_popular"></ui-switch>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-5 col-sm-12">
+                        <div class="ibox">
+                            <div class="ibox-title">
+                                <label class="control-label">{{heading_title.item_specification | translate}}</label>
+                            </div>
+                            <div class="ibox-content" >
+                                <div [hidden]="add_item.product_id==''" style="text-align: center; margin-bottom: 12px;">
+                                    <button type="button" id="add_specification" (click)="open_specification_group_modal()" class="btn add_btn">{{button.add_specification | translate}}<span class="fa fa-plus pull-right" style="margin-top: 2px;"></span></button>
+                                </div>
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <tr>
+                                            <td>{{title.specification_name | translate}}</td>
+                                            <td>{{title.action | translate}}</td>
+                                        </tr>
+                                        <tr *ngFor="let i of item_specification_list">
+                                            <td>{{i.name}}</td>
+                                            <td><button type="button" class="btn btn-default" (click)="delete_item_specification(i)">{{button.delete | translate}}</button></td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+            <div class="ibox">
+                <div class="ibox-content">
+                    <div class="row">
+                        <div class="col-md-4">
+                        </div>
+                        <div class="col-md-4" style="text-align: center;">
+                            <input type="submit" [disabled]="item_already_exist" id="submit" name="submit" style="width: 50%;" class="btn btn-primary" value="{{button.add_item | translate}}" >
+                        </div>
+                    </div>
+                </div>
+            </div>
+        
+    </div>
+</form>
+
+<modal keyboard="false" backdrop="static" cssClass="modal-xl animated fadeInUpBig" #myModal>
+    <form #modalForm="ngForm" (ngSubmit)="addSpecification(modalForm.value)">
+        <modal-header [show-close]="true">
+            <h4 class="modal-title">{{heading_title.add_item_specification | translate}}</h4>
+        </modal-header>
+        <modal-body>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="col-md-4 col-sm-4 col-xs-8">
+                        <div class="form-group" >
+                            <label style="font-weight: normal;">{{title.item_specification_name | translate}}</label>
+                            <input type="text" class="form-control" [(ngModel)]="add_item.item_specification_name" #item_specification_name="ngModel" name="item_specification_name" required>
+                            <input type="hidden" class="form-control" [(ngModel)]="add_item.specification_group_id" #specification_group_id="ngModel" name="specification_group_id">
+
+                        </div>
+
+                    </div>
+                    <div class="col-md-2 col-sm-2 col-xs-4">
+                        <label class="col-md-12 col-sm-12 col-xs-12" style="font-weight: normal;">{{title.is_required | translate}}</label>
+                        <ui-switch class="col-md-12 col-sm-12 col-xs-12" [(ngModel)]="add_item.is_required" #is_required="ngModel" name="is_required"></ui-switch>
+                    </div>
+
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="form-group">
+                            <label class="col-md-12 col-sm-12 col-xs-4" style="font-weight: normal;">{{title.select_type | translate}}</label>
+                            <input type="hidden" [(ngModel)]="add_item.type" #type="ngModel" name="type" >
+                            <div class="col-md-6 col-sm-6 col-xs-4 form-group">
+                                <label><input class="iradio" type="radio" id="1" name="select_type" value="1" checked/><span style="margin-left: 10px;" >{{title.type_single | translate}}</span></label>
+                            </div>
+                            <div class="col-md-6 col-sm-6 col-xs-4 form-group">
+                                <label><input class="iradio" type="radio" id="2" name="select_type" value="2"/><span style="margin-left: 10px;">{{title.type_multiple | translate}}</span></label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <div class="table-responsive">
+                            <table class="table">
+                            <tr>
+                                <td style="width: 40%">{{title.add_specification | translate}}</td>
+                                <td style="width: 120px;">{{title.price | translate}}</td>
+                                <td style="width: 30%">{{title.default_select | translate}}</td>
+                            </tr>
+                            </table>
+                            <div id="spec_model">
+                                <table class="table">
+                                    <tr *ngFor="let i of product_specification_list; let index=index; ">
+
+                                        <td style="width: 5%"><label><input type="checkbox" class="icheck" value="{{i._id}}"/></label></td>
+                                        <td style="width: 35%"><label><span style="margin-left: 10px;">{{i.name}}</span></label></td>
+                                        <td style="width: 120px;"><div><input type="text" class="form-control" [disabled]="checked_array[index]!=true" (keypress)="helper.price_validation($event, i.price)"  [(ngModel)]="i.price" name="{{index}}"></div></td>
+                                        <td style="width: 30%"><ui-switch (change)="onChange($event, i._id)" [(ngModel)]="i.is_default_selected" #is_default_selected="ngModel" [disabled]="checked_array[index]!=true" name="is_default_selected{{i._id}}"></ui-switch></td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        <div *ngIf="spec_list_error==1">
+                            <label class="error" style="font-weight: normal;">{{title.error_atleast_one_specification | translate}}</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </modal-body>
+        <modal-footer>
+            <div style="text-align: center">
+                <button type="submit" class="btn btn-primary">{{button.save | translate}}</button>
+            </div>
+        </modal-footer>
+    </form>
+</modal>
+
+<modal keyboard="false" backdrop="static" cssClass="modal-sm animated fadeInDownBig" #myspec_group_modal>
+    
+        <modal-header [show-close]="true">
+            <h4 class="modal-title">{{heading_title.add_item_specification | translate}}</h4>
+        </modal-header>
+        <modal-body>
+            <div class="row">
+                <div class="col-md-12">
+                    <div id="spec_model">
+                        <table class="table">
+                            <tr *ngFor="let i of product_specification_group_list">
+                                <td style="width: 40%" (click)="open_specification_modal(i._id , i.product_id , i.name , i.unique_id)"><label>{{i.name}}</label></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+        </modal-body>
+</modal>

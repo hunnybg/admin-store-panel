@@ -1,0 +1,20 @@
+<div *ngIf="myLoading"
+    style="background-color: black;
+    opacity: 0.3;
+    position: absolute;
+    height: 99.9%;
+    width: 100%;
+    z-index: 999999;margin-left: -15px; margin-right: 30px;">
+    <div class="text-center">
+    <h2 class="loading">Loading...</h2>
+</div>
+</div>
+<!--<div class="text-center">
+    <h2 class="loading">Loading...</h2>
+</div>-->
+
+<img *ngIf="myLoading" src="web_images/Spinner.gif" style="position: absolute;
+    z-index: 72;
+    top: 35%;left: 43%;">
+
+

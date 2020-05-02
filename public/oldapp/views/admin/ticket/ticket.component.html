@@ -1,0 +1,234 @@
+<footer [myLoading]="myLoading"></footer>
+<div class="row wrapper fix_search_bar border-bottom white-bg page-heading">
+    <div class="row">
+        <div class="col-md-4 col-sm-12">
+            <div>
+                <label>{{title.search | translate}}</label>
+            </div>
+            <div class="col-md-6 col-sm-6 remove_padding">
+                <div class="form-group" id="search_fields">
+                    <select chosen class="chosen-select" id="search_field" [(ngModel)]="search_field"
+                        name="search_field" tabindex="4">
+                        <option value="user_detail.unique_id">{{title.user_unique_id | translate}}</option>
+                        <option value="user_detail.first_name">{{title.user_name | translate}}</option>
+                        <option value="user_detail.email">{{title.user_email | translate}}</option>
+                        <option value="user_detail.phone">{{title.user_phone | translate}}</option>
+                        <option value="ticket_detail.unique_id">{{title.ra_unique_id | translate}}</option>
+
+                        <!-- <option value="country_details.country_name">{{title.country | translate}}</option> -->
+                        <!-- <option value="city_details.city_name">{{title.city | translate}}</option> -->
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-6 remove_padding">
+                <div class="form-group">
+                    <div class="input-group">
+                        <input type="text" class="form-control search_box" [(ngModel)]="search_value"
+                            name="search_value">
+                        <span (click)="filter(1)" class="input-group-addon search_icon"><span
+                                class="fa fa-search"></span></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 col-sm-12">
+            <div class="col-md-6 col-sm-6">
+                <div>
+                    <label>{{title.no_of_record | translate}}</label>
+                </div>
+                <div class="form-group">
+                    <select chosen class="chosen-select" id="number_of_rec" [(ngModel)]="number_of_rec"
+                        name="number_of_rec" tabindex="4">
+                        <option value="10">10</option>
+                        <option value="20">20</option>
+                        <option value="50">50</option>
+                        <option value="100">100</option>
+                    </select>
+                </div>
+            </div>
+            <!-- <div class="col-md-6 col-sm-6 filter_btn_div">
+                <button type="button" (click)="ra_export_csv(ra_page_type)" class="btn export_excel_btn">
+                    <span class="fa fa-file-excel-o"></span>
+                </button>
+            </div> -->
+        </div>
+        <!-- <div class="col-md-4 col-sm-12">
+            <div class="col-md-6 col-sm-6 filter_btn_div">
+                <button type="button" (click)="add_new_ra()" class="btn export_excel_btn">
+                    <span class="fa fa-plus"></span>Add ticket
+                </button>
+            </div>
+        </div> -->
+    </div>
+</div>
+
+<div class="wrapper wrapper-content content_top_bar_view1 animated fadeInRight">
+    <div class="row">
+        <div class="col-md-9">
+
+            <div class="ibox">
+                <div class="ibox-content" style="padding-bottom: 40px;">
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12">
+                            <ul class="nav nav-tabs">
+                                <li (click)="change_page_type(0)" [class.active]="ticket_page_type==0"
+                                    class="dsads uib-tab ng-scope ng-isolate-scope" active="tab.active">
+                                    <a
+                                        class="ng-binding tab_selection">{{helper.sub_menu_title.pending_request | translate}}</a>
+                                </li>
+                                <li (click)="change_page_type(1)" [class.active]="ticket_page_type==1"
+                                    class="uib-tab ng-scope ng-isolate-scope active">
+                                    <a
+                                        class="ng-binding tab_selection">{{helper.sub_menu_title.resolved | translate}}</a>
+                                </li>
+
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="lable_center" *ngIf="ticket_list.length==0">
+                        <label>No Records</label>
+                    </div>
+                    <div *ngIf="ticket_list.length !== 0" class="table-responsive scrollbar"
+                        style="height: calc(100vh - 285px);overflow: auto;">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>{{title.id | translate}}</th>
+                                    <th>{{title.created_at | translate}}</th>
+                                    <th>{{title.created_by | translate}}</th>
+                                    <th>{{title.details | translate}}</th>
+                                    <th>{{title.regarding | translate}}</th>
+                                    <th *ngIf='ticket_page_type==0'>{{title.resolve | translate}}</th>
+                                    <th *ngIf='ticket_page_type==1'>{{title.resolved_at | translate}}</th>
+
+                                </tr>
+                            </thead>
+                            <tbody *ngIf="ticket_detail">
+                                <tr *ngFor="let ticket of ticket_list; let index=index;"
+                                    [class.selected_tr]="ticket._id == ticket_detail._id">
+                                    <td (click)="get_ticket_detail(ticket._id)">{{ticket.unique_id}} </td>
+                                    <td (click)="get_ticket_detail(ticket._id)">
+                                        {{ticket.created_at | date: "dd MMM yyyy hh:mm a"}}</td>
+                                    <td [ngSwitch]="ticket.user_type">
+                                        <div *ngSwitchCase="ADMIN_DATA_ID.USER"><span
+                                                class="label label-warning">{{title.user | translate}}</span>
+                                        </div>
+                                        <div *ngSwitchCase="ADMIN_DATA_ID.STORE"><span
+                                                class="label label-info">{{title.store | translate}}</span>
+                                        </div>
+                                    </td>
+
+                                    <td (click)="get_ticket_detail(ticket._id)" *ngIf="ticket.user_detail">
+                                        {{ticket.user_detail.first_name}} {{ticket.user_detail.last_name}}
+                                    </td>
+                                    <td (click)="get_ticket_detail(ticket._id)" *ngIf="ticket.store_detail">
+                                        {{ticket.store_detail.name}}</td>
+                                    <td (click)="get_ticket_detail(ticket._id)">{{ticket.ticket_title}}</td>
+                                    <!-- <td (click)="get_ticket_detail(ticket._id)">{{ticket.store_details.name}}({{ticket.store_details.unique_id}})</td> -->
+                                    <td *ngIf='ticket_page_type==0'>
+                                        <button class="btn btn-light_black" (click)='resolve_ticket(ticket._id)'>Reslove</button>
+                                    </td>
+
+                                    <td *ngIf='ticket_page_type==1' (click)="get_ticket_detail(ticket._id)">
+                                        {{ticket.resolved_at | date: "dd MMM yyyy hh:mm a"}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-md-12 col-sm-12" style="padding-top: 10px;">
+                        <div class="lable_center">
+
+                            <ul class="pagination">
+                                <li *ngIf="page!==1"><a class="btn"
+                                        (click)="filter(page-1)">{{button.pre | translate}}</a></li>
+                                <li *ngFor="let index of total_pages" [class.active]="page==index">
+                                    <a *ngIf="index==1 || index==total_page || index==page || index==page-1 || index==page+1"
+                                        (click)="filter(index)" class="btn">{{index}}</a>
+                                    <a *ngIf="(index==1 && (page!==1 && page!==2 && page!==3)) || (index==total_page-1 && (page!==total_page && page!==total_page-1 && page!==total_page-2))"
+                                        class="btn">...</a>
+
+                                </li>
+                                <li *ngIf="page!==total_page && ticket_list.length!==0"><a class="btn"
+                                        (click)="filter(page+1)">{{button.next | translate}}</a></li>
+                            </ul>
+                            <div class="col-md-2 pull-right">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3" *ngIf="ticket_detail != undefined">
+            <div class="ibox ">
+
+                <div class="ibox-content user_fix_div scrollbar" style="height: calc(100vh - 243px);overflow: auto;">
+                    <div class="tab-content">
+                        <div id="contact-1" class="tab-pane active" ng-show="client == 1" ng-init="client = 1">
+                            
+
+                            <div class="row" *ngIf='ticket_detail.user_detail'>
+                                <div class="col-md-4" style="margin-top: 10px;">
+                                    <img style="width: 80px; height: 80px;" class="img-circle m-t-xs"
+                                        src="{{ticket_detail.user_detail.image_url != '' ? helper.CONSTANT.IMAGE_BASE_URL + ticket_detail.user_detail.image_url : 'default.png'}}">
+                                </div>
+                                <div class="col-md-8" style="margin-top: 10px;">
+                                    <label>{{heading_title.created_by | translate}}</label>
+                                    <div>
+                                        {{ticket_detail.user_detail.first_name + " " + ticket_detail.user_detail.last_name}}
+                                        ({{ticket_detail.user_detail.unique_id}})</div>
+                                    <div>{{ticket_detail.user_detail.email}}</div>
+                                    <div>
+                                        {{ticket_detail.user_detail.country_phone_code + " " + ticket_detail.user_detail.phone}}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row" *ngIf='ticket_detail.store_detail'>
+                                <div class="col-md-4" style="margin-top: 10px;">
+                                    <img style="width: 80px; height: 80px;" class="img-circle m-t-xs"
+                                        src="{{ticket_detail.store_detail.image_url != '' ? helper.CONSTANT.IMAGE_BASE_URL + ticket_detail.store_detail.image_url : 'default.png'}}">
+                                </div>
+                                <div class="col-md-8" style="margin-top: 10px;">
+                                    <label>{{heading_title.created_by | translate}}</label>
+                                    <div>
+                                        {{ticket_detail.store_detail.name}}
+                                        ({{ticket_detail.store_detail.unique_id}})</div>
+                                    <div>{{ticket_detail.store_detail.email}}</div>
+                                    <div>
+                                        {{ticket_detail.store_detail.country_phone_code + " " + ticket_detail.store_detail.phone}}
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="row" *ngIf="ticket_detail.vaiter_detail !== undefined">
+                                <div class="col-md-4" style="margin-top: 10px;">
+                                    <img style="width: 80px; height: 80px;" class="img-circle m-t-xs"
+                                        src="{{ticket_detail.vaiter_detail.image_url != '' ? helper.CONSTANT.IMAGE_BASE_URL + ticket_detail.vaiter_detail.image_url : 'default.png'}}">
+                                </div>
+                                <div class="col-md-8" style="margin-top: 10px;">
+                                    <label>{{heading_title.resolved_by | translate}}</label>
+                                    <div>
+                                        {{ticket_detail.vaiter_detail.first_name + " " + ticket_detail.vaiter_detail.last_name}}
+                                        ({{ticket_detail.vaiter_detail.unique_id}})</div>
+                                    <div>{{ticket_detail.vaiter_detail.email}}</div>
+                                    <div>
+                                        {{ticket_detail.vaiter_detail.country_phone_code + " " + ticket_detail.vaiter_detail.phone}}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row" style="text-align: justify;margin-top: 15px;">
+                                <div class="col-md-12">
+                                    <label>{{title.ticket_content | translate}}</label>
+                                    <div>{{ticket_detail.ticket_content}}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

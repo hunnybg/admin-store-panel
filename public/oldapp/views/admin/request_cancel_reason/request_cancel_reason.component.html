@@ -1,0 +1,166 @@
+<style type="text/css">
+    .scrollbar_for_history
+    {
+        height: 100%;
+        background: #fff;
+        overflow-y: auto;
+    }
+
+    .scrollbar::-webkit-scrollbar-track
+    {
+        -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+        background-color: #fff;
+    }
+
+    .scrollbar::-webkit-scrollbar
+    {
+        width: 3px;
+        background-color: #222222;
+    }
+
+    .scrollbar::-webkit-scrollbar-thumb
+    {
+        background-color: #000000;
+    }
+
+</style>
+<footer [myLoading]="myLoading" ></footer> 
+<div class="row wrapper fix_search_bar border-bottom white-bg page-heading">
+
+    <div class="row">
+        <div class="col-md-4 col-sm-12">
+            <div class="lable_center">
+                <label>{{title.search | translate}}</label>
+            </div>
+
+            <div class="col-md-6 col-sm-6 remove_padding">
+                <div class="form-group" id="search_fields">
+                    <select chosen class="chosen-select" id="search_field" [(ngModel)]="search_field" name="search_field" tabindex="4">
+
+                        <option value="unique_id">{{title.id | translate}}</option>
+                        <option value="user_detail.first_name">{{title.user | translate}}</option>
+
+                        <!--                        <option value="store_detail.unique_id">{{title.store | translate}}</option>-->
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-6 remove_padding">
+                <div class="form-group">
+                    <div class="input-group">
+
+                        <input type="text" class="form-control search_box" [(ngModel)]="search_value"  name="search_value">
+                        <span class="input-group-addon search_icon"><span class="fa fa-search"></span></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 col-sm-12">
+            <div class="lable_center">
+                <label>{{title.sort | translate}}</label>
+            </div>
+            <div class="col-md-6 col-sm-6 remove_padding">
+                <div class="form-group" id="sort_fields">
+                    <select chosen class="chosen-select" id="sort_field" [(ngModel)]="sort_field" name="sort_field" tabindex="4">
+
+                        <option value="unique_id">{{title.id | translate}}</option>
+                        <option value="user_detail.first_name">{{title.user | translate}}</option>
+
+                        <!--                        <option value="store_detail.name">{{title.store | translate}}</option>-->
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-6 remove_padding">
+                <div class="form-group" id="sort_orders">
+
+                    <select chosen class="chosen-select" id="sort_request" [(ngModel)]="sort_request" name="sort_request" tabindex="4">
+
+                        <option value="1">{{title.ascending | translate}}</option>
+                        <option value="-1">{{title.descending | translate}}</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 col-sm-12">
+            <!--<div class="col-md-6 col-sm-6 filter_btn_div">
+                <input type="button" (click)="export_excel()" class="btn export_excel_btn pull-right" value="{{button.export_excel | translate}}" >
+            </div>-->
+            <div class="col-md-6 col-sm-6 filter_btn_div">
+                <input type="button" (click)="admin_request_cancellation_reason(1)" class="btn filter_apply_btn pull-right" value="{{button.apply | translate}}" >
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+
+<div class="wrapper wrapper-content content_top_bar_view1 animated fadeInRight ">
+    <div class="ibox" *ngIf="request_list.length==0">
+        <div class="ibox-content">
+            <div class="lable_center" >
+                <label>No Records</label>
+            </div>
+        </div>  
+    </div>
+    <div class="ibox" *ngIf="request_list.length>0">
+        <div class="ibox-content">
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>{{title.request_id}}</th>
+                            <th>{{title.id}}</th>
+                            <th>{{title.user_id}}</th>
+                            <th>{{title.earning_provider_id}}</th>
+                            <th>{{title.cancelled_by}}</th>
+                            <th>{{title.currency}}</th>
+                            <th>{{title.date | translate}}</th>
+                            <th>{{title.cancellation_reason}}</th>
+                            <!--                            <th>{{title.cancellation_charge}}</th>-->
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let request of request_list; let index=index; let last=last;">
+                            <td>{{request.unique_id}}</td>
+                            <td>{{request.order_detail.unique_id}}</td>
+                            <td>{{request.user_detail.unique_id}}</td>
+                            <td><div *ngIf="request.provider_detail.length>0">{{request.provider_detail[0].unique_id}}</div></td>
+
+                            <td [ngSwitch]="request.delivery_status">
+                                <div *ngSwitchCase="ORDER_STATE.STORE_CANCELLED_REQUEST">Store</div>
+                                <div *ngSwitchCase="ORDER_STATE.DELIVERY_MAN_CANCELLED"><span class="label label-danger">Provider</span></div>
+                                <div *ngSwitchCase="ORDER_STATE.DELIVERY_MAN_REJECTED"><span class="label label-danger">Provider</span></div>
+
+                            </td>
+                            <td>{{request.country_detail.currency_sign}}</td>
+                            <td>{{request.created_at| date: DATE_FORMAT.DD_MMM_YYYY}}</td>
+                            <td><div *ngFor="let i of request.cancel_reasons"><div *ngIf="i && i.cancel_reason != undefined && i.cancel_reason != null">{{i.cancel_reason}}</div></div></td>
+
+                            <!--                            <td *ngIf="request.order_payment_detail.is_cancellation_fee == true">{{order.order_payment_detail.order_cancellation_charge}}</td>
+                                                        <td *ngIf="request.order_payment_detail.is_cancellation_fee == false">0</td>-->
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+
+        </div>
+    </div>
+
+    <div class="col-md-12 col-sm-12" style="margin-top: 6px;">
+    <div class="col-md-12 col-sm-12" style="margin-top: 6px;">
+        <div class="lable_center">
+            <ul class="pagination">
+                <li *ngIf="page!==1"><a class="btn" (click)="admin_request_cancellation_reason(page-1)">{{button.pre | translate}}</a></li>
+                <li *ngFor="let index of total_pages" [class.active]="page==index">
+                    <a *ngIf="index==1 || index==total_page || index==page || index==page-1 || index==page+1" (click)="admin_request_cancellation_reason(index)" class="btn">{{index}}</a>
+                    <a *ngIf="(index==1 && (page!==1 && page!==2 && page!==3)) || (index==total_page-1 && (page!==total_page && page!==total_page-1 && page!==total_page-2))" class="btn">...</a>
+
+                </li>
+                <li *ngIf="page!==total_page && request_list.length!==0"><a class="btn" (click)="admin_request_cancellation_reason(page+1)">{{button.next | translate}}</a></li>
+            </ul>
+        </div>
+    </div>
+</div>

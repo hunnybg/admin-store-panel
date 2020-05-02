@@ -1,0 +1,135 @@
+<footer [myLoading]="myLoading" ></footer>
+<div class="row wrapper fix_search_bar border-bottom white-bg page-heading">
+
+    <div class="row">
+        <div class="col-md-3 col-sm-12">
+            <div class="col-md-12 remove_padding">
+                <div class="form-group" id="search_fields">
+                    <div class="input-group">
+
+                        <input type="text" (keyup)="filter_product(filter_product_name)" class="form-control search_box" [(ngModel)]="filter_product_name" placeholder="{{title.product_name}}" style="color:#000000;" name="filter_product_name">
+                        <span class="input-group-addon search_icon"><span class="fa fa-search"></span></span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-md-3 col-sm-12 pull-right">
+            <div class="col-md-6 col-sm-6 add_btn_div">
+                <a (click)="addproductform = !addproductform" class="pull-right"> <button class="btn add_btn pull-right">{{button.add_product | translate}}<span class="fa fa-plus pull-right" style="margin-top: 2px;"></span></button></a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="wrapper content_top_bar_view wrapper-content animated fadeInRight">
+
+    <div class="row">
+        <form #productForm="ngForm" (ngSubmit)="addProduct(productForm.value)" enctype='multipart/form-data' >
+            <div class="ibox" [hidden]="addproductform != true" style="margin-bottom: -5px;">
+                 <div class="ibox-content" style="padding-bottom: 0px;">
+                    <div class="row form-group">
+                        <input type="hidden" class="form-control" [(ngModel)]="add_product.franchise_id" #franchise_id="ngModel"  name="franchise_id" />
+                        <input type="hidden" class="form-control" [(ngModel)]="add_product.server_token" #server_token="ngModel"  name="server_token" />
+
+                        <input type="hidden" class="form-control" [(ngModel)]="add_product.image_url" #image_url="ngModel"  name="image_url" />
+                        <div class="row">
+                            <div class=" col-md-4">
+                                <label class="col-md-12 col-sm-6 control-label">{{title.name}}</label>
+                                <div class="col-md-12 col-sm-6 form-group">
+                                    <input type="text" (keyup)="check_product()" class="form-control" [(ngModel)]="add_product.name" #name="ngModel"  name="name"  required />
+                                    <label *ngIf=product_already_exist >Product Already Exist</label>
+
+                                    <div *ngIf="name.errors && (name.dirty || name.touched)">
+                                        <div style="color: red;" [hidden]="!name.errors.required">{{validation_message.product_name_required | translate}}</div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-md-4">
+                                <label class="col-md-12 col-sm-6 control-label">{{title.details}}</label>
+                                <div class="col-md-12 col-sm-6 form-group">
+                                    <input type="text" class="form-control" [(ngModel)]="add_product.details" #details="ngModel"  name="details" required />
+                                    <div *ngIf="details.errors && (details.dirty || details.touched)">
+                                        <div style="color: red;" [hidden]="!details.errors.required">{{validation_message.product_detail_required | translate}}</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="col-md-12 col-sm-6 control-label">{{title.image_url}}</label>
+                                <div class="col-md-12 col-sm-6 form-group">
+                                    <div class="fileinput fileinput-new input-group" data-provides="fileinput">
+                                        <div class="form-control" data-trigger="fileinput" style="overflow-x: hidden;"><i class="glyphicon glyphicon-file fileinput-exists"></i> <span class="fileinput-filename"></span></div>
+                                        <span class="input-group-addon btn btn-default btn-file"><span class="fileinput-new">{{button.select_file}}</span><span class="fileinput-exists">{{button.change}}</span>
+                                            <input type="file" accept="image/*" [(ngModel)]="add_product.image_url" #image_url="ngModel" (change)="image_update($event);" name="image" required></span>
+                                        <a href="#" id="remove" class="input-group-addon btn btn-default fileinput-exists" data-dismiss="fileinput">{{button.remove}}</a>
+                                        
+                                    </div>
+                                    <span style="color: red;">{{image_error | translate}}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">                        
+                            <div *ngFor="let i of store_list; " style="padding-left: 30px;" class="col-md-4 col-sm-4 col-xs-4">
+                                    <input type="checkbox" class="icheck" value="{{i._id}}"/>
+                                    <label><span style="margin-left: 10px;">{{i.name}}</span></label>
+                            </div>                                    
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 col-sm-4 col-xs-4">
+                                <label class="col-md-12 col-sm-6 control-label">{{title.is_visible_in_store}}</label>
+
+                                <div class="col-md-12 col-sm-6 form-group">
+                                    <ui-switch [(ngModel)]="add_product.is_visible_in_store" #is_visible_in_store="ngModel" name="is_visible_in_store"></ui-switch>
+
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-sm-4 col-xs-4">
+                                <label style="font-weight: 100;" >Note:  Upload image size within width x height (  min {{image_setting.image_min_width}}x{{image_setting.image_min_height}}
+                                    and max {{image_setting.image_max_width}}x{{image_setting.image_max_height}}),</label>
+                                <label style="font-weight: 100;margin-left: 32px;">Image ratio should be {{image_setting.image_ratio}} and upload only </label>
+                                <label *ngFor="let i of image_setting.image_type"> {{(i.split('/'))[1]}} </label><label style="font-weight: 100;"> file</label>
+                            </div>
+                            <div class="col-md-4 col-sm-4 col-xs-4">
+                                <div class="col-md-12">
+                                    <div style="float: right;">
+                                        <input type="submit" [disabled]="product_already_exist" name="submit" class="btn btn-primary" value="{{button.submit}}" >
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="row">
+        <div *ngFor="let i of filtered_product_list">
+            <div class="col-md-3 col-sm-6" style="padding : 0px; padding-right: 2px;">
+                <div class="contact-box center-version">
+
+                    <a (click)="editProduct(i._id)">
+                        <h3 class="m-b-xs"><strong>{{i.name}}</strong></h3>
+                        <img class="img-circle" src="{{i.image_url != '' ? i.image_url : 'default.png'}}">
+
+                        <div style="height: 60px; overflow-y: hidden;">
+                            <address class="m-t-md">
+                                {{i.details}}
+                            </address>
+                        </div>
+
+
+                    </a>
+                    <div class="contact-box-footer">
+                        <div class="m-t-xs btn-group">
+                    
+                            <a class="btn btn-sm btn-white" (click)="viewSpecification(i._id)">{{button.view_specification}}</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

@@ -1,0 +1,72 @@
+<footer [myLoading]="myLoading" ></footer>   
+<div class="wrapper wrapper-content animated fadeInRight content_top_bar">
+
+<div *ngFor="let document of document_list; let document_index=index; ">
+        
+    <div class="col-lg-3 col-sm-6" style="padding-left: 10px; padding-right: 10px;">
+        <form #spec="ngForm" enctype='multipart/form-data' >
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <input type="hidden" [(ngModel)]="edit_document[document_index]" name="edit_document">
+
+                    <h5 style="font-weight: bold;"><label *ngIf="document.document_details.is_mandatory" style="color: red;">*</label>{{document.document_details.document_name}}</h5>
+
+                    <span *ngIf="edit_document[document_index]=='false'" class="fa fa-pencil pull-right" (click)="editDocument(document , document_index)"></span>
+
+                    <span *ngIf="edit_document[document_index]=='true'" class="fa fa-check pull-right" (click)="updateDocument(document , document_index)"></span>
+
+                </div>
+                <div class="ibox-content no-padding" style="height: 150px;">
+                	<div class="row" style="padding-top: 18px;padding-bottom: 18px;">
+	                	<div class="col-md-6 col-xs-6 col-sm-6" style="padding-left: 28px;">
+	                		<div *ngIf="edit_document[document_index]!=='true'">
+	                			<img src="default.png" class="document{{document_index}}" style="width: 100%;max-width: 135px; height: 85px; border-radius: 12px;">
+	                		</div>
+	                		<div *ngIf="edit_document[document_index]=='true'">
+	                				<span class="btn-file"><img src="default.png" class="document{{document_index}}" style="width: 100%;    max-width: 135px; height: 85px; border-radius: 12px;"><input type="file" (change)="image_update($event , document_index);" name="image"></span>
+	                		</div>
+
+							<div *ngIf="edit_document[document_index]=='true'">
+
+								<div [ngSwitch]="error_message">
+									<div *ngSwitchCase=1>
+										<label style="color: red;margin-bottom: 0px;">{{validation_message.image_required | translate}}</label>
+									</div>
+									<div *ngSwitchCase=2>
+										<label style="color: red;margin-bottom: 0px;">{{validation_message.expired_date_required | translate}}</label>
+									</div>
+									<div *ngSwitchCase=3>
+										<label style="color: red;margin-bottom: 0px;">{{validation_message.unique_code_required  | translate}}</label>
+									</div>
+								</div>
+							</div>
+	                	</div>
+	                	<div class="col-md-6 col-xs-6 col-sm-6" style="padding-right: 28px;">
+		                	<div *ngIf="document.document_details.is_unique_code">
+		                		<label>{{title.unique_code | translate}}</label>
+		                		<div *ngIf="edit_document[document_index]!=='true'">
+		                			<label style="font-weight: normal;color:black;">{{document.unique_code}}</label>
+		                		</div>
+		                		<div *ngIf="edit_document[document_index]=='true'">
+		                			<input type="text" [(ngModel)]="documentlist.unique_code" #unique_code="ngModel"  name="unique_code" style="border-radius: 5px;border-color: #060606;height: 30px;" class="form-control" value="{{document.unique_code}}">
+		                		</div>
+		                	</div>
+
+		                	<div *ngIf="document.document_details.is_expired_date">
+	                			<label style="margin-top: 10px;">{{title.exp_date | translate}}</label>
+	                			<div *ngIf="edit_document[document_index]!=='true'">
+	                				<label style="font-weight: normal;color:black;">{{document.expired_date | date: "MM-dd-yyyy"}}</label>
+	                			</div>
+	                			<div *ngIf="edit_document[document_index]=='true'">
+		                			<my-date-picker [(ngModel)]="documentlist.expired_date" #expired_date="ngModel"  name="expired_date" id="expiry_date" value="" [options]="helper.ExpiryDatePickerOptions" placeholder="{{title.exp_date | translate}}" readonly></my-date-picker>
+		                		</div>
+	                		</div>
+	                	</div>
+
+	                </div>
+	                
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

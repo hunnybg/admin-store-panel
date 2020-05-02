@@ -1,0 +1,340 @@
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="ibox">
+            <div class="col-md-12">
+                <div class="ibox-title">
+                    <h5>Activity</h5>
+                </div>
+                <div class="ibox-content">
+                  <div id="vertical-timeline" class="vertical-container dark-timeline center-orientation">
+                        <div class="vertical-timeline-block">
+                            <div class="vertical-timeline-icon navy-bg">
+                                <i class="fa fa-briefcase"></i>
+                            </div>
+
+                            <div class="vertical-timeline-content">
+                                <h2>{{status.created}}</h2>
+                                <span class="vertical-date">
+                                    <small>{{created_at | date: "dd MMM yyyy hh:mm a"}}</small>
+                                </span>
+                            </div>
+                        </div>
+
+                        <div *ngIf="store_accepted_at!=null&&order_status>ORDER_STATE.WAITING_FOR_ACCEPT_STORE" class="vertical-timeline-block">
+                            <div class="vertical-timeline-icon navy-bg">
+                                <i class="fa fa-briefcase"></i>
+                            </div>
+
+                            <div class="vertical-timeline-content">
+                                <h2>{{status.accepted}}</h2>
+                                <span class="vertical-date">
+                                    <small>{{store_accepted_at | date: "dd MMM yyyy hh:mm a"}}</small>
+                                </span>
+                            </div>
+                        </div>
+
+                        <div *ngIf="order_status_id==ORDER_STATUS_ID.REJECTED&&order_status==ORDER_STATE.STORE_REJECTED" class="vertical-timeline-block">
+                            <div class="vertical-timeline-icon navy-bg">
+                                <i class="fa fa-briefcase"></i>
+                            </div>
+
+                            <div class="vertical-timeline-content">
+                                <h2>{{status.rejected}}</h2>
+                                <span class="vertical-date">
+                                    <small>{{completed_at | date: "dd MMM yyyy hh:mm a"}}</small>
+                                </span>
+                            </div>
+                        </div>
+
+                        <div *ngIf="start_preparing_order_at!=null&&order_status>ORDER_STATE.STORE_ACCEPTED" class="vertical-timeline-block">
+                            <div class="vertical-timeline-icon navy-bg">
+                                <i class="fa fa-briefcase"></i>
+                            </div>
+
+                            <div class="vertical-timeline-content">
+                                <h2>{{status.start_preparing_order}}</h2>
+                                <span class="vertical-date">
+                                    <small>{{start_preparing_order_at | date: "dd MMM yyyy hh:mm a"}}</small>
+                                </span>
+                            </div>
+                        </div>
+
+                        <div *ngIf="order_ready_at!=null&&order_status>ORDER_STATE.STORE_PREPARING_ORDER" class="vertical-timeline-block">
+                            <div class="vertical-timeline-icon navy-bg">
+                                <i class="fa fa-briefcase"></i>
+                            </div>
+
+                            <div class="vertical-timeline-content">
+                                <h2>{{status.order_ready}}</h2>
+                                <span class="vertical-date">
+                                    <small>{{order_ready_at | date: "dd MMM yyyy hh:mm a"}}</small>
+                                </span>
+                            </div>
+                        </div>
+
+                        <div *ngIf="store_order_created_at!=null&&order_status>ORDER_STATE.OREDER_READY" class="vertical-timeline-block">
+                            <div class="vertical-timeline-icon navy-bg">
+                                <i class="fa fa-briefcase"></i>
+                            </div>
+
+                            <div class="vertical-timeline-content">
+                                <h2>{{status.assign_order_to_Delivery_man}}</h2>
+                                <span class="vertical-date">
+                                    <small>{{store_order_created_at | date: "dd MMM yyyy hh:mm a"}}</small>
+                                </span>
+                            </div>
+                        </div>
+
+                        <div *ngIf="accepted_at!=null&&order_status>ORDER_STATE.WAITING_FOR_DELIVERY_MAN" class="vertical-timeline-block">
+                            <div class="vertical-timeline-icon navy-bg">
+                                <i class="fa fa-briefcase"></i>
+                            </div>
+
+                            <div class="vertical-timeline-content">
+                                <h2>{{status.delivery_man_accepted}}</h2>
+                                <span class="vertical-date">
+                                    <small>{{accepted_at | date: "dd MMM yyyy hh:mm a"}}</small>
+                                </span>
+                            </div>
+                        </div>
+
+                        <div *ngIf="start_for_pickup_at!=null&&order_status>ORDER_STATE.DELIVERY_MAN_ACCEPTED" class="vertical-timeline-block">
+                            <div class="vertical-timeline-icon navy-bg">
+                                <i class="fa fa-briefcase"></i>
+                            </div>
+
+                            <div class="vertical-timeline-content">
+                                <h2>{{status.delivery_man_coming}}</h2>
+                                <span class="vertical-date">
+                                    <small>{{start_for_pickup_at | date: "dd MMM yyyy hh:mm a"}}</small>
+                                </span>
+                            </div>
+                        </div>
+
+                        <div *ngIf="arrived_on_store_at!=null&&order_status>ORDER_STATE.DELIVERY_MAN_COMING" class="vertical-timeline-block">
+                            <div class="vertical-timeline-icon navy-bg">
+                                <i class="fa fa-briefcase"></i>
+                            </div>
+
+                            <div class="vertical-timeline-content">
+                                <h2>{{status.delivery_man_arrived}}</h2>
+                                <span class="vertical-date">
+                                    <small>{{arrived_on_store_at | date: "dd MMM yyyy hh:mm a"}}</small>
+                                </span>
+                            </div>
+                        </div>
+
+                        <div *ngIf="picked_order_at!=null&&order_status>ORDER_STATE.DELIVERY_MAN_ARRIVED" class="vertical-timeline-block">
+                            <div class="vertical-timeline-icon navy-bg">
+                                <i class="fa fa-briefcase"></i>
+                            </div>
+
+                            <div class="vertical-timeline-content">
+                                <h2>{{status.picked_order}}</h2>
+                                <span class="vertical-date">
+                                    <small>{{picked_order_at | date: "dd MMM yyyy hh:mm a"}}</small>
+                                </span>
+                            </div>
+                        </div>
+
+                        <div *ngIf="start_for_delivery_at!=null&&order_status>ORDER_STATE.DELIVERY_MAN_PICKED_ORDER" class="vertical-timeline-block">
+                            <div class="vertical-timeline-icon navy-bg">
+                                <i class="fa fa-briefcase"></i>
+                            </div>
+
+                            <div class="vertical-timeline-content">
+                                <h2>{{status.started_for_delivery}}</h2>
+                                <span class="vertical-date">
+                                    <small>{{started_for_delivery_at | date: "dd MMM yyyy hh:mm a"}}</small>
+                                </span>
+                            </div>
+                        </div>
+
+                        <div *ngIf="delivered_at!=null&&order_status>ORDER_STATE.DELIVERY_MAN_STARTED_DELIVERY" class="vertical-timeline-block">
+                            <div class="vertical-timeline-icon navy-bg">
+                                <i class="fa fa-briefcase"></i>
+                            </div>
+
+                            <div class="vertical-timeline-content">
+                                <h2>{{status.arrived_at_destination}}</h2>
+                                <span class="vertical-date">
+                                    <small>{{delivered_at | date: "dd MMM yyyy hh:mm a"}}</small>
+                                </span>
+                            </div>
+                        </div>
+
+                        <div *ngIf="delivered_at!=null&&order_status>ORDER_STATE.DELIVERY_MAN_ARRIVED_AT_DESTINATION" class="vertical-timeline-block">
+                            <div class="vertical-timeline-icon navy-bg">
+                                <i class="fa fa-briefcase"></i>
+                            </div>
+
+                            <div class="vertical-timeline-content">
+                                <h2>{{status.delivered_ordered}}</h2>
+                                <span class="vertical-date">
+                                    <small>{{delivered_at | date: "dd MMM yyyy hh:mm a"}}</small>
+                                </span>
+                            </div>
+                        </div>
+
+                        <div *ngIf="order_status_id==ORDER_STATUS_ID.CANCELLED" class="vertical-timeline-block">
+                            <div class="vertical-timeline-icon navy-bg">
+                                <i class="fa fa-briefcase"></i>
+                            </div>
+
+                            <div class="vertical-timeline-content">
+                                <h2 *ngIf="order_status==ORDER_STATE.STORE_CANCELLED">{{status.cancelled}}</h2>
+                                <h2 *ngIf="order_status==ORDER_STATE.DELIVERY_MAN_CANCELLED">Cancelled By Delivery Man</h2>
+                                <span class="vertical-date">
+                                    <small>{{cancelled_at | date: "dd MMM yyyy hh:mm a"}}</small>
+                                </span>
+                            </div>
+                        </div>
+
+                        <div *ngIf="order_status_id==ORDER_STATUS_ID.REJECTED&&order_status==ORDER_STATE.DELIVERY_MAN_REJECTED" class="vertical-timeline-block">
+                            <div class="vertical-timeline-icon navy-bg">
+                                <i class="fa fa-briefcase"></i>
+                            </div>
+
+                            <div class="vertical-timeline-content">
+                                <h2>Rejected By Delivery Man</h2>
+                                <span class="vertical-date">
+                                    <small>{{store_order_created_at | date: "dd MMM yyyy hh:mm a"}}</small>
+                                </span>
+                            </div>
+                        </div>
+
+                        <div *ngIf="order_status_id==ORDER_STATUS_ID.COMPLETED" class="vertical-timeline-block">
+                            <div class="vertical-timeline-icon navy-bg">
+                                <i class="fa fa-briefcase"></i>
+                            </div>
+
+                            <div class="vertical-timeline-content">
+                                <h2>{{status.completed}}</h2>
+                                <span class="vertical-date">
+                                    <small>{{completed_at | date: "dd MMM yyyy hh:mm a"}}</small>
+                                </span>
+                            </div>
+                        </div>
+
+                        <div *ngIf="order_status==ORDER_STATE.NO_DELIVERY_MAN_FOUND" class="vertical-timeline-block">
+                            <div class="vertical-timeline-icon navy-bg">
+                                <i class="fa fa-briefcase"></i>
+                            </div>
+
+                            <div class="vertical-timeline-content">
+                                <h2>No Provider Found</h2>
+                                <span class="vertical-date">
+                                    <small>{{completed_at | date: "dd MMM yyyy hh:mm a"}}</small>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>{{title.status}}</th>
+                                    <th>Title</th>
+                                    <th>{{title.date_time}}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>{{status.created}}</td>
+                                    <td>{{status.created}}</td>
+                                    <td>{{created_at | date: "dd MMM yyyy hh:mm a"}}</td>
+                                </tr>
+                                <tr *ngIf="store_accepted_at!=null&&order_status>ORDER_STATE.WAITING_FOR_ACCEPT_STORE">
+                                    <td>{{status.accepted}}</td>
+                                    <td>{{status.accepted}}</td>
+                                    <td>{{store_accepted_at | date: "dd MMM yyyy hh:mm a"}}</td>
+                                </tr>
+                                <tr *ngIf="order_status_id==ORDER_STATUS_ID.REJECTED&&order_status==ORDER_STATE.STORE_REJECTED">
+                                    <td>{{status.rejected}}</td>
+                                    <td>{{status.rejected}}</td>
+                                    <td>{{completed_at | date: "dd MMM yyyy hh:mm a"}}</td>
+                                </tr>
+                                <tr *ngIf="start_preparing_order_at!=null&&order_status>ORDER_STATE.STORE_ACCEPTED">
+                                    <td>{{status.start_preparing_order}}</td>
+                                    <td>{{status.start_preparing_order}}</td>
+                                    <td>{{start_preparing_order_at | date: "dd MMM yyyy hh:mm a"}}</td>
+                                </tr>
+                                <tr *ngIf="order_ready_at!=null&&order_status>ORDER_STATE.STORE_PREPARING_ORDER">
+                                    <td>{{status.order_ready}}</td>
+                                    <td>{{status.order_ready}}</td>
+                                    <td>{{order_ready_at | date: "dd MMM yyyy hh:mm a"}}</td>
+                                </tr>
+                                <tr *ngIf="store_order_created_at!=null&&order_status>ORDER_STATE.OREDER_READY">
+                                    <td>{{status.assign_order_to_Delivery_man}}</td>
+                                    <td>{{status.assign_order_to_Delivery_man}}</td>
+                                    <td>{{store_order_created_at | date: "dd MMM yyyy hh:mm a"}}</td>
+                                </tr>
+                                <tr *ngIf="accepted_at!=null&&order_status>ORDER_STATE.WAITING_FOR_DELIVERY_MAN">
+                                    <td>{{status.delivery_man_accepted}}</td>
+                                    <td>{{status.delivery_man_accepted}}</td>
+                                    <td>{{accepted_at | date: "dd MMM yyyy hh:mm a"}}</td>
+                                </tr>
+                                <tr *ngIf="start_for_pickup_at!=null&&order_status>ORDER_STATE.DELIVERY_MAN_ACCEPTED">
+                                    <td>{{status.delivery_man_coming}}</td>
+                                    <td>{{status.delivery_man_coming}}</td>
+                                    <td>{{start_for_pickup_at | date: "dd MMM yyyy hh:mm a"}}</td>
+                                </tr>
+                                <tr *ngIf="arrived_on_store_at!=null&&order_status>ORDER_STATE.DELIVERY_MAN_COMING">
+                                    <td>{{status.delivery_man_arrived}}</td>
+                                    <td>{{status.delivery_man_arrived}}</td>
+                                    <td>{{arrived_on_store_at | date: "dd MMM yyyy hh:mm a"}}</td>
+                                </tr>
+                                <tr *ngIf="picked_order_at!=null&&order_status>ORDER_STATE.DELIVERY_MAN_ARRIVED">
+                                    <td>{{status.picked_order}}</td>
+                                    <td>{{status.picked_order}}</td>
+                                    <td>{{picked_order_at | date: "dd MMM yyyy hh:mm a"}}</td>
+                                </tr>
+                                <tr *ngIf="start_for_delivery_at!=null&&order_status>ORDER_STATE.DELIVERY_MAN_PICKED_ORDER">
+                                    <td>{{status.started_for_delivery}}</td>
+                                    <td>{{status.started_for_delivery}}</td>
+                                    <td>{{start_for_delivery_at | date: "dd MMM yyyy hh:mm a"}}</td>
+                                </tr>
+                                <tr *ngIf="delivered_at!=null&&order_status>ORDER_STATE.DELIVERY_MAN_STARTED_DELIVERY">
+                                    <td>{{status.arrived_at_destination}}</td>
+                                    <td>{{status.arrived_at_destination}}</td>
+                                    <td>{{delivered_at | date: "dd MMM yyyy hh:mm a"}}</td>
+                                </tr>
+
+                                <tr *ngIf="delivered_at!=null&&order_status>ORDER_STATE.DELIVERY_MAN_ARRIVED_AT_DESTINATION">
+                                    <td>{{status.delivered_ordered}}</td>
+                                    <td>{{status.delivered_ordered}}</td>
+                                    <td>{{delivered_at | date: "dd MMM yyyy hh:mm a"}}</td>
+                                </tr>
+
+                                <tr *ngIf="order_status_id==ORDER_STATUS_ID.CANCELLED">
+                                    <td *ngIf="order_status==ORDER_STATE.STORE_CANCELLED">{{status.cancelled}}</td>
+                                    <td *ngIf="order_status==ORDER_STATE.STORE_CANCELLED">{{status.cancelled}}</td>
+                                    <td *ngIf="order_status==ORDER_STATE.DELIVERY_MAN_CANCELLED">Cancelled By Delivery Man</td>
+                                    <td *ngIf="order_status==ORDER_STATE.DELIVERY_MAN_CANCELLED">Cancelled By Delivery Man</td>
+                                    <td>{{cancelled_at | date: "dd MMM yyyy hh:mm a"}}</td>
+                                </tr>
+
+                                <tr *ngIf="order_status_id==ORDER_STATUS_ID.REJECTED&&order_status==ORDER_STATE.DELIVERY_MAN_REJECTED">
+                                    <td>Rejected By Delivery Man</td>
+                                    <td>Rejected By Delivery Man</td>
+                                    <td>{{store_order_created_at | date: "dd MMM yyyy hh:mm a"}}</td>
+                                </tr>
+                                <tr *ngIf="order_status_id==ORDER_STATUS_ID.COMPLETED">
+                                    <td>{{status.completed}}</td>
+                                    <td>{{status.completed}}</td>
+                                    <td>{{completed_at | date: "dd MMM yyyy hh:mm a"}}</td>
+                                </tr>
+                                <tr  *ngIf="order_status==ORDER_STATE.NO_DELIVERY_MAN_FOUND">
+                                    <td>No Provider Found</td>
+                                    <td>No Provider Found</td>
+                                    <td>{{completed_at | date: "dd MMM yyyy hh:mm a"}}</td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                    </div> -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

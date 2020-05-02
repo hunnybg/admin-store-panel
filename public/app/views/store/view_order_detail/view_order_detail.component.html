@@ -1,0 +1,78 @@
+<style type="text/css" media="screen">
+    .odd{
+        padding-right: 0px;
+    }   
+    .even{
+        padding-left: 0px;
+    } 
+</style>
+
+<div class="wrapper wrapper-content animated fadeInRight ecommerce">
+    <div class="ibox">
+        <div class="ibox-title" style="background-color: #fff;">
+            <h4 class="pull-right">{{currency_sign}} {{order_total}}</h4>
+            <span style="position: absolute; left:48%;">(<strong>{{total_item}}</strong>) items</span>
+            <h5>Order Details</h5>
+        </div>
+    </div>
+    <div *ngFor="let products of order_detail; let product_index = index; ">
+            <div class="ibox">
+                <div class="col-md-12" style="padding-left: 0px;padding-right: 0px;">
+                    
+                    <div class="ibox-title">
+                       
+                        <h4 class="pull-right">{{currency_sign}} {{product_item_total_array[product_index]}}</h4>
+                        <span style="position: absolute; left:48%;">(<strong>{{products.items.length}}</strong>) items</span>
+                        <h5>{{products.product_name}}</h5>
+                    </div>
+                </div>
+                <div *ngFor="let item of products.items; let odd=odd; let even=even; let item_index=index; ">
+                    <div [class.row]="odd"  style="margin: 0px;">
+                        <div class="col-md-6" [class.odd]="odd" [class.even]="!odd" >
+                            <div class="ibox-content" style="overflow: auto;">
+                                <div class="table-responsive">
+                                    <table class="table shoping-cart-table">
+                                        <tbody>
+                                        <tr>
+                                            <td class="desc">
+                                                <h3>
+                                                    <a class="text-navy">
+                                                        {{item.item_name}}
+                                                    </a>
+                                                </h3>
+                                                <p class="small" style="height: 30px; overflow-y: hidden;">
+                                                    {{item.details}}
+                                                </p>
+
+                                            </td>
+
+                                            <td>
+                                                <h4>{{item.item_price}}{{currency_sign}}</h4>
+                                            </td>
+                                            <td width="65">
+                                                <input type="text" class="form-control" value="{{item.quantity}}" readonly>
+                                            </td>
+                                            <td>
+                                                <h4>{{(item.item_price + item.total_specification_price)*item.quantity}}{{currency_sign}}</h4>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+
+                                </div>
+                                
+                                <div class="col-md-6 col-xs-6"><h4>Specifications</h4></div>
+                                <div class="col-md-6 col-xs-6"><h4>{{currency_sign}} {{product_specification_total_array[product_index][item_index]}}</h4></div>
+
+                                <div *ngFor="let specification of item.specifications">
+                                    <div class="col-md-6 col-xs-6">{{specification.specification_name}}</div>
+                                    <div class="col-md-6 col-xs-6">{{currency_sign}} {{specification.specification_price}}</div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </div>
+</div>

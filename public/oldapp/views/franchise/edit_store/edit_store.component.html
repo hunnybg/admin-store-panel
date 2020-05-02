@@ -1,0 +1,591 @@
+<footer [myLoading]="myLoading" ></footer> 
+<form #storeUpdateForm="ngForm" (ngSubmit)="UpdateStore(storeUpdateForm.value)">
+    <div class="wrapper wrapper-content animated fadeInRight content_top_bar">
+
+
+        <div class="row">
+            <div class="col-lg-8">
+
+                <div class="ibox product-detail">
+                    <div class="ibox-content">
+
+                        <div class="row">
+                            <div class="col-md-3 col-sm-3">
+
+                                <div class="profile-images center">
+                                    <img *ngIf='store_edit.image_url!==""' class="img-circle" style="width: 150px;height: 150px;" src="{{store_edit.image_url}}" alt="profile">
+                                    <img *ngIf='store_edit.image_url==""' class="img-circle" style="width: 150px;height: 150px;" src="default.png" alt="profile">
+
+
+
+                                </div>
+
+                                <div class="center" style="margin-left: 140px; margin-top: -145px;">
+                                    <span class="btn-file" *ngIf="edit==true"><i class="fa fa-pencil"></i><input type="file"  (change)="change_image($event);" accept="image/*" name="image"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-9 col-sm-9 profile_data">
+                                <input type="hidden" class="form-control" [(ngModel)]="store_id"  name="store_id" />
+
+                                <div class="col-md-12 remove_padding align_center1" style="margin-left: 0px;">
+                                    <label class="control-label" style="font-size: 30px;">{{store_edit.name}}</label>
+
+
+
+                                    <button type="button" *ngIf="edit==false" class="btn add_btn pull-right edit_option_mobile_screen profile_update" (click)="edit=true">{{button.edit | translate}}</button>
+
+                                    <button type="submit"  *ngIf="edit==true"  class="btn btn-primary pull-right edit_option_mobile_screen profile_update">{{button.update | translate}}</button>
+
+
+
+                                </div>
+                                <hr style="border-color: red;">
+                                <div class="col-md-12 remove_padding"><label class="col-lg-4 col-xs-4 col-sm-4 remove_padding control-label">{{title.email | translate}}<div class="pull-right">:</div></label>
+
+                                    <div *ngIf="edit==true" class="col-lg-8 col-xs-8 col-sm-8 form-group">
+
+                                        <input type="text" class="form-control" [(ngModel)]="store_edit.email" #email="ngModel" name="email" required/>
+                                    </div> 
+                                    <div *ngIf="edit==false" class="col-lg-8 col-xs-8 col-sm-8 form-group">
+                                        {{store_edit.email }}
+                                    </div> 
+                                </div>
+                                <div class="col-md-12 remove_padding"><label class="col-lg-4  col-xs-4 col-sm-4 remove_padding control-label">{{title.country | translate}}<div class="pull-right">:</div></label>
+
+                                    <div class="col-lg-8 col-xs-8 col-sm-8 form-group">
+                                        {{store_edit.country_name }}
+                                    </div> 
+                                </div>
+                                <div class="col-md-12 remove_padding"><label class="col-lg-4 col-xs-4 col-sm-4 remove_padding control-label">{{title.prov_city | translate}}<div class="pull-right">:</div></label>
+
+                                    <div class="col-lg-8 col-xs-8 col-sm-8 form-group">
+                                        {{store_edit.city_name }}
+
+                                    </div> 
+                                </div>
+
+
+                                <div class="col-md-12 remove_padding"><label class="col-lg-4 col-xs-4 col-sm-4 remove_padding control-label">{{title.delivery_type | translate}}<div class="pull-right">:</div></label>
+
+                                    <div class="col-lg-8 col-xs-8 col-sm-8 form-group">
+                                        {{store_edit.store_delivery_name }}
+                                    </div> 
+                                </div>
+
+
+                                <div class="col-md-12 remove_padding"><label class="col-lg-4  col-xs-4 col-sm-4 remove_padding control-label">{{title.phone | translate}}<div class="pull-right">:</div></label>
+
+                                    <div *ngIf="edit==true" class="col-lg-8 col-xs-8 col-sm-8 form-group">
+
+                                        <input type="text" class="form-control" [(ngModel)]="store_edit.phone" #phone="ngModel" name="phone" required/>
+                                    </div> 
+                                    <div *ngIf="edit==false" class="col-lg-8 col-xs-8 col-sm-8 form-group">
+                                        {{store_edit.phone}}
+                                    </div> 
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="col-lg-4">
+                <div class="ibox">
+                    <div class="ibox-content">
+                        <div class="row">
+                            <div class="col-md-12" style="display: block">
+                                <div id="c1" class="c3"> </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12" id="chart" style="margin-top: 28px;">
+                                <div class="col-md-1 col-xs-1 col-sm-1 box" style="padding-right: 0">
+                                    <span class="fa fa-square" style="font-size: 20px;color: #bb212b;" ></span>
+
+
+                                </div>
+                                <div class="col-md-5 col-xs-5 col-sm-5 total">
+                                    <span style="font-size: 15px; ">{{title.total_order | translate}}<br><span style="font-size: 20px;color: black;">{{order_detail.total_orders}}</span></span>
+
+                                </div>
+                                <div class="col-md-1 col-xs-1 col-sm-1 box box1" style="padding: 0">
+                                    <span class="fa fa-square" style="font-size: 20px;color: #1e1e1e;" ></span>
+
+
+                                </div>
+                                <div class="col-md-5 col-xs-5 col-sm-5 total total1" style="padding: 0">
+                                    <span style="font-size: 15px; ">{{title.accepted_order | translate}}<br><span style="font-size: 20px;color: black;">{{order_detail.accepted_orders}}</span></span>
+
+                                </div>
+                                <div class="col-md-1 col-xs-1 col-sm-1 box" style="padding-right: 0">
+                                    <span class="fa fa-square" style="font-size: 20px;color: #bb212b;" ></span>
+
+
+                                </div>
+                                <div class="col-md-5 col-xs-5 col-sm-5 total">
+                                    <span style="font-size: 15px; ">{{title.completed_order | translate}}<br><span style="font-size: 20px;color: black;">{{order_detail.completed_orders}}</span></span>
+
+                                </div>
+                                <div class="col-md-1 col-xs-1 col-sm-1 box box1" style="padding: 0">
+                                    <span class="fa fa-square" style="font-size: 20px;color: #1e1e1e;" ></span>
+
+
+                                </div>
+                                <div class="col-md-5 col-xs-5 col-sm-5 total total1" style="padding: 0">
+                                    <span style="font-size: 15px; ">{{title.cancelled_order | translate}}<br><span style="font-size: 20px;color: black;">{{order_detail.cancelled_orders}}</span></span>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+        </div>
+
+
+        <div class="row">
+            <div class="">
+                <div class="col-lg-4 col-sm-6">
+                    <div class="ibox">
+                        <div class="ibox-title">
+                            <label class="control-label">{{title.personal_detail | translate}}</label>  
+                        </div>
+                        <div class="ibox-content">
+                            <div class="row">
+                                <div class="form-group">
+                                    <label class="col-lg-4 col-sm-4 control-label">{{title.store_name | translate}}</label>
+                                    <div class="col-lg-8 col-sm-8 form-group">
+                                        <input type="text" [disabled]="edit==false" class="form-control" [(ngModel)]="store_edit.name" #name="ngModel" name="name" required/>
+
+                                    </div>
+                                </div>
+
+
+                                <div class="form-group">
+                                    <label class="col-lg-4 control-label">{{title.address | translate}}</label>  
+                                    <div class="col-lg-8 form-group">
+                                        <input type="text" class="form-control" [disabled]="edit==false" [(ngModel)]="store_edit.address" #address="ngModel" name="address" required/>
+
+                                    </div> 
+                                </div>
+<!--                                <div class="form-group">
+                                    <label class="col-lg-4 control-label">{{title.zipcode | translate }}</label>  
+                                    <div class="col-lg-8 form-group">
+                                        <input type="text" class="form-control" [disabled]="edit==false" [(ngModel)]="store_edit.zipcode" #zipcode="ngModel" name="zipcode"/>
+
+                                    </div> 
+                                </div>-->
+
+                                <div class="form-group">
+                                    <label class="col-lg-4 control-label">{{title.app_version | translate}}</label>  
+                                    <div class="col-lg-8 form-group">
+                                        {{store_edit.device_type + " - " +  store_edit.app_version}}
+                                        <!--                                        <input type="text" class="form-control" [(ngModel)]="store_edit.app_version" #app_version="ngModel" name="app_version" disabled/>-->
+
+                                    </div> 
+                                </div>
+
+
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ibox">
+                        <div class="ibox-title">
+                            <label class="control-label">{{heading_title.wallet | translate}}</label>  
+                        </div>
+
+                        <div class="ibox-content wizard">
+                            <div class="row">
+
+                                <div class="form-group">
+                                    <div class="col-lg-12">
+                                        <div class="form-group">
+                                            <label class="col-lg-4 control-label">{{title.currency_code | translate}}</label>  
+                                            <div class="col-lg-8 form-group">
+                                                <input type="text" class="form-control" [(ngModel)]="store_edit.wallet_currency_code" #wallet_currency_code="ngModel" name="wallet_currency_code" disabled/>
+
+                                            </div> 
+
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-lg-4 control-label">{{title.wallet | translate}}</label>  
+                                            <div class="col-lg-8 form-group">
+                                                <input type="text" class="form-control" [(ngModel)]="store_edit.wallet" #wallet="ngModel" name="wallet" disabled/>
+
+                                            </div> 
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="ibox">
+                        <div class="ibox-title">
+                            <label class="control-label">{{heading_title.referral | translate}}</label>  
+                        </div>
+
+                        <div class="ibox-content wizard">
+                            <div class="row">
+
+                                <div class="form-group">
+                                    <label class="col-lg-4 control-label">{{title.referral_code | translate}}</label>  
+                                    <div class="col-lg-8 form-group">
+                                        <input type="text" class="form-control" [(ngModel)]="store_edit.referral_code" #referral_code="ngModel" name="referral_code" disabled/>
+
+                                    </div> 
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-lg-4 control-label">{{title.total_referrals | translate}}</label>  
+                                    <div class="col-lg-8 form-group">
+                                        <input type="text" class="form-control" [(ngModel)]="store_edit.total_referrals" #total_referrals="ngModel" name="total_referrals" disabled/>
+
+                                    </div> 
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-lg-4 control-label">{{title.referred_by | translate}}</label>  
+                                    <div class="col-lg-8 form-group">
+                                        <input type="text" class="form-control" [(ngModel)]="store_edit.referred_store_name" #referred_store_name="ngModel" name="referred_store_name" disabled/>
+
+                                    </div> 
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
+
+
+                </div>
+                <div class="col-lg-4 col-sm-6" >
+                    <div class="ibox">
+                        <div class="ibox-title">
+                            <label class="control-label">{{heading_title.setting | translate }}</label>  
+                        </div>
+
+
+                        <div class="ibox-content wizard">
+                            <div class="row">
+
+                                <div class="form-group">
+                                    <label class="col-lg-4 control-label">{{title.admin_profit_mode | translate }}</label>  
+                                    <div class="col-lg-8 form-group">
+                                        <select chosen class="chosen-select" id="admin_profit_mode" [(ngModel)]="store_edit.admin_profit_mode_on_store" #admin_profit_mode_on_store="ngModel" name="admin_profit_mode_on_store" data-placeholder="Select Admin Profit Mode"  tabindex="4"  >
+
+                                            <option *ngFor="let i of admin_profit_mode_on_store_list" value="{{i.ID}}">{{i.NAME}}</option>
+                                        </select> 
+
+                                    </div> 
+                                </div>
+
+
+                                <div class="form-group">
+                                    <label class="col-lg-4 control-label">{{title.admin_profit_value | translate }}</label>  
+                                    <div class="col-lg-8 form-group">
+
+                                        <input type="text" class="form-control" [disabled]="edit==false" (keypress)="helper.number_validation($event)" [(ngModel)]="store_edit.admin_profit_value_on_store" #admin_profit_value_on_store="ngModel"  name="admin_profit_value_on_store" required />
+                                        <div *ngIf="admin_profit_value_on_store.errors && (admin_profit_value_on_delivery.dirty || admin_profit_value_on_store.touched)">
+                                            <div style="color: red;" [hidden]="!admin_profit_value_on_store.errors.required">{{validation_message.admin_profit_value_on_delivery_required | translate}}</div>
+                                        </div>
+
+                                    </div> 
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-lg-4 control-label"></label>  
+                                    <div class="col-lg-8 form-group">
+
+                                    </div> 
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+
+
+                    <div class="ibox">
+                        <div class="ibox-title">
+                            <label class="control-label">{{heading_title.private_message | translate}}</label>  
+                        </div>
+
+                        <div class="ibox-content wizard">
+                            <div class="row">
+
+                                <div class="form-group">
+                                    <label class="col-lg-4 control-label">{{title.website_url | translate }}</label>  
+                                    <div class="col-lg-8 form-group">
+                                        <input type="text" class="form-control" [disabled]="edit==false" [(ngModel)]="store_edit.website_url" #website_url="ngModel" name="website_url"/>
+
+                                    </div> 
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-lg-4 control-label">{{title.famous_for | translate }}</label>  
+                                    <div class="col-lg-8 form-group">
+                                        <input type="text" class="form-control" [disabled]="edit==false" [(ngModel)]="store_edit.famous_for" #famous_for="ngModel" name="famous_for"/>
+
+                                    </div> 
+                                </div>
+
+
+
+                                <div class="form-group">
+                                    <label class="col-lg-4 control-label">{{title.slogan | translate }}</label>  
+                                    <div class="col-lg-8 form-group">
+                                        <input type="text" class="form-control" [disabled]="edit==false" [(ngModel)]="store_edit.slogan" #slogan="ngModel" name="slogan"/>
+
+                                    </div> 
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-lg-4 control-label">{{title.offer | translate }}</label>  
+                                    <div class="col-lg-8 form-group">
+                                        <input type="text" class="form-control" [disabled]="edit==false" [(ngModel)]="store_edit.offer" #offer="ngModel" name="offer"/>
+
+                                    </div> 
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-lg-4 control-label">{{title.comment | translate }}</label>  
+                                    <div class="col-lg-8 form-group">
+                                        <input type="text" class="form-control" [disabled]="edit==false" [(ngModel)]="store_edit.comments" #comments="ngModel" name="comments"/>
+
+                                    </div> 
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <div class="col-lg-4 col-sm-6" >
+                    <div class="ibox">
+                        <div class="ibox-title">
+                            <label class="control-label">{{heading_title.setting | translate }}</label>  
+                        </div>
+
+
+                        <div class="ibox-content wizard">
+                            <div class="row">
+
+                                <div class="form-group">
+                                    <label class="col-lg-9 col-xs-9 control-label">{{title.phone_number_verified | translate }}</label>  
+
+                                    <div class="col-lg-3 col-xs-3 form-group">
+                                        <ui-switch [disabled]="edit==false" [(ngModel)]="store_edit.is_phone_number_verified" #is_phone_number_verified="ngModel" name="is_phone_number_verified"></ui-switch>
+
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-lg-9 col-xs-9 control-label">{{title.email_verified | translate}}</label>  
+
+                                    <div class="col-lg-3 col-xs-3 form-group">
+                                        <ui-switch  [disabled]="edit==false" [(ngModel)]="store_edit.is_email_verified" #is_email_verified="ngModel" name="is_email_verified"></ui-switch>
+
+                                    </div>
+                                </div>
+
+
+
+                                <div class="form-group">
+                                    <label class="col-lg-9 col-xs-9 control-label">{{title.approved | translate }}</label>  
+
+                                    <div class="col-lg-3 col-xs-3 form-group">
+                                        <ui-switch  [disabled]="edit==false" [(ngModel)]="store_edit.is_approved" #is_approved="ngModel" name="is_approved"></ui-switch>
+
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </div>
+
+
+
+                    </div>
+
+                    <div class="ibox">
+                        <div class="ibox-title">
+                            <label class="control-label">{{heading_title.setting | translate}}</label>  
+                        </div>
+
+                        <div class="ibox-content wizard">
+                            <div class="row">
+                                <div class="form-group">
+                                    <label class="col-lg-4 control-label">{{title.store_item_tax | translate}}</label>  
+                                    <div class="col-lg-8 form-group">
+                                        <input type="text" class="form-control" [(ngModel)]="store_edit.item_tax" #item_tax="ngModel" name="item_tax" disabled/>
+
+                                    </div> 
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-lg-4 control-label">{{title.price_rating | translate}}</label>  
+                                    <div class="col-lg-8 form-group">
+                                        <input type="text" class="form-control" [(ngModel)]="store_edit.price_rating" #price_rating="ngModel" name="price_rating" disabled/>
+
+                                    </div> 
+                                </div>
+
+
+                                <div class="form-group">
+                                    <label class="col-lg-4 control-label">{{title.rate | translate}}</label>  
+                                    <div class="col-lg-8 form-group">
+                                        <input type="text" class="form-control" [(ngModel)]="store_edit.user_rate" #user_rate="ngModel" name="user_rate" disabled/>
+
+                                    </div> 
+                                </div>
+
+
+                                <div class="form-group">
+                                    <label class="col-lg-4 control-label">{{title.free_delivery_for_above_order_price | translate}}</label>  
+                                    <div class="col-lg-8 form-group">
+                                        <input type="text" class="form-control" [(ngModel)]="store_edit.free_delivery_for_above_order_price" #free_delivery_for_above_order_price="ngModel" name="free_delivery_for_above_order_price" disabled/>
+
+                                    </div> 
+                                </div>
+
+
+                                <div class="form-group">
+                                    <label class="col-lg-4 control-label">{{title.delivery_time | translate}}</label>  
+                                    <div class="col-lg-8 form-group">
+                                        <input type="text" class="form-control" [(ngModel)]="store_edit.delivery_time" #delivery_time="ngModel" name="delivery_time" disabled/>
+
+
+                                    </div> 
+                                </div>
+
+
+
+
+                                <div class="form-group">
+                                    <label class="col-lg-9 col-xs-9 control-label">{{title.is_store_pay_delivery_fees | translate}}</label>  
+
+                                    <div class="col-lg-3 col-xs-3 form-group">
+                                        <ui-switch  [(ngModel)]="store_edit.is_store_pay_delivery_fees" #is_store_pay_delivery_fees="ngModel" name="is_store_pay_delivery_fees" disabled></ui-switch>
+
+                                    </div>
+                                </div>
+
+
+                                <div class="form-group">
+                                    <label class="col-lg-9 col-xs-9 control-label">{{title.is_business_store | translate}}</label>  
+
+                                    <div class="col-lg-3 col-xs-3 form-group">
+                                        <ui-switch  [(ngModel)]="store_edit.is_business" #is_business="ngModel" name="is_business" disabled></ui-switch>
+
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-lg-9 col-xs-9 control-label">{{title.is_document_uploaded | translate}}</label>  
+
+                                    <div class="col-lg-3 col-xs-3 form-group">
+                                        <ui-switch  [(ngModel)]="store_edit.is_document_uploaded" #is_document_uploaded="ngModel" name="is_document_uploaded" disabled></ui-switch>
+
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+
+        <div class="row">
+            <div class="col-lg-8">
+
+                <div class="ibox">
+                    <div class="ibox-title" style="padding: 0;min-height: 35px !important;">
+                        <label style="margin-left: 15px;margin-top: 9px;" class="control-label">{{heading_title.store_time | translate}}</label>
+                    </div>
+                    <div class="ibox-content ">
+
+                        <div class="row" style="margin: 0;">
+                            <div class="col-lg-12" style="border-bottom: 1px solid;padding-left: 0; padding-right: 0;">
+                                <div class="wizard" style="border-bottom: 1px solid;padding-left: 0; padding-right: 0;">
+                                    <div class="steps clearfix">
+                                        <ul style="display: table;padding: 0px;">
+
+                                            <li (click)="change_day(0)" [style.border-bottom]="curren_selected_day == 0 ? '1px solid #bc202b' : null" class="day_li" >
+                                                <a style="border-bottom-right-radius: 0px; border-bottom-left-radius: 0px;border: 0px;" class="btn-default"><span style="margin-left: -5px;font-weight: bold;display:block;" [style.color]="curren_selected_day == 0 ? '#bc202b' : null" class="nav-label">{{title.sunday | translate}}</span></a>
+                                            </li>
+                                            <li (click)="change_day(1)" [style.border-bottom]="curren_selected_day == 1 ? '1px solid #bc202b' : null" class="day_li" >
+                                                <a style="border-bottom-right-radius: 0px; border-bottom-left-radius: 0px;border: 0px;" class="btn-default"><span style="margin-left: -5px;font-weight: bold;display:block;" [style.color]="curren_selected_day == 1 ? '#bc202b' : null" class="nav-label">{{title.monday | translate}}</span></a>
+                                            </li>
+                                            <li (click)="change_day(2)" [style.border-bottom]="curren_selected_day == 2 ? '1px solid #bc202b' : null" class="day_li" >
+                                                <a style="border-bottom-right-radius: 0px; border-bottom-left-radius: 0px;border: 0px;" class="btn-default"><span style="margin-left: -5px;font-weight: bold;display:block;" [style.color]="curren_selected_day == 2 ? '#bc202b' : null" class="nav-label">{{title.tuesday | translate}}</span></a>
+                                            </li>
+                                            <li (click)="change_day(3)" [style.border-bottom]="curren_selected_day == 3 ? '1px solid #bc202b' : null" class="day_li" >
+                                                <a style="border-bottom-right-radius: 0px; border-bottom-left-radius: 0px;border: 0px;" class="btn-default"><span style="margin-left: -5px;font-weight: bold;display:block;" [style.color]="curren_selected_day == 3 ? '#bc202b' : null" class="nav-label">{{title.wednesday | translate}}</span></a>
+                                            </li>
+                                            <li (click)="change_day(4)" [style.border-bottom]="curren_selected_day == 4 ? '1px solid #bc202b' : null" class="day_li" >
+                                                <a style="border-bottom-right-radius: 0px; border-bottom-left-radius: 0px;border: 0px;" class="btn-default"><span style="margin-left: -5px;font-weight: bold;display:block;" [style.color]="curren_selected_day == 4 ? '#bc202b' : null" class="nav-label">{{title.thursday | translate}}</span></a>
+                                            </li>
+                                            <li (click)="change_day(5)" [style.border-bottom]="curren_selected_day == 5 ? '1px solid #bc202b' : null" class="day_li" >
+                                                <a style="border-bottom-right-radius: 0px; border-bottom-left-radius: 0px;border: 0px;" class="btn-default"><span style="margin-left: -5px;font-weight: bold;display:block;" [style.color]="curren_selected_day == 5 ? '#bc202b' : null" class="nav-label">{{title.friday | translate}}</span></a>
+                                            </li>
+                                            <li (click)="change_day(6)" [style.border-bottom]="curren_selected_day == 6 ? '1px solid #bc202b' : null" class="day_li" >
+                                                <a style="border-bottom-right-radius: 0px; border-bottom-left-radius: 0px;border: 0px;" class="btn-default"><span style="margin-left: -5px;font-weight: bold;display:block;" [style.color]="curren_selected_day == 6 ? '#bc202b' : null" class="nav-label">{{title.saturday | translate}}</span></a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="row" style="margin-top: 9px;margin-bottom: 9px;">
+                                    <div class="col-md-4 col-sm-6">
+                                        <label class="col-md-8 col-sm-8 col-xs-8 control-label" style="padding-top: 8px;">{{title.open_full_time | translate}}</label>
+
+                                        <div class="col-md-4 col-sm-4 col-xs-4" style="padding-top: 6px;">
+                                            <ui-switch   [(ngModel)]="is_store_open_full_time" name="is_store_open_full_time" disabled></ui-switch>
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 col-sm-6">
+                                        <label class="col-md-8 col-sm-8 col-xs-8 control-label" style="padding-top: 8px;">{{title.open | translate}}</label>
+
+                                        <div class="col-md-4 col-sm-4 col-xs-4" style="padding-top: 6px;">
+                                            <ui-switch  [(ngModel)]="is_store_open" name="is_store_open" disabled></ui-switch>
+
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="">
+                            <table class="table">
+                                <tr>
+                                    <td>{{title.store_open_time | translate}}</td>
+                                    <td>{{title.store_close_time | translate}}</td>
+
+                                </tr>
+                                <tr *ngFor="let i of selected_store_time_array">
+                                    <td>{{i.store_open_time}}</td>
+                                    <td>{{i.store_close_time}}</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>    
+
+        </div>  
+    </div>
+</form>

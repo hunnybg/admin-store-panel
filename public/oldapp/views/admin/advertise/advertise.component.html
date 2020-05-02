@@ -1,0 +1,136 @@
+<footer [myLoading]="myLoading" ></footer>
+<div class="row wrapper content_top_bar border-bottom white-bg page-heading">
+
+    <div class="row">
+        <div class="col-md-2 col-sm-12">
+            <div class="col-md-12 remove_padding">
+                <div class="form-group" id="search_fields">
+                    <select chosen class="chosen-select" [(ngModel)]="selected_country" name="selected_country" id="selected_country" data-placeholder="Select Country"  tabindex="4" >
+
+                        <option *ngFor="let country_data of country_list" value="{{country_data._id}}">{{country_data.country_name}}</option>
+
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-2 col-sm-12">
+            <div class="col-md-12 remove_padding">
+                <div class="form-group" id="search_fields">
+                    <select chosen class="chosen-select" [(ngModel)]="select_city" name="select_city" id="select_city" data-placeholder="Select City"  tabindex="4">
+                        <option>{{title.all | translate}}</option>
+                        <option *ngFor="let i of city_list" value="{{i._id}}">{{i.city_name}}</option>
+
+                    </select>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="col-md-2 col-sm-12">
+            <div class="col-md-12 remove_padding">
+                <div class="form-group" id="search_fields">
+                    <select chosen class="chosen-select" id="ads_type" [(ngModel)]="ads_type"  name="ads_type" data-placeholder="Ads Type"  tabindex="4">
+
+                        <option value="1">{{title.banner}}</option>
+                        <option value="2">{{title.fullscreen}}</option>
+                    </select>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="col-md-2 col-sm-12">
+            <!--            <div class="col-md-12 remove_padding">
+                            <div class="form-group">
+                                <label class="control-label">{{title.visible}} </label>
+                                <ui-switch [(ngModel)]="is_ads_visible" name="is_ads_visible" id="is_ads_visible"></ui-switch>
+                            </div>
+                        </div>-->
+        </div>
+        <div class="col-md-2 col-sm-12">
+        </div>
+
+        <div class="col-md-2 col-sm-12 pull-right">
+            <div class="col-md-6 col-sm-6 add_btn_div">
+                <a [routerLink]="['/admin/add_advertise']" class="pull-right"> <button class="btn add_btn pull-right">Add Ads<span class="fa fa-plus pull-right" style="margin-top: 2px;"></span></button></a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="wrapper  wrapper-content animated fadeInRight">
+    <div class="row" *ngFor="let country_data of filtered_country_list;let main_index=index;">
+         <div class="col-md-12 " [hidden]="country_data.advertises_detail.length == 0 || (selected_country!== (title.all | translate) && selected_country!==country_data._id) " style="margin-bottom: 10px; padding: 0px;">
+         <label class="control-label label label-danger" style="font-size: 20px;">{{country_data.country_name}}</label>  
+        </div>
+
+
+        <div *ngFor="let i of country_data.advertises_detail; let advertise_index=index;" [hidden]="selected_country !== (title.all | translate) && selected_country!==country_data._id ">
+
+            <div class="col-lg-2 col-md-3 col-sm-6 col-xs-12 user_profile">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <span (click)="delete_advertise(i._id,main_index,advertise_index)"  class="fa fa-trash-o pull-right" style="font-size:15px;color:#060606"></span>
+                        <span  class="fa fa-pencil pull-right" (click)="editAdvertise(i._id)" style="font-size:15px;color:#060606"></span>
+                        <label class="control-label">{{title.visible}} </label>
+                        <ui-switch (change)="onChange(i._id, $event)"  [(ngModel)]="i.is_ads_visible" name="is_ads_visible"></ui-switch>
+
+                    </div>
+                    <div>
+
+                        <div class="ibox-content ads_img_bg no-padding border-left-right">
+<!--                            <span class="btn-file" *ngIf="i.ads_type==1"><img class="img-responsive"  src="{{i.image_for_banner != '' ? i.image_for_banner : 'plus_box.png'}}" alt=""></span>-->
+                            <span class="btn-file"><img class="img-responsive"  src="{{i.image_url != '' ? helper.CONSTANT.IMAGE_BASE_URL + i.image_url : 'plus_box.png'}}" alt=""></span>
+
+                        </div>
+
+                        <div class="ibox-content profile-content">
+                            <div>
+                                <label class="control-label">{{title.type | translate}}</label>
+                                <div>
+                                    <span *ngIf="i.ads_type==1">{{title.banner | translate}}</span>
+                                    <span *ngIf="i.ads_type==2">{{title.fullscreen | translate}}</span>
+                                </div>
+                            </div>  
+                            <div *ngIf="i.is_ads_have_expiry_date==true">
+                                <label class="control-label">{{title.expired_date | translate}}:</label>
+                                <div>
+                                    <span>{{i.expiry_date | date: DATE_FORMAT.DD_MMM_YYYY}}</span>
+
+                                </div>
+                            </div>
+                            <div *ngIf="i.is_ads_have_expiry_date==false">
+                                <label class="control-label">{{title.expired_date | translate}}:</label>
+                                <div>
+                                    <span>{{title.no_expire_date | translate}}</span>
+
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="control-label"></label>
+                                <div *ngIf="i.is_ads_approve_by_admin==true">
+                                    <span><label class="control-label text-navy">{{title.approved | translate}}</label></span>
+
+                                </div>
+                                <div *ngIf="i.is_ads_approve_by_admin==false">
+                                    <span><label class="control-label text-danger">{{title.block | translate}}</label></span>
+
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>    
+
+
+
+           
+        </div>
+    </div>
+</div>

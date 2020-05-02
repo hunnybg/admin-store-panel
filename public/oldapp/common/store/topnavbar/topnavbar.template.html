@@ -1,0 +1,130 @@
+<button id="button" (click)="myNotification.show()" hidden></button>
+<push-notification #myNotification
+        [title]="notification.title"
+        [body]="notification.body"
+        [icon]="notification.icon"
+        [closeDelay]="notification.closeDelay"
+        (action)="myShowFunction()">
+</push-notification>
+<button id="no_provider" (click)="NoProviderNotification.show()" hidden></button>
+<push-notification #NoProviderNotification
+                   [title]="no_provider_notification.title"
+                   [body]="no_provider_notification.body"
+                   [icon]="no_provider_notification.icon"
+                   [closeDelay]="notification.closeDelay"
+                   (action)="NO_PROVIDER_FOUND()">
+</push-notification>
+
+
+
+<div class="row border-bottom">
+    <nav class="navbar navbar-static-top white-bg full_menu" role="navigation" style="margin-bottom: 0;background-color: #f1f1f1 !important; transition: all 0.4s;">
+        <span class="navbar-header">
+            <a class="minimalize-styl-2 btn btn-primary " (click)="toggleNavigation()"><i class="fa fa-bars"></i> </a>
+
+        </span>
+        <ul class="nav navbar-top-links navbar-right">
+            <li class="dropdown" dropdown [dropdownToggle]="true">
+                <a class="count-info" dropdown-open>
+                    <i class="fa fa-envelope" style="color: black;"></i> <span *ngIf="helper.router_id.store.new_order_list && helper.router_id.store.no_deliveryman_orders && (helper.router_id.store.new_order_list.length + helper.router_id.store.no_deliveryman_orders.length)>0" class="label label-primary">{{(helper.router_id.store.new_order_list.length + helper.router_id.store.no_deliveryman_orders.length)}}</span>
+                </a>
+                <ul class="dropdown-menu dropdown-messages" style="max-height: calc( 100vh - 60px );overflow-y: auto;overflow-x: hidden;">
+                    <li class="news_li" *ngFor="let order of helper.router_id.store.new_order_list; let index=index;" (click)="get_order_data(order._id)" >
+                        <div class="dropdown-messages-box">
+                            <div class="row">
+                                <div class="col-md-12 col-sm-12 col-xs-12">
+                                    <div class="col-md-2 col-xs-2 no_padding">
+                                        <img class="img-circle table_image" src="{{order.user_detail.image_url != '' ? order.user_detail.image_url : 'default.png'}}" />
+                                    </div>
+                                    <div class="col-md-10 col-xs-10 no_padding">
+                                        <div>You received order <label>{{order.unique_id}}</label> from <label>{{order.user_detail.first_name}}
+                                            {{order.user_detail.last_name}}</label> for
+                                            <span *ngFor="let order_detail of order.cart_detail.order_details; let last=last;">
+                                                {{order_detail.product_name}}<span *ngIf="!last">,</span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="news_li" *ngFor="let order of helper.router_id.store.no_deliveryman_orders; let index=index;">
+                        <div class="dropdown-messages-box">
+                            <div class="row">
+                                <div class="col-md-12 col-sm-12 col-xs-12">
+                                    <div class="col-md-2 col-xs-2 no_padding">
+                                        <img class="img-circle table_image" src="{{order.user_detail.image_url != '' ? order.user_detail.image_url : 'web_images/default.png'}}" />
+                                    </div>
+                                    <div class="col-md-10 col-xs-10 no_padding">
+                                        <div>There is no deliveryman found for order <label>{{order.order_detail.unique_id}}</label></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <!--<li (click)="go_to_order()">-->
+                        <!--<div class="text-center link-block">-->
+                            <!--<a >-->
+                                <!--<i class="fa fa-envelope"></i> <strong>{{helper.button.show_all | translate}}</strong>-->
+                            <!--</a>-->
+                        <!--</div>-->
+                    <!--</li>-->
+                </ul>
+            </li>
+            <!--<li class="dropdown" dropdown [dropdownToggle]="true">-->
+                <!--<a class="count-info" dropdown-open>-->
+                    <!--<i class="fa fa-envelope" style="color: orange;"></i> <span *ngIf="helper.router_id.store.no_deliveryman_orders.length>0" class="label label-danger">{{helper.router_id.store.no_deliveryman_orders.length}}</span>-->
+                <!--</a>-->
+                <!--<ul class="dropdown-menu dropdown-messages" style="max-height: calc( 100vh - 60px );overflow: auto;">-->
+                    <!--<li class="news_li" *ngFor="let order of helper.router_id.store.no_deliveryman_orders; let index=index;">-->
+                        <!--<div class="dropdown-messages-box">-->
+                            <!--<div class="row">-->
+                                <!--<div class="col-md-12 col-sm-12 col-xs-12">-->
+                                    <!--<div class="col-md-2 col-xs-2 no_padding">-->
+                                        <!--<img class="img-circle table_image" src="{{order.user_detail.image_url != '' ? order.user_detail.image_url : 'web_images/default.png'}}" />-->
+                                    <!--</div>-->
+                                    <!--<div class="col-md-10 col-xs-10 no_padding">-->
+                                        <!--<div>There is no deliveryman found for order <label>{{order.order_detail.unique_id}}</label></div>-->
+                                    <!--</div>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</li>-->
+                    <!--<li (click)="go_to_deliveries()">-->
+                        <!--<div class="text-center link-block">-->
+                            <!--<a >-->
+                                <!--<i class="fa fa-envelope"></i> <strong>{{helper.button.show_all | translate}}</strong>-->
+                            <!--</a>-->
+                        <!--</div>-->
+                    <!--</li>-->
+                <!--</ul>-->
+            <!--</li>-->
+            <li style="float: right;"><a [routerLink]="['/store/logout']" style="color: #222222;"><i class="fa fa-sign-out"></i>{{menu_title.logout | translate}}</a>
+            </li>
+        </ul>
+
+    </nav>
+</div>
+
+<modal keyboard="false" backdrop="static" cssClass="modal-sm animated bounceIn" #myModal>
+    
+        <modal-header>
+            <h4 class="modal-title" style="color:black;">{{heading_title.you_are_decline | translate}}</h4>
+        </modal-header>
+        <modal-body>
+            <label style="color:black;">{{title.please_contact_to_admin | translate}} </label>
+            <div>
+                <label style="color:black;">{{title.admin_phone | translate}} - </label>
+                <span>{{admin_phone}}</span>
+            </div>
+            <div>
+                <label style="color:black;">{{title.admin_email | translate}} - </label>
+                <span>{{admin_email}}</span>
+            </div>
+            
+        </modal-body>
+        <modal-footer>
+            <a [routerLink]="['/store/logout']"><i class="fa fa-sign-out"></i>{{menu_title.logout | translate}}</a>
+        </modal-footer>
+    
+</modal>

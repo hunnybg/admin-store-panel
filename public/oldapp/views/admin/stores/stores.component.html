@@ -1,0 +1,582 @@
+<footer [myLoading]="myLoading" ></footer>
+
+<div class="row wrapper fix_search_bar border-bottom white-bg page-heading">
+    <div class="row">
+        <div class="col-md-4 col-sm-12">
+            <div>
+                <label>{{title.search | translate}}</label>
+            </div>
+            <div class="col-md-6 col-sm-6 remove_padding">
+                <div class="form-group" id="search_fields">
+                        
+                    <select chosen class="chosen-select" id="search_field" [(ngModel)]="search_field" name="search_field" tabindex="4">
+                        <option value="name">{{title.name | translate}}</option>
+                        <option value="email">{{title.email | translate}}</option>
+                        <option value="phone">{{title.phone | translate}}</option>
+                        <option value="unique_id">{{title.unique_id | translate}}</option>
+                        <option value="store_unique_code">{{title.is_unique_code | translate}}</option>
+                        <option value="country_details.country_name">{{title.country | translate}}</option>
+                        <option value="city_details.city_name">{{title.city | translate}}</option>
+                        <option value="delivery_details.delivery_name">{{title.delivery_type | translate}}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-6 remove_padding">
+
+                <div class="form-group">
+                    <div class="input-group">
+                        <input type="text" class="form-control search_box" [(ngModel)]="search_value"  name="search_value">
+                        <span (click)="filter(1)    " class="input-group-addon search_icon"><span class="fa fa-search"></span></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 col-sm-12">
+            <div class="col-md-6 col-sm-6">
+                <div>
+                    <label>{{title.no_of_record | translate}}</label>
+                </div>
+                <div class="form-group">
+                    <select chosen class="chosen-select" id="number_of_rec" [(ngModel)]="number_of_rec" name="number_of_rec" tabindex="4">
+                        <option value="10">10</option>
+                        <option value="20">20</option>
+                        <option value="50">50</option>
+                        <option value="100">100</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-6 filter_btn_div">
+                <button type="button" (click)="store_export_csv(store_page_type)" class="btn export_excel_btn">
+                    <span class="fa fa-file-excel-o"></span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="wrapper wrapper-content content_top_bar_view1 animated fadeInRight">
+    <div class="row">
+        <div class="col-md-8">
+
+            <div class="ibox" >
+                <div class="ibox-content" style="padding-bottom: 40px;">
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12">
+                            <ul class="nav nav-tabs">
+                                <li (click)="change_page_type(1)" [class.active]="store_page_type==1" class="dsads uib-tab ng-scope ng-isolate-scope" active="tab.active">
+                                    <a class="ng-binding tab_selection">{{helper.sub_menu_title.stores | translate}}</a>
+                                </li>
+                                <li (click)="change_page_type(2)" [class.active]="store_page_type==2" class="uib-tab ng-scope ng-isolate-scope active">
+                                    <a class="ng-binding tab_selection">{{helper.sub_menu_title.declined_stores | translate}}</a>
+                                </li>
+                                <li (click)="change_page_type(3)" [class.active]="store_page_type==3" class="uib-tab ng-scope ng-isolate-scope active">
+                                    <a class="ng-binding tab_selection">{{helper.sub_menu_title.business_off_stores | translate}}</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="lable_center" *ngIf="store_list.length==0">
+                        <label>No Records</label>
+                    </div>
+                    <div [hidden]="store_list.length==0" class="table-responsive scrollbar"  style="height: calc(100vh - 285px);overflow: auto;">
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th>{{title.id | translate}}</th>
+                                <th>{{title.is_unique_code | translate}}</th>
+                                <th>{{title.name | translate}}</th>
+                                <th>{{title.email | translate}}</th>
+                                <th>{{title.phone | translate}}</th>
+                                <th>{{title.country | translate}}</th>
+                                <th>{{title.city | translate}}</th>
+                                <th>{{title.delivery_type | translate}}</th>
+                                <th>{{title.wallet | translate}}</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr *ngFor="let store of store_list"  [class.selected_tr]="store._id==store_detail._id" (click)="get_store_detail(store._id)">
+                                <td>{{store.unique_id}} </td>
+                                <td>{{store.store_unique_code | uppercase}} </td>
+                                <!--<td class="client-avatar"><img alt="image" src="{{store.image_url != '' ? store.image_url : 'default.png'}}"> </td>-->
+                                <td>{{store.name}}</td>
+                                <td>{{store.email}}</td>
+                                <td>{{store.country_phone_code}} {{store.phone}}</td>
+                                <td>{{store.country_details.country_name}}</td>
+                                <td>{{store.city_details.city_name}}</td>
+                                <td>{{store.delivery_details.delivery_name}}</td>
+                                <td>{{store.wallet}} {{store.wallet_currency_code}}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-md-12 col-sm-12" style="margin-top: 5px;">
+                        <div class="lable_center">
+
+                            <ul class="pagination">
+                                <li *ngIf="page!==1"><a class="btn" (click)="filter(page-1)">{{button.pre | translate}}</a></li>
+                                <li *ngFor="let index of total_pages" [class.active]="page==index">
+                                    <a *ngIf="index==1 || index==total_page || index==page || index==page-1 || index==page+1" (click)="filter(index)" class="btn">{{index}}</a>
+                                    <a *ngIf="(index==1 && (page!==1 && page!==2 && page!==3)) || (index==total_page-1 && (page!==total_page && page!==total_page-1 && page!==total_page-2))" class="btn">...</a>
+
+                                </li>
+                                <li *ngIf="page!==total_page && store_list.length!==0"><a class="btn" (click)="filter(page+1)">{{button.next | translate}}</a></li>
+                            </ul>
+                            <div class="col-md-2 pull-right">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4" *ngIf="store_detail.phone">
+            <div class="ibox ">
+
+                <div class="ibox-content user_fix_div scrollbar" style="height: calc(100vh - 243px);overflow: auto;">
+                    <div class="tab-content">
+                        <div id="contact-1" class="tab-pane active" ng-show="client == 1" ng-init="client = 1">
+                            <div class="row m-b-lg">
+                                <span *ngIf="is_edit && selected_tab==1" class="fa fa-check pull-right" (click)="update_store_detail()"></span>
+                                <div class="row no_margin">
+                                    <div class="col-sm-3" *ngIf="is_edit">
+                                        <div class="text-center">
+                                                <span  class="btn-file"><img style="width: 80px; height: 80px;" class="img-circle m-t-xs" src="{{store_detail.image_url != '' ? helper.CONSTANT.IMAGE_BASE_URL + store_detail.image_url : 'default.png'}}" alt="">
+                                                    <input type="file" (change)="change_image($event);" accept="image/*" name="image_url"></span>
+                                            <!--<img *ngIf="!is_edit" alt="image" style="width: 80px; height: 80px;" class="img-circle m-t-xs" src="{{user_detail.image_url != '' ? user_detail.image_url : 'default.png'}}">-->
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12" *ngIf="!is_edit">
+                                        <span *ngIf="!is_edit && selected_tab==1" (click)="edit_data()" class="fa fa-pencil pull-right"></span>
+                                        <div class="text-center">
+                                            <img *ngIf="!is_edit" alt="image" style="width: 120px; height: 120px;" class="img-circle m-t-xs" src="{{store_detail.image_url != '' ? helper.CONSTANT.IMAGE_BASE_URL + store_detail.image_url : 'default.png'}}">
+                                            <div style="margin-top: 10px;font-size: 18px;">
+                                                {{store_detail.name}} <span class="fa fa-star" style="padding-left: 10px;"></span> <span>{{((store_detail.provider_rate + store_detail.user_rate)/2)}}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-8" *ngIf="is_edit">
+
+                                        <div class="col-lg-12 form-group">
+                                            <input type="text" class="form-control" [(ngModel)]="store_detail.name" #name="ngModel" name="name" />
+                                        </div>
+                                        <div class="col-lg-12 form-group">
+                                            <input type="text" class="form-control" [(ngModel)]="store_detail.email" #email="ngModel" name="email" />
+                                        </div>
+                                        <div class="col-lg-12 form-group">
+                                            <input type="text" class="form-control" [(ngModel)]="store_detail.phone" #phone="ngModel" name="phone" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row no_margin" *ngIf="!is_edit" style="margin-top: 10px;">
+                                    <div class="col-md-3 col-sm-3 col-xs-3 remove_right_padding">
+                                        <button (click)="open_modal(type,store_detail._id)" type="button" class="btn btn-light_black btn-sm btn-block" tooltip="{{helper.button.add_wallet | translate}}"
+                                                [tooltipDisabled]="false"
+                                                [tooltipAnimation]="true"
+                                                tooltipPlacement="top">
+                                            <i class="fa fa-plus"></i>
+                                        </button>
+                                    </div>
+                                    <div class="col-md-3 col-sm-3 col-xs-3 remove_left_right_padding">
+                                        <button (click)="open_sms_modal(type,store_detail._id)" type="button" class="btn btn-light_black btn-sm btn-block" tooltip="{{helper.button.send_sms | translate}}"
+                                                [tooltipDisabled]="false"
+                                                [tooltipAnimation]="true"
+                                                tooltipPlacement="top">
+                                            <i class="fa fa-comments"></i>
+                                        </button>
+                                    </div>
+                                    <div class="col-md-3 col-sm-3 col-xs-3 remove_left_right_padding">
+                                        <button (click)="open_notification_modal(type,store_detail._id)" type="button" class="btn btn-light_black btn-sm btn-block" tooltip="{{helper.button.send_notification | translate}}"
+                                                [tooltipDisabled]="false"
+                                                [tooltipAnimation]="true"
+                                                tooltipPlacement="top">
+                                            <i class="fa fa-bell"></i>
+                                        </button>
+                                    </div>
+                                    <div class="col-md-3 col-sm-3 col-xs-3 remove_left_padding" *ngIf="!store_detail.is_approved">
+                                        <button (click)="approved_decline(store_page_type,store_detail._id)" type="button" class="btn btn-light_black btn-sm btn-block" tooltip="{{helper.button.approved | translate}}"
+                                                [tooltipDisabled]="false"
+                                                [tooltipAnimation]="true"
+                                                tooltipPlacement="top">
+                                            <i class="fa fa-check"></i>
+                                        </button>
+                                    </div>
+                                    <div class="col-md-3 col-sm-3 col-xs-3 remove_left_padding" *ngIf="store_detail.is_approved">
+                                        <button (click)="approved_decline(store_page_type,store_detail._id)" type="button" class="btn btn-light_black btn-sm btn-block" tooltip="{{helper.button.decline | translate}}"
+                                                [tooltipDisabled]="false"
+                                                [tooltipAnimation]="true"
+                                                tooltipPlacement="top">
+                                            <i class="fa fa-ban"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="client-detail">
+                                <div class="full-height-scroll">
+
+                                    <ul class="nav nav-tabs">
+                                        <li (click)="selected_tab=1" [class.active]="selected_tab==1" class="dsads uib-tab ng-scope ng-isolate-scope" active="tab.active">
+                                            <a class="ng-binding tab_selection">{{helper.title.details | translate}}</a>
+                                        </li>
+                                        <li (click)="get_document_list()" [class.active]="selected_tab==2" class="uib-tab ng-scope ng-isolate-scope active">
+                                            <a class="ng-binding tab_selection">{{helper.button.view_document | translate}}</a>
+                                        </li>
+                                        <li (click)="get_referral_history()" [class.active]="selected_tab==3" class="uib-tab ng-scope ng-isolate-scope active">
+                                            <a class="ng-binding tab_selection">{{helper.button.referral | translate}}</a>
+                                        </li>
+                                        <li (click)="get_review_history()" [class.active]="selected_tab==5" class="uib-tab ng-scope ng-isolate-scope active">
+                                            <a class="ng-binding tab_selection">{{helper.button.reviews | translate}}</a>
+                                        </li>
+                                        <li (click)="get_bank_detail()" [class.active]="selected_tab==4" class="uib-tab ng-scope ng-isolate-scope active">
+                                            <a class="ng-binding tab_selection">{{helper.button.bank_detail | translate}}</a>
+                                        </li>
+                                    </ul>
+                                    <div class="row no_margin" *ngIf="selected_tab==1" style="overflow-x: hidden;">
+                                        <div class="col-md-12 no_padding" style="padding-top: 10px;padding-bottom: 4px;border-bottom: 1px solid lightgrey;">
+                                            <div class="col-md-4 no_padding">
+                                                <label>{{title.app_version | translate}}</label>
+                                            </div>
+                                            <div class="col-md-8 no_padding">
+                                                {{store_detail.device_type + " - " +  store_detail.app_version}}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12 no_padding" style="padding-top: 10px;padding-bottom: 4px;border-bottom: 1px solid lightgrey;">
+                                            <div class="col-md-4 no_padding">
+                                                <label>{{title.address | translate}}</label>
+                                            </div>
+                                            <div class="col-md-8 no_padding">
+                                                {{store_detail.address}}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12 no_padding" style="padding-top: 10px;padding-bottom: 4px;border-bottom: 1px solid lightgrey;">
+                                            <div class="col-md-4 no_padding">
+                                                <label>{{title.website_url | translate}}</label>
+                                            </div>
+                                            <div class="col-md-8 no_padding" *ngIf="!is_edit">
+                                                {{store_detail.website_url}}
+                                            </div>
+                                            <div class="col-md-8 no_padding form-group" *ngIf="is_edit">
+                                                <input type="text" class="form-control" [(ngModel)]="store_detail.website_url" #website_url="ngModel" name="website_url" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12 no_padding" style="padding-top: 10px;padding-bottom: 4px;border-bottom: 1px solid lightgrey;">
+                                            <div class="col-md-4 no_padding">
+                                                <label>{{title.slogan | translate}}</label>
+                                            </div>
+                                            <div class="col-md-8 no_padding" *ngIf="!is_edit">
+                                                {{store_detail.slogan}}
+                                            </div>
+                                            <div class="col-md-8 no_padding form-group" *ngIf="is_edit">
+                                                <input type="text" class="form-control" [(ngModel)]="store_detail.slogan" #slogan="ngModel" name="slogan" />
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-12 no_padding" style="padding-top: 10px;padding-bottom: 4px;border-bottom: 1px solid lightgrey;">
+                                            <div class="col-md-4 no_padding">
+                                                <label>{{title.profit_mode | translate}}</label>
+                                            </div>
+                                            <div class="col-md-8 no_padding" *ngIf="!is_edit">
+                                                <span *ngIf="store_detail.admin_profit_mode_on_store==helper.ADMIN_PROFIT_ON_ORDER_ID.PERCENTAGE">{{helper.ADMIN_PROFIT_ON_ORDER_STRING.PERCENTAGE}}</span>
+                                                <span *ngIf="store_detail.admin_profit_mode_on_store==helper.ADMIN_PROFIT_ON_ORDER_ID.PER_ORDER">{{helper.ADMIN_PROFIT_ON_ORDER_STRING.PER_ORDER}}</span>
+                                                <span *ngIf="store_detail.admin_profit_mode_on_store==helper.ADMIN_PROFIT_ON_ORDER_ID.PER_ITEMS">{{helper.ADMIN_PROFIT_ON_ORDER_STRING.PER_ITEMS}}</span>
+                                            </div>
+                                            <div class="col-md-8 no_padding" [hidden]="!is_edit">
+                                                <select chosen class="chosen-select form-control" id="admin_profit_mode" [(ngModel)]="store_detail.admin_profit_mode_on_store" #admin_profit_mode_on_store="ngModel" name="admin_profit_mode_on_store" data-placeholder="Select Admin Profit Mode"  tabindex="4"  >
+                                                    <option *ngFor="let i of helper.ADMIN_PROFIT_ON_ORDERS" value="{{i.ID}}">{{i.NAME}}</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-12 no_padding" style="padding-top: 10px;padding-bottom: 4px;border-bottom: 1px solid lightgrey;">
+                                            <div class="col-md-4 no_padding">
+                                                <label>{{title.profit | translate}}</label>
+                                            </div>
+                                            <div class="col-md-8 no_padding" *ngIf="!is_edit">
+                                                {{store_detail.admin_profit_value_on_store}}
+                                            </div>
+                                            <div class="col-md-8 no_padding form-group" *ngIf="is_edit">
+                                                <input type="text" class="form-control" [(ngModel)]="store_detail.admin_profit_value_on_store" #admin_profit_value_on_store="ngModel" name="admin_profit_value_on_store" />
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-12 no_padding" style="border-bottom: 1px solid lightgrey;padding-top: 10px;padding-bottom: 4px;">
+                                            <label class="col-md-9 col-sm-9 col-xs-9 no_padding control-label">{{title.is_store_can_add_provider | translate}}</label>
+                                            <div class="col-md-3 col-sm-3 col-xs-3 no_padding">
+                                                <ui-switch [(ngModel)]="store_detail.is_store_can_add_provider" [disabled]="!is_edit" #is_store_can_add_provider="ngModel" name="is_store_can_add_provider"></ui-switch>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12 no_padding" style="border-bottom: 1px solid lightgrey;padding-top: 10px;padding-bottom: 4px;">
+                                            <label class="col-md-9 col-sm-9 col-xs-9 no_padding control-label">{{title.is_store_can_complete_order | translate}}</label>
+                                            <div class="col-md-3 col-sm-3 col-xs-3 no_padding">
+                                                <ui-switch [(ngModel)]="store_detail.is_store_can_complete_order" [disabled]="!is_edit" #is_store_can_complete_order="ngModel" name="is_store_can_complete_order"></ui-switch>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-12 no_padding" style="border-bottom: 1px solid lightgrey;padding-top: 10px;padding-bottom: 4px;">
+                                            <label class="col-md-9 col-sm-9 col-xs-9 no_padding control-label">{{title.email_verified | translate}}</label>
+                                            <div class="col-md-3 col-sm-3 col-xs-3 no_padding">
+                                                <ui-switch [(ngModel)]="store_detail.is_email_verified" [disabled]="!is_edit" #is_email_verified="ngModel" name="is_email_verified"></ui-switch>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12 no_padding" style="border-bottom: 1px solid lightgrey;padding-top: 10px;padding-bottom: 4px;">
+                                            <label class="col-md-9 col-sm-9 col-xs-9 no_padding control-label">{{title.phone_number_verified | translate}}</label>
+                                            <div class="col-md-3 col-sm-3 col-xs-3 no_padding">
+                                                <ui-switch [(ngModel)]="store_detail.is_phone_number_verified" [disabled]="!is_edit" #is_phone_number_verified="ngModel" name="is_phone_number_verified"></ui-switch>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12 no_padding" style="padding-top: 10px;padding-bottom: 4px;">
+                                            <label class="col-md-9 col-sm-9 col-xs-9 no_padding control-label">{{title.document_uploaded | translate}}</label>
+                                            <div class="col-md-3 col-sm-3 col-xs-3 no_padding">
+                                                <ui-switch [(ngModel)]="store_detail.is_document_uploaded" [disabled]="!is_edit" #is_document_uploaded="ngModel" name="is_document_uploaded"></ui-switch>
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+
+                                    <div *ngIf="selected_tab==2" style="margin-top: 20px;">
+                                        <div class="table-responsive">
+                                            <table class="table">
+                                                <tr>
+                                                    <td></td>
+                                                    <td>{{title.name | translate}}</td>
+                                                    <td style="width: 25%;">{{title.unique_code | translate}}</td>
+                                                    <td style="width: 25%;">{{title.expiry_date | translate}}</td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr *ngFor="let document of document_list; let document_index=index;">
+                                                    <td class="client-avatar" (click)="show_full_image(document.image_url, document_index)">
+                                                            <span *ngIf="edit_document[document_index]=='true'" class="btn-file"><img style="width: 20px; height: 20px;" src="default.png" class="document{{document_index}}">
+                                                                <input type="file" (change)="image_update($event , document_index);" name="image">
+                                                            </span>
+                                                        <img *ngIf="edit_document[document_index]!=='true'" style="width: 20px; height: 20px; " src="default.png" class="document{{document_index}}">
+                                                    </td>
+                                                    <td>{{document.document_details.document_name}}</td>
+                                                    <td>
+                                                        <div *ngIf="document.document_details.is_unique_code && edit_document[document_index]=='true'">
+                                                            <input type="text" [(ngModel)]="documentlist.unique_code" #unique_code="ngModel"  name="unique_code" style="border-radius: 5px;border-color: #060606;height: 30px;" class="form-control" value="{{document.unique_code}}"><br>
+                                                        </div>
+                                                        <span *ngIf="edit_document[document_index]!=='true' && document.document_details.is_unique_code">{{document.unique_code}}</span></td>
+                                                    <td>
+                                                        <div *ngIf="document.document_details.is_expired_date && edit_document[document_index]=='true'">
+                                                            <my-date-picker [(ngModel)]="documentlist.expired_date" #expired_date="ngModel"  name="expired_date" id="expiry_date" value="" [options]="helper.ExpiryDatePickerOptions" placeholder="{{title.exp_date | translate}}" readonly></my-date-picker>
+                                                        </div>
+                                                        <span *ngIf="edit_document[document_index]!=='true' && document.document_details.is_expired_date">{{document.expired_date | date: "MM-dd-yyyy"}}</span></td>
+                                                    <td>
+                                                        <span *ngIf="edit_document[document_index]!=='true'" class="fa fa-pencil pull-right" (click)="editDocument(document , document_index)"></span>
+                                                        <span *ngIf="edit_document[document_index]=='true'" class="fa fa-check pull-right" (click)="updateDocument(document , document_index)"></span>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div *ngIf="selected_tab==3" style="margin-top: 20px;">
+                                        <div class="row">
+                                            <div class="col-md-12"><label>{{title.referral_code | translate}}: </label>
+                                                <span style="margin-left: 10px;">{{store_detail.referral_code}}</span>
+                                            </div>
+                                        </div>
+                                        <div class="row" style="margin-top: 10px;" *ngIf="store_detail.referred_store_details">
+                                            <div class="col-md-12"><label>{{title.referred_by | translate}}</label></div>
+                                            <div class="col-md-4">
+                                                <img style="width: 40px; height: 40px;" class="img-circle m-t-xs" src="{{store_detail.referred_store_details.image_url}}" />
+                                            </div>
+                                            <div class="col-md-8">
+                                                <div>{{title.id | translate}}: {{store_detail.referred_store_details.unique_id}}</div>
+                                                <div>{{title.name | translate}}: {{store_detail.referred_store_details.first_name}} {{store_detail.referred_store_details.last_name}}</div>
+                                            </div>
+                                        </div>
+                                        <div class="row" style="margin-top: 10px;" *ngIf="referral_history.length>0">
+                                            <div class="col-md-12"><label>{{title.referred_to | translate}}: </label>
+                                                <span style="margin-left: 10px;">{{referral_history.length}} {{title.people | translate}}</span>
+                                            </div>
+                                        </div>
+                                        <div class="row col-md-12" *ngIf="referral_history.length>0">
+                                            <div class="table-responsive">
+                                                <table class="table">
+                                                    <tr>
+                                                        <td></td>
+                                                        <td>{{title.id | translate}}</td>
+                                                        <td>{{title.name | translate}}</td>
+                                                    </tr>
+                                                    <tr *ngFor="let referral of referral_history;">
+                                                        <td class="client-avatar"><img alt="image" src="{{referral.image_url != '' ? helper.CONSTANT.IMAGE_BASE_URL + referral.image_url : 'default.png'}}"></td>
+                                                        <td>{{referral.unique_id}}</td>
+                                                        <td>{{referral.first_name}} {{referral.last_name}}</td>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div *ngIf="selected_tab==5" style="margin-top: 20px;">
+                                        <div *ngFor="let review of review_list;">
+                                            <div *ngIf="review.user_rating_to_store>0 && review.user_detail" class="row form-group">
+                                                <div class="col-md-3 col-xs-3">
+                                                    <img class="img-circle" src="{{review.user_detail.image_url != '' ? helper.CONSTANT.IMAGE_BASE_URL + review.user_detail.image_url : 'default.png'}}" style="width: 80px; height: 80px;">
+                                                </div>
+                                                <div class="col-md-8 col-xs-8">
+                                                    <div style="display: inline;" *ngFor="let rate of Array(review.user_rating_to_store)"><span class="fa fa-star rating_star"></span></div>
+                                                    <div style="font-size: 15px;">{{helper.title.reviewed_by}}: {{review.user_detail.name}}
+                                                        <span style="font-size: 12px;">({{title.id | translate}}: {{review.order_unique_id}})</span>
+                                                    </div>
+                                                    <div style="font-size: 15px;color: black;">{{review.user_review_to_store}}</div>
+                                                </div>
+                                            </div>
+                                            <div *ngIf="review.provider_rating_to_user>0 && review.provider_detail" class="row form-group">
+                                                <div class="col-md-3 col-xs-3">
+                                                    <img class="img-circle" src="{{review.provider_detail.image_url != '' ? helper.CONSTANT.IMAGE_BASE_URL + review.provider_detail.image_url : 'default.png'}}" style="width: 80px; height: 80px;">
+                                                </div>
+                                                <div class="col-md-8 col-xs-8">
+                                                    <div style="display: inline;" *ngFor="let rate of Array(review.provider_rating_to_user)"><span class="fa fa-star rating_star"></span></div>
+                                                    <div style="font-size: 15px;">{{helper.title.reviewed_by}} {{review.provider_detail.name}}
+                                                        <span style="font-size: 12px;">({{title.id | translate}}: {{review.order_unique_id}})</span>
+                                                    </div>
+                                                    <div style="font-size: 15px;color: black;">{{review.provider_review_to_user}}</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div *ngIf="selected_tab==4" style="margin-top: 20px;">
+                                        <div class="table-responsive" *ngIf="bank_detail_list.length>0">
+                                            <table class="table">
+                                                <tr>
+                                                    <th>{{title.bank_account_number | translate}}</th>
+                                                </tr>
+                                                <tr *ngFor="let bank_detail of bank_detail_list;">
+                                                    <td>{{bank_detail.account_number}}</td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row" style="margin-top: 10px;">
+                <div class="col-md-6 col-sm-6 col-xs-6" style="padding-right: 4px;">
+                    <button (click)="get_setting()" class="btn btn-light_black btn-block">{{button.view_setting | translate}}</button>
+                </div>
+                <div class="col-md-6 col-sm-6 col-xs-6" style="padding-left: 4px;">
+                    <button (click)="menu()" class="btn btn-light_black btn-block">{{button.view_products | translate}}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+
+
+<modal keyboard="false" backdrop="static" cssClass="modal-sm" #myModal>
+    <form #modalForm="ngForm" (ngSubmit)="AddWallet(modalForm.value)">
+        <modal-header [show-close]="true">
+            <h4 class="modal-title">{{heading_title.add_wallet_amount | translate}}</h4>
+        </modal-header>
+        <modal-body>
+            <div class="row">
+                <input type="hidden" class="form-control" [(ngModel)]="type"   name="type"  />
+                <input type="hidden" class="form-control" [(ngModel)]="store_id"   name="store_id"  />
+                <div class="col-md-12">
+                    <div class="col-md-12 col-sm-12">
+                        <div class="form-group" >
+
+                            <label style="font-weight: normal;"><strong>{{title.amount | translate}}</strong></label>
+                            <input type="text" class="form-control" [(ngModel)]="wallet" (keypress)="helper.number_validation_with_minus($event)" maxlength="6" name="wallet" required>
+                        </div>
+
+                    </div>
+
+
+                </div>
+            </div>
+
+        </modal-body>
+        <modal-footer>
+            <div style="text-align: center">
+                <button type="submit" class="btn btn-primary">{{button.save | translate}}</button>
+            </div>
+        </modal-footer>
+    </form>
+</modal>
+
+<modal cssClass="modal-sm" #document_full_image>
+    <modal-header [show-close]="true">
+    </modal-header>
+    <modal-body>
+        <div>
+            <img style="width: 100%; height: 100%;" src="default.png" class="document{{selected_document_index}}">
+        </div>
+    </modal-body>
+</modal>
+
+<modal keyboard="false" backdrop="static" cssClass="modal-xl" #mysmsModal>
+    <form #modalSmsForm="ngForm" (ngSubmit)="SendSms(modalSmsForm.value)">
+        <modal-header [show-close]="true">
+            <h4 class="modal-title">{{heading_title.admin_sms | translate}}</h4>
+        </modal-header>
+        <modal-body>
+            <div class="row">
+                <input type="hidden" class="form-control" [(ngModel)]="type"   name="type"  />
+                <input type="hidden" class="form-control" [(ngModel)]="store_id"   name="store_id"  />
+                <div class="col-md-12">
+                    <div class="col-md-12 col-sm-12">
+                        <div class="form-group" >
+
+                            <label style="font-weight: normal;"><strong>{{title.content | translate}}</strong></label>
+                            <textarea class="form-control" [(ngModel)]="content"   name="content" required ></textarea>
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+            </div>
+
+        </modal-body>
+        <modal-footer>
+            <div style="text-align: center">
+                <button type="submit" class="btn btn-primary">{{button.send | translate}}</button>
+            </div>
+        </modal-footer>
+    </form>
+</modal>
+
+
+
+<modal keyboard="false" backdrop="static" cssClass="modal-xl" #mynotificationModal>
+    <form #modalNotificationForm="ngForm" (ngSubmit)="SendNotification(modalNotificationForm.value)">
+        <modal-header [show-close]="true">
+            <h4 class="modal-title">{{heading_title.admin_send_notification | translate}}</h4>
+        </modal-header>
+        <modal-body>
+            <div class="row">
+                <input type="hidden" class="form-control" [(ngModel)]="type"   name="type"  />
+                <input type="hidden" class="form-control" [(ngModel)]="store_id"   name="store_id"  />
+                <div class="col-md-12">
+                    <div class="col-md-12 col-sm-12">
+                        <div class="form-group" >
+
+                            <label style="font-weight: normal;"><strong>{{title.notification_content | translate}}</strong></label>
+                            <input type="text" class="form-control" [(ngModel)]="content" name="content" required />
+
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+            </div>
+        </modal-body>
+        <modal-footer>
+            <div style="text-align: center">
+                <button type="submit" class="btn btn-primary">{{button.send | translate}}</button>
+            </div>
+        </modal-footer>
+    </form>
+</modal>

@@ -1,0 +1,32 @@
+<button id="button"  hidden></button>
+
+
+
+<div class="row border-bottom">
+    <nav class="navbar navbar-static-top white-bg full_menu" role="navigation" style="margin-bottom: 0;background-color: #f1f1f1 !important; transition: all 0.4s;">
+        <span class="navbar-header">
+            <a class="minimalize-styl-2 btn btn-primary " (click)="toggleNavigation()"><i class="fa fa-bars"></i> </a>
+
+        </span>
+        <ul class="nav navbar-top-links navbar-right">
+            <li style="float: right;"><a [routerLink]="['/franchise/logout']" style="color: #222222;"><i class="fa fa-sign-out"></i>{{menu_title.logout | translate}}</a>
+            </li>
+        </ul>
+
+    </nav>
+</div>
+
+<modal keyboard="false" backdrop="static" cssClass="modal-xl animated bounceIn" #myModal>
+    
+        <modal-header>
+            <h4 class="modal-title" style="color:black;">{{heading_title.you_are_decline | translate}}</h4>
+        </modal-header>
+        <modal-body>
+            <label style="color:black;">{{title.please_contact_to_admin | translate}}</label>
+            
+        </modal-body>
+        <modal-footer>
+            <a [routerLink]="['/franchise/logout']"><i class="fa fa-sign-out"></i>{{menu_title.logout | translate}}</a>
+        </modal-footer>
+    
+</modal>

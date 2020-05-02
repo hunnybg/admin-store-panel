@@ -1,0 +1,122 @@
+<footer [myLoading]="myLoading" ></footer> 
+<form #adminsettingForm="ngForm" (ngSubmit)="AdminSetting(adminsettingForm.value)" >
+    <div class="panel-body">
+
+        <fieldset class="form-horizontal">
+
+            <div class="form-group"><label class="col-sm-3 control-label">{{title.name | translate}}:</label>
+                <div class="col-sm-9"><input type="text" class="form-control" [(ngModel)]="admin_setting.admin_name" #admin_name="ngModel"  name="admin_name" placeholder="Admin name"></div>
+            </div>
+            <div class="form-group"><label class="col-sm-3 control-label">{{title.email | translate}}:</label>
+                <div class="col-sm-9"><input type="text" class="form-control" [(ngModel)]="admin_setting.admin_email" #admin_email="ngModel"  name="admin_email" placeholder=""></div>
+            </div>
+
+            <div class="form-group"><label class="col-sm-3 control-label">{{title.phone | translate}}:</label>
+                <div class="col-sm-9"><input type="text" class="form-control" [(ngModel)]="admin_setting.admin_phone_number" #admin_phone_number="ngModel"  name="admin_phone_number" placeholder=""></div>
+            </div>
+            <div class="form-group"><label class="col-sm-3 control-label">{{title.contact_email | translate}}:</label>
+                <div class="col-sm-9"><input type="text" class="form-control" [(ngModel)]="admin_setting.admin_contact_email" #admin_contact_email="ngModel"  name="admin_contact_email" placeholder=""></div>
+            </div>
+            <div class="form-group"><label class="col-sm-3 control-label">{{title.contact_phone | translate}}:</label>
+                <div class="col-sm-9"><input type="text" class="form-control" [(ngModel)]="admin_setting.admin_contact_phone_number" #admin_contact_phone_number="ngModel"  name="admin_contact_phone_number" placeholder=""></div>
+            </div>
+
+
+
+            <div class="form-group"><label class="col-sm-3 control-label">{{title.admin_provider_timeout | translate}}:</label>
+                <div class="col-sm-9"><input type="text" class="form-control" [(ngModel)]="admin_setting.provider_timeout" #provider_timeout="ngModel"  name="provider_timeout" placeholder=""></div>
+            </div>
+
+            <div class="form-group"><label class="col-sm-3 control-label">{{title.admin_app_name | translate}}:</label>
+                <div class="col-sm-9"><input type="text" class="form-control" [(ngModel)]="admin_setting.app_name" #app_name="ngModel"  name="app_name" placeholder=""></div>
+            </div>
+
+            <div class="form-group"><label class="col-sm-3 control-label">{{title.admin_default_search_radius | translate}}:</label>
+                <div class="col-sm-9"><input type="text" class="form-control" [(ngModel)]="admin_setting.default_search_radius" #default_search_radius="ngModel"  name="default_search_radius" placeholder=""></div>
+            </div>
+
+
+            <div class="form-group" [hidden]="admin_setting.admin_country!==''">
+                <label class="col-sm-3 control-label">{{title.country | translate}}:</label>
+                <div class="col-sm-9"> 
+                    <select  chosen class="chosen-select" id="country"  [(ngModel)]="admin_setting.admin_country" #admin_country="ngModel" name="admin_country" >
+                        <option selected style="display:none;">Select Country</option>
+                        <option *ngFor="let i of country_list">{{i.name}}</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="form-group" [hidden]="admin_setting.admin_country==''">
+                <label class="col-sm-3 control-label">{{title.country | translate}}:</label>
+                <div class="col-sm-9">
+                    <input type="text" class="form-control"  [(ngModel)]="admin_setting.admin_country" #admin_country="ngModel"  name="admin_country" required readonly placeholder="">
+                </div>
+            </div>
+                
+            
+            
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label">{{title.admin_panel_timezone | translate}}:</label>
+                <div class="col-sm-9">
+<!--                    <select chosen class="chosen-select" id="admin_panel_timezone" [(ngModel)]="admin_setting.admin_panel_timezone" #admin_panel_timezone="ngModel" name="admin_panel_timezone" >
+                        <option selected style="display:none;">Select Timezone</option>
+                        <option *ngFor="let i of timezone_list">{{i}}</option>
+                        
+                    </select>-->
+                    
+                    <select chosen class="chosen-select" id="admin_panel_timezone" [(ngModel)]="admin_setting.admin_panel_timezone" #admin_panel_timezone="ngModel" name="admin_panel_timezone" data-placeholder="Select Timezone"  tabindex="4">
+
+                        <option *ngFor="let i of timezone_list">{{i}}</option>
+                    </select> 
+                </div>
+            </div>
+            
+<!--            <div class="form-group" [hidden]="admin_setting.admin_panel_timezone==''">
+                <label class="col-sm-3 control-label">{{title.admin_panel_timezone | translate}}:</label>
+                <div class="col-sm-9">
+                    <input type="text" class="form-control"  [(ngModel)]="admin_setting.admin_panel_timezone" #admin_panel_timezone="ngModel"  name="admin_panel_timezone" required readonly placeholder="">
+                </div>
+            </div>-->
+
+            <div class="form-group"><label class="col-sm-3 control-label">{{title.currency | translate}}:</label>
+                <div class="col-sm-4"><input type="text" class="form-control" [(ngModel)]="admin_setting.admin_currency_code" #admin_currency_code="ngModel"  name="admin_currency_code" required readonly placeholder=""></div>
+                <div class="col-sm-4"><input type="text" class="form-control" [(ngModel)]="admin_setting.admin_currency" #admin_currency="ngModel"  name="admin_currency" required readonly placeholder=""></div>
+            </div>
+
+            <div class="form-group"><label class="col-sm-3 control-label">{{title.languages | translate}}:</label>
+                <div class="col-sm-9"> <select chosen class="chosen-select"[(ngModel)]="admin_setting.lang" #lang id="lang" name="lang">
+                        <option value="en">English</option>
+                        <option  value="sp">Spanish</option>
+                        <!--                        <option  value="hi">Hindi</option>
+                                                <option  value="ar">Arabic</option>-->
+
+                    </select> </div>
+            </div>
+
+
+
+            <!--            <div class="form-group"><label class="col-sm-3 control-label">Languages:</label>
+                            <div class="col-sm-9">
+                                <input name="language" [(ngModel)]="admin_setting.language" #language="ngModel"  type="radio" value="English" [checked]="true" (click)="changeLang('en')">English
+                                <input name="language"  [(ngModel)]="admin_setting.language" #language="ngModel"  type="radio"  value="Spanish" (click)="changeLang('sp')">Spanish
+                                <input name="language" [(ngModel)]="admin_setting.language" #language="ngModel"  type="radio"  value="Hindi" (click)="changeLang('hi')">Hindi
+                                <input name="language" [(ngModel)]="admin_setting.language" #language="ngModel"  type="radio"  value="Arabic" (click)="changeLang('ar')">Arabic
+                            </div>
+                        </div>-->
+
+
+            <div class="col-lg-4">
+            </div>
+            <div class="col-lg-4" style="text-align: center;">
+                <input type="submit" id="submit" [disabled]="edit_button==false" name="submit" style="width: 50%;" class="btn btn-primary" value="{{button.submit | translate}}" >
+            </div>
+
+
+
+        </fieldset>
+
+
+
+    </div>
+</form>

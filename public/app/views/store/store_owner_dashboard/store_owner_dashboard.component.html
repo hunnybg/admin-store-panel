@@ -1,0 +1,66 @@
+<div class="row full_height">
+    <div class="col-md-12 col-xs-12 col-sm-12 full_height animated fadeInLeft">
+        <div class="row">
+            <div class="col-md-4 col-xs-4 col-sm-4 login_right_background full_height"></div>
+            <div class="col-md-4 col-xs-4 col-sm-4">
+                <div class="row login_right_background full_height">
+                    <div class="col-md-12 col-xs-12 col-sm-12">
+                        <a [routerLink]="['/store/logout']" style="color: #222222;float: right;margin-top: 15px;"><i
+                                class="fa fa-sign-out"></i>{{helper.menu_title.logout | translate}}</a>
+                    </div>
+
+                    <label class="col-md-12 col-xs-12 col-sm-12" *ngIf='store_owner !== undefined'
+                        style="margin-top: 5px;font-size: xx-large;font-weight: 500;text-align: center;">
+                        {{title.welcome | translate}} {{store_owner.name}}
+                    </label>
+
+                    <div class="col-md-12 col-xs-12 col-sm-12">
+                        <div class="ibox">
+                            <div class="ibox-title" style="text-align: center;">
+                                <h5>{{helper.title.restaurant_available | translate}}</h5>
+                            </div>
+                            <div class="ibox-content login_right_background">
+                                <div class="table-responsive table_height">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>{{title.id | translate}}</th>
+                                                <th>{{title.name | translate}}</th>
+                                                <th>{{title.profile | translate}}</th>
+                                                <th>{{title.action | translate}}</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody *ngIf='stores.length !== 0'>
+                                            <tr *ngFor="let store of stores;  let store_index=index; ">
+                                                <td>{{store.store_unique_code}}</td>
+                                                <td>{{store.name}}</td>
+                                                <td>
+                                                    <img alt="image" class="img-circle" style="height:50px; width:50px;"
+                                                        src="{{store.image_url != '' ? helper.CONSTANT.IMAGE_BASE_URL + store.image_url : 'default.png'}}" />
+                                                </td>
+                                                <td>
+                                                    <button class="btn btn-primary"
+                                                        (click)='auto_login_store(store._id)'>
+                                                        {{title.open_panel | translate}}
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12 col-xs-12 col-sm-12" style="margin-top: 10px;">
+                        <div class="row">
+                            <button class="btn btn-primary btn-block"
+                                (click)='add_new_store()'>{{title.create_new_restaurant | translate}}</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-xs-4 col-sm-4 login_right_background full_height"></div>
+        </div>
+    </div>
+</div>

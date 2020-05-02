@@ -1,0 +1,99 @@
+<footer [myLoading]="myLoading" ></footer> 
+<!--<div class="add_btn_bg" style="text-align: center;">
+    <button [routerLink]="['/admin/add_country']" class="btn add_btn pull-right" style="margin-right: 50px;margin-top: 10px;">{{button.add_country | translate}}<span class="fa fa-plus" style="margin-left: 8px;"></span></button>
+        <input name="lang" type="radio" [checked]="true" (click)="changeLang('en')">English
+        <input name="lang" type="radio" (click)="changeLang('sp')">Spanish
+        <input name="lang" type="radio" (click)="changeLang('hi')">Hindi
+        <a [routerLink]="['/admin/add_country']"> <input class="btn add_btn pull-right" style="margin-top:12px;" value="{{button.add_country | translate}}" ></a>
+</div>-->
+
+<!--<div class="row wrapper col-sm-12 col-md-12 col-xs-12 col-lg-12 fix_search_bar border-bottom white-bg page-heading">
+    <div class="row">
+        <div class="col-md-3 col-sm-12 pull-right">
+            <div class="col-md-6 col-sm-6 add_btn_div">
+                <button [routerLink]="['/admin/add_country']" class="btn add_btn pull-right" style="margin-bottom: 10px;margin-right: 50px;">{{button.add_country | translate}}<span class="fa fa-plus" style="margin-left: 8px;"></span></button>
+            </div>
+        </div>
+    </div>
+</div>-->
+
+<div class="row wrapper fix_search_bar border-bottom white-bg page-heading">
+    <div class="row">
+        
+        <div class="col-md-8 col-sm-12">
+            <div class="col-md-12 remove_padding">
+                <div class="form-group" id="search_fields">
+                    <div class="input-group">
+
+                        <input type="text" (keyup)="filter_country_list(filter_country_name)" class="form-control search_box" [(ngModel)]="filter_country_name" placeholder="Search Country" style="color:#000000;" name="filter_country_name">
+                        <span class="input-group-addon search_icon"><span class="fa fa-search"></span></span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-md-3 col-sm-12 pull-right">
+            <div class="col-md-6 col-sm-6 add_btn_div">
+                <button [routerLink]="['/admin/add_country']" class="btn add_btn">{{button.add_country | translate}}<span class="fa fa-plus" style="margin-left: 8px;"></span></button>
+                <!--                            <a [routerLink]="['/admin/add_city']" class="pull-right"> <button class="btn add_btn pull-right">{{button.add_city | translate}}<span class="fa fa-plus pull-right" style="margin-top: 2px;"></span></button></a>-->
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="wrapper wrapper-content content_top_bar_view animated fadeInRight">
+    <div>
+        <div *ngFor="let i of filtered_country_list">
+            <div class="col-lg-2 col-md-3 col-sm-6 col-xs-12 user_profile">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <a class="pull-right" (click)="editCountry(i._id)"><i class="fa fa-pencil" style="font-size:20px;color:#676a6c"></i></a>
+                        <h5>{{i.country_name}}</h5>
+                    </div>
+                    <div>
+                        <div class="ibox-content" style="text-align: center">
+                            <img alt=""   src="{{helper.CONSTANT.IMAGE_BASE_URL + i.country_flag}}"  >
+                            
+                        </div>
+                        <div class="ibox-content profile-content">
+                            <h4><strong></strong></h4>
+                            <ul class="list-group clear-list">
+                                <li class="list-group-item fist-item">
+                                    <span class="pull-right"> {{i.currency_sign}} </span>
+                                    {{title.currency_sign | translate}}
+                                </li>
+                                <li class="list-group-item">
+                                    <span class="pull-right"> {{i.country_phone_code}} </span>
+                                    {{ title.country_phone_code | translate }}
+                                </li>
+                                <li class="list-group-item">
+                                    <span class="pull-right"> {{i.currency_code}} </span>
+                                    {{title.currency_code | translate }}
+                                </li>
+                                <li class="list-group-item">
+                                    <span class="pull-right"> <ui-switch (change)="is_business_change(i._id, $event)" style="float: right;" [(ngModel)]="i.is_business" name="is_business"></ui-switch></span>
+                                    {{title.business | translate}}
+                                </li>
+                                <li class="list-group-item">
+                                    <span class="pull-right"> <ui-switch (change)="is_referral_user_change(i._id, $event)" style="float: right;" [(ngModel)]="i.is_referral_user" name="is_referral_user"></ui-switch></span>
+                                    {{title.referral_for_user | translate}}
+                                </li>
+                                <li class="list-group-item">
+                                    <span class="pull-right"> <ui-switch (change)="is_referral_store_change(i._id, $event)" style="float: right;" [(ngModel)]="i.is_referral_store" name="is_referral_store"></ui-switch></span>
+                                    {{title.referral_for_store | translate}}
+                                </li>
+                                <li class="list-group-item">
+                                    <span class="pull-right"> <ui-switch (change)="is_referral_provider_change(i._id, $event)" style="float: right;" [(ngModel)]="i.is_referral_provider" name="is_referral_provider"></ui-switch></span>
+                                    {{title.referral_for_provider | translate}}
+                                </li>
+                            </ul>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

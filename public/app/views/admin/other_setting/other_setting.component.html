@@ -1,0 +1,652 @@
+<footer [myLoading]="myLoading"></footer>
+<form #appswitchsettingForm="ngForm" (ngSubmit)="AppSwitchSetting(appswitchsettingForm.value)">
+    <div class="wrapper wrapper-content animated fadeInRight">
+
+        <div class="row">
+
+            <div class="col-lg-12">
+                <div class="ibox">
+                    <div class="ibox-title">
+                        <label class="control-label">{{heading_title.other_setting | translate}}</label>
+                    </div>
+                    <div class="ibox-content">
+                        <div class="row">
+
+                            <div class="col-lg-4 form-group">
+                                <label
+                                    class="col-lg-9 col-xs-9 control-label">{{title.sms_notification | translate}}</label>
+
+                                <div class="col-lg-3 col-xs-3 form-group">
+                                    <ui-switch [(ngModel)]="app_switch_setting.is_sms_notification"
+                                        #is_sms_notification="ngModel" name="is_sms_notification"></ui-switch>
+
+                                </div>
+                            </div>
+                            <div class="col-lg-4  form-group">
+                                <label
+                                    class="col-lg-9 col-xs-9 control-label">{{title.mail_notification | translate}}</label>
+
+                                <div class="col-lg-3 col-xs-3 form-group">
+                                    <ui-switch [(ngModel)]="app_switch_setting.is_mail_notification"
+                                        #is_mail_notification="ngModel" name="is_mail_notification"></ui-switch>
+
+                                </div>
+                            </div>
+                            <div class="col-lg-4  form-group">
+                                <label
+                                    class="col-lg-9 col-xs-9 control-label">{{title.push_notification | translate}}</label>
+
+                                <div class="col-lg-3 col-xs-3 form-group">
+                                    <ui-switch [(ngModel)]="app_switch_setting.is_push_notification"
+                                        #is_push_notification="ngModel" name="is_push_notification"></ui-switch>
+
+                                </div>
+                            </div>
+
+
+
+
+
+
+
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-4 form-group">
+                                <label
+                                    class="col-lg-9 col-xs-9 control-label">{{title.pickup_delivery_confirmation_code | translate}}</label>
+
+                                <div class="col-lg-3 col-xs-3 form-group">
+                                    <ui-switch
+                                        [(ngModel)]="app_switch_setting.is_confirmation_code_required_at_pickup_delivery"
+                                        #is_confirmation_code_required_at_pickup_delivery="ngModel"
+                                        name="is_confirmation_code_required_at_pickup_delivery"></ui-switch>
+
+                                </div>
+                            </div>
+
+                            <div class="col-lg-4 form-group">
+                                <label
+                                    class="col-lg-9 col-xs-9 control-label">{{title.complete_delivery_confirmation_code | translate}}</label>
+
+                                <div class="col-lg-3 col-xs-3 form-group">
+                                    <ui-switch
+                                        [(ngModel)]="app_switch_setting.is_confirmation_code_required_at_complete_delivery"
+                                        #is_confirmation_code_required_at_complete_delivery="ngModel"
+                                        name="is_confirmation_code_required_at_complete_delivery"></ui-switch>
+
+                                </div>
+                            </div>
+
+                            <div class="col-lg-4 form-group">
+                                <label
+                                    class="col-lg-9 col-xs-9 control-label">{{title.complete_delivery_confirmation_code | translate}}</label>
+
+                                <div class="col-lg-3 col-xs-3 form-group">
+                                    <ui-switch
+                                        [(ngModel)]="app_switch_setting.is_confirmation_code_required_at_complete_delivery"
+                                        #is_confirmation_code_required_at_complete_delivery="ngModel"
+                                        name="is_confirmation_code_required_at_complete_delivery"></ui-switch>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-4 col-sm-6">
+                <div class="ibox">
+                    <div class="ibox-title">
+                        <label class="control-label">{{heading_title.user_app | translate}}</label>
+                    </div>
+                    <div class="ibox-content">
+                        <div class="row">
+                            <div class="form-group">
+                                <label
+                                    class="col-lg-9 col-xs-9 control-label">{{title.login_by_email | translate}}</label>
+
+                                <div class="col-lg-3 col-xs-3 form-group">
+                                    <ui-switch (change)="onChange($event, 'email')"
+                                        [(ngModel)]="app_switch_setting.is_user_login_by_email"
+                                        #is_user_login_by_email="ngModel" name="is_user_login_by_email"></ui-switch>
+
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label
+                                    class="col-lg-9 col-xs-9 control-label">{{title.login_by_phone | translate}}</label>
+
+                                <div class="col-lg-3 col-xs-3 form-group">
+                                    <ui-switch (change)="onChange($event, 'phone')"
+                                        [(ngModel)]="app_switch_setting.is_user_login_by_phone"
+                                        #is_user_login_by_phone="ngModel" name="is_user_login_by_phone"></ui-switch>
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-sm-6">
+                <div class="ibox">
+                    <div class="ibox-title">
+                        <label class="control-label">{{heading_title.provider_app | translate}}</label>
+                    </div>
+                    <div class="ibox-content">
+                        <div class="row">
+                            <div class="form-group">
+                                <label
+                                    class="col-lg-9 col-xs-9 control-label">{{title.login_by_email | translate}}</label>
+
+                                <div class="col-lg-3 col-xs-3 form-group">
+                                    <ui-switch (change)="providerOnChange($event, 'email')"
+                                        [(ngModel)]="app_switch_setting.is_provider_login_by_email"
+                                        #is_provider_login_by_email="ngModel" name="is_provider_login_by_email">
+                                    </ui-switch>
+
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label
+                                    class="col-lg-9 col-xs-9 control-label">{{title.login_by_phone | translate}}</label>
+
+                                <div class="col-lg-3 col-xs-3 form-group">
+                                    <ui-switch (change)="providerOnChange($event, 'phone')"
+                                        [(ngModel)]="app_switch_setting.is_provider_login_by_phone"
+                                        #is_provider_login_by_phone="ngModel" name="is_provider_login_by_phone">
+                                    </ui-switch>
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+
+
+            <div class="col-lg-4 col-sm-6">
+                <div class="ibox">
+                    <div class="ibox-title">
+                        <label class="control-label">{{heading_title.store_app | translate}}</label>
+                    </div>
+                    <div class="ibox-content">
+                        <div class="row">
+                            <div class="form-group">
+                                <label
+                                    class="col-lg-9 col-xs-9 control-label">{{title.login_by_email | translate}}</label>
+
+                                <div class="col-lg-3 col-xs-3 form-group">
+                                    <ui-switch (change)="storeOnChange($event, 'email')"
+                                        [(ngModel)]="app_switch_setting.is_store_login_by_email"
+                                        #is_store_login_by_email="ngModel" name="is_store_login_by_email"></ui-switch>
+
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label
+                                    class="col-lg-9 col-xs-9 control-label">{{title.login_by_phone | translate}}</label>
+
+                                <div class="col-lg-3 col-xs-3 form-group">
+                                    <ui-switch (change)="storeOnChange($event, 'phone')"
+                                        [(ngModel)]="app_switch_setting.is_store_login_by_phone"
+                                        #is_store_login_by_phone="ngModel" name="is_store_login_by_phone"></ui-switch>
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+
+
+        </div>
+
+        <div class="row">
+            <div class="col-lg-4 col-sm-6">
+                <div class="ibox">
+                    <div class="ibox-title">
+                        <label class="control-label">{{heading_title.user_app | translate}}</label>
+                    </div>
+                    <div class="ibox-content">
+                        <div class="row">
+
+                            <div class="form-group">
+                                <label
+                                    class="col-lg-9 col-xs-9 control-label">{{title.login_by_social | translate}}</label>
+
+                                <div class="col-lg-3 col-xs-3 form-group">
+                                    <ui-switch [(ngModel)]="app_switch_setting.is_user_login_by_social"
+                                        #is_user_login_by_social="ngModel" name="is_user_login_by_social"></ui-switch>
+
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label
+                                    class="col-lg-9 col-xs-9 control-label">{{title.use_referral | translate}}</label>
+
+                                <div class="col-lg-3 col-xs-3 form-group">
+                                    <ui-switch [(ngModel)]="app_switch_setting.is_referral_to_user"
+                                        #is_referral_to_user="ngModel" name="is_referral_to_user"></ui-switch>
+
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label
+                                    class="col-lg-9 col-xs-9 control-label">{{title.verify_email | translate}}</label>
+
+                                <div class="col-lg-3 col-xs-3 form-group">
+                                    <ui-switch [(ngModel)]="app_switch_setting.is_user_mail_verification"
+                                        #is_user_mail_verification="ngModel" name="is_user_mail_verification">
+                                    </ui-switch>
+
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label
+                                    class="col-lg-9 col-xs-9 control-label">{{title.verify_phone | translate}}</label>
+
+                                <div class="col-lg-3 col-xs-3 form-group">
+                                    <ui-switch [(ngModel)]="app_switch_setting.is_user_sms_verification"
+                                        #is_user_sms_verification="ngModel" name="is_user_sms_verification"></ui-switch>
+
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label
+                                    class="col-lg-9 col-xs-9 control-label">{{title.upload_documents | translate}}</label>
+
+                                <div class="col-lg-3 col-xs-3 form-group">
+                                    <ui-switch [(ngModel)]="app_switch_setting.is_upload_user_documents"
+                                        #is_upload_user_documents="ngModel" name="is_upload_user_documents"></ui-switch>
+
+                                </div>
+                            </div>
+
+
+
+
+                            <div class="form-group">
+                                <label
+                                    class="col-lg-9 col-xs-9 control-label">{{title.profile_picture_required | translate}}</label>
+
+                                <div class="col-lg-3 col-xs-3 form-group">
+                                    <ui-switch [(ngModel)]="app_switch_setting.is_user_profile_picture_required"
+                                        #is_user_profile_picture_required="ngModel"
+                                        name="is_user_profile_picture_required"></ui-switch>
+
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label
+                                    class="col-lg-9 col-xs-9 control-label">{{title.show_optional_field | translate}}</label>
+
+                                <div class="col-lg-3 col-xs-3 form-group">
+                                    <ui-switch [(ngModel)]="app_switch_setting.is_show_optional_field_in_user_register"
+                                        #is_show_optional_field_in_user_register="ngModel"
+                                        name="is_show_optional_field_in_user_register"></ui-switch>
+
+                                </div>
+                            </div>
+
+
+
+                            <!--                            <div class="form-group">
+                                <label class="col-lg-9 col-xs-9 control-label">{{title.email_id_required | translate}}</label>  
+
+                                <div class="col-lg-3 col-xs-3 form-group">
+                                    <ui-switch [disabled]="app_switch_setting.is_user_mail_verification==true" [(ngModel)]="app_switch_setting.is_email_id_field_required_in_user_register" #is_email_id_field_required_in_user_register="ngModel" name="is_email_id_field_required_in_user_register" disabled></ui-switch>
+
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="col-lg-9 col-xs-9 control-label">{{title.phone_required | translate}}</label>  
+
+                                <div class="col-lg-3 col-xs-3 form-group">
+                                    <ui-switch [disabled]="app_switch_setting.is_user_sms_verification==true" [(ngModel)]="app_switch_setting.is_phone_field_required_in_user_register" #is_phone_field_required_in_user_register="ngModel" name="is_phone_field_required_in_user_register"></ui-switch>
+
+                                </div>
+                            </div>-->
+
+
+
+
+
+                            <div class="form-group">
+                                <label class="col-lg-9 col-xs-9 control-label"></label>
+
+                                <div class="col-lg-3 col-xs-3 form-group">
+
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-lg-9 col-xs-9 control-label"></label>
+
+                                <div class="col-lg-3 col-xs-3 form-group">
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-sm-6">
+                <div class="ibox">
+                    <div class="ibox-title">
+                        <label class="control-label">{{heading_title.provider_app | translate}}</label>
+                    </div>
+                    <div class="ibox-content wizard">
+                        <div class="row">
+                            <div class="form-group">
+                                <label
+                                    class="col-lg-9 col-xs-9 control-label">{{title.login_by_social | translate}}</label>
+
+                                <div class="col-lg-3 col-xs-3 form-group">
+                                    <ui-switch [(ngModel)]="app_switch_setting.is_provider_login_by_social"
+                                        #is_provider_login_by_social="ngModel" name="is_provider_login_by_social">
+                                    </ui-switch>
+
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label
+                                    class="col-lg-9 col-xs-9 control-label">{{title.use_referral | translate}}</label>
+
+                                <div class="col-lg-3 col-xs-3 form-group">
+                                    <ui-switch [(ngModel)]="app_switch_setting.is_referral_to_provider"
+                                        #is_referral_to_provider="ngModel" name="is_referral_to_provider"></ui-switch>
+
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label
+                                    class="col-lg-9 col-xs-9 control-label">{{title.verify_email | translate}}</label>
+
+                                <div class="col-lg-3 col-xs-3 form-group">
+                                    <ui-switch [(ngModel)]="app_switch_setting.is_provider_mail_verification"
+                                        #is_provider_mail_verification="ngModel" name="is_provider_mail_verification">
+                                    </ui-switch>
+
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label
+                                    class="col-lg-9 col-xs-9 control-label">{{title.verify_phone | translate}}</label>
+
+                                <div class="col-lg-3 col-xs-3 form-group">
+                                    <ui-switch [(ngModel)]="app_switch_setting.is_provider_sms_verification"
+                                        #is_provider_sms_verification="ngModel" name="is_provider_sms_verification">
+                                    </ui-switch>
+
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label
+                                    class="col-lg-9 col-xs-9 control-label">{{title.upload_documents | translate}}</label>
+
+                                <div class="col-lg-3 col-xs-3 form-group">
+                                    <ui-switch [(ngModel)]="app_switch_setting.is_upload_provider_documents"
+                                        #is_upload_provider_documents="ngModel" name="is_upload_provider_documents">
+                                    </ui-switch>
+
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label
+                                    class="col-lg-9 col-xs-9 control-label">{{title.profile_picture_required | translate}}</label>
+
+                                <div class="col-lg-3 col-xs-3 form-group">
+                                    <ui-switch [(ngModel)]="app_switch_setting.is_provider_profile_picture_required"
+                                        #is_provider_profile_picture_required="ngModel"
+                                        name="is_provider_profile_picture_required"></ui-switch>
+
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label
+                                    class="col-lg-9 col-xs-9 control-label">{{title.show_optional_field | translate}}</label>
+
+                                <div class="col-lg-3 col-xs-3 form-group">
+                                    <ui-switch
+                                        [(ngModel)]="app_switch_setting.is_show_optional_field_in_provider_register"
+                                        #is_show_optional_field_in_provider_register="ngModel"
+                                        name="is_show_optional_field_in_provider_register"></ui-switch>
+
+                                </div>
+                            </div>
+
+
+
+
+                            <!--                              <div class="form-group">
+                                <label class="col-lg-9 col-xs-9 control-label">{{title.email_id_required | translate}}</label>  
+
+                                <div class="col-lg-3 col-xs-3 form-group">
+                                    <ui-switch [disabled]="app_switch_setting.is_provider_mail_verification==true" [(ngModel)]="app_switch_setting.is_email_id_field_required_in_provider_register" #is_email_id_field_required_in_provider_register="ngModel" name="is_email_id_field_required_in_provider_register"></ui-switch>
+
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="col-lg-9 col-xs-9 control-label">{{title.phone_required | translate}}</label>  
+
+                                <div class="col-lg-3 col-xs-3 form-group">
+                                    <ui-switch [disabled]="app_switch_setting.is_provider_sms_verification==true" [(ngModel)]="app_switch_setting.is_phone_field_required_in_provider_register" #is_phone_field_required_in_provider_register="ngModel" name="is_phone_field_required_in_provider_register"></ui-switch>
+
+                                </div>
+                            </div>-->
+
+
+
+
+
+
+
+
+
+                            <div class="form-group">
+                                <label
+                                    class="col-lg-9 col-xs-9 control-label">{{title.earning_add_in_wallet_using_cash | translate}}</label>
+
+                                <div class="col-lg-3 col-xs-3 form-group">
+                                    <ui-switch
+                                        [(ngModel)]="app_switch_setting.is_provider_earning_add_in_wallet_on_cash_payment"
+                                        #is_provider_earning_add_in_wallet_on_cash_payment="ngModel"
+                                        name="is_provider_earning_add_in_wallet_on_cash_payment"></ui-switch>
+
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label
+                                    class="col-lg-9 col-xs-9 control-label">{{title.earning_add_in_wallet_using_other | translate}}</label>
+
+                                <div class="col-lg-3 col-xs-3 form-group">
+                                    <ui-switch
+                                        [(ngModel)]="app_switch_setting.is_provider_earning_add_in_wallet_on_other_payment"
+                                        #is_provider_earning_add_in_wallet_on_other_payment="ngModel"
+                                        name="is_provider_earning_add_in_wallet_on_other_payment"></ui-switch>
+
+                                </div>
+                            </div>
+
+
+
+
+
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+
+
+
+
+
+
+            <div class="col-lg-4 col-sm-6">
+                <div class="ibox">
+                    <div class="ibox-title">
+                        <label class="control-label">{{heading_title.store_app | translate}}</label>
+                    </div>
+                    <div class="ibox-content wizard">
+                        <div class="row">
+
+                            <div class="form-group">
+                                <label
+                                    class="col-lg-9 col-xs-9 control-label">{{title.login_by_social | translate}}</label>
+
+                                <div class="col-lg-3 col-xs-3 form-group">
+                                    <ui-switch [(ngModel)]="app_switch_setting.is_store_login_by_social"
+                                        #is_store_login_by_social="ngModel" name="is_store_login_by_social"></ui-switch>
+
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label
+                                    class="col-lg-9 col-xs-9 control-label">{{title.use_referral | translate}}</label>
+
+                                <div class="col-lg-3 col-xs-3 form-group">
+                                    <ui-switch [(ngModel)]="app_switch_setting.is_referral_to_store"
+                                        #is_referral_to_store="ngModel" name="is_referral_to_store"></ui-switch>
+
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label
+                                    class="col-lg-9 col-xs-9 control-label">{{title.verify_email | translate}}</label>
+
+                                <div class="col-lg-3 col-xs-3 form-group">
+                                    <ui-switch [(ngModel)]="app_switch_setting.is_store_mail_verification"
+                                        #is_store_mail_verification="ngModel" name="is_store_mail_verification">
+                                    </ui-switch>
+
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label
+                                    class="col-lg-9 col-xs-9 control-label">{{title.verify_phone | translate}}</label>
+
+                                <div class="col-lg-3 col-xs-3 form-group">
+                                    <ui-switch [(ngModel)]="app_switch_setting.is_store_sms_verification"
+                                        #is_store_sms_verification="ngModel" name="is_store_sms_verification">
+                                    </ui-switch>
+
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label
+                                    class="col-lg-9 col-xs-9 control-label">{{title.upload_documents | translate}}</label>
+
+                                <div class="col-lg-3 col-xs-3 form-group">
+                                    <ui-switch [(ngModel)]="app_switch_setting.is_upload_store_documents"
+                                        #is_upload_store_documents="ngModel" name="is_upload_store_documents">
+                                    </ui-switch>
+
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label
+                                    class="col-lg-9 col-xs-9 control-label">{{title.profile_picture_required | translate}}</label>
+
+                                <div class="col-lg-3 col-xs-3 form-group">
+                                    <ui-switch [(ngModel)]="app_switch_setting.is_store_profile_picture_required"
+                                        #is_store_profile_picture_required="ngModel"
+                                        name="is_store_profile_picture_required"></ui-switch>
+
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label
+                                    class="col-lg-9 col-xs-9 control-label">{{title.show_optional_field | translate}}</label>
+
+                                <div class="col-lg-3 col-xs-3 form-group">
+                                    <ui-switch [(ngModel)]="app_switch_setting.is_show_optional_field_in_store_register"
+                                        #is_show_optional_field_in_store_register="ngModel"
+                                        name="is_show_optional_field_in_store_register"></ui-switch>
+
+                                </div>
+                            </div>
+
+
+                            <!--                             <div class="form-group">
+                                <label class="col-lg-9 col-xs-9 control-label">{{title.email_id_required | translate}}</label>  
+
+                                <div class="col-lg-3 col-xs-3 form-group">
+                                    <ui-switch [disabled]="app_switch_setting.is_store_mail_verification==true" [(ngModel)]="app_switch_setting.is_email_id_field_required_in_store_register" #is_email_id_field_required_in_store_register="ngModel" name="is_email_id_field_required_in_store_register"></ui-switch>
+
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="col-lg-9 col-xs-9 control-label">{{title.phone_required | translate}}</label>  
+
+                                <div class="col-lg-3 col-xs-3 form-group">
+                                    <ui-switch [disabled]="app_switch_setting.is_store_sms_verification==true" [(ngModel)]="app_switch_setting.is_phone_field_required_in_store_register" #is_phone_field_required_in_store_register="ngModel" name="is_phone_field_required_in_store_register"></ui-switch>
+
+                                </div>
+                            </div>-->
+
+
+
+
+                            <div class="form-group">
+                                <label
+                                    class="col-lg-9 col-xs-9 control-label">{{title.earning_add_in_wallet_using_cash | translate}}</label>
+
+                                <div class="col-lg-3 col-xs-3 form-group">
+                                    <ui-switch
+                                        [(ngModel)]="app_switch_setting.is_store_earning_add_in_wallet_on_cash_payment"
+                                        #is_store_earning_add_in_wallet_on_cash_payment="ngModel"
+                                        name="is_store_earning_add_in_wallet_on_cash_payment"></ui-switch>
+
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label
+                                    class="col-lg-9 col-xs-9 control-label">{{title.earning_add_in_wallet_using_other | translate}}</label>
+
+                                <div class="col-lg-3 col-xs-3 form-group">
+                                    <ui-switch
+                                        [(ngModel)]="app_switch_setting.is_store_earning_add_in_wallet_on_other_payment"
+                                        #is_store_earning_add_in_wallet_on_other_payment="ngModel"
+                                        name="is_store_earning_add_in_wallet_on_other_payment"></ui-switch>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+            </div>
+            <div class="col-lg-4" style="text-align: center;">
+                <input type="submit" id="submit" [disabled]="edit_button==false" name="submit" style="width: 50%;"
+                    class="btn btn-primary" value="{{button.submit | translate}}">
+            </div>
+        </div>
+    </div>
+
+</form>

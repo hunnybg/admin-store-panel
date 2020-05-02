@@ -1,0 +1,121 @@
+<footer [myLoading]="myLoading" ></footer>   
+<form #productForm="ngForm" (ngSubmit)="updateProduct(productForm.value)" enctype='multipart/form-data' >
+    <div class="wrapper wrapper-content animated fadeInRight content_top_bar">
+	<div class="row">
+            <div class="col-lg-12">
+                <div class="col-lg-6 col-sm-9">
+                    <div class="ibox">
+                        <div class="ibox-title">
+                            <label class="control-label">{{heading_title.product_title | translate}}</label> 
+                        </div>
+                        <div class="ibox-content">
+                            <div class="row">
+                                    <input type="hidden" class="form-control" [(ngModel)]="edit_product.store_id" #store_id="ngModel"  name="store_id" />
+                                    <input type="hidden" class="form-control" [(ngModel)]="edit_product.server_token" #server_token="ngModel"  name="server_token" />
+                                    <input type="hidden" class="form-control" [(ngModel)]="product_id" #store_id="ngModel"  name="product_id" />
+                                    
+                                   
+                                <div class="form-group">
+                                    <label class="col-lg-4 control-label">{{title.name | translate}}</label>  
+                                    <div class="col-lg-8 form-group">
+                                        <input type="text" class="form-control" [(ngModel)]="edit_product.name" (keyup)="check_product()" #name="ngModel"  name="name" required />
+                                        <label *ngIf=product_already_exist >{{message.product_already_exist | translate}}</label>
+                                        <div *ngIf="name.errors && (name.dirty || name.touched)">
+                                            <div style="color: red;" [hidden]="!name.errors.required">{{validation_message.product_name_required | translate}}</div>
+                                        </div>
+                                    </div> 
+                                    
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-lg-4 control-label">{{title.details | translate}}</label>  
+                                    <div class="col-lg-8 form-group">
+                                        
+                                        <textarea class="form-control" [(ngModel)]="edit_product.details" #details="ngModel"  name="details" required ></textarea>
+
+                                        <div *ngIf="details.errors && (details.dirty || details.touched)">
+                                            <div style="color: red;" [hidden]="!details.errors.required">{{validation_message.product_name_required | translate}}</div>
+                                        </div>
+                                    </div> 
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-lg-4 control-label">{{title.is_visible_in_store | translate}}</label>  
+
+                                    <div class="col-lg-8 form-group">
+                                        <ui-switch [(ngModel)]="edit_product.is_visible_in_store" #is_visible_in_store="ngModel" name="is_visible_in_store"></ui-switch>
+
+                                    </div>
+                                </div>
+                                <div class="form-group col-lg-4">
+                                </div>
+                                <div class="form-group col-lg-4">
+                                    <div  style="width: 100%;height:131px;">
+                                        <div class="col-lg-12 profile-images center">
+
+                                            <span class="btn-file"><img style="width: 110px;height: 110px;" src="{{edit_product.image_url != '' ? edit_product.image_url : 'plus_box.png'}}" alt="">
+                                                <input type="file" accept="image/*" (change)="image_update($event)" name="image_url">
+                                            </span>
+
+                                        </div>
+                                        <div class="col-lg-12 text_center">
+                                            <span style="color: red;">{{image_error | translate}}</span>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <label class="control-label" style="color:#bc202b;">{{title.note_for_image | translate}}:-</label>
+                                    </div>
+                                    <div class="row">
+                                        <label class="control-label" >{{title.image_note1 | translate}} {{image_setting.image_min_width}}x{{image_setting.image_min_height}}
+                                            {{title.image_note2 | translate}} {{image_setting.image_max_width}}x{{image_setting.image_max_height}}),</label><br>
+                                        <label class="control-label">{{title.image_note3 | translate}} {{image_setting.image_ratio}} {{title.image_note4 | translate}} </label>
+                                        <label *ngFor="let i of image_setting.image_type; let last=last;"> {{(i.split('/'))[1]}}<label [hidden]="last">,</label> </label>
+                                        <label class="control-label"> {{title.image_note5 | translate}}</label>
+
+                                    </div>
+                                </div>
+                                <!--<div class="form-group">-->
+                                    <!--<label style="font-weight: 100;" >Note:  Upload image size within width x height (  min {{image_setting.image_min_width}}x{{image_setting.image_min_height}}-->
+                                    <!--and max {{image_setting.image_max_width}}x{{image_setting.image_max_height}}),</label>-->
+                                    <!--<label style="font-weight: 100;">Image ratio should be {{image_setting.image_ratio}} and upload only </label>-->
+                                    <!--<label *ngFor="let i of image_setting.image_type"> {{(i.split('/'))[1]}},  </label><label style="font-weight: 100;"> file</label>-->
+                                <!--</div>-->
+                            </div>
+                            <div class="row">   
+                                <div class="col-lg-4">
+                                </div>
+                                <div class="col-lg-4" style="text-align: center;">
+                                    <input [disabled]="product_already_exist" type="submit" name="submit" style="width: 50%;" class="btn btn-primary" value="{{button.update | translate}}" >
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<modal keyboard="false" backdrop="static" cssClass="modal-xl animated fadeInDownBig" #image_crop_modal>
+    <modal-header [show-close]="true">
+
+    </modal-header>
+    <modal-body>
+        <img-cropper #cropper [image]="data" [settings]="cropperSettings"></img-cropper><br>
+        {{cropperSettings.croppedWidth}}
+        {{cropperSettings.croppedHeight}}
+        <div class="col-lg-12 text_center">
+            <span style="color: red;">{{image_error | translate}}</span>
+        </div>
+
+    </modal-body>
+    <modal-footer>
+        <div style="text-align: center">
+            <button type="button" (click)="crop($event)" class="btn btn-primary">{{button.done | translate}}</button>
+        </div>
+    </modal-footer>
+</modal>
+
+
+

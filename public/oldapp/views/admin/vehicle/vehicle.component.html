@@ -1,0 +1,71 @@
+<footer [myLoading]="myLoading" ></footer> 
+<!--<div class="add_btn_bg" style="text-align: center;">
+    <button [routerLink]="['/admin/add_vehicle']" class="btn add_btn pull-right" style="margin-right: 50px;margin-top: 10px;">{{button.add_vehicle | translate}}<span class="fa fa-plus" style="margin-left: 8px;"></span></button>
+    <a [routerLink]="['/admin/add_vehicle']"> <input class="btn add_btn pull-right" style="margin-top:12px;margin-right:15px;" value="{{button.add_vehicle | translate}}" ></a>
+</div>-->
+
+<div class="row wrapper col-sm-12 col-md-12 col-xs-12 col-lg-12 fix_search_bar border-bottom white-bg page-heading">
+    <div class="row">
+        <div class="col-md-3 col-sm-12 pull-right">
+            <div class="col-md-6 col-sm-6 add_btn_div">
+
+                <button [routerLink]="['/admin/add_vehicle']" class="btn add_btn pull-right" style="margin-bottom: 10px;margin-right: 50px;">{{button.add_vehicle | translate}}<span class="fa fa-plus" style="margin-left: 8px;"></span></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="wrapper wrapper-content content_top_bar_view animated fadeInRight">
+    <div class="row animated fadeInRight">
+        <div *ngFor="let i of vehicle_list" >
+            <div class="col-md-3">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title" >
+                        <a class="pull-right" (click)="editVehicle(i._id)"><i class="fa fa-pencil" style="font-size:15px;color:#676a6c"></i></a>
+                        <h3><b><strong>{{i.vehicle_name}}</strong></b></h3>
+                    </div>
+
+                    <div>
+                        <div class="ibox-content add_img_bg_vehicle no-padding border-left-right">
+                            <img alt="" class="img-responsive" src="{{i.image_url != '' ? helper.CONSTANT.IMAGE_BASE_URL + i.image_url : 'plus_box.png'}}">
+
+
+                        </div>
+
+                        <div class="ibox-content profile-content">
+                            <div class="user-button">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <h4>{{title.business | translate }}</h4>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <ui-switch (change)="is_business_change(i._id, $event)" style="float: right;" [(ngModel)]="i.is_business" name="is_business"></ui-switch>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+                        <!--                        <div class="ibox">
+                                                    <div class="ibox-title">
+                        
+                                                        <div class="col-md-6">
+                                                            <h4>{{title.business | translate}}</h4>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <ui-switch (change)="is_business_change(i._id, $event)" style="float: right;" [(ngModel)]="i.is_business" name="is_business"></ui-switch>
+                                                        </div>
+                        
+                                                    </div>
+                                                </div>-->
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+
+
+
+    </div>
+</div>

@@ -1,0 +1,1915 @@
+body,h1,h2,h3,li,ul,p{
+	padding:0px;
+	margin:0px;
+}
+
+@font-face {
+    font-family: myFirstFont;
+    src:url(../font/ClanPro-Medium.otf);
+	}
+
+*{
+	font-family: ClanPro-News, Helvetica, sans-serif;
+}
+@font-face {
+    font-family: ClanPro-News, Helvetica, sans-serif;;
+    src:url(../font/ClanPro-NarrNews.otf);
+}
+@font-face {
+	font-family: ClanPro-News, Helvetica, sans-serif;
+	src:url(../font/ClanProOriginal-News.otf);
+}
+@font-face {
+	font-family: clanprobook;
+	src:url(../font/ClanPro-Book.otf);
+}
+
+.header{
+	height:auto;
+	padding-top:15px;
+	box-shadow:3px  3px 3px #CCC ;
+	padding-bottom:15px;
+	width:auto;
+	font-size: 16px;
+	font-weight: 100;
+}
+.logopor{
+	margin-top:5px;
+}
+.header .logo{
+	display:inline-block;
+	vertical-align:top;
+	
+}
+.header .del{
+	display:inline-block;
+	vertical-align:top;
+	font-size:18px;
+	/*font-weight: 500;*/
+	padding-top:7px;
+	padding-left:5px;
+}
+.header .loc{
+	margin-top:12px;
+}
+.header .asap{
+	display:inline-block;
+	vertical-align:top;
+	font-size:24px;
+	/*font-weight:500;*/
+	background:none;
+	border:none;
+	margin-top:-3px;
+}
+.header .locimg{
+	display:inline-block;
+	vertical-align:top;
+	margin-left:20px;
+}
+.header .locimg1{
+	display:inline-block;
+	vertical-align:top;
+	margin-left:20px;
+	margin-top:-2px;
+}
+.header .locimg img{
+	padding-right:20px;
+}
+.header .loc .enter{
+	padding-left:5px;
+	border:none;
+	font-size:16px;
+	font-weight:200;
+	
+}
+.header .perbag .bag{
+	background:none;
+	border:none;
+}
+.per_bag{
+	background:none;
+	border:none;
+	padding-left:25px;
+}
+.header .perbag img{
+	padding-left:25px;
+}
+.daisection{
+	position:absolute;
+	z-index: 999;
+	width: 100%;
+	margin-top: 76px;
+}
+.daisection_common{
+	position:absolute;
+	z-index: 1;
+	width: 100%;
+	margin-top: 76px;
+}
+
+.oderbox{
+	height:375px;
+	width:350px;
+	background:#FFF;
+	box-shadow: 0 1px 5px rgba(0,0,0,0.12);
+	z-index:0;
+	display:none;
+} 
+.oderbox .line{
+	padding-top:20px;
+}
+.oderbox .line2{
+	padding-top:25px;
+}	
+.oderbox .line3{
+	padding-top:15px;
+}	
+.oderbox .clockimg{
+	display:inline-block;
+	vertical-align:top;
+	
+}
+.odertimeanddate{
+	font-size: 16px;
+	margin-top: 7px;
+}
+.oderbox .possible{
+	display:inline-block;
+	vertical-align:top;
+	font-size:16px;
+	margin-left:15px;
+	text-transform:uppercase;
+	margin-top:6px;
+}
+.oderbox .rightmark{
+	display:inline-block;
+	vertical-align:top;
+	margin-left:28px;
+}
+.oderbox .dateinput{
+	width:310px;
+	height:40px;
+}
+.blackbox{
+	width:310px;
+	height:45px;
+	background:#000;
+	text-align:center;
+	font-size:18px;
+	color:#fff;
+}
+
+.checkoutbox{
+	height:319px;
+	width:335px;
+	background:#FFF;
+	box-shadow: 0 1px 5px rgba(0,0,0,0.12);
+	z-index:0;
+	display:none;
+} 
+.checkoutbox .cro{
+	font-size:16px;
+	font-weight:500;
+
+}
+.checkoutbox .plain{
+	font-size:14px;
+	color:#4c4c4c;
+	font-family: ClanPro-News, Helvetica, sans-serif;;
+}
+.checkoutbox .minus{
+	display:inline-block;
+	vertical-align:top;
+	padding-top:13px;
+	font-size:13px;
+}
+.checkoutbox .num{
+	display:inline-block;
+	vertical-align:top;
+	font-weight:500;
+	margin-left:12px;
+	font-size:16px;
+	margin-top: 12px;
+	
+}
+.checkoutbox .plus{
+	display:inline-block;
+	vertical-align:top;
+	padding-top:14px;
+	margin-left:12px;
+	font-size:13px;
+	
+}
+.checkoutbox .remove{
+	color:#cb212e;
+	font-size:14px;
+	padding-right:10px;
+	font-family: ClanPro-News, Helvetica, sans-serif;;
+}
+.blackboxc{
+	width:336px;
+	height:45px;
+	background:#000;
+	text-align:center;
+	padding-top:11px;
+	margin-left:-15px;
+	margin-top:35px;
+}
+.blackboxc a{
+	font-size:17px;
+	color:#fff;
+}
+.blackboxc .finalprice{
+	font-size:20px;
+	color:#fff;
+	font-family: ClanPro-News, Helvetica, sans-serif;;
+}
+.blackboxctext{
+	padding-left:35px;
+}
+.blackboxcprice{
+	padding-right:38px;
+}
+
+.section1{
+	margin-top:92px;
+	z-index:-1;
+	position:relative;
+}
+   
+.greyporl{
+	background:#e5e5e5;
+	height:385px;
+	width:335px;
+	position:absolute;
+	margin-left:-50px;
+	margin-top:90px;
+	z-index:-1;
+}
+
+.blackporl{
+	background:#000;
+	height:385px;
+	width:335px;
+	position:absolute;
+	margin-left:-53px;
+	margin-top:80px;
+	z-index:-1;
+	display:none;
+}
+.greyporr{
+	background:#e5e5e5;
+	height:385px;
+	width:335px;
+	position:absolute;
+	margin-left:275px;
+	margin-top:-335px;
+	z-index:-1;
+}
+.blackporr{
+	background:#000;
+	height:385px;
+	width:335px;
+	position:absolute;
+	margin-left:275px;
+	margin-top:80px;
+	z-index:-1;
+	display:none;
+}
+.backporr:hover .greyporr{
+	display:none;
+}
+.backporr:hover .blackporr{
+	display:block;
+	
+}
+.backporl:hover .greyporl{
+	display:none;
+}
+.backporl:hover .blackporl{
+	display:block	
+		
+}
+	
+.imagepor{
+	z-index:0;
+}
+.spoonplate{
+	margin-top:66px;
+	margin-left:50px;
+}
+.spoonplate .food {
+	margin-top:30px;
+	color:#3f3f3f;
+}
+.spoonplate .food .bor {
+	margin-top:20px;
+}
+.spoonplate .food span{
+	margin-top:30px;
+	border-bottom:3px solid #3f3f3f;
+
+}
+.spoonplate p{
+	margin-top:30px;
+	color:#a9a9a9;
+	font-size:18px;
+	line-height:30px;
+	font-family: ClanPro-News, Helvetica, sans-serif;;
+}
+.sidetext{
+	margin-left:50px;
+}
+						  
+						  
+.backporl img{
+	width:100%;
+	height:auto;
+}
+.backporr img{
+	width:100%;
+	height:auto;
+}
+	
+.section2{
+	margin-top:125px;
+	
+}
+.alcoholsection{
+	margin-top:125px;
+}
+.section2 .grocry{
+	margin-left:140px;
+	margin-top:75px;
+	
+}
+.section3{	
+	margin-top:125px;
+}
+.section4{	
+	margin-top:75px;
+	position:relative;
+}
+.section5{	
+	margin-top:125px;
+}
+.section6{	
+	margin-top:125px;
+	margin-bottom:140px;
+}
+.footer{
+	background:#000;
+	padding-top:50px;
+	padding-bottom:50px;
+}
+.footer .footlogo{
+	display:inline-block;
+	vertical-align:top;
+}
+.footer .footdel{
+	display:inline-block;
+	vertical-align:top;
+	color:#fff;
+	padding-top:5px;
+	padding-left:15px;
+}
+.footer .foottext{
+	color:#fff;
+	font-size:18px;
+	text-align:justify;
+	margin-left:35px;
+	padding-top:50px;
+}
+.footer .menu{
+	padding-left:30px;
+}
+.footer li{
+	list-style-type:none;
+	padding-bottom:50px;
+}
+.footer li a{
+	text-decoration:none;
+	color:#fff;
+	font-size:22px;
+}
+.footer .follow{
+	color:#fff;
+	font-size:22px;
+	margin-bottom:30px;
+}
+
+.footer .icon{
+	display:inline-block;
+	vertical-align:top;
+	border:1px solid #fff;
+	border-radius:100%;
+	height:55px;
+	width:55px;
+	text-align:center;
+	margin-right:30px;
+	padding-top:15px;
+	
+}
+.footer .icon a{
+	color:#fff;
+	font-size:28px;
+}
+
+                       /*Food Page starts*/
+					   
+.header .city{
+	width:75px;
+	border:none;
+	font-size:14px;
+}
+.header .locf{
+
+}
+.header .search{
+	display: inline-block;
+	vertical-align: top;
+	padding-left: 5px;
+	border: none;
+	margin-left: 5px;
+	font-size: 15px;
+	padding-top: 9px;
+	width: 70%;
+	color: gray;
+}
+
+@media screen and (max-width: 1200px){
+
+	.header .search {
+		width: 55%;
+	}
+}
+
+@media screen and (max-width: 1000px){
+
+	.searchbar{
+		margin-top: 20px;
+	}
+}
+ 
+.locf .cityloc{
+	border-right:1px solid #ccc;
+	display:inline-block;
+	vertical-align:top;
+	margin-left:8px;
+	height:40px;
+	padding-right:30px;
+	padding-top:9px;
+}
+.restaurants{
+}
+.restaurants .dubai{
+	color:#1a1a1a;
+	font-size:25px;
+	font-weight:500;
+	margin-bottom:30px;
+	 font-family: ClanPro-News, Helvetica, sans-serif;;
+}
+
+.foodsection1{
+	margin-bottom:75px;
+}
+.foodsection1 .itembox .paul{
+	font-size: 16px;
+}
+.foodsection1 .itembox .des1{
+	margin-top:-7px;
+}
+
+.foodsection1 .itembox .des{
+	font-size:16px;
+	margin-top:5px ;
+}
+.foodsection1 .itembox .icon{
+	display:inline-block;
+	vertical-align:top;
+	font-size: 16px;
+    margin-right: 5px;
+    margin-top: 8px;
+}
+.foodsection1 .itembox .rate{
+	display:inline-block;
+	vertical-align:top;
+}
+.foodsection1 .itembox .rate h4{
+	font-size:16px;
+}
+
+                          /*Food Page ends*/ 
+						  
+						  /* store page */
+
+.storesection1{
+
+}
+.storebg{
+	width: 100%;
+	z-index:-1;
+	position:absolute;
+} 
+.storebg img{
+	width:100%;
+	height:419px;
+}
+.storeblackpart{
+	width:335px;
+	height:390px;
+	background:#000;
+	z-index:0;
+	color:#fff;
+	padding:20px 15px;
+	margin-top:15px;
+	margin-left: 10%;
+}
+.storepaul{
+	display:inline-block;
+	vertical-align:top;
+}
+.storepaul h1{
+	font-size:30px;
+}
+.paulline{
+	border-top:3px solid #fff;
+	width:53px;
+	margin-top:28px;
+	margin-left:5px;
+	margin-bottom:28px;
+}
+.storestar{
+	display:inline-block;
+	vertical-align:top;
+	float:right;
+}
+.whitestartext{
+	display:inline-block;
+	vertical-align:top;
+	font-size: 21px;
+    margin-left: 5px;
+    margin-top: 3px;
+}
+
+.whitestar{
+	display:inline-block;
+	vertical-align:top;
+	 margin-top: 4px;
+}	
+.storepaultext{
+	font-size:16px;
+	line-height:30px;
+	text-align:justify;
+	padding-bottom:55px;
+}
+.clear{
+	clear:both;
+}
+.storesection2{
+	margin-bottom: 75px;
+}
+
+.storesection2 .filter{
+	border:none;
+	background:#f4f4f4;
+	height:53px;
+	width:148px;
+	font-size:18px;
+	font-weight:500;
+}
+.storesection2 .filter:hover{
+	border:none;
+	background:#e5e5e5;
+	height:53px;
+	width:148px;
+	font-size:18px;
+	font-weight:500;
+}
+.reset{
+	padding-left:10px;
+	padding-top:20px;
+}
+.reset a{
+	color:#000;
+	font-size:17px;
+	border-bottom:1px solid #000;
+	font-weight:500;
+}
+.reset a:hover{
+	text-decoration:none;
+}
+.pricerange{
+	margin-top:44px;
+	margin-left:10px;
+}
+.priceleft{
+	display:inline-block;
+	vertical-align:top;
+	width:50px;
+	float:left;
+}
+.priceright{
+	display:inline-block;
+	vertical-align:top;
+	float:right;
+	width:50px;
+}
+.filterimg{
+	margin-top:30px;
+	margin-left:10px;
+}
+.clear{
+	clear:both;
+}
+.sweetbox{
+	margin-top:30px;
+   margin-left:20px;
+}
+.sweetbox .checkbox label, .radio label {
+   font-size: 16px !important;
+	color: #000;
+	
+}
+.sweetbox input[type=radio] {
+    margin-top:4px;
+}
+.pastery{
+	margin-top:30px;
+	margin-bottom: 30px;
+}
+.pastery h3{
+	font-size:25px;
+}
+.sweetcakeleft{
+	margin-top:30px;
+}
+.sweetcakeright{
+	margin-top:30px;
+}
+.carousel-indicators{
+	top:200px;
+}
+.carousel-indicators li{
+	background-color:#a3a3a3;
+	border:none;
+	
+}
+.carousel-indicators .active{
+	background-color:#000;
+}
+.itemdes{
+	float:left;
+	margin-top:45px;
+}
+.itemdes h3{
+	font-size:16px;
+	color:#000;
+}
+.freshbake{
+	font-size:16px;
+	color:#a3a3a3;
+	margin-top:20px;
+	font-family: clanprobook;
+}
+.itemprice{
+	float:right;
+	margin-top:45px;
+}
+.itemprice h3{
+	font-size:16px;
+	color:#000;
+	margin-top: 12px;
+
+}
+
+
+						/*pop up page*/
+.btn-info{
+	background: none;
+	color: #000;
+	font-size:20px;
+	border:none;
+}
+.btn-info:hover{
+	background: none;
+	color: #000;
+	border:none;
+}
+.modal-header {
+    border-bottom:none;
+	padding: 0 !important;
+}
+.modal-footer {
+    border-top:none;
+    background: #000;
+    padding: 30px 0px;
+}
+.modal-header .carousel-indicators{
+}
+.modal-header .carousel-indicators li{
+	background-color:#a3a3a3;
+	border:none;
+	
+}
+.modal-header .carousel-indicators .active{
+	background-color:#000;
+}
+.modalbodyhead{
+	font-size: 16px;
+	color: #000;
+	margin-top: 15px;
+}
+.modalbodytext{
+	
+	font-family: ClanPro-News, Helvetica, sans-serif;;
+	font-size: 14px;
+	padding-top: 15px;
+}
+.radioheader{
+	font-size: 18px;
+	color: #000;
+	font-family: ClanPro-News, Helvetica, sans-serif;;
+	margin-top: 30px;
+}
+.radio1{
+	padding-left: 10px;
+}
+ .radio1 label {
+   font-size: 16px !important;
+	color: #000;
+	font-family: ClanPro-News, Helvetica, sans-serif;;
+	margin-top: 20px;
+	
+}
+.radio1 input[type=radio] {
+    margin-top:4px;
+}
+.checkboxnuts{
+	font-family: ClanPro-News, Helvetica, sans-serif;;
+	padding-left: 10px;
+	 margin-bottom:50px;
+}
+.checkboxnuts label{
+	margin-top: 20px;
+}
+.moadalfoothead a{
+	float: left;
+	font-family: ClanPro-News, Helvetica, sans-serif;;
+	font-size: 22px;
+	color: #fff;
+	padding-left: 15px;
+}
+.totalprice{
+	float: right;	
+	font-size: 22px;
+	color: #fff;
+	font-family: ClanPro-News, Helvetica, sans-serif;;
+	padding-right: 15px;
+}
+
+							
+					   /*pop up page*/
+					   /*map page*/
+.wrap{
+	margin: 0px auto;
+	width: 1280px;
+}
+
+.wrap_store{
+	margin: 0px auto;
+	width: 1280px;
+}
+
+@media screen and (max-width: 1520px){
+
+	.wrap_store{
+		margin: 0px auto !important;
+		width: 1000px !important;
+	}
+
+}
+
+@media screen and (max-width: 1320px){
+
+	.wrap_store{
+		margin: 0px auto !important;
+		width: 900px !important;
+	}
+
+}
+
+@media screen and (max-width: 1320px){
+
+	.wrap{
+		margin: 0px auto;
+		width: 1000px;
+	}
+
+}
+
+
+
+.mapimg{
+	z-index: -1;
+	position: absolute;
+}
+.mapimg img{
+	height:952px; 
+}
+.adddetails{
+	z-index: 0;
+	width: 700px;
+	height: 190px;
+	box-shadow:3px  3px 3px #CCC ;
+	background: #fff;
+	padding:25px 40px  0px  35px;
+	margin-top: 60px;
+	margin: 60px auto;
+}
+.adddetailshead{
+	 font-family: ClanPro-News, Helvetica, sans-serif;
+	 font-size: 14px;
+	 color: #4c4c4c;
+}
+.adddetailstext{
+	font-family: ClanPro-News, Helvetica, sans-serif;
+	 font-size: 15px;
+	 background: none;
+	 border:none;
+	 margin-top: 5px;
+	color: gray;
+}
+
+.adddetailsline{
+	border-top: 1px solid #e5e5e5;
+	margin-top: 18px;
+}
+
+.adddetailsline1{
+	border-top: 1px solid #e5e5e5;
+	margin-top: 5px;
+}
+
+.mapitem{
+	margin-left: -15px;
+}
+.deldes{
+	margin-left:10px;
+}
+.storepaulmap{
+	font-size: 21px;
+	font-family: ClanPro-News, Helvetica, sans-serif;
+	margin-top: 18px;
+	font-weight: 500;
+}
+.maptime{
+	font-size: 16px;
+	font-family: ClanPro-News, Helvetica, sans-serif;
+	margin-top: 10px;
+}
+.delnote{
+	height: 75px;
+	width: 385px;
+	background: #f2f2f2;
+	border:none;
+	padding-left: 20px;
+	padding-top: 26px;
+	font-size: 16px;
+	font-family: ClanPro-News, Helvetica, sans-serif;
+}
+.deladd{
+	margin: 20px 10px;
+}
+.baseprice{
+	font-size: 16px;
+	/*font-family: ClanPro-News, Helvetica, sans-serif;*/
+	color: #1a1a1a;
+}
+.baseprice span{
+	font-size: 11px;
+	margin-left:10px; 
+}
+.priceboxmap{
+	padding:15px 0px;
+	margin-left: -15px;
+}
+.servicecost{
+	font-size: 18px;
+	font-family: ClanPro-News, Helvetica, sans-serif;
+	color: #1a1a1a;
+}
+.placeoderbox{
+	height: 75px;
+	width: 410px;
+	background: #000;
+	margin-left: -15px;
+	margin-top: 50px;
+	padding-top: 25px;
+}
+.placeoderfinal a{
+	font-size: 22px;
+	color: #fff;
+	font-family: ClanPro-News, Helvetica, sans-serif;
+}
+.placeoderbox h2{
+	font-size: 22px;
+	color: #fff;
+	font-family: ClanPro-News, Helvetica, sans-serif;
+}
+
+
+
+					    /*map page*/
+					/* store page */
+@media screen and (max-width: 425px){
+	
+	
+                    /*index page*/
+					
+.checkoutbox{
+	margin-top:0px;
+	
+}
+.cro1{
+	margin-top:110px;
+	position:absolute;
+}
+.greyporl{
+	display:none;
+}
+.greyporr{
+	display:none;
+}
+
+.plusminus{
+	margin-top:-110px;
+}
+.plusminus1{
+	position:relative;
+	margin-top:-2px;
+	padding-top:110px;
+	padding-left:223px;
+}
+.blackboxc{
+	margin-top:100px !important;
+}
+.blackboxcprice{
+	margin-top:-26px;
+}
+.sidetext{
+	margin-left:0px;
+}
+	.spoonplate{
+	margin-top:66px;
+	margin-left:175px;
+}
+.backporl img{
+	width:auto;
+}
+.section2slide{
+		margin-top:75px;
+	}
+	.section3slide{
+		margin-top:75px;
+	}
+	.section5slide{
+		margin-top:75px;
+	}
+	.menu{
+		text-align:center;
+		margin-right:50px;
+		margin-top:50px;
+	}
+	.iconbox{
+	 	text-align:center;
+}    
+      .section2{
+		  margin-top:0px;
+	  }
+	  .section3{
+		  margin-top:0px;
+	  }
+	  .section5{
+		  margin-top:0px;
+	  }
+	  .footer .foottext {
+		  text-align:center;
+		  margin-right:67px;
+	  }
+                         /*index end*/
+						 
+						 /*food page start*/
+
+.header{
+	width:auto;
+}
+.header .locf{
+	width:auto;
+	margin-top: 0px !important;
+}	
+.backporl img{
+	
+}
+	.spoonplate {
+		margin-left:17px !important;
+}
+.foodsection1 .itembox .icon{
+		/*margin-top:-72px;*/
+		margin-top:30px !important;
+}
+    .foodsection1 .itembox .rate{
+		/*margin-top:-85px;*/
+		margin-right:0px;
+		margin-top:18px !important;
+}
+	.foodsection1 .itembox .paul{
+		margin:0px auto !important;
+		margin-top:20px !important;
+	}
+	.foodsection1 .itembox .des1{
+		margin:0px auto !important;
+	}
+	.foodsection1{
+		margin-top:0px !important;
+}                      /*food page end*/
+                      /*storepage*/
+.storesection1{
+	margin-top:50px;
+}
+.storebg{
+	margin-left:0px;
+	margin-top:-100px !important;
+	margin-left:17px !important;
+}
+.storebg img{
+	width:335px !important;
+	height:100px !important;
+}
+.storeblackpart{
+	margin-left:17px !important;
+}
+.sweetcakeleft  .carousel-indicators{
+	top:200px !important;
+}
+.sweetcakeright .carousel-indicators{
+	top:200px !important;
+}	
+.pastery{
+}
+.pastery h3{
+}
+.reset{
+	text-align:center;
+}
+
+.pricerange{
+	text-align:center;
+}
+.priceleft{
+	margin-left:98px !important;
+}
+.priceright{
+	margin-right:68px !important;
+}
+/*filter portion*/
+.ui-slider-track {
+    height: 3px;
+	width:400px;
+}
+html > body .ui-rangeslider .ui-rangeslider-sliders .ui-slider-track:first-child{    height: 3px;
+    border-width: 1px;
+	height: 3px;
+}
+.filterimg .ui-slider-track .ui-btn.ui-slider-handle {
+    position: absolute;
+    z-index: 1;
+    top: 50%;
+    width: 9px;
+    height: 11px;
+    margin: -7px 0 0 -2px;
+    outline: 0;
+    padding: 0;
+	background:#000;
+	
+}
+.filterimg .ui-rangeslider .ui-slider-input.ui-rangeslider-last {
+	float:left;
+    margin-left: 437px;
+	margin-top:-45px;
+}
+.filterimg input.ui-slider-input {
+    margin-top: -45px;
+	margin-left:54px;
+}
+
+/*filter portion*/
+.clear{
+	clear:both;
+}
+.sweetbox{
+   margin-left:122px !important;
+}
+.storesection2 .filter{
+	margin-left:24px !important;
+}
+.sweetcakeright{
+	margin-top:210px;
+}
+.itemdes{
+	float:left;
+	margin-top:45px;
+}
+					  /*storepage*/
+					  /*map page*/
+.wrap{
+	width: auto !important;
+}
+.mapimg img{
+	height:auto; 
+	width: 100% !important;
+}
+.adddetails{
+	z-index: 0;
+	width: auto;
+	height: auto;
+	
+}
+.adddetailshead{
+	 font-family: ClanPro-News, Helvetica, sans-serif;
+	 font-size: 16px;
+	 color: #4c4c4c;
+}
+.adddetailstext{
+	/*font-family: ClanPro-News, Helvetica, sans-serif;*/
+	 font-size: 18px;
+	 background: none;
+	 border:none;
+	 margin-top: 5px;
+}
+.delnote{
+	width: 385px !important;
+}
+.mapitem{
+	margin-left: 0px;
+}
+
+.placeoderbox{
+	width: 100%;
+	margin-left:10px !important; 
+}
+
+.placeoderbox h2{
+	font-size: 22px;
+	color: #fff;
+	font-family: ClanPro-News, Helvetica, sans-serif;
+}
+.finalcosting{
+	margin-top: -28px;
+}
+
+
+
+
+
+					  /*map page*/
+                
+  }                           
+@media screen and (max-width: 500px){
+	.header{
+		height:auto;
+	}
+	.loc{
+		margin-left:55px;
+		margin-top:20px;
+	}
+	.perbag{
+		margin-top:20px;
+		margin-right:25px;
+		margin-bottom:20px;
+}
+	.sidetext{
+	margin-left:0px;
+}
+	.spoonplate{
+	margin-top:66px;
+	margin-left:175px;
+}
+	.section2slide{
+		margin-top:75px;
+	}
+	.section3slide{
+		margin-top:75px;
+	}
+	.section5slide{
+		margin-top:75px;
+	}
+	.menu{
+		text-align:center;
+		margin-right:50px;
+		margin-top:50px;
+	}
+	.iconbox{
+	 	text-align:center;
+}    
+           
+ /*food page*/
+ 
+ 	.foodsection1 .itembox .icon{
+		margin-top:-72px;
+}
+    .foodsection1 .itembox .rate{
+		margin-top:-85px;
+		margin-right:12px;
+}
+	.foodsection1 .itembox .paul{
+		margin-left:10px;
+	}
+	.foodsection1 .itembox .des1{
+		margin-left:10px;
+	}
+	.foodsection1{
+		margin-top:0px;
+}
+}
+@media screen and (max-width: 700px){
+	.loc{
+		margin-left:55px;
+		margin-top:20px;
+	}
+	.perbag{
+		margin-top:20px;
+		margin-right:25px;
+		margin-bottom:20px;
+}
+.spoonplate{
+	margin-top:66px;
+	}
+	.section2slide{
+		text-align:center;
+	}
+	.section3slide{
+		text-align:center;
+	}
+	.section5slide{
+		text-align:center;
+	}
+	.menu{
+		text-align:center;
+		margin-right:50px;
+		margin-top:50px;
+	}
+	.iconbox{
+	 	text-align:center;
+}
+    .paul{
+		margin-left:115px;
+}
+
+
+ /*map page*/
+.wrap{
+	width: auto;
+}
+.mapimg img{
+	height:340px;
+	width: 100%
+}
+.adddetails{
+	z-index: 0;
+	width: auto;
+	height: auto;
+	
+}
+.adddetailshead{
+	 font-family: ClanPro-News, Helvetica, sans-serif;
+	 font-size: 14px;
+	 color: #4c4c4c;
+}
+.adddetailstext{
+	font-family: ClanPro-News, Helvetica, sans-serif;
+	 font-size: 18px;
+	 background: none;
+	 border:none;
+	 margin-top: 5px;
+}
+
+.mapitem{
+	margin-left: 0px;
+}
+.mapitem img{
+	width:100%;
+}
+.delnote {
+    width: 640px
+}
+.finalcosting{
+	margin-top: -28px;
+}
+.placeoderbox{
+	width: 100%;
+	margin-left:-4px 
+}
+
+.placeoderbox h2{
+	font-size: 22px;
+	color: #fff;
+	font-family: ClanPro-News, Helvetica, sans-serif;
+}
+}
+@media screen and (max-width: 768px){
+	
+                      /*index page*/
+.greyporl{
+	display:none;
+}
+.greyporr{
+	display:none;
+}				  
+.checkoutbox{
+	margin-top:0px;
+	
+}
+.cro1{
+	margin-top:110px;
+	position:absolute;
+}					  
+.plusminus{
+	margin-top:-110px;
+}
+.plusminus1{
+	position:relative;
+	margin-top:-2px;
+	padding-top:110px;
+	padding-left:223px;
+}
+.blackboxc{
+	margin-top:100px !important;
+}
+.blackboxcprice{
+	margin-top:-26px;
+}
+.sidetext{
+	margin-left:0px;
+}
+	.spoonplate{
+	margin-top:66px;
+	text-align:center;
+}
+.section2slide{
+		margin-top:75px;
+	}
+	.section3slide{
+		margin-top:75px;
+	}
+	.section5slide{
+		margin-top:75px;
+	}
+	.menu{
+		text-align:center;
+		margin-right:50px;
+		margin-top:50px;
+	}
+	.iconbox{
+	 	text-align:center;
+}    
+      .section2{
+		  margin-top:0px;
+	  }
+	  .section3{
+		  margin-top:0px;
+	  }
+	  .section5{
+		  margin-top:0px;
+	  }
+	  .footer .foottext {
+		  text-align:center;
+		  margin-right:67px;
+	  }
+                     /*index end*/
+	 /*food page start*/
+	.locf{
+		text-align:center;
+		margin-top:30px !important;
+	}
+	.dubai{
+		text-align:center;
+		margin-top:0px;
+	}
+	
+	.foodsection1 .itembox .foodprice{
+		z-index:0;
+		padding-left: 0;
+		
+}
+    .foodsection1 .itembox .foodrate{
+}
+	.foodsection1 .itembox .paul{
+		margin:0px auto;
+		padding-top:10px;
+	}
+	.foodsection1 .itembox .des1{
+		margin:0px auto;
+	}
+	.foodsection1{
+		margin-top:20px !important;
+}    
+ .itembox img{
+ 	width: 100%;
+ }
+   .footer ul{
+	text-align:center;
+	padding-top:30px;
+}
+	.footer .iconbox{
+		text-align:center;
+	}/*food page end*/
+						/*storepage*/
+.storesection1{
+	margin-top:50px;
+}
+.storebg{
+	margin-top:0px;
+	margin-left:337px;
+}
+.storebg img{
+	width:335px;
+	height:390px;
+}
+.storeblackpart{
+	margin-left:17px;
+}
+.sweetcakeright{
+	margin-top:210px;
+}
+.sweetcakeleft .carousel-indicators{
+	top:360px;
+}
+
+.reset{
+	text-align:center;
+}
+
+.pricerange{
+	text-align:center;
+}
+.priceleft{
+	margin-left:238px;
+}
+.priceright{
+	margin-right:213px;
+}
+.filter{
+	margin-left:278px;
+}
+.filterimg{
+	margin-top:30px;
+	text-align:center;
+}
+.clear{
+	clear:both;
+}
+.sweetbox{
+   margin-left:290px;
+}
+
+}
+					  /*storepage*/
+					  /*popup*/
+@media (min-width: 768px){
+
+.modal-dialog {
+    width: 545px;
+    margin: 30px auto;
+}
+					  /*popup*/
+                
+
+}
+@media screen and (max-width: 1000px){
+	.loc{
+		margin-left:55px;
+		margin-top:20px;
+	}
+	.perbag{
+		margin-top:20px;
+		margin-right:25px;
+		margin-bottom:20px;
+}
+    .sidetext{
+	margin-left:0px;
+}
+   .spoonplate{
+	margin-top:66px;
+	/*margin-left:100px;*/
+}
+	.spoonplate img{
+	margin: 0px auto;
+	}
+	.section2slide{
+		margin-top:75px;
+		text-align:center;
+	}
+	.section3slide{
+		margin-top:75px;
+		text-align:center;
+	}
+	.section5slide{
+		margin-top:75pX;
+		text-align:center;
+	}
+	.menu{
+		text-align:center;
+		margin-right:50px;
+		margin-top:50px;
+	}
+	.iconbox{
+	 	text-align:center;
+	}
+
+}
+
+.scroll_invoice{
+	height: calc(100vh - 140px);
+	overflow-y: auto;
+}
+
+.scroll_invoice::-webkit-scrollbar-track
+{
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+	background-color: #fff;
+}
+
+.scroll_invoice::-webkit-scrollbar
+{
+	width: 6px;
+	background-color: #F5F5F5;
+}
+
+.scroll_invoice::-webkit-scrollbar-thumb
+{
+	background-color: #000000;
+}
+
+.user_item_spec_modal_body
+{
+	height: 40vh;
+	background: #fff;
+	overflow-y: auto;
+}
+
+.user_item_spec_modal_body::-webkit-scrollbar-track
+{
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+	background-color: #fff;
+}
+
+.user_item_spec_modal_body::-webkit-scrollbar
+{
+	width: 6px;
+	background-color: #F5F5F5;
+}
+
+.user_item_spec_modal_body::-webkit-scrollbar-thumb
+{
+	background-color: #000000;
+}
+
+@media only screen and (max-width: 480px) {
+	.user_item_spec_modal_body{
+		height: 34vh;
+	}
+}
+
+@media only screen and (max-width: 320px) {
+	.user_item_spec_modal_body{
+		height: 28vh;
+	}
+}
+
+*:focus{
+	outline: none;
+	-webkit-transition: width .35s ease-in-out;
+	transition: width 1s ease-in-out;
+}
+
+.first_div{
+	padding-top: 100px;
+	background-color: #FAFAFA;
+	height: 100%;
+}
+
+.first_div_common{
+	padding-top: 100px;
+	background-color: #FAFAFA;
+}
+.store_image{
+
+}
+
+@media only screen and (max-width: 1000px) {
+	.first_div{
+		margin-top: 70px;
+	}
+
+	.store_image{
+		display: none !important;
+	}
+}
+
+.map_first_div{
+	margin-top: 62px;
+	background-color: #FAFAFA;
+}
+.payment_wrap{
+	margin: 0 auto;
+	width: 50%;
+}
+
+
+@media only screen and (max-width: 1000px) {
+
+	.payment_wrap{
+		margin: 0 auto;
+		width: 97%;
+	}
+
+	.map_first_div{
+		margin-top: 107px;
+		background-color: #FAFAFA;
+	}
+}
+
+@media only screen and (max-width: 400px) {
+	.invoice_icon{
+		margin-top: 12px;
+	}
+}
+
+
+.btn-black{
+	color: #fff;
+	background-color: black;
+	border-color: black;
+}
+
+.btn-black:focus,
+.btn-black.focus {
+	color: #fff !important;
+	background-color: black;
+	border-color: black;
+}
+.btn-black:hover,
+.btn-black.hover{
+	color: #fff !important;
+	background-color: black;
+	border-color: black;
+}
+
+.navigation_li{
+	height: 40px;
+	background-color: #f4f4f4;
+	padding-top: 6px;
+	padding-left: 14px;
+}
+
+.navigation_ul{
+	background-color: #e5e5e5;
+	list-style-type: none;
+}
+
+.navigation_li_active{
+	background-color: #e5e5e5;
+}
+
+.navigation_li:active{
+	background-color: #e5e5e5;
+}
+
+.navigation_li:hover,
+.navigation_li:focus{
+	background-color: #e5e5e5;
+}
+
+.cart_no_of_item{
+	margin-top: -33px;
+	color: #fff;
+	font-size: 10px;
+	border-radius: 50%;
+	background-color: #cb212e;
+	padding-left: 5px;
+	padding-right: 5px;
+	margin-left: 17px;
+	padding-bottom: 1px;
+	padding-top: 2px;
+	position: absolute;
+	border: 2px solid #fff;
+}
+
+.no_padding{
+	padding-left: 0 !important;
+	padding-right: 0 !important;
+}
+
+.no_margin{
+	margin-left: 0 !important;
+	margin-right: 0 !important;
+}
+
+.item_modal_close{
+	position: absolute;
+	z-index: 100000000;
+	right: 10px;
+	top: 10px;
+	font-size: 26px !important;
+	color: #fff;
+}
+
+.item_modal_image_shaddow{
+	position: absolute;
+	height: 45px;
+	width: 100%;
+	background-color: black;
+	z-index: 100;
+	opacity: 0.3;
+}
+
+.search_rest_span{
+	background-color: #FAFAFA !important;
+	font-size: 18px!important;
+	border: 0!important;
+
+}
+
+.search_bar_input{
+	border: 0;
+	font-size: 23px;width:100%;
+	margin-left: 16px;
+	background-color: #FAFAFA !important;
+}
+
+.boder_bottom{
+	margin-bottom: 40px;border-top: 0.5px solid darkgrey;
+}
+
+.item_box:hover{
+
+	box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+}
+
+.item_box{
+	padding-top: 10px;
+	padding-bottom: 10px;
+	margin-bottom: 20px;
+	overflow: hidden;
+}
+
+.des2{
+	color: #9e9e9e;
+	font-size: 14px;
+	max-height: 33px;
+}
+
+.back_gray{
+	background-color: gray !important;
+}
+
+.back_black{
+	background-color: black;
+}
+
+.location_image{
+	width: 15px;
+	padding-top: 11px;
+}
+
+.logo_image{
+	width: 40px;
+	height: 40px;
+}
+
+.profile_image{
+	width: 40px;
+	height: 40px;
+
+	float: right;
+	object-fit: cover;
+}
+
+.remove_image{
+	padding-top: 11px;
+	width: 10px;
+}
+.store_min{
+	font-size: 16px;
+}
+
+.store_title{
+	font-size: 25px;
+}
+
+.icon_width{
+	width: 20px;
+}
+
+.normal_font_weight{
+	font-weight: 100;
+	font-size: 16px;
+}
+
+.payment_gateway{
+	font-size: 16px !important;
+	height: 33px;
+}
+
+#autocomplete {
+	width:300px;
+	opacity: 0;
+}
+
+#pac-results div {
+	display: block !important;
+}
+
+#pac-results > .pac-item-query{
+	margin-left: 8px !important;
+}
+
+#pac-results > .pac-item{
+	margin-left: 10px !important;
+}
+
+#pac-results > .pac-item-query + span{
+	display: block !important;
+	margin-left: 30px !important;
+	margin-top: -14px !important;
+}
+
+#pac-results > .pac-icon{
+	margin-top: 15px !important;
+}
+
+.dot{
+	top: 615px !important;
+}
+
+.dot_color{
+	/*border: 1px solid #af1a1a !important;*/
+}
+
+.carousel-indicators .active{
+	background-color: #af1a1a !important;
+}
+
+.search_button{
+	height: 44px;
+}
+
+.border_gray{
+	border-bottom: 1px solid lightgray;
+}
+
+.gray{
+	color: gray;
+}
+
+.red{
+	color: #cb212e;
+}
+
+
+.item_filter_li{
+	margin: 10px 24px 10px 0 !important;
+	font-size: 16px;display: inline;
+}
+
+.item_filter_li_active{
+	color: #cb212e;
+}
+
+li{
+	cursor: pointer;
+}
+
+.tag{
+	max-height: 37px !important;
+	overflow-y: hidden !important;
+}
+
+@media screen and (max-width: 1000px){
+
+	.tag{
+		max-height: unset !important;
+		overflow-y: unset !important;
+	}
+}
+
+.cart_box_checkout{
+	height:100% !important;
+	width: 350px !important;
+}
+
+.cart_box{
+	max-height: calc(100vh - 135px) !important;
+	overflow: auto !important;
+}

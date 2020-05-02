@@ -1,0 +1,120 @@
+<form  #smsConfigurationForm="ngForm" (ngSubmit)="SmsConfiguration(smsConfigurationForm.value)">
+
+    <div class="wrapper wrapper-content animated fadeInRight content_top_bar">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="col-lg-10 col-sm-10">
+                    <div class="ibox">
+                        <div class="ibox-title">
+                            <label class="control-label">{{heading_title.sms_configuration | translate}}</label>  
+                        </div>
+                        <div class="ibox-content">
+                            <div class="row">
+                                
+                                 <div class="form-group">
+                                    <label class="col-lg-4 control-label">{{title.sms_gateway_name | translate}}</label>  
+                                    <div class="col-lg-8 form-group">
+                                        <h4>{{sms_configuration.name}}</h4>
+                                    </div> 
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-lg-4 control-label">{{title.sms_configuration_auth_id | translate}}</label>  
+                                    <div class="col-lg-8 form-group">
+                                        <input type="text" class="form-control" [(ngModel)]="sms_configuration.sms_auth_id" #sms_auth_id="ngModel"  name="sms_auth_id" required />
+
+                                    </div> 
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-lg-4 control-label">{{title.sms_auth_token | translate}}</label>  
+                                    <div class="col-lg-8 form-group">
+                                        <input type="text" class="form-control" [(ngModel)]="sms_configuration.sms_auth_token" #sms_auth_token="ngModel"  name="sms_auth_token" required />
+
+                                    </div> 
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label class="col-lg-4 control-label">{{title.sms_number | translate}}</label>  
+                                    <div class="col-lg-8 form-group">
+                                        <input type="text" class="form-control" [(ngModel)]="sms_configuration.sms_number" #sms_number="ngModel"  name="sms_number" required />
+
+                                    </div> 
+                                </div>
+                            </div>
+                            <div class="row">   
+                                <div class="col-lg-4">
+                                </div>
+
+                                <div class="col-lg-4" style="text-align: center;">
+                                    <input type="submit" id="update" name="update" style="width: 50%;" class="btn btn-primary" value="{{button.update | translate}}" >
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</form>
+
+<form #smsForm="ngForm" (ngSubmit)="UpdateSms(smsForm.value)" >
+    <input type="hidden" class="form-control" [(ngModel)]="sms_id"   name="sms_id" />
+    <div class="wrapper wrapper-content animated fadeInRight content_top_bar">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="col-lg-10 col-sm-10">
+                    <div class="ibox">
+                        <div class="ibox-title">
+                            <label class="control-label">{{heading_title.sms_data | translate}}</label>  
+                        </div>
+                        <div class="ibox-content">
+                            <div class="row">
+
+                                <div class="form-group">
+                                    <label class="col-lg-4 control-label">{{title.sms_unique_title | translate}}</label>  
+                                    <div class="col-lg-8 form-group">
+                                        <select chosen class="chosen-select" id="sms" [(ngModel)]="update_sms.sms_unique_title" #sms_unique_title="ngModel" name="sms" data-placeholder="SMS Content"  tabindex="4"  >
+
+                                            <option *ngFor="let i of sms_list" value="{{i._id}}">{{i.sms_unique_title}}</option>
+                                        </select> 
+                                    </div> 
+
+
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-lg-4 control-label">{{title.select_sms_unique_title | translate}}</label>  
+                                    <div class="col-lg-8 form-group">
+                                        <input type="text" class="form-control" [(ngModel)]="update_sms.sms_content" #sms_content="ngModel"  name="sms_content" required />
+
+                                    </div> 
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-lg-4 control-label">{{title.is_send | translate}}</label>  
+
+                                    <div class="col-lg-8 form-group">
+                                        <ui-switch [(ngModel)]="update_sms.is_send" #is_send="ngModel" name="is_send"></ui-switch>
+
+                                    </div>
+                                </div>
+
+
+                            </div>
+                            <div class="row">   
+                                <div class="col-lg-4">
+                                </div>
+
+                                <div class="col-lg-4" style="text-align: center;">
+                                    <input type="submit" id="update" name="update" style="width: 50%;" class="btn btn-primary" value="{{button.update | translate}}" >
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

@@ -1,0 +1,120 @@
+<style type="text/css">
+    .scrollbar
+{
+    height: 245px;
+    background: #fff;
+    overflow-y: auto;
+}
+
+.scrollbar::-webkit-scrollbar-track
+{
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    background-color: #fff;
+}
+
+.scrollbar::-webkit-scrollbar
+{
+    width: 6px;
+    background-color: #F5F5F5;
+}
+
+.scrollbar::-webkit-scrollbar-thumb
+{
+    background-color: #000000;
+}
+
+</style>
+<footer [myLoading]="myLoading" ></footer>
+
+<div class="row wrapper fix_search_bar border-bottom white-bg page-heading" style="right: 0;left: 0;">
+
+    <div class="row">
+       <form #specificationForm="ngForm" (ngSubmit)="addSpecificationGroup(specificationForm.value)">
+            
+            <div class="col-md-4 col-sm-6 col-xs-12 pull-right">
+                <div class="col-md-9 col-sm-9 col-xs-9">
+                    <input type="text" class="form-control spec_group_text_box" (keyup)="checkSpecification(specification_name)" placeholder="{{title.specification_name | translate}}" [(ngModel)]="specification_name"  name="specification_name" required/>
+                    <label class="control-label" [hidden]="spec_already==0">{{message.specification_already_added | translate}}</label>
+                </div>
+
+                <div class="col-md-3 col-sm-3 col-xs-3">
+                    <button [disabled]="spec_already==1" class="btn add_btn">{{button.add | translate}}<span class="fa fa-plus" style="margin-left: 8px;"></span></button>
+                </div>
+            </div>
+            
+        </form>
+    </div>
+
+</div>
+<div class="wrapper content_top_bar_view wrapper-content animated fadeInRight">
+    
+    
+    <div *ngFor="let specification_group of specification_list; let specification_group_index=index;" >
+        <div [class.row]="(specification_group_index+1)%4==0">
+            <div class="col-lg-3" style="padding-left: 10px; padding-right: 10px;">
+            <form #spec="ngForm" enctype='multipart/form-data' >
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <input type="hidden" [(ngModel)]="edit_specification_group[specification_group_index]" name="edit_specification_group">
+
+                        <input type="hidden" [(ngModel)]="hide_specification_group[specification_group_index]" name="hide_specification_group">
+
+                        <h5 style="font-weight: bold;">{{specification_group.name}}</h5>
+                        <span (click)="deleteSpecification_group(specification_group._id , specification_group_index)" class="fa fa-times pull-right"></span>
+
+                        <span *ngIf="edit_specification_group[specification_group_index]=='false'" class="fa fa-pencil pull-right" (click)="editSpecification(specification_group._id , specification_group_index)"></span>
+
+                        <span *ngIf="edit_specification_group[specification_group_index]=='true'" class="fa fa-check pull-right" (click)="updateSpecification(specification_group._id , specification_group_index)"></span>
+
+                        <span *ngIf="hide_specification_group[specification_group_index]=='true'" class="fa fa-chevron-left pull-right" (click)="show_specifications_group(specification_group_index)"></span>
+
+                        <span *ngIf="hide_specification_group[specification_group_index]=='false'" class="fa fa-chevron-down pull-right" (click)="hide_specifications_group(specification_group_index)"></span>
+
+
+                    </div>
+                    <div class="ibox-content no-padding">
+                         <div class="scrollbar" id="spec_list{{specification_group_index}}">
+                          
+                        
+                            <form #specificationForm="ngForm" enctype='multipart/form-data' >
+                                
+                                <div *ngIf="edit_specification_group[specification_group_index]=='true'">
+                                    <ul class="list-group" *ngFor="let specification of specification_name_array; let specification_index=index; ">
+
+                                    
+                                        <li class="list-group-item spec_list">
+                                            <span *ngIf="edit_specification_group[specification_group_index]=='true'" (click)="deleteSpecification('' , specification_group_index ,specification_index)" class="fa fa-times pull-right"></span>
+                                            <div >
+                                                <input type="text" class="" [(ngModel)]="specification_name_arrays[specification_index]" name="{{specification_index}}">
+                                                
+
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <ul class="list-group" *ngFor="let specification of specification_group.list; let specification_index=index; ">
+
+                                    <li class="list-group-item spec_list">
+                                        <span *ngIf="edit_specification_group[specification_group_index]=='true'" (click)="deleteSpecification(specification._id , specification_group_index ,specification_index)" class="fa fa-times pull-right"></span>
+                                        <div *ngIf="specification.name!=''">
+                                            {{specification.name}}
+                                        </div>
+                                    </li>
+                                </ul>
+                                
+                            </form>
+                        </div>
+                        <div *ngIf="edit_specification_group[specification_group_index]=='true'" class="add_spec_div">
+
+                            <button (click)="append_specification(specification_group_index)" class="btn add_btn">Add Specification<span class="fa fa-plus" style="margin-left: 8px;"></span></button>
+                    
+                        </div>
+                    </div>
+                </div>
+            </form>
+            </div>
+        </div>
+            
+    </div>
+</div>

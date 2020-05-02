@@ -1,0 +1,452 @@
+<style>
+    .remove_border{
+        border: 0;
+    }
+</style>
+<footer [myLoading]="myLoading" ></footer>   
+<div class="row wrapper content_top_bar border-bottom white-bg page-heading">
+
+    <div class="col-md-12">
+        
+        <div class="col-md-4 col-sm-12 col-xs-12">
+            <h3>{{heading_title.invoice_no | translate}} : {{invoice_number}}</h3>
+        </div>
+        <div class="col-md-4 col-sm-6 col-xs-6">
+            <h3>{{heading_title.earning | translate}} : {{total_store_income}}</h3>
+        </div>
+        <div class="col-md-4 col-sm-6 col-xs-6" *ngIf="completed_at != null">
+            <h3>{{moment(completed_at).tz(timezone).format('DD MMM YYYY HH:mm:ss')}}</h3>
+        </div>
+    </div>
+
+</div>
+<div class="wrapper wrapper-content animated fadeInRight ">
+    <div class="row">
+        <div class="">
+            <div class="col-lg-4 col-sm-6">
+                <div class="ibox">
+                    <div class="ibox-title">
+                        <label class="control-label">{{heading_title.user_detail | translate}}</label>  
+                    </div>
+                    <div class="ibox-content">
+                        <div class="row">
+                            <div class="col-md-12"><label class="col-lg-4 col-sm-4 col-xs-4 control-label">{{title.name | translate}}:</label>
+
+                                <div class="col-lg-8 col-sm-8 col-xs-8">
+                                    {{user_first_name + " " + user_last_name}}
+                                </div> 
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12"><label class="col-lg-4 col-sm-4 col-xs-4 control-label">{{title.email | translate}}:</label>
+
+                                <div class="col-lg-8 col-sm-8 col-xs-8">
+                                    {{user_email}}
+                                </div> 
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-sm-6" *ngIf="destination_addresses.length > 0">
+                <div class="ibox">
+                    <div class="ibox-title">
+                        <label class="control-label">{{heading_title.order_user_detail | translate}}</label>
+                    </div>
+                    <div class="ibox-content">
+                        <div class="row">
+                            <div class="col-md-12"><label class="col-md-4 col-sm-4 col-xs-4 control-label">{{title.name | translate}}<div class="pull-right">:</div></label>
+
+                                <div class="col-md-8 col-sm-8 col-xs-8 form-group">
+                                    {{destination_addresses[0].user_details.name}}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12"><label class="col-md-4 col-sm-4 col-xs-4 control-label">{{title.email | translate}}<div class="pull-right">:</div></label>
+
+                                <div class="col-md-8 col-sm-8 col-xs-8 form-group">
+                                     {{destination_addresses[0].user_details.country_phone_code}} {{destination_addresses[0].user_details.phone}}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12"><label class="col-md-4 col-sm-4 col-xs-4 control-label">{{title.address | translate}}<div class="pull-right">:</div></label>
+
+                                <div class="col-md-8 col-sm-8 col-xs-8 form-group">
+                                    {{destination_addresses[0].address}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-sm-6" *ngIf="!is_user_pick_up_order">
+                <div class="ibox">
+                    <div class="ibox-title">
+                        <label class="control-label">{{heading_title.provider_detail | translate}}</label>  
+                    </div>
+                    <div class="ibox-content wizard">
+                        <div class="row">
+                            <div class="col-md-12"><label class="col-lg-4 col-sm-4 col-xs-4 control-label">{{title.name | translate}}:</label>
+
+                                <div class="col-lg-8 col-sm-8 col-xs-8">
+                                    {{provider_first_name + " " + provider_last_name}}
+                                </div> 
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12"><label class="col-lg-4 col-sm-4 col-xs-4 control-label">{{title.email | translate}}:</label>
+
+                                <div class="col-lg-8 col-sm-8 col-xs-8">
+                                    {{provider_email}}
+                                </div> 
+                            </div>
+
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+   
+        </div>
+
+    </div>
+    <div class="row">
+
+        <div class="col-lg-12">
+            <div class="ibox">
+                <div class="ibox-title">
+
+                    <div class="col-md-3 com-sm-6 col-xs-6">
+                        <label class="control-label">{{heading_title.order_status | translate}}</label> 
+                    </div>
+                    <div class="col-md-3 com-sm-6 col-xs-6 pull-right">
+                        <h3 class="control-label text-navy pull-right" *ngIf="order_status == ORDER_STATE.ORDER_COMPLETED">{{status.completed | translate}}</h3>
+                        <h3 class="control-label text-danger pull-right" *ngIf="order_status_id != ORDER_STATUS_ID.COMPLETED">{{title.not_completed | translate}}</h3>
+                    </div>
+                    <div class="col-md-2 com-sm-4 col-xs-12 lable_center"><span>{{heading_title.distance | translate}}:{{distance}} km/mile</span></div>
+                    <div class="col-md-2 com-sm-4 col-xs-12 lable_center"><span>{{heading_title.total_time | translate}}:{{total_time}}</span></div>
+                    <div class="col-md-2 com-sm-4 col-xs-12 lable_center"><span>{{heading_title.total_items | translate}}:{{total_item}}</span></div>
+                    
+                </div>
+                <div class="ibox-content">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th class="remove_border">{{title.created_at | translate }}</th>
+                                    <th class="remove_border"><span class="fa fa-long-arrow-right"></span></th>
+                                    <th class="remove_border">{{title.store_accepted_at | translate }}</th>
+                                    <th class="remove_border"><span class="fa fa-long-arrow-right"></span></th>
+                                    <th class="remove_border">{{title.preparing_order_at | translate }}</th>
+                                    <th class="remove_border"><span class="fa fa-long-arrow-right"></span></th>
+                                    <th class="remove_border">{{title.order_ready_at | translate }}</th>
+                                    <th class="remove_border"><span class="fa fa-long-arrow-right"></span></th>
+                                    <th class="remove_border">{{title.store_order_send_at | translate }}</th>
+                                    <th class="remove_border"><span class="fa fa-long-arrow-right"></span></th>
+                                    <th class="remove_border">{{title.provider_accepted_at | translate }}</th>
+                                    <th class="remove_border"><span class="fa fa-long-arrow-right"></span></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="remove_border"><div *ngIf="created_at!=null">{{moment(created_at).tz(timezone).format('DD MMM YYYY HH:mm:ss')}}</div></td>
+                                    <td class="remove_border"></td>
+                                    <td class="remove_border"><div *ngIf="store_accepted_at!=null">{{moment(store_accepted_at).tz(timezone).format('DD MMM YYYY HH:mm:ss')}}</div></td>
+                                    <td class="remove_border"></td>
+                                    <td class="remove_border"><div *ngIf="start_preparing_order_at!=null">{{moment(start_preparing_order_at).tz(timezone).format('DD MMM YYYY HH:mm:ss')}}</div></td>
+                                    <td class="remove_border"></td>
+                                    <td class="remove_border"><div *ngIf="order_ready_at!=null">{{moment(order_ready_at).tz(timezone).format('DD MMM YYYY HH:mm:ss')}}</div></td>
+                                    <td class="remove_border"></td>
+                                    <td class="remove_border"><div *ngIf="store_order_created_at!=null">{{moment(store_order_created_at).tz(timezone).format('DD MMM YYYY HH:mm:ss')}}</div></td>
+                                    <td class="remove_border"></td>
+                                    <td class="remove_border"><div *ngIf="accepted_at!=null">{{moment(accepted_at).tz(timezone).format('DD MMM YYYY HH:mm:ss')}}</div></td>
+                                    <td class="remove_border"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th class="remove_border">{{title.completed_at | translate }}</th>
+                                    <th class="remove_border"><span class="fa fa-long-arrow-left"></span></th>
+                                    <th class="remove_border">{{title.delivered_at | translate }}</th>
+                                    <th class="remove_border"><span class="fa fa-long-arrow-left"></span></th>
+                                    <th class="remove_border">{{title.start_for_delivery_at | translate }}</th>
+                                    <th class="remove_border"><span class="fa fa-long-arrow-left"></span></th>
+                                    <th class="remove_border">{{title.picked_order_at | translate }}</th>
+                                    <th class="remove_border"><span class="fa fa-long-arrow-left"></span></th>
+                                    <th class="remove_border">{{title.arrived_on_store_at | translate }}</th>
+                                    <th class="remove_border"><span class="fa fa-long-arrow-left"></span></th>
+                                    <th class="remove_border">{{title.start_for_pickup_at | translate }}</th>
+                                    <th class="remove_border"><span class="fa fa-long-arrow-left"></span></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="remove_border"><div *ngIf="completed_at!=null">{{moment(completed_at).tz(timezone).format('DD MMM YYYY HH:mm:ss')}}</div></td>
+                                    <td class="remove_border"></td>
+                                    <td class="remove_border"><div *ngIf="start_for_pickup_at!=null">{{moment(start_for_pickup_at).tz(timezone).format('DD MMM YYYY HH:mm:ss')}}</div></td>
+                                    <td class="remove_border"></td>
+                                    <td class="remove_border"><div *ngIf="arrived_on_store_at!=null">{{moment(arrived_on_store_at).tz(timezone).format('DD MMM YYYY HH:mm:ss')}}</div></td>
+                                    <td class="remove_border"></td>
+                                    <td class="remove_border"><div *ngIf="picked_order_at!=null">{{moment(picked_order_at).tz(timezone).format('DD MMM YYYY HH:mm:ss')}}</div></td>
+                                    <td class="remove_border"></td>
+                                    <td class="remove_border"><div *ngIf="start_for_delivery_at!=null">{{moment(start_for_delivery_at).tz(timezone).format('DD MMM YYYY HH:mm:ss')}}</div></td>
+                                    <td class="remove_border"></td>
+                                    <td class="remove_border"><div *ngIf="delivered_at!=null">{{moment(delivered_at).tz(timezone).format('DD MMM YYYY HH:mm:ss')}}</div></td>
+                                    <td class="remove_border"></td>
+                                </tr>
+                            </tbody>
+
+                        </table>
+                    </div>
+                   
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox">
+                <div class="ibox-title">
+                    <label class="control-label">{{heading_title.delivery_fees | translate}}</label>  
+                </div>
+                <div class="ibox-content">
+                    <div class="table-responsive">
+
+                        <table class="table table-striped">
+                            <tbody>
+                                <tr>
+                                    <td class="remove_border">
+                                        <div><strong>{{title.service_price | translate}}</strong></div>
+                                    </td>
+                                    <td class="pull-right remove_border">{{currency_sign}}{{total_service_price}}</td>
+                                </tr>
+                                <tr>
+                                    <td class="remove_border">
+                                        <div><strong>{{title.tax_price | translate}}</strong></div>
+                                    </td>
+                                    <td class="pull-right remove_border">{{currency_sign}}{{total_after_tax_price}}</td>
+                                </tr>
+                                <tr>
+                                    <td class="remove_border">
+                                        <div><strong>{{title.total_delivery_price | translate}}</strong></div>
+                                    </td>
+                                    <td class="pull-right remove_border">{{currency_sign}}{{total_delivery_price}}</td>
+                                </tr>
+                                <tr *ngIf='is_promo_for_delivery_service == true'>
+                                    <td style="border: none;" >
+                                        <div><strong>{{title.promo_bonus}}</strong></div>
+                                    </td>
+                                    <td class="pull-right" style="border: none;">{{currency_sign}}{{promo_payment}}</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-danger remove_border">
+                                        <div><strong>{{title.total_delivery_price | translate}}</strong></div>
+                                    </td>
+                                    <td class="pull-right remove_border">{{currency_sign}}{{total_delivery_price}}</td>
+                                </tr>
+                            </tbody>
+
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>  
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox">
+                <div class="ibox-title">
+
+
+                    <label class="control-label pull-right">{{heading_title.total | translate}}</label> 
+                    <label class="control-label" style="position: absolute; left:42%;">{{heading_title.quantity | translate}}</label>
+                    <label class="control-label" style="position: absolute; left:64%;">{{heading_title.price | translate}}</label>
+                    <label class="control-label">{{heading_title.cart | translate}}</label> 
+
+                </div>
+                <div class="ibox-content">
+                    <div class="table-responsive" *ngFor="let products of order_detail; let product_index=index">
+                         <table class="table invoice-table">
+
+                            <tbody>
+                                <tr *ngFor="let item of products.items;">
+                                    <td width="200px" class="remove_border">
+                                        <div><strong>{{item.item_name}}</strong></div>
+                                    </td>
+                                    <td class="remove_border">{{item.quantity}}</td>
+                                    <td class="remove_border">{{(item.total_specification_price + item.item_price)}}</td>
+                                    <td class="remove_border">{{currency_sign}}{{(item.total_item_price)}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>  
+    </div>
+    
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox">
+                <div class="ibox-title">
+                    <label class="control-label">{{heading_title.order_fees | translate}}</label>  
+                </div>
+                <div class="ibox-content">
+                    <div class="table-responsive">
+
+                        <table class="table table-striped">
+                            <tbody>
+                                <tr>
+                                    <td class="remove_border">
+                                        <div><strong>{{title.cart_price | translate}}</strong></div>
+                                    </td>
+                                    <td class="pull-right remove_border">{{currency_sign}}{{total_cart_price}}</td>
+                                </tr>
+                                <tr>
+                                    <td class="remove_border">
+                                        <div><strong>{{title.tax_price | translate}}</strong></div>
+                                    </td>
+                                    <td class="pull-right remove_border">{{currency_sign}}{{total_store_tax_price}}</td>
+                                </tr>
+                                <tr>
+                                    <td class="remove_border">
+                                        <div><strong>{{title.total_order_price | translate}}</strong></div>
+                                    </td>
+                                    <td class="pull-right remove_border">{{currency_sign}}{{total_order_price }}</td>
+                                </tr>
+
+                                <tr *ngIf='is_promo_for_delivery_service == false'>
+                                    <td style="border: none;" >
+                                        <div><strong>{{title.promo_bonus}}</strong></div>
+                                    </td>
+                                    <td class="pull-right" style="border: none;">{{currency_sign}}{{promo_payment}}</td>
+                                </tr>
+
+
+                                <tr>
+                                    <td class="text-danger remove_border">
+                                        <div><strong>{{title.total_order_price | translate}}</strong></div>
+                                    </td>
+                                    <td class="text-danger pull-right remove_border">{{currency_sign}}{{total_order_price}}</td>
+                                </tr>
+                            </tbody>
+
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>  
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox">
+                <div class="ibox-title">
+                    <label class="control-label">{{heading_title.total | translate}}</label>  
+                </div>
+                <div class="ibox-content">
+                    <div class="table-responsive">
+
+                        <table class="table table-striped">
+                            <tbody>
+                                <tr>
+                                    <td class="remove_border">
+                                        <div><strong>{{title.wallet_payment | translate}}</strong></div>
+                                    </td>
+                                    <td class="pull-right remove_border">{{currency_sign}}{{wallet_payment}}</td>
+                                </tr>
+                                <tr>
+                                    <td class="remove_border">
+                                        <div><strong>{{title.cash_payment | translate}}</strong></div>
+                                    </td>
+                                    <td class="pull-right remove_border">{{currency_sign}}{{cash_payment}}</td>
+                                </tr>
+                                <tr>
+                                    <td class="remove_border">
+                                        <div><strong>{{title.other_payment | translate}}</strong></div>
+                                    </td>
+                                    <td class="pull-right remove_border">{{currency_sign}}{{card_payment}}</td>
+                                </tr>
+
+
+
+
+                                <tr>
+                                    <td class="text-danger pull-center remove_border">
+                                        <div><h2><strong style="margin-left:50%">{{title.total | translate}}: {{currency_sign}}{{total}}</strong></h2></div>
+                                    </td>
+
+                                </tr>
+                            </tbody>
+
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>  
+    </div>
+
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox">
+                <div class="ibox-title">
+                    <label class="control-label">{{heading_title.earning | translate}}</label>  
+                </div>
+                <div class="ibox-content">
+                    <div class="table-responsive">
+
+                        <table class="table table-striped">
+                            <tbody>
+                                <tr>
+                                    <td class="remove_border">
+                                        <div><strong>{{title.service_price | translate}}</strong></div>
+                                    </td>
+                                    <td class="pull-right remove_border">{{currency_sign}}{{store_have_service_payment}}</td>
+                                </tr>
+                                <tr>
+                                    <td class="remove_border">
+                                        <div><strong>{{title.order_payment | translate}}</strong></div>
+                                    </td>
+                                    <td class="pull-right remove_border">{{currency_sign}}{{store_have_order_payment}}</td>
+                                </tr>
+                                <tr>
+                                    <td class="remove_border">
+                                        <div><strong>{{title.profit | translate}}</strong></div>
+                                    </td>
+                                    <td class="pull-right remove_border">{{currency_sign}}{{total_store_income}}</td>
+                                </tr>
+                                <tr>
+                                    <td class="remove_border">
+                                        <div><strong>{{currency_sign}}{{title.pay_by_admin | translate}}
+                                        </strong></div>
+                                    </td>
+                                    <td class="pull-right remove_border">{{pay_to_store}}</td>
+                                </tr>
+
+
+                            </tbody>
+
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>  
+    </div>
+
+</div>
+
+
+
+
+
+

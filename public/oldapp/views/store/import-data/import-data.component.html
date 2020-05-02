@@ -1,0 +1,97 @@
+<footer [myLoading]="myLoading" ></footer>
+
+<div class="wrapper content_top_bar_view2 wrapper-content animated fadeInRight">
+
+  <div class="row">
+    <div class="form-group">
+      <label class="col-sm-2 control-label">{{helper.title.product | translate}}:</label>
+      <div class="col-sm-3">
+        <div class="fileinput fileinput-new input-group" data-provides="fileinput">
+          <div class="form-control" data-trigger="fileinput" style="overflow-x: hidden;"><i class="glyphicon glyphicon-file fileinput-exists"></i> <span class="fileinput-filename"></span></div>
+          <span class="input-group-addon btn btn-default btn-file"><span class="fileinput-new">{{helper.button.select_file}}</span><span class="fileinput-exists">{{helper.button.change}}</span>
+                            <input type="file" (change)="upload_excel($event, helper.IMPORT_STORE_DATA.PRODUCT);"   name="logo_image" placeholder="Select Logo Image"></span>
+          <a href="#" id="remove_{{helper.IMPORT_STORE_DATA.PRODUCT}}" class="input-group-addon btn btn-default fileinput-exists" data-dismiss="fileinput">{{helper.button.remove_file}}</a>
+        </div>
+
+      </div>
+      <div class="col-sm-3">
+        <button type="submit" (click)="upload_excel_data()" id="submit" name="submit" [disabled]="edit_button==false"  class="btn btn-primary">Upload</button>
+        <img  class="" style="width: 50px;height: 50px;margin-left:60px" src="web_images/logo.png" alt="logo">
+
+      </div>
+
+    </div>
+    <div class="form-group">
+      <label class="col-sm-2 control-label">{{helper.title.item | translate}}:</label>
+      <div class="col-sm-3">
+        <div class="fileinput fileinput-new input-group" data-provides="fileinput">
+          <div class="form-control" data-trigger="fileinput" style="overflow-x: hidden;"><i class="glyphicon glyphicon-file fileinput-exists"></i> <span class="fileinput-filename"></span></div>
+          <span class="input-group-addon btn btn-default btn-file"><span class="fileinput-new">{{helper.button.select_file}}</span><span class="fileinput-exists">{{helper.button.change}}</span>
+                            <input type="file" (change)="upload_excel($event, helper.IMPORT_STORE_DATA.ITEM);"   name="logo_image" placeholder="Select Logo Image"></span>
+          <a href="#" id="remove_{{helper.IMPORT_STORE_DATA.ITEM}}" class="input-group-addon btn btn-default fileinput-exists" data-dismiss="fileinput">{{helper.button.remove_file}}</a>
+        </div>
+
+      </div>
+      <div class="col-sm-3">
+        <button type="submit" (click)="upload_excel_data()" id="submit" name="submit" [disabled]="edit_button==false"  class="btn btn-primary">Upload</button>
+        <img  class="" style="width: 50px;height: 50px;margin-left:60px" src="web_images/logo.png" alt="logo">
+
+      </div>
+
+    </div>
+    <div class="form-group">
+      <label class="col-sm-2 control-label">{{helper.title.specification_group | translate}}:</label>
+      <div class="col-sm-3">
+        <div class="fileinput fileinput-new input-group" data-provides="fileinput">
+          <div class="form-control" data-trigger="fileinput" style="overflow-x: hidden;"><i class="glyphicon glyphicon-file fileinput-exists"></i> <span class="fileinput-filename"></span></div>
+          <span class="input-group-addon btn btn-default btn-file"><span class="fileinput-new">{{helper.button.select_file}}</span><span class="fileinput-exists">{{helper.button.change}}</span>
+                            <input type="file" (change)="upload_excel($event, helper.IMPORT_STORE_DATA.SPECIFICATION_GROUP);"   name="logo_image" placeholder="Select Logo Image"></span>
+          <a href="#" id="remove_{{helper.IMPORT_STORE_DATA.SPECIFICATION_GROUP}}" class="input-group-addon btn btn-default fileinput-exists" data-dismiss="fileinput">{{helper.button.remove_file}}</a>
+        </div>
+
+      </div>
+      <div class="col-sm-3">
+        <button type="submit" (click)="upload_excel_data()" id="submit" name="submit" [disabled]="edit_button==false"  class="btn btn-primary">Upload</button>
+        <img  class="" style="width: 50px;height: 50px;margin-left:60px" src="web_images/logo.png" alt="logo">
+
+      </div>
+
+    </div>
+    <div class="form-group">
+      <label class="col-sm-2 control-label">{{helper.title.specification | translate}}:</label>
+      <div class="col-sm-3">
+        <div class="fileinput fileinput-new input-group" data-provides="fileinput">
+          <div class="form-control" data-trigger="fileinput" style="overflow-x: hidden;"><i class="glyphicon glyphicon-file fileinput-exists"></i> <span class="fileinput-filename"></span></div>
+          <span class="input-group-addon btn btn-default btn-file"><span class="fileinput-new">{{helper.button.select_file}}</span><span class="fileinput-exists">{{helper.button.change}}</span>
+                            <input type="file" (change)="upload_excel($event, helper.IMPORT_STORE_DATA.SPECIFICATION);"   name="logo_image" placeholder="Select Logo Image"></span>
+          <a href="#" id="remove_{{helper.IMPORT_STORE_DATA.SPECIFICATION}}" class="input-group-addon btn btn-default fileinput-exists" data-dismiss="fileinput">{{helper.button.remove_file}}</a>
+        </div>
+
+      </div>
+      <div class="col-sm-3">
+        <button type="submit" (click)="upload_excel_data()" id="submit" name="submit" [disabled]="edit_button==false"  class="btn btn-primary">Upload</button>
+        <img  class="" style="width: 50px;height: 50px;margin-left:60px" src="web_images/logo.png" alt="logo">
+
+      </div>
+
+    </div>
+    <div class="form-group">
+      <label class="col-sm-2 control-label">{{helper.title.item_specification | translate}}:</label>
+      <div class="col-sm-3">
+        <div class="fileinput fileinput-new input-group" data-provides="fileinput">
+          <div class="form-control" data-trigger="fileinput" style="overflow-x: hidden;"><i class="glyphicon glyphicon-file fileinput-exists"></i> <span class="fileinput-filename"></span></div>
+          <span class="input-group-addon btn btn-default btn-file"><span class="fileinput-new">{{helper.button.select_file}}</span><span class="fileinput-exists">{{helper.button.change}}</span>
+                            <input type="file" (change)="upload_excel($event, helper.IMPORT_STORE_DATA.ITEM_SPECIFICATION);"   name="logo_image" placeholder="Select Logo Image"></span>
+          <a href="#" id="remove_{{helper.IMPORT_STORE_DATA.ITEM_SPECIFICATION}}" class="input-group-addon btn btn-default fileinput-exists" data-dismiss="fileinput">{{helper.button.remove_file}}</a>
+        </div>
+
+      </div>
+      <div class="col-sm-3">
+        <button type="submit" (click)="upload_excel_data()" id="submit" name="submit" [disabled]="edit_button==false"  class="btn btn-primary">Upload</button>
+        <img  class="" style="width: 50px;height: 50px;margin-left:60px" src="web_images/logo.png" alt="logo">
+
+      </div>
+
+    </div>
+  </div>
+</div>

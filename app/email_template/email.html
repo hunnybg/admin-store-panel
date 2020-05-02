@@ -1,0 +1,113 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title><%= title %></title>
+    <style type="text/css" media="screen">
+        /* for responsive */
+
+        @media only screen and (max-width: 680px) {
+            *[id=email-penrose-conteneur] {
+                width: 100% !important;
+            }
+        }
+    </style>
+
+    <style>
+        table,
+        td,
+        th {
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 90%;
+        }
+
+        th,
+        td {
+            padding: 15px;
+        }
+    </style>
+
+</head>
+
+<body style="background-color:#ecf0f1">
+    <div align="center" style="background-color:#ecf0f1;">
+
+
+        <table id="email-penrose-conteneur" width="660" align="center"
+            style="border-right:1px solid #e2e8ea; border-bottom:1px solid #e2e8ea; border-left:1px solid #e2e8ea; background-color:#e5e5e5;padding-right: 3%; padding-left: 3%; background: url('<%= background_image_url %>');"
+            border="0" cellspacing="0" cellpadding="0">
+
+            <tr>
+
+                <td>
+                    <div style="text-align: center;padding-top:20px;padding-bottom: 30px;">
+                        <img alt="email_img" src="<%= logo_image_url %>" style="width: 130px;">
+                        <!-- <strong style="color: black; font-family: arial; font-size: 37px;"> <%= app_name_string %></strong> -->
+                    </div>
+                </td>
+            </tr>
+
+
+
+            <tr>
+                <td style="border-bottom: 1px solid #e2e8ea; background-color: #ffffff;">
+
+
+                    <div
+                        style="padding: 40px;font-size:14px; font-family:'Helvetica Neue', helvetica, arial, sans-serif; font-weight:100; color:#545454;text-align:center;">
+                        <strong style="color:black; font-size:20px;"><%= title %></strong>
+                    </div>
+                    <div
+                        style="padding: 10px;padding-left:40px; padding-right: 40px; font-size:14px; font-family:'Helvetica Neue', helvetica, arial, sans-serif; font-weight:100; color:#545454;text-align:center;">
+                        <strong><%= email_content %></strong>
+                    </div>
+
+                    <% if(typeof shifts != 'undefined'){ %>
+
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Time</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% shifts.forEach(function(shift , shift_index){ %>
+                            <tr>
+                                <td><%= shift.date %></td>
+                                <td><%= shift.shift_time_from %> - <%= shift.shift_time_till %></td>
+                            </tr>
+                            <%  }); %>
+                        </tbody>
+                    </table>
+                    <% } %>
+                </td>
+            </tr>
+            <tr>
+
+                <td>
+                    <div style="padding: 40px;text-align: center;padding-bottom: 30px;">
+                        <!-- <img alt="email_img" src="<%= logo_image_url %>" style="width: 100px;"> -->
+                        <strong style="color: black; font-family: arial; font-size: 20px;"> <%= template_string %></strong>
+                    </div>
+
+                    <div
+                        style="padding: 10px;padding-left: 10%;padding-right: 10%;text-align: center;padding-bottom: 30px;">
+                        <lable style="font-family: arial; "><%=  email_admin_info %></lable>
+                    </div>
+                </td>
+            </tr>
+
+        </table>
+
+    </div>
+</body>
+
+</html>

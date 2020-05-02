@@ -1,0 +1,637 @@
+<style>
+    .set_padding{
+        padding-right: 2px;
+    }
+</style>
+<footer [myLoading]="myLoading" ></footer>
+<div class="row wrapper fix_search_bar border-bottom white-bg page-heading">
+
+    <div class="row">
+        <div class="col-md-3 col-sm-12">
+            <div class="lable_center">
+                <label>{{title.search | translate}}</label>
+            </div>
+
+            <div class="col-md-6 col-sm-6 remove_padding">
+                <div class="form-group" id="search_fields">
+                    <select chosen class="chosen-select" id="search_field" [(ngModel)]="search_field" name="search_field" tabindex="4">
+
+                        
+                        <option value="unique_id">{{title.id | translate}}</option>
+                        <option value="user_detail.unique_id">{{title.user_id | translate}}</option>
+                        <option value="provider_detail.unique_id">{{title.provider_id | translate}}</option>
+                        <option value="store_detail.unique_id">{{title.store_id | translate}}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-6 remove_padding">
+                <div class="form-group">
+                    <div class="input-group">
+
+                        <input type="text" class="form-control search_box" [(ngModel)]="search_value"  name="search_value">
+                        <span class="input-group-addon search_icon"><span class="fa fa-search"></span></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3 col-sm-12">
+            <div class="lable_center">
+                <label>{{title.sort | translate}}</label>
+            </div>
+            <div class="col-md-6 col-sm-6 remove_padding">
+                <div class="form-group" id="sort_fields">
+                    <select chosen class="chosen-select" id="sort_field" [(ngModel)]="sort_field" name="sort_field" tabindex="4">
+
+                        <option value="unique_id">{{title.id | translate}}</option>
+                        <option value="user_detail.first_name">{{title.user | translate}}</option>
+                        <option value="provider_detail.first_name">{{title.provider | translate}}</option>
+                        <option value="store_detail.name">{{title.store | translate}}</option>
+
+
+
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-6 remove_padding">
+                <div class="form-group" id="sort_orders">
+
+                    <select chosen class="chosen-select" id="sort_order" [(ngModel)]="sort_order" name="sort_order" tabindex="4">
+
+                        <option value="1">{{title.ascending | translate}}</option>
+                        <option value="-1">{{title.descending | translate}}</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-12">
+            <div class="lable_center">
+                <label>{{title.date_filter | translate}}</label>
+            </div>
+
+            <div class="col-md-12 remove_padding">
+
+                <div class="form-group">
+                    <div class="input-group">
+
+                        <my-date-picker id="start_date" [options]="helper.myStartDatePickerOptions" placeholder="Start Date" [(ngModel)]="start_date" (dateChanged)="helper.onStartDateChanged($event)"
+                                        readonly></my-date-picker>
+                        <span class="input-group-addon date_filter_icon">To</span>
+
+                        <my-date-picker id="end_date" [options]="helper.myEndDatePickerOptions" placeholder="End Date" [(ngModel)]="end_date" (dateChanged)="helper.onEndDateChanged($event)"
+                                        readonly></my-date-picker>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-12">
+<!--            <div class="col-md-6 col-sm-6 filter_btn_div">
+                <input type="button" (click)="earning_export_excel()" class="btn export_excel_btn pull-right" value="{{button.export_excel | translate}}" >
+            </div>-->
+            
+                        <div class="col-md-6 col-sm-6 filter_btn_div">
+                            <input type="button" (click)="earning_export_csv()" class="btn export_excel_btn pull-right" value="{{button.export_excel | translate}}" >
+                        </div>
+            
+            
+
+
+            <div class="col-md-6 col-sm-6 filter_btn_div">
+                <input type="button" (click)="admin_earning(1)" class="btn filter_apply_btn pull-right" value="{{button.apply | translate}}" >
+            </div>
+        </div>
+
+    </div>
+
+</div>
+<div class="wrapper wrapper-content content_top_bar_view1 animated fadeInRight">
+    <div class="ibox" *ngIf="order_list.length==0">
+        <div class="ibox-content">
+            <div class="lable_center" >
+                <label>No Records</label>
+            </div>
+        </div>  
+    </div>  
+    <div class="row" *ngIf="order_list.length>0">
+        <div class="col-lg-12">
+            <div class="ibox">
+                <div class="wizard">
+                    <div class="steps clearfix">
+                        <ul style="display: table;padding: 0px;">
+
+                            <li style="margin: 0px !important;border: 0px; width: 100px;" [class.current]="page_tab==1"  >
+                                <a style="border-bottom-right-radius: 0px; text-align:center; border-bottom-left-radius: 0px;border: 0px;"  (click)="page_tab=1" class="btn-default "><span style="font-weight: bold;display:block;" class="nav-label ">{{title.user | translate}}</span></a>
+                            </li>
+                            <li style="margin: 0px !important;border: 0px; width: 100px;"  [class.current]="page_tab==2" >
+
+                                <a style="border-bottom-right-radius: 0px; text-align:center; border-bottom-left-radius: 0px;border: 0px;" (click)="page_tab=2"  class="btn-default "><span style="font-weight: bold;display:block;" class="nav-label ">{{title.admin | translate}}</span></a>
+
+                            </li>
+                            <li style="margin: 0px !important;border: 0px; width: 100px;" [class.current]="page_tab==3" >
+                                <a style="border-bottom-right-radius: 0px; text-align:center; border-bottom-left-radius: 0px;border: 0px;" (click)="page_tab=3 " class="btn-default "><span style="font-weight: bold;display:block;" class="nav-label ">{{title.provider | translate}}</span></a>
+                            </li>
+                            <li style="margin: 0px !important;border: 0px; width: 100px;" [class.current]="page_tab==4">
+                                <a style="border-bottom-right-radius: 0px; text-align:center; border-bottom-left-radius: 0px;border: 0px;"  (click)="page_tab=4 " class="btn-default "><span style="font-weight: bold;display:block;" class="nav-label ">{{title.store | translate}}</span></a>
+                            </li>
+
+                        </ul>
+                    </div>
+
+                    <div class="ibox-content" style="margin-top: -1px;">
+                        <div *ngIf="order_list.length>0 && page_tab ==1">
+
+                            <div class="row">
+                                <div class="col-lg-2 col-sm-6 set_padding">
+                                    <div class="ibox">
+                                        <div class="ibox-title" style="text-align: center;">
+                                            <h2 >{{(user_paid).toFixed(2)}}</h2>
+                                            <label class="control-label">{{title.paid | translate}}</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 col-sm-6 set_padding">
+                                    <div class="ibox">
+                                        <div class="ibox-title" style="text-align: center;">
+                                            <h2 >{{(promo_payment).toFixed(2)}}</h2>
+                                            <label class="control-label" >{{title.promo | translate}}</label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-2 col-sm-6 set_padding">
+                                    <div class="ibox">
+                                        <div class="ibox-title" style="text-align: center;">
+                                            <h2>{{(user_cash).toFixed(2)}}</h2>
+                                            <label class="control-label">{{title.cash | translate}}</label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-2 col-sm-6 set_padding">
+                                    <div class="ibox">
+                                        <div class="ibox-title" style="text-align: center;">
+                                            <h2 >{{(user_card).toFixed(2)}}</h2>
+                                            <label class="control-label" >{{title.card | translate}}</label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-2 col-sm-6 set_padding">
+                                    <div class="ibox">
+                                        <div class="ibox-title" style="text-align: center;">
+                                            <h2 >{{(user_wallet).toFixed(2)}}</h2>
+                                            <label class="control-label" >{{title.wallet | translate}}</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 col-sm-6 set_padding">
+                                    <div class="ibox">
+                                        <div class="ibox-title" style="text-align: center;">
+                                            <h2 >{{(user_refferal).toFixed(2)}}</h2>
+                                            <label class="control-label" >{{title.referral | translate}}</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> 
+
+
+                        </div>
+                        <div *ngIf="order_list.length>0 && page_tab ==2">
+
+                            <div class="row">
+                                <div class="col-lg-2 col-sm-6 set_padding">
+                                    <div class="ibox">
+                                        <div class="ibox-title" style="text-align: center;">
+                                            <h2 >{{order_total.total_item_count}}</h2>
+                                            <label class="control-label" >{{title.total_item | translate}}</label> 
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 col-sm-6 set_padding">
+                                    <div class="ibox">
+                                        <div class="ibox-title" style="text-align: center;">
+                                            <h2 >{{order_count}}</h2>
+                                            <label class="control-label" >{{title.orders | translate}}</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 col-sm-6 set_padding">
+                                    <div class="ibox">
+                                        <div class="ibox-title" style="text-align: center;">
+                                            <h2 >{{order_total.total_completed_orders}}</h2>
+                                            <label class="control-label" >{{title.completed | translate}}</label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-2 col-sm-6 set_padding">
+                                    <div class="ibox">
+                                        <div class="ibox-title" style="text-align: center;">
+                                            <h2 >{{order_total.total_cancelled_orders}}</h2>
+                                            <label class="control-label" >{{title.cancelled | translate}}</label>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="col-lg-2 col-sm-6 set_padding">
+                                    <div class="ibox">
+                                        <div class="ibox-title" style="text-align: center;">
+                                            <h2 >{{order_total.total_rejected_orders}}</h2>
+                                            <label class="control-label" >{{title.rejected | translate }}</label> 
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-2 col-sm-6 set_padding">
+                                    <div class="ibox">
+                                        <div class="ibox-title" style="text-align: center;">
+                                            <h2 >{{(order_total.refund_amount).toFixed(2)}}</h2>
+                                            <label class="control-label" >{{title.refund_amount | translate }}</label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div> 
+                            <div class="row">
+
+                                <div class="col-lg-2 col-sm-6 set_padding">
+                                    <div class="ibox">
+                                        <div class="ibox-title" style="text-align: center;">
+                                            <h2 >{{(order_total.total).toFixed(2)}}</h2>
+                                            <label class="control-label" >{{title.total | translate}}</label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-2 col-sm-6 set_padding">
+                                    <div class="ibox">
+                                        <div class="ibox-title" style="text-align: center;">
+                                            <h2 >{{(order_total.total_order_price).toFixed(2)}}</h2>
+                                            <label class="control-label" >{{title.order_price | translate}}</label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-2 col-sm-6 set_padding">
+                                    <div class="ibox">
+                                        <div class="ibox-title" style="text-align: center;">
+                                            <h2 >{{(order_total.total_delivery_price).toFixed(2)}}</h2>
+                                            <label class="control-label" >{{title.delivery_price | translate}}</label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-2 col-sm-6 set_padding">
+                                    <div class="ibox">
+                                        <div class="ibox-title" style="text-align: center;">
+                                            <h2 >{{(order_total.admin_earn).toFixed(2)}}</h2>
+                                            <label class="control-label" >{{title.admin_earn | translate}}</label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-2 col-sm-6 set_padding">
+                                    <div class="ibox">
+                                        <div class="ibox-title" style="text-align: center;">
+                                            <h2 >{{(order_total.deliveryman_earn).toFixed(2)}}</h2>
+                                            <label class="control-label" >{{title.deliveryman | translate}}</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 col-sm-6 set_padding">
+                                    <div class="ibox">
+                                        <div class="ibox-title" style="text-align: center;">
+                                            <h2 >{{(order_total.store_earn).toFixed(2)}}</h2>
+                                            <label class="control-label" >{{title.store_earn | translate}} </label> 
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div> 
+
+                            <div class="row">
+                                <div class="col-lg-2 col-sm-6 set_padding">
+                                    <div class="ibox">
+                                        <div class="ibox-title" style="text-align: center;">
+                                            <h2 >{{(promo_payment).toFixed(2)}}</h2>
+                                            <label class="control-label" >{{title.promo | translate}}</label>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="col-lg-2 col-sm-6 set_padding">
+                                    <div class="ibox">
+                                        <div class="ibox-title" style="text-align: center;">
+                                            <h2 >{{(order_total.cash_payment).toFixed(2)}}</h2>
+                                            <label class="control-label" >{{title.cash | translate}}</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 col-sm-6 set_padding">
+                                    <div class="ibox">
+                                        <div class="ibox-title" style="text-align: center;">
+                                            <h2 >{{(order_total.other_payment).toFixed(2)}}</h2>
+                                            <label class="control-label" >{{title.other | translate}}</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 col-sm-6 set_padding">
+                                    <div class="ibox">
+                                        <div class="ibox-title" style="text-align: center;">
+                                            <h2 >{{(order_total.wallet).toFixed(2)}}</h2>
+                                            <label class="control-label" >{{title.wallet | translate}}</label>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+                                <div class="col-lg-2 col-sm-6 set_padding">
+                                    <div class="ibox">
+                                        <div class="ibox-title" style="text-align: center;">
+                                            <h2 >{{(order_total.pay_to_provider).toFixed(2)}}</h2>
+                                            <label class="control-label">{{title.pay_to_provider | translate}}</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 col-sm-6 set_padding">
+                                    <div class="ibox">
+                                        <div class="ibox-title" style="text-align: center;">
+                                            <h2 >{{(order_total.pay_to_store).toFixed(2)}}</h2>
+                                            <label class="control-label" >{{title.pay_to_store | translate}}</label> 
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+
+
+                            </div>
+                        </div>
+
+
+                        <div *ngIf="order_list.length>0 && page_tab ==3">
+
+                            <div class="row">
+                                <div class="col-lg-2 col-sm-6 set_padding">
+                                    <div class="ibox">
+                                        <div class="ibox-title" style="text-align: center;">
+                                            <h2 >{{(order_total.total_delivery_price).toFixed(2)}}</h2>
+                                            <label class="control-label" >{{title.deliveries_payment | translate}}</label> 
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 col-sm-6 set_padding">
+                                    <div class="ibox">
+                                        <div class="ibox-title" style="text-align: center;">
+                                            <h2 >{{(order_total.provider_admin_earn).toFixed(2)}}</h2>
+                                            <label class="control-label" >{{title.admin_earn | translate}}</label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-2 col-sm-6 set_padding">
+                                    <div class="ibox">
+                                        <div class="ibox-title" style="text-align: center;">
+                                            <h2 >{{(order_total.provider_profit).toFixed(2)}}</h2>
+                                            <label class="control-label" >{{title.profit | translate}}</label> 
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 col-sm-6 set_padding">
+                                    <div class="ibox">
+                                        <div class="ibox-title" style="text-align: center;">
+                                            <h2 >{{(order_total.provider_paid_order_payment).toFixed(2)}}</h2>
+                                            <label class="control-label" >{{title.provider_paid_order | translate}}</label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-2 col-sm-6 set_padding">
+                                    <div class="ibox">
+                                        <div class="ibox-title" style="text-align: center;">
+                                            <h2 >{{(order_total.provider_cash).toFixed(2)}}</h2>
+                                            <label class="control-label" >{{title.cash | translate}}</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 col-sm-6 set_padding">
+                                    <div class="ibox">
+                                        <div class="ibox-title" style="text-align: center;">
+                                            <h2 >{{(order_total.provider_paid).toFixed(2)}}</h2>
+                                            <label class="control-label" >{{title.pay | translate}}</label> 
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+
+                            </div> 
+
+
+                        </div>
+
+                        <div *ngIf="order_list.length>0 && page_tab ==4">
+
+                            <div class="row">
+                                <div class="col-lg-2 col-sm-6 set_padding">
+                                    <div class="ibox">
+                                        <div class="ibox-title" style="text-align: center;">
+                                            <h2 >{{(order_total.total_order_price).toFixed(2)}}</h2>
+                                            <label class="control-label" >{{title.order_payment | translate }}</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 col-sm-6 set_padding">
+                                    <div class="ibox">
+                                        <div class="ibox-title" style="text-align: center;">
+                                            <h2 >{{(order_total.store_admin_earn).toFixed(2)}}</h2>
+                                            <label class="control-label" >{{title.admin_earn | translate}}</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 col-sm-6 set_padding">
+                                    <div class="ibox">
+                                        <div class="ibox-title" style="text-align: center;">
+                                            <h2 >{{(order_total.store_profit).toFixed(2)}}</h2>
+                                            <label class="control-label" >{{title.profit | translate }}</label> 
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 col-sm-6 set_padding">
+                                    <div class="ibox">
+                                        <div class="ibox-title" style="text-align: center;">
+                                            <h2 >{{(order_total.store_have_payment).toFixed(2)}}</h2>
+                                            <label class="control-label" >{{title.store_have_payment | translate}}</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 col-sm-6 set_padding">
+                                    <div class="ibox">
+                                        <div class="ibox-title" style="text-align: center;">
+                                            <h2>{{(order_total.store_have_service_payment).toFixed(2)}}</h2>
+                                            <label class="control-label" >{{title.store_have_service_payment | translate}}</label> 
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-2 col-sm-6 set_padding">
+                                    <div class="ibox">
+                                        <div class="ibox-title" style="text-align: center;">
+                                            <h2 >{{(order_total.store_paid).toFixed(2)}}</h2>
+                                            <label class="control-label" >{{title.pay | translate}}</label> 
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+                            </div> 
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="row" *ngIf="order_list.length>0">
+        <div class="col-lg-12">
+            <div class="ibox-content">
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <!--            <div class="ibox float-e-margins">
+                                        <div class="ibox-content " style="overflow-x: scroll;padding-bottom: 40px;">
+                                            <table class="table table-striped">-->
+                        <thead>
+                            <tr>
+
+                                <th >{{title.id | translate}}</th>
+                                <th >{{title.complete_date | translate}}</th>
+                                <th >{{title.status | translate}}</th>
+                                <th >{{title.user_id | translate}}</th>
+                                <th >{{title.provider_id | translate}}</th>
+                                <th >{{title.store_id | translate}}</th>
+                                <th >{{title.payment_by | translate}}</th>
+                                <th >{{title.currency | translate}}</th>
+
+                                <th >{{title.no_of_items | translate}}</th>
+                                <th >{{title.order_price | translate}}</th>
+                                <th >{{title.delivery_price | translate}}</th>
+                                <th >{{title.promo | translate}}</th>
+                                <th >{{title.total | translate}}</th>
+                                <th >{{title.wallet | translate}}</th>
+                                <th >{{title.cash_card | translate}}</th>
+                                <th >{{title.provider_fees | translate}}</th>
+                                <th >{{title.provider_paid_order | translate}}</th>
+                                <th >{{title.provider_have_cash | translate}}</th>
+                                <th >{{title.pay_provider | translate}}</th>
+                                <th >{{title.provider_income_set_in_wallet | translate}}</th>
+                                <th >{{title.store_fees | translate}}</th>
+                                <th >{{title.store_paid_delivery_fees | translate}}</th>
+                                <th >{{title.store_have_payment | translate}}</th>
+                                <th >{{title.pay_store | translate}}</th>
+                                <th >{{title.store_income_set_in_wallet | translate}}</th>
+                                <th >{{title.cancellation_fees | translate}}</th>
+                                <th >{{title.refund_amount | translate}}</th>
+                                <th >{{title.action | translate}}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let order of order_list; let index=index; let last=last;">
+                                <td>{{order.unique_id}}</td>
+                                <td>{{order.completed_at| date: DATE_FORMAT.DD_MMM_YYYY}}</td>
+                                <td [ngSwitch]="order.order_status">
+                                    <div *ngSwitchCase="ORDER_STATE.ORDER_COMPLETED"><span class="label label-primary_new">{{status.completed}}</span></div>
+                                    <div *ngSwitchCase="ORDER_STATE.STORE_REJECTED"><span class="label label-danger">{{status.rejected}}</span></div>
+                                    <div *ngSwitchCase="ORDER_STATE.STORE_CANCELLED"><span class="label label-danger">{{status.cancelled}}</span></div>
+                                    <div *ngSwitchCase="ORDER_STATE.CANCELED_BY_USER"><span class="label label-danger">{{status.user_cancelled}}</span></div>
+                                </td>
+                                <td>{{order.user_detail.unique_id}}</td>
+                                <td><div *ngIf="order.provider_detail.length>0">{{order.provider_detail[0].unique_id}}</div></td>
+
+
+                                <td>{{order.store_detail.unique_id}}</td>
+                                <td [ngSwitch]="order.order_payment_detail.is_payment_mode_cash">
+                                    <div *ngSwitchCase="true"><span class="label label-primary_new">{{title.cash}}</span></div>
+                                    <div *ngSwitchCase="false"><span class="label label-danger" *ngIf="order.payment_gateway_detail.length >0">{{order.payment_gateway_detail[0].name}}</span></div>
+                                </td>
+                                <td>{{order.country_detail.currency_sign}}</td>
+                                <td>{{order.order_payment_detail.total_item_count}}</td>
+                                <td>{{order.order_payment_detail.total_order_price}}</td>
+                                <td>{{order.order_payment_detail.total_delivery_price}} </td>
+                                <td>{{order.order_payment_detail.promo_payment}}</td>
+                                <td>{{((+order.order_payment_detail.total_delivery_price + +order.order_payment_detail.total_order_price).toFixed(2))}}</td>
+                                <td>{{(order.order_payment_detail.wallet_payment).toFixed(2)}} </td>
+                                <td [ngSwitch]="order.order_payment_detail.is_payment_mode_cash">
+                                    <div *ngSwitchCase="true">{{order.order_payment_detail.cash_payment}}</div>
+                                    <div *ngSwitchCase="false">{{order.order_payment_detail.card_payment}}</div>
+                                </td>
+                                <td>{{order.order_payment_detail.total_provider_income}}</td>
+
+                                <td>{{order.order_payment_detail.provider_paid_order_payment}} </td>
+
+                                <td>{{order.order_payment_detail.provider_have_cash_payment}} </td>
+
+                                <td>{{((order.order_payment_detail.pay_to_provider).toFixed(2))}}</td>
+                                <td>{{(order.order_payment_detail.provider_income_set_in_wallet).toFixed(2)}}</td>
+                                <td>{{order.order_payment_detail.total_store_income}}</td>
+
+                                <td>{{order.order_payment_detail.store_have_service_payment}}</td>
+
+                                <td>{{order.order_payment_detail.total_store_have_payment}} </td>
+                                <td>{{((order.order_payment_detail.pay_to_store).toFixed(2))}}</td>
+                                <td>{{(order.order_payment_detail.store_income_set_in_wallet).toFixed(2)}}</td>
+                                <td>{{((order.order_payment_detail.order_cancellation_charge).toFixed(2))}}</td>
+                                <td>{{((order.order_payment_detail.refund_amount).toFixed(2))}}</td>
+                                <td><div class="dropdown pull-right" [class.dropup]="last && !index==0" dropdown>
+                                        <button class="btn btn-primary" dropdown-open>{{title.action | translate}}<span class="caret"></span></button>
+
+
+                                        <ul class="dropdown-menu">
+                                            <li><a (click)="viewEarningDetail(order._id)"><span style="display:block;" class="nav-label">{{button.detail | translate}}</span> </a></li>
+                                        </ul>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+
+
+
+
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+
+
+    <div class="col-md-12 col-sm-12">
+        <div class="lable_center">
+            
+            <ul class="pagination">
+                <li *ngIf="page!==1"><a class="btn" (click)="admin_earning(page-1)">{{button.pre | translate}}</a></li>
+                <li *ngFor="let index of total_pages" [class.active]="page==index">
+                    <a *ngIf="index==1 || index==total_page || index==page || index==page-1 || index==page+1" (click)="admin_earning(index)" class="btn">{{index}}</a>
+                    <a *ngIf="(index==1 && (page!==1 && page!==2 && page!==3)) || (index==total_page-1 && (page!==total_page && page!==total_page-1 && page!==total_page-2))" class="btn">...</a>
+
+                </li>
+                <li *ngIf="page!==total_page && order_list.length!==0"><a class="btn" (click)="admin_earning(page+1)">{{button.next | translate}}</a></li>
+            </ul>
+            
+
+            
+        </div>
+    </div>
+
+
+</div>

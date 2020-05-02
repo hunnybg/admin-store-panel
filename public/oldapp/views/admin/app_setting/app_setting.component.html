@@ -1,0 +1,42 @@
+<form #appsettingForm="ngForm" (ngSubmit)="AppSetting(appsettingForm.value)">
+    <div class="panel-body">
+
+        <fieldset class="form-horizontal">
+
+
+            <div class="form-group"><label
+                    class="col-sm-4 control-label">{{title.admin_provider_timeout | translate}}:</label>
+                <div class="col-sm-8"><input type="text" class="form-control" [(ngModel)]="app_setting.provider_timeout"
+                        #provider_timeout="ngModel" name="provider_timeout" placeholder="Provider TimeOut"></div>
+            </div>
+            <!--            <div class="form-group"><label class="col-sm-4 control-label">{{title.admin_store_timeout | translate}}:</label>
+                            <div class="col-sm-8"><input type="text" class="form-control" [(ngModel)]="app_setting.store_timeout" #store_timeout="ngModel"  name="store_timeout"  placeholder="Store TimeOut"></div>
+                        </div>-->
+            <div class="form-group"><label class="col-sm-4 control-label">{{title.admin_app_name | translate}}:</label>
+                <div class="col-sm-8"><input type="text" class="form-control" [(ngModel)]="app_setting.app_name"
+                        #app_name="ngModel" name="app_name" placeholder="App Name"></div>
+            </div>
+            <div class="form-group"><label
+                    class="col-sm-4 control-label">{{title.admin_default_search_radius | translate}}:</label>
+                <div class="col-sm-8"><input type="text" class="form-control"
+                        [(ngModel)]="app_setting.default_search_radius" #default_search_radius="ngModel"
+                        name="default_search_radius" placeholder="Default Search Radius"></div>
+            </div>
+            <!--            <div class="form-group"><label class="col-sm-4 control-label">{{title.admin_scheduled_request_pre_start_minute | translate}}:</label>
+                            <div class="col-sm-8"><input type="text" class="form-control" [(ngModel)]="app_setting.scheduled_request_pre_start_minute" #scheduled_request_pre_start_minute="ngModel"  name="scheduled_request_pre_start_minute"  placeholder="Scheduled Request Pre Start Minutes"></div>
+                        </div>-->
+            <!--            <div class="form-group"><label class="col-sm-4 control-label">{{title.admin_number_of_try_for_scheduled_request | translate}}:</label>
+                            <div class="col-sm-8"><input type="text" class="form-control" [(ngModel)]="app_setting.number_of_try_for_scheduled_request" #number_of_try_for_scheduled_request="ngModel"  name="number_of_try_for_scheduled_request"  placeholder="Number Of Loop For Scheduled Request"></div>
+                        </div>-->
+
+
+
+            <div class="col-lg-4">
+            </div>
+            <div class="col-lg-4" style="text-align: center;">
+                <input type="submit" id="submit" [disabled]="edit_button==false" name="submit" style="width: 50%;"
+                    class="btn btn-primary" value="{{button.submit | translate}}">
+            </div>
+        </fieldset>
+    </div>
+</form>

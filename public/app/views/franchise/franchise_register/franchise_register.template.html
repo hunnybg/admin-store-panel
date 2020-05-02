@@ -1,0 +1,231 @@
+<style type="text/css" media="screen">
+
+</style>
+<footer [myLoading]="myLoading" ></footer>   
+
+    <div class="row full_height">
+        <div class="col-md-5 col-xs-12 col-sm-12 full_height login_left_background">
+            <div class="col-md-12 col-xs-12 col-sm-12 login_left_top_margin animated fadeInLeft">
+                <div class="col-md-12 col-xs-12 col-sm-12">
+                    <img  style="width: 130px;" src="web_images/store_logo.png">
+                </div>
+               
+                <label class="col-md-12 col-xs-12 col-sm-12 login_title" style="margin-top: 20px;">{{title.store_title1 | translate}}</label>
+                <label class="col-md-12 col-xs-12 col-sm-12 login_title">{{title.store_title2 | translate}}</label>
+                <div class="col-md-12 col-xs-12 col-sm-12">
+                    <hr class="login_hr">
+                </div>
+
+
+                <label class="col-md-12 col-xs-12 col-sm-12 login_left_bottom_margin">{{title.already_account | translate}}</label>
+                <a class="col-md-12 col-xs-12 col-sm-12" [routerLink]="['/franchise/login']" style="color:#ffffff;font-size: 20px;font-weight: normal;">{{button.login | translate}}</a>
+            </div>
+        </div>
+        <div class="col-md-7 col-xs-12 col-sm-12 full_height login_right_background">
+            <div class="loginColumns animated fadeInRight" style="max-width: 700px;">
+                <div class="ibox-content login_right_background">
+                    <div id="social">
+                        <div style="text-align: center;margin-bottom: 20px;">
+                            <button type="button" style="border: 0;background-color: #f3f3f3;" (click)="facebook_register()"><img class="social_button" src="web_images/facebook_register.png"></button>
+                            <button type="button" style="border: 0;background-color: #f3f3f3;" (click)="google_register()"><img class="social_button" src="web_images/google_register.png"></button>
+                        </div>
+                        <div style="text-align: center;">
+                            <label style="margin-bottom: 20px;font-size: 25px;font-weight: normal;color: #626262;">-----OR-----</label>
+                        </div>
+                    </div>
+
+
+                    <div class="row" style="margin-left: 0px; margin-right: 0px;;">
+                        <div class="col-md-6 col-sm-6 col-xs-6">
+                            <label class='col-lg-12 login_right_title'>{{title.register_your_account | translate}}</label>
+                        </div>
+                        <div class="col-md-6 col-sm-6 col-xs-6">
+                            <div class="col-lg-12 profile-images center">
+                                
+                                <span class="btn-file pull-right"><img class="img-circle" style="width: 110px;height: 110px;" src="{{franchise_register.image_url}}" alt="profile"><input type="file" accept="image/*" (change)="image_update($event);" name="image"></span>
+                                
+                            </div>
+                        </div>
+                    </div>
+
+                    
+                    <form #franchiseForm="ngForm" (ngSubmit)="franchiseRegister1(franchiseForm.value)" >
+
+                        <div class="col-md-6 col-sm-6">
+                            <div class="col-lg-12 form-group">
+                                <input type="text" class="form-control register_text_box" [(ngModel)]="franchise_register.name" #name="ngModel" placeholder="{{title.name | translate}}" name="name" required />
+                                <div *ngIf="name.errors && (name.dirty || name.touched)">
+                                    <div style="color: red;" [hidden]="!name.errors.required">{{validation_message.name_required | translate}}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-12 form-group">
+                                <input type="email" [readonly]="franchise_register.social_unique_id !== '' && franchise_register.email !== ''" class="form-control register_text_box" [(ngModel)]="franchise_register.email" #email="ngModel" placeholder="{{title.email | translate}}" name="email" email required />
+                                <div *ngIf="email.errors && (email.dirty || email.touched)">
+                                    <div style="color: red;" [hidden]="!email.errors.required">{{validation_message.email_required | translate}}
+                                    </div>
+                                    <div style="color: red;" [hidden]="!email.errors?.email">{{validation_message.valid_email | translate}}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-12 form-group" [hidden]="franchise_register.social_unique_id !== ''">
+                                <input type="password" class="form-control register_text_box" [(ngModel)]="franchise_register.confirm_password" #confirm_password="ngModel" placeholder="{{title.password | translate}}" name="password" minlength="6"  required />
+                                <div *ngIf="confirm_password.errors && (confirm_password.dirty || confirm_password.touched)">
+                                    <div style="color: red;" [hidden]="!confirm_password.errors.required">{{validation_message.password_required | translate}}
+                                    </div>
+                                    <div style="color: red;" [hidden]="!confirm_password.errors.minlength">{{validation_message.password_minlength | translate}}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-12 form-group" [hidden]="franchise_register.social_unique_id !== ''">
+                                <input type="password" class="form-control register_text_box" [(ngModel)]="franchise_register.password" #password="ngModel" [equalTo]="confirm_password" placeholder="{{title.confirm_password | translate}}" name="confirm_password" required />
+                                <div *ngIf="password.errors && (password.dirty || password.touched)">
+                                    <div style="color: red;" [hidden]="!password.errors.required">{{validation_message.password_required | translate}}
+                                    </div>
+                                    <div style="color: red;" [hidden]="!password.errors.minlength">{{validation_message.password_minlength | translate}}
+                                    </div>
+                                    <div style="color: red;" [hidden]="!password.errors?.equalTo">{{validation_message.match_confirm_password | translate}}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="Optiona_field">
+                                <div class="col-lg-12 form-group">
+                                    <input type="text" class="form-control register_text_box" [(ngModel)]="franchise_register.website_url" #website_url="ngModel" placeholder="{{title.website_url | translate}}" name="website_url" />
+
+                                </div>
+
+                                <div class="col-lg-12 form-group">
+                                    <input type="text" class="form-control register_text_box" [(ngModel)]="franchise_register.slogan" #slogan="ngModel" placeholder="{{title.slogan | translate}}" name="slogan" />
+
+                                </div>
+
+                                <div class="col-lg-12 form-group">
+                                    <input type="text" class="form-control register_text_box" [(ngModel)]="franchise_register.famous_for" #famous_for="ngModel" placeholder="{{title.famous_for | translate}}" name="famous_for" />
+
+                                </div>
+                            </div>
+
+                            
+                        </div>
+
+                        <div class="col-md-6 col-sm-6">
+                            <div class="col-lg-12 form-group " id="register_text_box">
+                                <select chosen class="form-control chosen-select" id="country" [(ngModel)]="franchise_register.country_id" data-placeholder="Select Country" #country_id="ngModel" name="country_id" tabindex="4" required>
+                                    <option selected style="display:none;">{{title.select_country | translate}}</option>
+                                    <option *ngFor="let i of country_list" value="{{i._id}}">{{i.country_name}}</option>
+                                </select>
+                                <div *ngIf="country_id.errors && (country_id.dirty || country_id.touched)">
+                                    <div style="color: red;" [hidden]="!country_id.errors.required">{{validation_message.select_country_required | translate}}</div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-12 form-group" id="register_text_box">
+                                <select chosen class="form-control chosen-select" id="city" [(ngModel)]="franchise_register.city_id" data-placeholder="Select City" #city_id="ngModel" name="city_id" tabindex="4" required >
+                                    <option selected style="display:none;">{{title.select_city | translate}}</option>
+                                    <option *ngFor="let i of city_list" value="{{i._id}}">{{i.city_name}}</option>
+                                </select>
+                                <div *ngIf="city_id.errors && (city_id.dirty || city_id.touched)">
+                                    <div style="color: red;" [hidden]="!city_id.errors.required">{{validation_message.select_city_required | translate}}</div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-12 col-lg-12 form-group" id="register_text_box">
+                                <select chosen class="form-control chosen-select" id="delivery" [(ngModel)]="franchise_register.store_delivery_id" data-placeholder="Select Delivery Type" #store_delivery_id="ngModel" name="store_delivery_id" tabindex="4"  required>
+                                    <option selected style="display:none;">{{title.select_delivery | translate}}</option>
+                                    <option *ngFor="let i of delivery_list" value="{{i._id}}">{{i.delivery_name}}</option>
+                                </select>
+                                <div *ngIf="store_delivery_id.errors && (longitude.dirty || longitude.touched)">
+                                    <div style="color: red;" [hidden]="!store_delivery_id.errors.required">{{validation_message.select_delivery_type_required | translate}}</div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-4 col-xs-4 form-group">
+
+                                <input type="text" class="form-control register_text_box" [(ngModel)]="franchise_register.country_phone_code" #country_phone_code="ngModel" name="country_phone_code" readonly required />
+
+                            </div>
+                            <div class="col-lg-8 col-xs-8 form-group">
+                                <input type="text" class="form-control register_text_box" (keypress)="helper.number_validation($event)" [(ngModel)]="franchise_register.phone" #phone="ngModel" placeholder="{{title.phone | translate}}" name="phone" minlength="{{minimum_phone_number_length}}" maxlength="{{maximum_phone_number_length}}" required />
+                                <div *ngIf="phone.errors && (phone.dirty || phone.touched)">
+                                    <div style="color: red;" [hidden]="!phone.errors.required">{{validation_message.phone_required | translate}}
+                                    </div>
+                                    <div style="color: red;" [hidden]="!phone.errors.minlength">{{validation_message.phone_minlength | translate}}
+                                    </div>
+                                    <div style="color: red;" [hidden]="!phone.errors.maxlength">{{validation_message.phone_maxlength | translate}}
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-lg-12 form-group">
+                                <input type="text" class="form-control register_text_box" [(ngModel)]="franchise_register.address" #address="ngModel" id="address" placeholder="{{title.address | translate}}" name="address" required />
+                                <div *ngIf="address.errors && (address.dirty || address.touched)">
+                                    <div style="color: red;" [hidden]="!address.errors.required">{{validation_message.address_required | translate}}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6 col-xs-6 form-group">
+                                <input type="text" class="form-control register_text_box" [(ngModel)]="franchise_register.latitude" (keypress)="helper.location_validation($event)" id="latitude" #latitude="ngModel" placeholder="{{title.latitude | translate}}" name="latitude" required />
+                                <div *ngIf="latitude.errors && (latitude.dirty || latitude.touched)">
+                                    <div style="color: red;" [hidden]="!latitude.errors.required">{{validation_message.latitude_required | translate}}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-xs-6 form-group">
+                                <input type="text" class="form-control register_text_box" [(ngModel)]="franchise_register.longitude" (keypress)="helper.location_validation($event)" id="longitude" #longitude="ngModel" placeholder="{{title.longitude | translate}}" name="longitude" required />
+                                <div *ngIf="longitude.errors && (longitude.dirty || longitude.touched)">
+                                    <div style="color: red;" [hidden]="!longitude.errors.required">{{validation_message.longitude_required | translate}}
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            
+
+                        </div>
+                        <div class="col-md-12 col-xs-12 col-sm-12 lable_center" style="margin-top: 20px;">
+                            <button type="submit" class="btn btn-danger m-b login_submit_button">{{button.sign_up | translate}}</button>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+<modal keyboard="false" backdrop="static" cssClass="modal-sm" #myModal id="otp_model">
+    <form #modalForm="ngForm" (ngSubmit)="otp_var(modalForm.value)">
+        <modal-header [show-close]="true">
+            <h4 class="modal-title">{{title.verification | translate}}!</h4>
+        </modal-header>
+        <modal-body>
+            <div [ngSwitch]="opt_error_message">
+                <div *ngSwitchCase=1>
+                    <label style="color: red;">{{validation_message.email_otp_wrong | translate}}</label>
+                </div>
+                <div *ngSwitchCase=2>
+                    <label style="color: red;">{{validation_message.sms_otp_erong | translate}}</label>
+                </div>
+                <div *ngSwitchCase=3>
+                    <label style="color: red;">{{validation_message.otp_wrong | translate}}</label>
+                </div>
+            </div>
+                <div class="form-group" id="otp_for_sms">
+                    <label>{{title.sms_otp | translate}}</label>
+                    <input type="text" class="form-control" [(ngModel)]="sms_otp" name="sms_otp" >
+                </div>
+                <div class="form-group" id="otp_for_email">
+                    <label>{{title.email_otp | translate}}</label>
+                    <input type="text" class="form-control" [(ngModel)]="email_otp" name="email_otp" >
+                </div>
+        </modal-body>
+        <modal-footer>
+            <div style="text-align: center">
+                <button type="submit" class="btn btn-primary">{{button.submit | translate}}</button>
+            </div>
+        </modal-footer>
+    </form>
+</modal>

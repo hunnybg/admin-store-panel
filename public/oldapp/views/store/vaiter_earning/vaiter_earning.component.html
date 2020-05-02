@@ -1,0 +1,135 @@
+<footer [myLoading]="myLoading"></footer>
+<div class="row wrapper fix_search_bar border-bottom white-bg page-heading">
+    <div class="row">
+        <div class="col-md-3 col-sm-12">
+            <div class="lable_center">
+                <label>{{title.date_filter | translate}}</label>
+            </div>
+
+            <div class="col-md-12 remove_padding">
+
+
+                <div class="form-group">
+                    <div class="input-group">
+
+                        <my-date-picker id="start_date" [options]="helper.myStartDatePickerOptions"
+                            placeholder="Start Date" [(ngModel)]="start_date"
+                            (dateChanged)="helper.onStartDateChanged($event)" readonly></my-date-picker>
+                        <span class="input-group-addon date_filter_icon">{{button.to}}</span>
+
+                        <my-date-picker id="end_date" [options]="helper.myEndDatePickerOptions" placeholder="End Date"
+                            [(ngModel)]="end_date" (dateChanged)="helper.onEndDateChanged($event)" readonly>
+                        </my-date-picker>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3 col-sm-12">
+            <div class="lable_center">
+                <label>{{title.select_vaiter | translate}}</label>
+            </div>
+            <div class="col-md-12 col-sm-12 remove_padding">
+                <div class="form-group" id="search_fields">
+                    <select chosen class="chosen-select" id="search_field" [(ngModel)]="search_field"
+                        name="search_field" tabindex="4">
+                        <!-- <div > -->
+                        <option *ngFor='let vaiter of vaiter_list' value="{{vaiter._id}}">{{vaiter.first_name}}
+                            {{vaiter.last_name}}</option>
+                        <!-- </div> -->
+                    </select>
+                    <div *ngIf='select_vaiter' style="color: red;">
+                        {{title.pls_select_vaiter | translate}}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3 col-sm-12">
+            <div class="col-md-6 col-sm-6 filter_btn_div">
+                <input type="button" (click)="get_vaiter_tip_earning()" class="btn filter_apply_btn pull-right"
+                    value="{{button.apply | translate}}">
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="wrapper content_top_bar_view1 wrapper-content animated fadeInRight">
+    <div *ngIf='order_payments.length > 0'>
+        <div class="ibox">
+            <div class="ibox-title">
+                <div>
+                    <label>{{heading_title.total_earning | translate}}</label>
+                </div>
+            </div>
+
+            <div class="ibox-content">
+                <div class="row">
+                    <div class="col-md-6 no_padding">
+                        <div class="col-md-6">
+                            <span>{{heading_title.total_tip_earning | translate}}</span>
+                            <h2 class="font-bold">{{tip_total}}</h2>
+                        </div>
+                        <div class="col-md-6">
+                            <span>{{heading_title.total_orders_for_tip | translate}}</span>
+                            <h2 class="font-bold">{{total_orders}}</h2>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="ibox">
+            <div class="ibox-title">
+                <div>
+                    <label>{{heading_title.tip_history | translate}}</label>
+                </div>
+            </div>
+
+            <div class="ibox-content">
+                <div class="row">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>{{title.order_id}}</th>
+                                <th>{{title.date}}</th>
+                                <th>{{title.user}}</th>
+                                <th>{{title.order_total}}</th>
+                                <th>{{title.tip_amount}}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor='let order_payment of order_payments'>
+                                <td>{{order_payment.order_unique_id}}</td>
+                                <td>{{order_payment.updated_at | date : 'dd MMM yyyy hh:mm:ss'}}</td>
+                                <td>{{order_payment.user_detail.first_name}}
+                                    {{order_payment.user_detail.last_name}}({{order_payment.user_detail.unique_id}})
+                                </td>
+                                <td>
+                                    <span
+                                        class="label label-warning">{{order_payment.order_currency_code}}{{order_payment.user_pay_payment}}</span>
+                                </td>
+                                <td>
+                                    <span
+                                        class="label label-primary_new">{{order_payment.order_currency_code}}{{order_payment.tip_amount}}</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div *ngIf='order_payments.length == 0'>
+        <div class="ibox">
+            <div class="ibox-content lable_center">
+                No Records
+            </div>
+        </div>
+    </div>
+
+</div>

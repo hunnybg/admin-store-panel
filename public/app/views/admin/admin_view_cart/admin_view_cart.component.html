@@ -1,0 +1,102 @@
+<footer [myLoading]="myLoading" ></footer>
+
+<div class="wrapper wrapper-content animated fadeInRight content_top_bar">
+
+    <div class="row">
+
+        <div class="col-md-12 col-sm-12">
+
+            <div class="ibox">
+                <div class="ibox-title" style="font-weight: bold;">
+                    <h4 class="pull-right">{{currency_sign}}{{order_total}}</h4>
+                    <span style="position: absolute; left:48%;">(<strong>{{total_item}}</strong>) {{title.items | translate}}</span>
+                    <h5>{{heading_title.order_detail | translate}}</h5>
+                </div>
+                <div class="ibox-content" *ngFor="let products of order_detail; let product_index=index; ">
+
+
+                    <div class="row" style="border-bottom: 1px solid;" *ngFor="let item of products.items; let odd=odd; let item_index=index; ">
+
+                        <div class="col-md-12 col-sm-12" style="padding: 0;">
+                            <div class="table-responsive">
+                                <table class="table shoping-cart-table">
+
+                                <thead style="border-bottom: 1px solid;">
+                                    <tr>
+                                        <th style="width: 55%;padding-top: 12px;">{{title.item | translate}}{{item_index+1}}</th>
+                                        <th style="text-align: center;padding-top: 12px;">{{title.spec | translate}} {{title.price | translate}}</th>
+                                        <th style="text-align: center;padding-top: 12px;">{{title.price | translate}}</th>
+                                        <th style="text-align: center;padding-top: 12px;">{{title.qty | translate}}</th>
+                                        <th style="text-align: center;padding-top: 12px;">{{title.total | translate}}</th>
+                                    </tr>
+                                </thead>
+
+
+                                <tbody>
+                                    <tr>
+                                        <td style="padding-top: 20px;width: 55%;">
+                                            <div style="display: -webkit-box;">
+                                                <img class="" style="height: 80px;width: 80px;border-radius: 10px;"  src="{{helper.CONSTANT.IMAGE_BASE_URL + item.image_url[0]}}">
+                                                <div style="    margin-left: 10px;">
+                                                    <h3>{{item.item_name}}</h3>
+                                                    <p class="small" style="height: 30px; overflow-y: hidden;">
+                                                        {{item.details}}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td style="padding-top: 20px;text-align: center;">{{currency_sign}}{{item.total_specification_price}}</td>
+                                        <td style="padding-top: 20px;text-align: center;">{{currency_sign}}{{item.item_price}}</td>
+                                        <td style="padding-top: 20px;text-align: center;">{{item.quantity}}</td>
+                                        <td style="padding-top: 20px;text-align: center;">{{currency_sign}}{{(item.item_price + item.total_specification_price)*item.quantity}}</td>
+                                        <!--<td>-->
+                                            <!--<h4>{{currency_sign}}{{(item.item_price + item.total_specification_price)*item.quantity}}</h4>-->
+                                        <!--</td>-->
+                                    </tr>
+                                </tbody>
+                            </table>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-sm-12 col-xs-12">
+                            <div class="row">
+                                <div class="col-md-12 col-sm-12 col-xs-12" style="padding: 0px;">
+                                    <div class="col-md-4 col-sm-8 col-xs-8"><h4 style="font-weight: bold;">{{title.specifications | translate}}</h4></div>
+                                    <!--<div class="col-md-2 col-sm-4 col-xs-4"><h4>{{item.total_specification_price}}{{currency_sign}}</h4></div>-->
+                                </div>
+                            </div>
+
+                            <div *ngFor="let specification_group of item.specifications; let odd=odd;" [class.row]="odd" style="margin: 0;">
+                                <div class="row">
+                                    <div class="col-md-12 col-sm-12 col-xs-12" style="padding: 0px;">
+                                        <div class="col-md-12" style="padding: 0;border-bottom: 1px solid #dcdcdc;">
+                                            <div class="col-md-8 col-sm-8 col-xs-8"><h5>{{specification_group.name}}</h5></div>
+                                            <div class="col-md-4 col-sm-4 col-xs-4"><h5 style="float: right;">{{currency_sign}}{{specification_group.price}}</h5></div>
+                                        </div>
+
+                                        <div class="col-md-12" *ngFor="let specification of specification_group.list">
+                                            <div style="padding: 0;" class="col-md-8 col-sm-8 col-xs-8"><h6 style="font-size: 13px;">{{specification.name}}</h6></div>
+                                            <div class="col-md-4 col-sm-4 col-xs-4" style="padding: 0;"><h6 style="font-size: 13px;float: right;">{{currency_sign}}{{specification.price}}</h6></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-sm-12 col-xs-12">
+                            <div class="row">
+                                <div class="col-md-12 col-sm-12 col-xs-12">
+                                    <h4 style="font-weight: bold;">{{title.item_note_here | translate}}</h4>
+                                    <p class="small">
+                                        {{item.note_for_item }}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+</div>

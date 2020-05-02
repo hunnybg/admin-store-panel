@@ -1,0 +1,14 @@
+{
+    "_id" : ObjectId("58760b3c2427bcc6ca779e46"),
+    "unique_id" : 1,
+    "updated_at" : ISODate("2017-02-28T10:54:32.799Z"),
+    "name" : "Twilio",
+    "description" : "twilio",
+    "sms_auth_id" : "ACb5b724b222a2fa632eb361a784d21c61",
+    "sms_auth_token" : "8e1487fc4bcf966dd4a05dbc9433feb1",
+    "sms_number" : "+3197004499371",
+    "created_at" : ISODate("2017-02-28T10:54:32.799Z")
+   
+    
+}
+

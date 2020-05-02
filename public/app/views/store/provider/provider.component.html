@@ -1,0 +1,727 @@
+<footer [myLoading]="myLoading" ></footer>
+<div class="row wrapper fix_search_bar border-bottom white-bg page-heading">
+    <div class="row">
+        <div class="col-md-4 col-sm-12">
+            <div>
+                <label>{{title.search | translate}}</label>
+            </div>
+            <div class="col-md-6 col-sm-6 remove_padding">
+                <div class="form-group" id="search_fields">
+                    <select chosen class="chosen-select" id="search_field" [(ngModel)]="search_field" name="search_field" tabindex="4">
+                        <option value="first_name">{{title.filter_name | translate}}</option>
+                        <option value="email">{{title.filter_email | translate}}</option>
+                        <option value="phone">{{title.filter_phone | translate}}</option>
+                        <option value="unique_id">{{title.unique_id | translate}}</option>
+                        <option value="country_details.country_name">{{title.country | translate}}</option>
+                        <option value="city_details.city_name">{{title.city | translate}}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-6 remove_padding">
+                <div class="form-group">
+                    <div class="input-group">
+                        <input type="text" class="form-control search_box" [(ngModel)]="search_value"  name="search_value">
+                        <span (click)="filter(1)    " class="input-group-addon search_icon"><span class="fa fa-search"></span></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 col-sm-12">
+            <div class="col-md-6 col-sm-6">
+                <div>
+                    <label>{{title.no_of_record | translate}}</label>
+                </div>
+                <div class="form-group">
+                    <select chosen class="chosen-select" id="number_of_rec" [(ngModel)]="number_of_rec" name="number_of_rec" tabindex="4">
+                        <option value="10">10</option>
+                        <option value="20">20</option>
+                        <option value="50">50</option>
+                        <option value="100">100</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-6 filter_btn_div">
+                <button type="button" (click)="provider_export_csv(provider_page_type)" class="btn export_excel_btn">
+                    <span class="fa fa-file-excel-o"></span>
+                </button>
+            </div>
+        </div>
+        <div class="col-md-4 col-sm-12">
+            <div class="col-md-6 col-sm-6 filter_btn_div">
+                <button type="button" (click)="add_new_provider()" class="btn export_excel_btn">
+                    <span class="fa fa-plus"></span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="wrapper wrapper-content content_top_bar_view1 animated fadeInRight">
+    <div class="row">
+        <div class="col-md-8">
+
+            <div class="ibox" >
+                <div class="ibox-content" style="padding-bottom: 40px;">
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12">
+                            <ul class="nav nav-tabs">
+                                <li (click)="change_page_type(2)" [class.active]="provider_page_type==2" class="uib-tab ng-scope ng-isolate-scope active">
+                                    <a class="ng-binding tab_selection">{{helper.sub_menu_title.approved_providers | translate}}</a>
+                                </li>
+                                <li (click)="change_page_type(3)" [class.active]="provider_page_type==3" class="uib-tab ng-scope ng-isolate-scope active">
+                                    <a class="ng-binding tab_selection">{{helper.sub_menu_title.declined_providers | translate}}</a>
+                                </li>
+                                <li (click)="change_page_type(1)" [class.active]="provider_page_type==1" class="dsads uib-tab ng-scope ng-isolate-scope" active="tab.active">
+                                    <a class="ng-binding tab_selection">{{helper.sub_menu_title.online_providers | translate}}</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="lable_center" *ngIf="provider_list.length==0">
+                        <label>No Records</label>
+                    </div>
+                    <div [hidden]="provider_list.length==0" class="table-responsive scrollbar"  style="height: calc(100vh - 285px);overflow: auto;">
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th>{{title.id | translate}}</th>
+                                <th>{{title.name | translate}}</th>
+                                <th>{{title.email | translate}}</th>
+                                <th>{{title.phone | translate}}</th>
+                                <th>{{title.country | translate}}</th>
+                                <th>{{title.city | translate}}</th>
+                                <th>{{title.wallet | translate}}</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr *ngFor="let provider of provider_list" [class.selected_tr]="provider._id==provider_detail._id" (click)="get_provider_detail(provider._id)">
+                                <td>{{provider.unique_id}} </td>
+                                <td>{{provider.first_name}} {{provider.last_name}}</td>
+                                <td>{{provider.email}}</td>
+                                <td>{{provider.country_phone_code}} {{provider.phone}}</td>
+                                <td>{{provider.country_details.country_name}}</td>
+                                <td>{{provider.city_details.city_name}}</td>
+                                <td>{{provider.wallet}} {{provider.wallet_currency_code}}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-md-12 col-sm-12" style="padding-top: 10px;">
+                        <div class="lable_center">
+
+                            <ul class="pagination">
+                                <li *ngIf="page!==1"><a class="btn" (click)="filter(page-1)">{{button.pre | translate}}</a></li>
+                                <li *ngFor="let index of total_pages" [class.active]="page==index">
+                                    <a *ngIf="index==1 || index==total_page || index==page || index==page-1 || index==page+1" (click)="filter(index)" class="btn">{{index}}</a>
+                                    <a *ngIf="(index==1 && (page!==1 && page!==2 && page!==3)) || (index==total_page-1 && (page!==total_page && page!==total_page-1 && page!==total_page-2))" class="btn">...</a>
+
+                                </li>
+                                <li *ngIf="page!==total_page && provider_list.length!==0"><a class="btn" (click)="filter(page+1)">{{button.next | translate}}</a></li>
+                            </ul>
+                            <div class="col-md-2 pull-right">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4" *ngIf="provider_detail.phone">
+            <div class="ibox ">
+
+                <div class="ibox-content user_fix_div scrollbar" style="height: calc(100vh - 243px);overflow: auto;">
+                    <div class="tab-content">
+                        <div id="contact-1" class="tab-pane active" ng-show="client == 1" ng-init="client = 1">
+                            <div class="row m-b-lg">
+                                <!--<span *ngIf="!is_edit && selected_tab==1" (click)="is_edit=true" class="fa fa-pencil pull-right"></span>-->
+                                <span *ngIf="is_edit && selected_tab==1" class="fa fa-check pull-right" (click)="update_provider_detail()"></span>
+                                <div class="row no_margin">
+                                    <div class="col-sm-3" *ngIf="is_edit">
+                                        <div class="text-center">
+                                            <span class="btn-file"><img style="width: 80px; height: 80px;" class="img-circle m-t-xs" src="{{provider_detail.image_url != '' ? helper.CONSTANT.IMAGE_BASE_URL + provider_detail.image_url : 'default.png'}}" alt="">
+                                                <input type="file" (change)="change_image($event);" accept="image/*" name="image_url">
+                                            </span>
+                                            <!--<img *ngIf="!is_edit" alt="image" style="width: 80px; height: 80px;" class="img-circle m-t-xs" src="{{provider_detail.image_url != '' ? provider_detail.image_url : 'default.png'}}">-->
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12" *ngIf="!is_edit">
+                                        <span *ngIf="!is_edit && selected_tab==1" (click)="is_edit=true" class="fa fa-pencil pull-right"></span>
+                                        <div class="text-center">
+                                            <img *ngIf="!is_edit" alt="image" style="width: 120px; height: 120px;" class="img-circle m-t-xs" src="{{provider_detail.image_url != '' ? helper.CONSTANT.IMAGE_BASE_URL + provider_detail.image_url : 'default.png'}}">
+                                            <div style="margin-top: 10px;font-size: 18px;">
+                                                {{provider_detail.first_name}} {{provider_detail.last_name}} <span class="fa fa-star" style="padding-left: 10px;"></span> <span>{{((provider_detail.user_rate + provider_detail.store_rate)/2)}}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-8" *ngIf="is_edit">
+
+                                        <div class="col-lg-6 form-group">
+                                            <input type="text" class="form-control" [(ngModel)]="provider_detail.first_name" #first_name="ngModel" name="first_name" />
+                                        </div>
+                                        <div class="col-lg-6 form-group">
+                                            <input type="text" class="form-control" [(ngModel)]="provider_detail.last_name" #last_name="ngModel" name="last_name" />
+                                        </div>
+                                        <div class="col-lg-12 form-group">
+                                            <input type="text" class="form-control" [(ngModel)]="provider_detail.email" #email="ngModel" name="email" />
+                                        </div>
+                                        <div class="col-lg-12 form-group">
+                                            <input type="text" class="form-control" [(ngModel)]="provider_detail.phone" #phone="ngModel" name="phone" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row no_margin" *ngIf="!is_edit" style="margin-top: 10px;">
+                                    <!--<div class="col-md-3 col-sm-3 col-xs-3 remove_right_padding">-->
+                                        <!--<button (click)="open_modal(type,provider_detail._id)" type="button" class="btn btn-light_black btn-sm btn-block" tooltip="{{helper.button.add_wallet | translate}}"-->
+                                                <!--[tooltipDisabled]="false"-->
+                                                <!--[tooltipAnimation]="true"-->
+                                                <!--tooltipPlacement="top">-->
+                                            <!--<i class="fa fa-plus"></i>-->
+                                        <!--</button>-->
+                                    <!--</div>-->
+                                    <!--<div class="col-md-3 col-sm-3 col-xs-3 remove_left_right_padding">-->
+                                        <!--<button (click)="open_sms_modal(type,provider_detail._id)" type="button" class="btn btn-light_black btn-sm btn-block" tooltip="{{helper.button.send_sms | translate}}"-->
+                                                <!--[tooltipDisabled]="false"-->
+                                                <!--[tooltipAnimation]="true"-->
+                                                <!--tooltipPlacement="top">-->
+                                            <!--<i class="fa fa-comments"></i>-->
+                                        <!--</button>-->
+                                    <!--</div>-->
+                                    <div class="col-md-6 col-sm-6 col-xs-6 remove_left_right_padding">
+                                        <button (click)="open_notification_modal(type,provider_detail._id)" type="button" class="btn btn-light_black btn-sm btn-block" tooltip="{{helper.button.send_notification | translate}}"
+                                                [tooltipDisabled]="false"
+                                                [tooltipAnimation]="true"
+                                                tooltipPlacement="top">
+                                            <i class="fa fa-bell"></i>
+                                        </button>
+                                    </div>
+                                    <!--<div class="col-md-6 col-sm-6 col-xs-6 remove_left_padding" *ngIf="!provider_detail.is_approved">-->
+                                        <!--<button (click)="approved(provider_page_type,provider_detail._id)" type="button" class="btn btn-light_black btn-sm btn-block" tooltip="{{helper.button.approved | translate}}"-->
+                                                <!--[tooltipDisabled]="false"-->
+                                                <!--[tooltipAnimation]="true"-->
+                                                <!--tooltipPlacement="top">-->
+                                            <!--<i class="fa fa-check"></i>-->
+                                        <!--</button>-->
+                                    <!--</div>-->
+                                    <div class="col-md-6 col-sm-6 col-xs-6 remove_left_padding" *ngIf="provider_detail.is_approved">
+                                        <button (click)="approved(provider_page_type,provider_detail._id)" type="button" class="btn btn-light_black btn-sm btn-block" tooltip="{{helper.button.decline | translate}}"
+                                                [tooltipDisabled]="false"
+                                                [tooltipAnimation]="true"
+                                                tooltipPlacement="top">
+                                            <i class="fa fa-ban"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="client-detail">
+                                <div class="full-height-scroll">
+
+                                    <ul class="nav nav-tabs">
+                                        <li (click)="selected_tab=1" [class.active]="selected_tab==1" class="dsads uib-tab ng-scope ng-isolate-scope" active="tab.active">
+                                            <a class="ng-binding tab_selection">{{helper.title.details | translate}}</a>
+                                        </li>
+                                        <li (click)="get_document_list()" [class.active]="selected_tab==2" class="uib-tab ng-scope ng-isolate-scope active">
+                                            <a class="ng-binding tab_selection">{{helper.button.view_document | translate}}</a>
+                                        </li>
+                                        <li (click)="get_referral_history()" [class.active]="selected_tab==3" class="uib-tab ng-scope ng-isolate-scope active">
+                                            <a class="ng-binding tab_selection">{{helper.button.referral | translate}}</a>
+                                        </li>
+                                        <li (click)="get_review_history()" [class.active]="selected_tab==4" class="uib-tab ng-scope ng-isolate-scope active">
+                                            <a class="ng-binding tab_selection">{{helper.button.reviews | translate}}</a>
+                                        </li>
+                                        <li (click)="get_bank_detail()" [class.active]="selected_tab==5" class="uib-tab ng-scope ng-isolate-scope active">
+                                            <a class="ng-binding tab_selection">{{helper.button.bank_detail | translate}}</a>
+                                        </li>
+                                    </ul>
+                                    <ul class="list-group clear-list" *ngIf="selected_tab==1">
+                                        <li class="list-group-item">
+                                            <span class="pull-right">{{provider_detail.device_type + " - " +  provider_detail.app_version}}</span>
+                                            {{title.app_version | translate}}
+                                        </li>
+                                        <li class="list-group-item">
+                                            <span class="pull-right">{{provider_detail.address}}</span>
+                                            {{title.address | translate}}
+                                        </li>
+                                        <li class="list-group-item ">
+                                            <span class="pull-right "><ui-switch  [(ngModel)]="provider_detail.is_phone_number_verified" #is_phone_number_verified="ngModel" name="is_phone_number_verified" disabled></ui-switch></span>
+                                            {{title.phone_number_verified | translate}}
+                                        </li>
+                                        <li class="list-group-item ">
+                                            <span class="pull-right "><ui-switch  [(ngModel)]="provider_detail.is_email_verified" #is_email_verified="ngModel" name="is_email_verified" disabled></ui-switch></span>
+                                            {{title.email_verified | translate}}
+                                        </li>
+                                        <li class="list-group-item ">
+                                            <span class="pull-right "><ui-switch  [(ngModel)]="provider_detail.is_document_uploaded" #is_document_uploaded="ngModel" name="is_document_uploaded" disabled></ui-switch></span>
+                                            {{title.document_uploaded | translate}}
+                                        </li>
+                                        <li class="list-group-item ">
+                                            <span class="pull-right "><ui-switch  [(ngModel)]="provider_detail.is_active_for_job" #is_active_for_job="ngModel" name="is_active_for_job" disabled></ui-switch></span>
+                                            {{title.active_for_job | translate}}
+                                        </li>
+                                    </ul>
+
+                                    <div *ngIf="selected_tab==5" style="margin-top: 20px;">
+                                        <div class="table-responsive" *ngIf="bank_detail_list.length>0">
+                                            <table class="table">
+                                                <tr>
+                                                    <th>{{title.bank_account_number | translate}}</th>
+                                                </tr>
+                                                <tr *ngFor="let bank_detail of bank_detail_list;">
+                                                    <td>{{bank_detail.account_number}}</td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
+
+                                    <div *ngIf="selected_tab==2" style="margin-top: 20px;">
+                                        <div class="table-responsive">
+                                            <table class="table">
+                                                <tr>
+                                                    <td></td>
+                                                    <td>{{title.name | translate}}</td>
+                                                    <td style="width: 25%;">{{title.unique_code | translate}}</td>
+                                                    <td style="width: 25%;">{{title.expiry_date | translate}}</td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr *ngFor="let document of document_list; let document_index=index;">
+                                                    <td class="client-avatar" (click)="show_full_image(document.image_url, document_index)">
+                                                            <span *ngIf="edit_document[document_index]=='true'" class="btn-file">
+                                                                <img style="width: 20px; height: 20px;" src="default.png" class="document{{document_index}}">
+                                                                <input type="file" (change)="image_update($event , document_index);" name="image">
+                                                            </span>
+                                                        <img *ngIf="edit_document[document_index]!=='true'" style="width: 20px; height: 20px; " src="default.png" class="document{{document_index}}">
+                                                    </td>
+                                                    <td>{{document.document_details.document_name}}</td>
+                                                    <td>
+                                                        <div *ngIf="document.document_details.is_unique_code && edit_document[document_index]=='true'">
+                                                            <input type="text" [(ngModel)]="documentlist.unique_code" #unique_code="ngModel"  name="unique_code" style="border-radius: 5px;border-color: #060606;height: 30px;" class="form-control" value="{{document.unique_code}}"><br>
+                                                        </div>
+                                                        <span *ngIf="edit_document[document_index]!=='true' && document.document_details.is_unique_code">{{document.unique_code}}</span></td>
+                                                    <td>
+                                                        <div *ngIf="document.document_details.is_expired_date && edit_document[document_index]=='true'">
+                                                            <my-date-picker [(ngModel)]="documentlist.expired_date" #expired_date="ngModel"  name="expired_date" id="expiry_date" value="" [options]="helper.ExpiryDatePickerOptions" placeholder="{{title.exp_date | translate}}" readonly></my-date-picker>
+                                                        </div>
+                                                        <span *ngIf="edit_document[document_index]!=='true' && document.document_details.is_expired_date">{{document.expired_date | date: "MM-dd-yyyy"}}</span>
+                                                    </td>
+                                                    <td>
+                                                        <span *ngIf="edit_document[document_index]!=='true'" class="fa fa-pencil pull-right" (click)="editDocument(document , document_index)"></span>
+                                                        <span *ngIf="edit_document[document_index]=='true'" class="fa fa-check pull-right" (click)="updateDocument(document , document_index)"></span>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
+
+                                    <div *ngIf="selected_tab==3" style="margin-top: 20px;">
+                                        <div class="row">
+                                            <div class="col-md-12"><label>{{title.referral_code | translate}}: </label>
+                                                <span style="margin-left: 10px;">{{provider_detail.referral_code}}</span>
+                                            </div>
+                                        </div>
+                                        <div class="row" style="margin-top: 10px;" *ngIf="provider_detail.referred_provider_details">
+                                            <div class="col-md-12"><label>{{title.referred_by | translate}}</label></div>
+                                            <div class="col-md-4">
+                                                <img style="width: 40px; height: 40px;" class="img-circle m-t-xs" src="{{helper.CONSTANT.IMAGE_BASE_URL + provider_detail.referred_provider_details.image_url}}" />
+                                            </div>
+                                            <div class="col-md-8">
+                                                <div>{{title.id | translate}}: {{provider_detail.referred_user_details.unique_id}}</div>
+                                                <div>{{title.name | translate}}: {{provider_detail.referred_user_details.first_name}} {{provider_detail.referred_user_details.last_name}}</div>
+                                            </div>
+                                        </div>
+                                        <div class="row" style="margin-top: 10px;" *ngIf="referral_history.length>0">
+                                            <div class="col-md-12"><label>{{title.referred_to | translate}}: </label>
+                                                <span style="margin-left: 10px;">{{referral_history.length}} {{title.people | translate}}</span>
+                                            </div>
+                                        </div>
+                                        <div class="row col-md-12" *ngIf="referral_history.length>0">
+                                            <div class="table-responsive">
+                                                <table class="table">
+                                                    <tr>
+                                                        <td></td>
+                                                        <td>{{title.id | translate}}</td>
+                                                        <td>{{title.name | translate}}</td>
+                                                    </tr>
+                                                    <tr *ngFor="let referral of referral_history;">
+                                                        <td class="client-avatar"><img alt="image" src="{{referral.image_url != '' ? helper.CONSTANT.IMAGE_BASE_URL + referral.image_url : 'default.png'}}"></td>
+                                                        <td>{{referral.unique_id}}</td>
+                                                        <td>{{referral.first_name}} {{referral.last_name}}</td>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div *ngIf="selected_tab==4" style="margin-top: 20px;">
+                                        <div *ngFor="let review of review_list;">
+                                            <div *ngIf="review.store_rating_to_provider>0 && review.provider_detail" class="row form-group">
+                                                <div class="col-md-3 col-xs-3">
+                                                    <img class="img-circle" src="{{review.provider_detail.image_url != '' ? helper.CONSTANT.IMAGE_BASE_URL + review.provider_detail.image_url : 'default.png'}}" style="width: 80px; height: 80px;">
+                                                </div>
+                                                <div class="col-md-8 col-xs-8">
+                                                    <div style="display: inline;" *ngFor="let rate of Array(review.store_rating_to_provider)"><span class="fa fa-star rating_star"></span></div>
+                                                    <div style="font-size: 15px;">{{helper.title.reviewed_by}}: {{review.provider_detail.name}}
+                                                        <span style="font-size: 12px;">({{title.order_id | translate}}: {{review.order_unique_id}})</span>
+                                                    </div>
+                                                    <div style="font-size: 15px;color: black;">{{review.store_review_to_provider}}</div>
+                                                </div>
+                                            </div>
+                                            <div *ngIf="review.user_rating_to_provider>0 && review.provider_detail" class="row form-group">
+                                                <div class="col-md-3 col-xs-3">
+                                                    <img class="img-circle" src="{{review.provider_detail.image_url != '' ? helper.CONSTANT.IMAGE_BASE_URL + review.provider_detail.image_url : 'default.png'}}" style="width: 80px; height: 80px;">
+                                                </div>
+                                                <div class="col-md-8 col-xs-8">
+                                                    <div style="display: inline;" *ngFor="let rate of Array(review.user_rating_to_provider)"><span class="fa fa-star rating_star"></span></div>
+                                                    <div style="font-size: 15px;">{{helper.title.reviewed_by}} {{review.provider_detail.name}}
+                                                        <span style="font-size: 12px;">({{title.order_id | translate}}: {{review.order_unique_id}})</span>
+                                                    </div>
+                                                    <div style="font-size: 15px;color: black;">{{review.user_review_to_provider}}</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row" style="margin-top: 10px;">
+                <div class="col-md-6">
+                    <button (click)="providerVehicle(provider_detail._id)" class="btn btn-light_black btn-block">Vehicle Details</button>
+                </div>
+                <div class="col-md-6">
+                    <button (click)="add_new_vehicle()" class="btn btn-light_black btn-block">{{button.add_vehicle | translate}}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+<modal keyboard="false" backdrop="static" cssClass="modal-xs" #add_new_provider_modal>
+    <form #addProviderForm="ngForm" (ngSubmit)="addProviderForm.submitted && AddProvider(addProviderForm.value)" novalidate>
+        <modal-header [show-close]="true">
+            <h4 class="modal-title">{{heading_title.add_provider | translate}}</h4>
+        </modal-header>
+        <modal-body>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="col-md-6 col-sm-6">
+                        <div class="form-group" >
+                            <label style="font-weight: normal;"><strong>{{title.first_name | translate}}</strong></label>
+                            <input type="text" class="form-control" [(ngModel)]="add_provider.first_name" #first_name="ngModel" name="first_name" required>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-sm-6">
+                        <div class="form-group" >
+                            <label style="font-weight: normal;"><strong>{{title.last_name | translate}}</strong></label>
+                            <input type="text" class="form-control" [(ngModel)]="add_provider.last_name" #last_name="ngModel" name="last_name" required>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-sm-6">
+                        <div class="form-group" >
+                            <label style="font-weight: normal;"><strong>{{title.email | translate}}</strong></label>
+                            <input type="email" class="form-control" [(ngModel)]="add_provider.email" #email="ngModel" name="email" required>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-sm-6">
+                        <div class="form-group" >
+                            <label style="font-weight: normal;"><strong>{{title.phone | translate}}</strong></label>
+                            <input type="text" class="form-control" minlength="8" maxlength="12" (keypress)="helper.number_validation_with_minus($event)" [(ngModel)]="add_provider.phone" #phone="ngModel" name="phone" required>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-sm-6">
+                        <div class="form-group" >
+                            <label style="font-weight: normal;"><strong>{{title.password | translate}}</strong></label>
+                            <input type="password" class="form-control" [(ngModel)]="add_provider.password" #password="ngModel" name="password" required>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </modal-body>
+        <modal-footer>
+            <div style="text-align: center">
+                <button type="submit" class="btn btn-primary">{{button.submit | translate}}</button>
+            </div>
+        </modal-footer>
+    </form>
+</modal>
+
+<modal keyboard="false" backdrop="static" cssClass="modal-xs" #add_vehicle_modal>
+    <form #addVehicleForm="ngForm" (ngSubmit)="addVehicleForm.submitted && addVehicle(addVehicleForm)" novalidate>
+        <modal-header [show-close]="true">
+            <h4 class="modal-title">{{heading_title.add_vehicle | translate}}</h4>
+        </modal-header>
+        <modal-body>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="col-md-6 col-sm-6">
+                        <div class="form-group" >
+                            <label style="font-weight: normal;"><strong>{{title.provider_vehicle_name | translate}}</strong></label>
+                            <input type="text" class="form-control" [(ngModel)]="add_vehicle.vehicle_name" #vehicle_name="ngModel" name="vehicle_name" required>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-sm-6">
+                        <div class="form-group" >
+                            <label style="font-weight: normal;"><strong>{{title.provider_vehicle_plate_no | translate}}</strong></label>
+                            <input type="text" class="form-control" [(ngModel)]="add_vehicle.vehicle_plate_no" #vehicle_plate_no="ngModel" name="vehicle_plate_no" required>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-sm-6">
+                        <div class="form-group" >
+                            <label style="font-weight: normal;"><strong>{{title.provider_vehicle_year | translate}}</strong></label>
+                            <input type="number" class="form-control" [(ngModel)]="add_vehicle.vehicle_year" #vehicle_year="ngModel" name="vehicle_year" required>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-sm-6">
+                        <div class="form-group" >
+                            <label style="font-weight: normal;"><strong>{{title.provider_vehicle_color | translate}}</strong></label>
+                            <input type="text" class="form-control" [(ngModel)]="add_vehicle.vehicle_color" #vehicle_color="ngModel" name="vehicle_color" required>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-sm-6">
+                        <div class="form-group" >
+                            <label style="font-weight: normal;"><strong>{{title.provider_vehicle_model | translate}}</strong></label>
+                            <input type="text" class="form-control" [(ngModel)]="add_vehicle.vehicle_model" #vehicle_model="ngModel" name="vehicle_model" required>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </modal-body>
+        <modal-footer>
+            <div style="text-align: center">
+                <button type="submit" class="btn btn-primary">{{button.submit | translate}}</button>
+            </div>
+        </modal-footer>
+    </form>
+</modal>
+
+<modal keyboard="false" backdrop="static" cssClass="modal-sm" #myModal>
+    <form #modalForm="ngForm" (ngSubmit)="AddWallet(modalForm.value)">
+        <modal-header [show-close]="true">
+            <h4 class="modal-title">{{heading_title.add_wallet_amount | translate}}</h4>
+        </modal-header>
+        <modal-body>
+            <div class="row">
+                <input type="hidden" class="form-control" [(ngModel)]="type"   name="type"  />
+                <input type="hidden" class="form-control" [(ngModel)]="provider_id"   name="provider_id"  />
+                <div class="col-md-12">
+                    <div class="col-md-12 col-sm-12">
+                        <div class="form-group" >
+
+                            <label style="font-weight: normal;"><strong>{{title.amount | translate}}</strong></label>
+                            <input type="text" class="form-control" [(ngModel)]="wallet" (keypress)="helper.number_validation_with_minus($event)" maxlength="6" name="wallet" required>
+                        </div>
+
+                    </div>
+
+
+                </div>
+            </div>
+
+        </modal-body>
+        <modal-footer>
+            <div style="text-align: center">
+                <button type="submit" class="btn btn-primary">{{button.save | translate}}</button>
+            </div>
+        </modal-footer>
+    </form>
+</modal>
+
+<modal keyboard="false" backdrop="static" cssClass="modal-invoice" #vehicleModal>
+    <modal-header [show-close]="true">
+        <h4 class="modal-title">{{heading_title.vehicle_list | translate}}</h4>
+    </modal-header>
+    <modal-body>
+        <div class="row">
+            <div class="col-lg-4 col-sm-6" style="padding-left: 10px; padding-right: 10px;" *ngFor="let vehicle of vehicle_list; let vehicle_index=index;">
+                <form #spec="ngForm" enctype='multipart/form-data'>
+                    <div class="ibox float-e-margins">
+                        <div class="ibox-title">
+                            <input type="hidden" [(ngModel)]="edit_vehicle[vehicle_index]" name="edit_vehicle">
+                            <span  class="fa fa-pencil pull-right" *ngIf="edit_vehicle[vehicle_index]!=='true'" (click)="editProviderVehicle(vehicle._id, vehicle_index)" style="font-size:15px;color:#060606"></span>
+                            <span  class="fa fa-check pull-right" *ngIf="edit_vehicle[vehicle_index]=='true'" (click)="updateProviderVehicle(vehicle)" style="font-size:15px;color:#060606"></span>
+                            <ui-switch *ngIf="vehicle.admin_vehicle_id!=null"  [(ngModel)]="vehicle.is_approved" name="is_approved" [disabled]="edit_vehicle[vehicle_index]!=='true'"></ui-switch>
+                            <ui-switch *ngIf="vehicle.admin_vehicle_id==null"  [(ngModel)]="vehicle.is_approved" name="is_approved" disabled></ui-switch>
+                        </div>
+
+                        <div class="ibox-content no-padding">
+                            <div class="row" style="padding-top: 18px;padding-bottom: 18px;">
+                                <div class="col-md-12 col-xs-12 col-sm-12" style="padding-left: 28px;">
+                                    <div class="row no_margin" style="margin-bottom: 10px;">
+                                        <label class="col-md-6">{{title.provider_vehicle_name | translate}}</label>
+                                        <div class="col-md-6" *ngIf="edit_vehicle[vehicle_index]!=='true'">
+                                            <label style="font-weight: normal;color:black;">{{vehicle.vehicle_name}}</label>
+                                        </div>
+                                        <div class="col-md-6" *ngIf="edit_vehicle[vehicle_index]=='true'">
+                                            <input type="text" [(ngModel)]="vehicle.vehicle_name" #vehicle_name="ngModel"  name="vehicle_name" style="border-radius: 5px;border-color: #060606;height: 30px;" class="form-control" value="{{vehicle.vehicle_name}}">
+                                        </div>
+                                    </div>
+                                    <div class="row no_margin" style="margin-bottom: 10px;">
+                                        <label class="col-md-6">{{title.provider_vehicle_plate_no | translate}}</label>
+                                        <div class="col-md-6" *ngIf="edit_vehicle[vehicle_index]!=='true'">
+                                            <label style="font-weight: normal;color:black;">{{vehicle.vehicle_plate_no}}</label>
+                                        </div>
+                                        <div class="col-md-6" *ngIf="edit_vehicle[vehicle_index]=='true'">
+                                            <input type="text" [(ngModel)]="vehicle.vehicle_plate_no" #vehicle_plate_no="ngModel"  name="vehicle_plate_no" style="border-radius: 5px;border-color: #060606;height: 30px;" class="form-control" value="{{vehicle.vehicle_plate_no}}">
+                                        </div>
+                                    </div>
+                                    <div class="row no_margin" style="margin-bottom: 10px;">
+                                        <label class="col-md-6">{{title.provider_vehicle_year | translate}}</label>
+                                        <div class="col-md-6" *ngIf="edit_vehicle[vehicle_index]!=='true'">
+                                            <label style="font-weight: normal;color:black;">{{vehicle.vehicle_year}}</label>
+                                        </div>
+                                        <div class="col-md-6" *ngIf="edit_vehicle[vehicle_index]=='true'">
+                                            <input type="text" [(ngModel)]="vehicle.vehicle_year" #vehicle_year="ngModel"  name="vehicle_year" style="border-radius: 5px;border-color: #060606;height: 30px;" class="form-control" value="{{vehicle.vehicle_year}}">
+                                        </div>
+                                    </div>
+
+                                    <div class="row no_margin" style="margin-bottom: 10px;">
+                                        <label class="col-md-6">{{title.provider_vehicle_model | translate}}</label>
+                                        <div class="col-md-6" *ngIf="edit_vehicle[vehicle_index]!=='true'">
+                                            <label style="font-weight: normal;color:black;">{{vehicle.vehicle_model}}</label>
+                                        </div>
+                                        <div class="col-md-6" *ngIf="edit_vehicle[vehicle_index]=='true'">
+                                            <input type="text" [(ngModel)]="vehicle.vehicle_model" #vehicle_model="ngModel"  name="vehicle_model" style="border-radius: 5px;border-color: #060606;height: 30px;" class="form-control" value="{{vehicle.vehicle_model}}">
+                                        </div>
+                                    </div>
+
+                                    <div class="row no_margin" style="margin-bottom: 10px;">
+                                        <label class="col-md-6">{{title.provider_vehicle_color | translate}}</label>
+                                        <div class="col-md-6" *ngIf="edit_vehicle[vehicle_index]!=='true'">
+                                            <label style="font-weight: normal;color:black;">{{vehicle.vehicle_color}}</label>
+                                        </div>
+                                        <div class="col-md-6" *ngIf="edit_vehicle[vehicle_index]=='true'">
+                                            <input type="text" [(ngModel)]="vehicle.vehicle_color" #vehicle_color="ngModel"  name="vehicle_color" style="border-radius: 5px;border-color: #060606;height: 30px;" class="form-control" value="{{vehicle.vehicle_color}}">
+                                        </div>
+                                    </div>
+
+                                    <div class="row no_margin" style="margin-bottom: 10px;">
+                                        <label class="col-md-6">{{title.provider_vehicle_service_type | translate}}</label>
+                                        <label class="col-md-6" style="font-weight: normal;color:black;" *ngIf="edit_vehicle[vehicle_index]!=='true' && vehicle.vehicle_detail.length>0">{{vehicle.vehicle_detail[0].vehicle_name}}</label>
+                                        <div class="col-md-6" >
+                                          <select *ngIf="edit_vehicle[vehicle_index]=='true'" class="form-control" [(ngModel)]="vehicle.admin_vehicle_id" #admin_vehicle_id="ngModel" name="admin_vehicle_id" data-placeholder="Select Vehicle"  tabindex="4" disabled>
+
+                                                <option *ngFor="let i of vehicle_service_list" value="{{i._id}}">{{i.vehicle_name}}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <tr>
+                                        <td></td>
+                                        <td>{{title.name | translate}}</td>
+                                        <td style="width: 25%;">{{title.unique_code | translate}}</td>
+                                        <td style="width: 25%;">{{title.expiry_date | translate}}</td>
+                                        <td></td>
+                                    </tr>
+                                    <tr *ngFor="let document of vehicle.document_list; let document_index=index;">
+                                        <td class="client-avatar">
+                                                            <span *ngIf="edit_document[document_index]=='true'" class="btn-file">
+                                                                <img style="width: 20px; height: 20px;" src="default.png" class="document{{document_index}}">
+                                                                <input type="file" (change)="vehicle_image_update($event , document, document_index);" name="image">
+                                                            </span>
+                                            <img *ngIf="edit_document[document_index]!=='true'" style="width: 20px; height: 20px; " src="default.png" class="document{{document_index}}">
+                                        </td>
+                                        <td>{{document.document_details.document_name}}</td>
+                                        <td>
+                                            <div *ngIf="document.document_details.is_unique_code && edit_document[document_index]=='true'">
+                                                <input type="text" [(ngModel)]="document.unique_code" #unique_code="ngModel"  name="unique_code" style="border-radius: 5px;border-color: #060606;height: 30px;" class="form-control" value="{{document.unique_code}}"><br>
+                                            </div>
+                                            <span *ngIf="edit_document[document_index]!=='true' && document.document_details.is_unique_code">{{document.unique_code}}</span></td>
+                                        <td>
+                                            <div *ngIf="document.document_details.is_expired_date && edit_document[document_index]=='true'">
+                                                <my-date-picker [(ngModel)]="document.expired_date" #expired_date="ngModel"  name="expired_date" id="expiry_date" value="" [options]="helper.ExpiryDatePickerOptions" placeholder="{{title.exp_date | translate}}" readonly></my-date-picker>
+                                            </div>
+                                            <span *ngIf="edit_document[document_index]!=='true' && document.document_details.is_expired_date">{{document.expired_date | date: "MM-dd-yyyy"}}</span>
+                                        </td>
+                                        <td>
+                                            <span *ngIf="edit_document[document_index]!=='true' && edit_vehicle[vehicle_index]=='true'" class="fa fa-pencil pull-right" (click)="editDocument(document , document_index)"></span>
+                                            <span *ngIf="edit_document[document_index]=='true' && edit_vehicle[vehicle_index]=='true'" class="fa fa-check pull-right" (click)="updateVehicleDocument(document , document_index, vehicle)"></span>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </modal-body>
+</modal>
+
+<modal keyboard="false" backdrop="static" cssClass="modal-xl" #mysmsModal>
+    <form #modalSmsForm="ngForm" (ngSubmit)="SendSms(modalSmsForm.value)">
+        <modal-header [show-close]="true">
+            <h4 class="modal-title">{{heading_title.admin_sms | translate}}</h4>
+        </modal-header>
+        <modal-body>
+            <div class="row">
+                <input type="hidden" class="form-control" [(ngModel)]="type"   name="type"  />
+                <input type="hidden" class="form-control" [(ngModel)]="provider_id"   name="provider_id"  />
+                <div class="col-md-12">
+                    <div class="col-md-12 col-sm-12">
+                        <div class="form-group" >
+
+                            <label style="font-weight: normal;"><strong>{{title.content | translate}}</strong></label>
+                            <textarea class="form-control" [(ngModel)]="content"   name="content" required ></textarea>
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+            </div>
+
+        </modal-body>
+        <modal-footer>
+            <div style="text-align: center">
+                <button type="submit" class="btn btn-primary">{{button.send | translate}}</button>
+            </div>
+        </modal-footer>
+    </form>
+</modal>
+
+
+
+<modal keyboard="false" backdrop="static" cssClass="modal-xl" #mynotificationModal>
+    <form #modalNotificationForm="ngForm" (ngSubmit)="SendNotification(modalNotificationForm.value)">
+        <modal-header [show-close]="true">
+            <h4 class="modal-title">{{heading_title.admin_send_notification | translate}}</h4>
+        </modal-header>
+        <modal-body>
+            <div class="row">
+                <input type="hidden" class="form-control" [(ngModel)]="type"   name="type"  />
+                <input type="hidden" class="form-control" [(ngModel)]="provider_id"   name="provider_id"  />
+                <div class="col-md-12">
+                    <div class="col-md-12 col-sm-12">
+                        <div class="form-group" >
+
+                            <label style="font-weight: normal;"><strong>{{title.notification_content | translate}}</strong></label>
+                            <input type="text" class="form-control" [(ngModel)]="content" name="content" required />
+
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+            </div>
+        </modal-body>
+        <modal-footer>
+            <div style="text-align: center">
+                <button type="submit" class="btn btn-primary">{{button.send | translate}}</button>
+            </div>
+        </modal-footer>
+    </form>
+</modal>

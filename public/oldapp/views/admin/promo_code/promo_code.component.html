@@ -1,0 +1,167 @@
+<footer [myLoading]="myLoading" ></footer> 
+<div class="row wrapper fix_search_bar border-bottom white-bg page-heading">
+    <div class="row">
+        <div class="col-md-4 col-sm-12">
+            <div class="lable_center">
+                <label>{{title.search | translate}}</label>
+            </div>
+            <div class="col-md-6 col-sm-6 remove_padding">
+                <div class="form-group" id="search_fields">
+                    <select chosen class="chosen-select" id="search_field" [(ngModel)]="search_field" name="search_field" tabindex="4">
+
+                        <option value="promo_code_name">{{title.name | translate}}</option>
+                        <option value="country_details.country_name">{{title.country | translate}}</option>
+                        <option value="city_details.city_name">{{title.city | translate}}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-6 remove_padding">
+                <div class="form-group">
+                    <div class="input-group">
+
+                        <input type="text" class="form-control search_box" [(ngModel)]="search_value"  name="search_value">
+                        <span class="input-group-addon search_icon"><span class="fa fa-search"></span></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 col-sm-12">
+            <div class="lable_center">
+                <label>{{title.sort | translate}}</label>
+            </div>
+            <div class="col-md-6 col-sm-6 remove_padding">
+                <div class="form-group" id="sort_fields">
+                    <select chosen class="chosen-select" id="sort_field" [(ngModel)]="sort_field" name="sort_field" tabindex="4">
+
+                        <option value="unique_id">{{title.id | translate}}</option>
+                        <option value="promo_code_name">{{title.name | translate}}</option>
+                        <option value="country_details.country_name">{{title.country | translate}}</option>
+                        <option value="city_details.city_name">{{title.city | translate}}</option>
+
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-6 remove_padding">
+                <div class="form-group" id="sort_orders">
+
+                    <select chosen class="chosen-select" id="sort_promo_code" [(ngModel)]="sort_promo_code" name="sort_promo_code" tabindex="4">
+
+                        <option value="1">{{title.ascending | translate}}</option>
+                        <option value="-1">{{title.descending | translate}}</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 col-sm-12">
+
+            <div class="col-md-6 col-sm-6 col-xs-6 filter_btn_div">
+                <input type="button" (click)="filter(1)" class="btn filter_apply_btn pull-right" value="{{button.apply | translate}}" >
+            </div>
+            <div class="col-md-6 col-sm-6 col-xs-6 filter_btn_div">
+                <button [routerLink]="['/admin/add_promo_code']" class="btn add_btn">{{button.add_promo | translate}}<span class="fa fa-plus" style="margin-left: 8px;"></span></button>
+
+            </div>
+        </div>
+
+    </div>
+
+</div>
+<div class="wrapper wrapper-content content_top_bar_view1 animated fadeInRight ">
+
+    <div class="ibox" *ngIf="promo_code_list.length==0">
+        <div class="ibox-content">
+            <div class="lable_center" >
+                <label>No Records</label>
+            </div>
+        </div>  
+    </div>
+    <div class="ibox" *ngIf="promo_code_list.length>0">
+        <div class="ibox-content" style="padding-bottom: 40px;">
+            <div class="table-responsive scrollbar" style="height: calc(100vh - 285px);overflow: auto;">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>{{title.id |translate}}</th>
+                            <th>{{title.promo_code | translate}}</th>
+                            <th>{{title.created_by | translate}}</th>
+                            <th>{{title.type | translate}}</th>
+                            <th>{{title.promo_for | translate}}</th>
+                            <th>{{title.value | translate}}</th>
+                            <th>{{title.country | translate}}</th>
+                            <th>{{title.city | translate}}</th>
+                            <th>{{title.uses | translate}}</th>
+                            <th>{{title.user_used | translate}}</th>
+                            <th>{{title.active | translate}}</th>
+                            <!--                            <th>{{title.promo_is_expired | translate}}</th>-->
+
+                            <th>{{title.action | translate}}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let i of promo_code_list; let index=index; let last=last;">
+                            <td>{{i.unique_id}}</td>
+                            <td>{{i.promo_code_name }}</td>
+                            <td [ngSwitch]="i.created_by">
+                                <div *ngSwitchCase="ADMIN_DATA_ID.ADMIN">{{title.admin | translate}}</div>
+                                <div *ngSwitchCase="ADMIN_DATA_ID.STORE">{{title.store | translate}}</div>
+                                <div *ngSwitchCase="ADMIN_DATA_ID.SUB_ADMIN">{{title.sub_admin | translate}}</div>
+                            </td>
+                            <td [ngSwitch]="i.promo_code_type">
+                                <div *ngSwitchCase="1">{{title.percentage}}</div>
+                                <div *ngSwitchCase="2">{{title.absolute}}</div>
+
+
+                            </td>
+
+                            <td [ngSwitch]="i.promo_for">
+                                <div *ngSwitchCase="helper.ADMIN_PROMO_FOR_ID.SERVICE">{{title.promo_delivery_service}}</div>
+                                <div *ngSwitchCase="helper.ADMIN_PROMO_FOR_ID.DELIVERIES">{{title.promo_for_delivery}}</div>
+                                <div *ngSwitchCase="helper.ADMIN_PROMO_FOR_ID.STORE">{{title.promo_store}}</div>
+                                <div *ngSwitchCase="helper.ADMIN_PROMO_FOR_ID.PRODUCT">{{title.promo_product}}</div>
+                                <div *ngSwitchCase="helper.ADMIN_PROMO_FOR_ID.ITEM">{{title.promo_item}}</div>
+                            </td>
+
+                            <td>{{i.promo_code_value }}</td>
+                            <td>{{i.country_details.country_name}}</td>
+                            <td *ngIf='i.city_details.length>0'>{{i.city_details[0].city_name}}</td>
+                            <td *ngIf='i.city_details.length == 0'>{{title.all}}</td>
+
+
+                            <td>{{i.promo_code_uses}}</td>
+                            <td>{{i.used_promo_code}}</td>
+                            <td>
+                                <ui-switch (change)="promocode_active_deactive($event,i._id)" [(ngModel)]="i.is_active" #is_active="ngModel" name="is_active"></ui-switch>
+                            </td>
+                            <td class="text-left footable-visible footable-last-column">
+                                <div class="btn-group">
+                                    <button (click)="editPromo(i._id)" class="btn btn-xs btn-light_black">{{helper.button.edit | translate}}</button>
+                                    <button [disabled]="i.used_promo_code<=0" (click)="viewPromoUses(i._id)" class="btn btn-xs btn-light_red">{{helper.button.usage | translate}}</button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-12 col-sm-12" style="padding-top: 10px;">
+                <div class="lable_center">
+
+                    <ul class="pagination">
+                        <li *ngIf="page!==1"><a class="btn" (click)="filter(page-1)">{{button.pre | translate}}</a></li>
+                        <li *ngFor="let index of total_pages" [class.active]="page==index">
+                            <a *ngIf="index==1 || index==total_page || index==page || index==page-1 || index==page+1" (click)="filter(index)" class="btn">{{index}}</a>
+                            <a *ngIf="(index==1 && (page!==1 && page!==2 && page!==3)) || (index==total_page-1 && (page!==total_page && page!==total_page-1 && page!==total_page-2))" class="btn">...</a>
+
+                        </li>
+                        <li *ngIf="page!==total_page && promo_code_list.length!==0"><a class="btn" (click)="filter(page+1)">{{button.next | translate}}</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+</div>

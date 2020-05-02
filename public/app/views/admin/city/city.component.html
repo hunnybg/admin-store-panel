@@ -1,0 +1,105 @@
+<footer [myLoading]="myLoading" ></footer> 
+<div class="row wrapper fix_search_bar border-bottom white-bg page-heading">
+    <div class="row">
+        <div class="col-md-2 col-sm-12">
+            <div class="col-md-12 remove_padding">
+                <div class="form-group" id="search_fields">
+                    <select chosen class="chosen-select" [(ngModel)]="selected_country
+                            " name="selected_country" id="selected_country" tabindex="4">
+                        <option>{{title.all | translate}}</option>
+                        <option *ngFor="let country_data of country_list" value="{{country_data._id}}">{{country_data.country_name}}</option>
+
+                    </select>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-md-6 col-sm-12">
+            <div class="col-md-12 remove_padding">
+                <div class="form-group" *ngIf="!is_view_map" id="search_fields">
+                    <div class="input-group">
+
+                        <input type="text" (keyup)="filter_country(filter_country_name)" class="form-control search_box" [(ngModel)]="filter_country_name" placeholder="Search City" style="color:#000000;" name="filter_country_name">
+                        <span class="input-group-addon search_icon"><span class="fa fa-search"></span></span>
+                    </div>
+                </div>
+                <div class="form-group" [hidden]="!is_view_map" id="search_fields">
+                    <div class="input-group">
+
+                        <input type="text" id="search" class="form-control search_box" placeholder="Search City" style="color:#000000;">
+                        <span class="input-group-addon search_icon"><span class="fa fa-search"></span></span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-md-3 col-sm-12 pull-right">
+            <div class="col-md-6 col-sm-6 add_btn_div">
+                <button [routerLink]="['/admin/add_city']" class="btn add_btn">{{button.add_city | translate}}<span class="fa fa-plus" style="margin-left: 8px;"></span></button>
+                <!--                            <a [routerLink]="['/admin/add_city']" class="pull-right"> <button class="btn add_btn pull-right">{{button.add_city | translate}}<span class="fa fa-plus pull-right" style="margin-top: 2px;"></span></button></a>-->
+            </div>
+            <div class="col-md-6 col-sm-6 add_btn_div">
+                <button *ngIf="!is_view_map" (click)="is_view_map=true" class="btn add_btn"><span class="fa fa-map" style="margin-left: 8px;"></span></button>
+                <button *ngIf="is_view_map" (click)="is_view_map=false" class="btn add_btn"><span class="fa fa-list" style="margin-left: 8px;"></span></button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row wrapper content_top_bar_view wrapper-content animated fadeInRight" style="padding-left: 0 !important;">
+    <div *ngIf="!is_view_map">
+        <div  *ngFor="let country_data of filtered_country_list">
+            <div *ngFor="let i of country_data.cities" [hidden]="selected_country !== (title.all | translate) && selected_country!==country_data._id ">
+                <div class="col-lg-2 col-md-3 col-sm-6 col-xs-12 user_profile">
+                    <div class="ibox float-e-margins">
+
+                        <div class="ibox-title">
+                            <a class="pull-right" (click)="editCity(i._id)"><i class="fa fa-pencil" style="font-size:20px;color:#676a6c"></i></a>
+                            <div>
+                                <h5 style="font-size:17px;"><strong>{{i.city_name}}</strong></h5>
+                            </div>
+                            <div [hidden]="country_data.cities.length == 0 || (selected_country!== (title.all | translate) && selected_country!==country_data._id) ">
+                                <h5 class="col-lg-10 col-sm-10 col-md-10" style="float: none;font-size:14px;">{{country_data.country_name}}</h5>
+                            </div>
+                        </div>
+
+
+
+                        <div class="ibox-content profile-content">
+
+                            <ul class="list-group clear-list">
+                                <li class="list-group-item fist-item">
+                                    <span class="pull-right"> {{i.city_radius}} </span>
+                                    {{title.city_radius | translate}}
+                                </li>
+
+
+                                <li class="list-group-item">
+
+                                    <span class="pull-right">  <ui-switch (change)="is_business_change(i._id, $event)" style="float: right;" [(ngModel)]="i.is_business" name="is_business"></ui-switch></span>
+                                    {{title.business | translate}}
+                                </li>
+                                <li class="list-group-item">
+                                    <span class="pull-right"> <ui-switch (change)="is_cash_payment_mode_change(i._id, $event)" style="float: right;" [(ngModel)]="i.is_cash_payment_mode" name="is_cash_payment_mode"></ui-switch></span>
+                                    {{title.cash | translate}}
+                                </li>
+
+                                <li class="list-group-item">
+                                    <span class="pull-right"> <ui-switch (change)="is_other_payment_mode_change(i._id, $event)" style="float: right;" [(ngModel)]="i.is_other_payment_mode" name="is_other_payment_mode"></ui-switch></span>
+                                    {{title.other | translate}}
+                                </li>
+
+                            </ul>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div [hidden]="!is_view_map">
+        <div id="map" style="height: calc(100vh - 146px);"></div>
+    </div>
+</div>
+
