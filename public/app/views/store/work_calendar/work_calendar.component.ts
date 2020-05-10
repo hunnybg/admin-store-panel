@@ -1,4 +1,4 @@
-import { Component, OnInit, Renderer, AfterViewInit, ElementRef, ViewChild, OnDestroy } from "@angular/core";
+import { Component, OnInit, AfterViewInit, ElementRef, ViewChild, OnDestroy, Renderer2 } from "@angular/core";
 import { Helper } from "../../store_helper";
 declare var jQuery: any;
 declare var caleandar: any;
@@ -35,7 +35,7 @@ export class WorkCalendarComponent implements OnInit, AfterViewInit, OnDestroy {
   store_id: string;
   myLoading: boolean = false;
 
-  constructor(public helper: Helper, public rd: Renderer) {
+  constructor(public helper: Helper, public rd: Renderer2) {
 
   }
 
