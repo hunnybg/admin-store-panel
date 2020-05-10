@@ -1,0 +1,261 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "newProjectRoot": "projects",
+  "projects": {
+    "Vaiter": {
+      "root": "",
+      "sourceRoot": "public",
+      "projectType": "application",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "aot": true,
+            "outputPath": "dist",
+            "index": "public/index.html",
+            "main": "public/main.ts",
+            "tsConfig": "public/tsconfig.json",
+            "assets": [
+              "public/assets",
+              "public/favicon.ico"
+            ],
+            "styles": [
+              "public/assets/styles/bootstrap.css",
+              "node_modules/font-awesome/css/font-awesome.css",
+              "node_modules/sweetalert2/dist/sweetalert2.css",
+              "public/assets/styles/styles.css",
+              "public/assets/styles/newstyle.css",
+              "public/assets/styles/chosen/bootstrap-chosen.css",
+              "public/assets/styles/iCheck/custom.css",
+              "public/assets/styles/animate.css",
+              "node_modules/owl.carousel/dist/assets/owl.carousel.css",
+              "node_modules/owl.carousel/dist/assets/owl.theme.default.css",
+              "public/assets/styles/c3.css",
+              "public/assets/styles/clockpicker/clockpicker.css",
+              "public/assets/styles/steps/jquery.steps.css",
+              "public/assets/styles/jasny/jasny-bootstrap.min.css",
+              "node_modules/ng2-toastr/bundles/ng2-toastr.min.css",
+              "node_modules/ladda/dist/ladda.min.css",
+              "public/assets/js/calendar/css/demo.css",
+              "public/assets/js/calendar/css/theme1.css",
+              "public/assets/js/calendar/css/theme2.css",
+              "public/assets/js/calendar/css/theme3.css"
+            ],
+            "scripts": [
+              "node_modules/jquery/dist/jquery.js",
+              "node_modules/metismenu/dist/metisMenu.js",
+              "node_modules/sweetalert2/dist/sweetalert2.js",
+              "public/vendor/pace/pace.min.js",
+              "node_modules/bootstrap/dist/js/bootstrap.js",
+              "public/assets/js/d3.js",
+              "public/assets/js/c3.js",
+              "public/assets/js/hammer.js",
+              "public/assets/js/chosen/chosen.jquery.js",
+              "public/assets/js/iCheck/icheck.min.js",
+              "public/assets/js/clockpicker/clockpicker.js",
+              "public/assets/js/jasny/jasny-bootstrap.min.js",
+              "public/assets/js/touchspin/jquery.bootstrap-touchspin.min.js",
+              "public/assets/js/calendar/js/caleandar.js"
+            ]
+          },
+          "configurations": {
+            "source": {
+              "budgets": [
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "fileReplacements": [
+                {
+                  "replace": "public/undefined",
+                  "with": "public/environments/environment.ts"
+                }
+              ]
+            },
+            "dev": {
+              "budgets": [
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "fileReplacements": [
+                {
+                  "replace": "public/undefined",
+                  "with": "public/environments/environment.ts"
+                }
+              ]
+            },
+            "prod": {
+              "budgets": [
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb"
+                }
+              ],
+              "fileReplacements": [
+                {
+                  "replace": "public/undefined",
+                  "with": "public/environments/environment.prod.ts"
+                }
+              ]
+            },
+            "production": {
+              "budgets": [
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "Vaiter:build"
+          },
+          "configurations": {
+            "source": {
+              "browserTarget": "Vaiter:build:source"
+            },
+            "dev": {
+              "browserTarget": "Vaiter:build:dev"
+            },
+            "prod": {
+              "browserTarget": "Vaiter:build:prod"
+            },
+            "production": {
+              "browserTarget": "Vaiter:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "Vaiter:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "public/test.ts",
+            "karmaConfig": "./karma.conf.js",
+            "scripts": [
+              "node_modules/jquery/dist/jquery.js",
+              "node_modules/metismenu/dist/metisMenu.js",
+              "node_modules/sweetalert2/dist/sweetalert2.js",
+              "public/vendor/pace/pace.min.js",
+              "node_modules/bootstrap/dist/js/bootstrap.js",
+              "public/assets/js/d3.js",
+              "public/assets/js/c3.js",
+              "public/assets/js/hammer.js",
+              "public/assets/js/chosen/chosen.jquery.js",
+              "public/assets/js/iCheck/icheck.min.js",
+              "public/assets/js/clockpicker/clockpicker.js",
+              "public/assets/js/jasny/jasny-bootstrap.min.js",
+              "public/assets/js/touchspin/jquery.bootstrap-touchspin.min.js",
+              "public/assets/js/calendar/js/caleandar.js"
+            ],
+            "styles": [
+              "public/assets/styles/bootstrap.css",
+              "node_modules/font-awesome/css/font-awesome.css",
+              "node_modules/sweetalert2/dist/sweetalert2.css",
+              "public/assets/styles/styles.css",
+              "public/assets/styles/newstyle.css",
+              "public/assets/styles/chosen/bootstrap-chosen.css",
+              "public/assets/styles/iCheck/custom.css",
+              "public/assets/styles/animate.css",
+              "node_modules/owl.carousel/dist/assets/owl.carousel.css",
+              "node_modules/owl.carousel/dist/assets/owl.theme.default.css",
+              "public/assets/styles/c3.css",
+              "public/assets/styles/clockpicker/clockpicker.css",
+              "public/assets/styles/steps/jquery.steps.css",
+              "public/assets/styles/jasny/jasny-bootstrap.min.css",
+              "node_modules/ng2-toastr/bundles/ng2-toastr.min.css",
+              "node_modules/ladda/dist/ladda.min.css",
+              "public/assets/js/calendar/css/demo.css",
+              "public/assets/js/calendar/css/theme1.css",
+              "public/assets/js/calendar/css/theme2.css",
+              "public/assets/js/calendar/css/theme3.css"
+            ],
+            "assets": [
+              "public/assets",
+              "public/favicon.ico"
+            ]
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [],
+            "exclude": []
+          }
+        }
+      }
+    },
+    "Vaiter-e2e": {
+      "root": "e2e",
+      "sourceRoot": "e2e",
+      "projectType": "application",
+      "architect": {
+        "e2e": {
+          "builder": "@angular-devkit/build-angular:protractor",
+          "options": {
+            "protractorConfig": "./protractor.conf.js",
+            "devServerTarget": "Vaiter:serve"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [],
+            "exclude": []
+          }
+        }
+      }
+    }
+  },
+  "defaultProject": "Vaiter",
+  "schematics": {
+    "@schematics/angular:component": {
+      "prefix": "app",
+      "style": "css"
+    },
+    "@schematics/angular:directive": {
+      "prefix": "app"
+    }
+  },
+  "cli": {
+    "analytics": false
+  }
+}
