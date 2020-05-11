@@ -2,6 +2,7 @@ import { Component, OnInit ,ViewContainerRef } from '@angular/core';
 import {Response } from '@angular/http';
 import {Helper} from "../../franchise_helper";
 declare var jQuery:any;
+import { map } from 'rxjs/operators';
 
 @Component({
     selector: 'app-store_item',
@@ -69,7 +70,7 @@ export class FranchiseStoreItemComponent implements OnInit {
 
         });
 
-        this.helper.http.post(this.helper.POST_METHOD.GET_FOR_STORE_PRODUCT_ITEM_LIST,{store_id:this.store_id,franchise_id:this.franchise_id, server_token:this.server_token}).map((res:Response) => res.json()).subscribe(res_data=>{
+        this.helper.http.post(this.helper.POST_METHOD.GET_FOR_STORE_PRODUCT_ITEM_LIST,{store_id:this.store_id,franchise_id:this.franchise_id, server_token:this.server_token}).pipe(map((res:Response) => res.json())).subscribe(res_data=>{
 
             
                 this.myLoading=false;
@@ -206,7 +207,7 @@ export class FranchiseStoreItemComponent implements OnInit {
 
     onChange(id, event)
     {
-        this.helper.http.post(this.helper.POST_METHOD.IS_ITEM_IN_STOCK,{item_id:id,is_item_in_stock:event}).map((res:Response) => res.json()).subscribe(res_data=>{
+        this.helper.http.post(this.helper.POST_METHOD.IS_ITEM_IN_STOCK,{item_id:id,is_item_in_stock:event}).pipe(map((res:Response) => res.json())).subscribe(res_data=>{
 
             if(res_data.success == false)
             {

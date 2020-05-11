@@ -1,6 +1,7 @@
 import {Component, OnInit, ViewContainerRef} from '@angular/core';
 import {Http, Response} from '@angular/http';
-import {Observable} from 'rxjs/Rx';
+import {Observable} from 'rxjs';
+import { map } from 'rxjs/operators';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import {Helper} from "../../helper";
@@ -88,7 +89,7 @@ export class BasicSettingComponent implements OnInit {
         }
         var admin_id = localStorage.getItem('admin_id');
         if (admin_id != "" || admin_id != undefined) {
-            this.helper.http.post('/admin/get_detail', {admin_id: admin_id}).map((res_data: Response) => res_data.json()).subscribe(res_data => {
+            this.helper.http.post('/admin/get_detail', {admin_id: admin_id}).pipe(map((res_data: Response) => res_data.json())).subscribe(res_data => {
                 console.log(res_data.success);
                 console.log(res_data.admin.admin_type);
                 if (res_data.success == true) {
@@ -102,8 +103,8 @@ export class BasicSettingComponent implements OnInit {
 
         console.log(language);
 
-        this.helper.http.get('/admin/get_country_list').map((res: Response) => res.json()).subscribe(res => this.country_list = res, error => this.error = error);
-        this.helper.http.get('/admin/get_timezone_list').map((res: Response) => res.json()).subscribe(res => this.timezone_list = res, error => this.error = error);
+        this.helper.http.get('/admin/get_country_list').pipe(map((res: Response) => res.json())).subscribe(res => this.country_list = res, error => this.error = error);
+        this.helper.http.get('/admin/get_timezone_list').pipe(map((res: Response) => res.json())).subscribe(res => this.timezone_list = res, error => this.error = error);
 
         jQuery(this.helper.elementRef.nativeElement).find('#admin_panel_timezone').on('change', (evnt, res_data) => {
             this.admin_setting.admin_panel_timezone = res_data.selected;
@@ -111,7 +112,7 @@ export class BasicSettingComponent implements OnInit {
 
 
 
-        this.helper.http.post('/api/admin/get_setting_detail', {}).map((res: Response) => res.json()).subscribe(res_data => {
+        this.helper.http.post('/api/admin/get_setting_detail', {}).pipe(map((res: Response) => res.json())).subscribe(res_data => {
             this.myLoading = false;
             this.admin_setting.admin_name = res_data.setting.admin_name,
                 this.admin_setting.admin_email = res_data.setting.admin_email,
@@ -177,8 +178,8 @@ export class BasicSettingComponent implements OnInit {
 
 
 
-        //        this.helper.http.get('/admin/get_country_list').map((res: Response) => res.json()).subscribe(res => this.country_list = res, error => this.error = error);
-        //        this.helper.http.get('/admin/get_timezone_list').map((res: Response) => res.json()).subscribe(res => this.timezone_list = res, error => this.error = error);
+        //        this.helper.http.get('/admin/get_country_list').pipe(map((res: Response) => res.json())).subscribe(res => this.country_list = res, error => this.error = error);
+        //        this.helper.http.get('/admin/get_timezone_list').pipe(map((res: Response) => res.json())).subscribe(res => this.timezone_list = res, error => this.error = error);
         //
         //        jQuery(this.helper.elementRef.nativeElement).find('#admin_panel_timezone').on('change', (evnt, res_data) => {
         //            this.admin_setting.admin_panel_timezone = res_data.selected;
@@ -199,7 +200,7 @@ export class BasicSettingComponent implements OnInit {
 
 
 
-        this.helper.http.post('/admin/country_detail_for_admin', {countryname: countryname}).map((res: Response) => res.json()).subscribe(data => {
+        this.helper.http.post('/admin/country_detail_for_admin', {countryname: countryname}).pipe(map((res: Response) => res.json())).subscribe(data => {
 
             if (data.success == true) {
 
@@ -224,7 +225,7 @@ export class BasicSettingComponent implements OnInit {
 
     AdminSetting(adminsettingdata) {
         console.log(adminsettingdata);
-        this.helper.http.post('/admin/update_admin_setting', adminsettingdata).map((res: Response) => res.json()).subscribe(res_data => {
+        this.helper.http.post('/admin/update_admin_setting', adminsettingdata).pipe(map((res: Response) => res.json())).subscribe(res_data => {
             this.myLoading = false;
             this.helper.data.storage = {
                 "message": this.helper.MESSAGE_CODE[res_data.message],

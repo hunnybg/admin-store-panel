@@ -5,6 +5,7 @@ import {Helper} from "../../franchise_helper";
 declare var jQuery:any;
 import { FacebookService, InitParams, LoginResponse, LoginOptions } from 'ngx-facebook';
 declare var gapi;
+import { map } from 'rxjs/operators';
 
 export interface FranchiseRegister{
 
@@ -120,7 +121,7 @@ export class franchise_registerComponent {
             is_email_verified : false
 
         }
-        this.helper.http.get(this.helper.GET_METHOD.GET_COUNTRY_LIST).map((response: Response) => response.json()) .subscribe(res_data => {
+        this.helper.http.get(this.helper.GET_METHOD.GET_COUNTRY_LIST).pipe(map((response: Response) => response.json())) .subscribe(res_data => {
 
             this.country_list = res_data.countries;
             setTimeout(function() {
@@ -131,7 +132,7 @@ export class franchise_registerComponent {
         (error: any) => {
                 this.helper.http_status(error)
         });
-        this.helper.http.post(this.helper.POST_METHOD.GET_SETTING_DETAIL,{}).map((response: Response) => response.json()) .subscribe(res_data => {
+        this.helper.http.post(this.helper.POST_METHOD.GET_SETTING_DETAIL,{}).pipe(map((response: Response) => response.json())) .subscribe(res_data => {
             this.myLoading=false;
             this.setting_data=res_data.setting
 
@@ -303,7 +304,7 @@ export class franchise_registerComponent {
         this.franchise_register.store_delivery_id = '';
         this.franchise_register.city_id='';
         this.myLoading=true;
-        this.helper.http.post(this.helper.POST_METHOD.GET_CITY_LIST,{country_id:countryid}).map((res:Response) => res.json()).subscribe(res_data=>{
+        this.helper.http.post(this.helper.POST_METHOD.GET_CITY_LIST,{country_id:countryid}).pipe(map((res:Response) => res.json())).subscribe(res_data=>{
             this.myLoading=false;
             if(res_data.success)
             {
@@ -376,7 +377,7 @@ export class franchise_registerComponent {
         this.myLoading=true;
         this.franchise_register.city_id=cityid;
         this.franchise_register.store_delivery_id = '';
-        this.helper.http.post(this.helper.POST_METHOD.GET_DELIVERY_LIST_FOR_CITY,{city_id:cityid}).map((res:Response) => res.json()).subscribe(res_data=>{
+        this.helper.http.post(this.helper.POST_METHOD.GET_DELIVERY_LIST_FOR_CITY,{city_id:cityid}).pipe(map((res:Response) => res.json())).subscribe(res_data=>{
             this.myLoading=false;
             if(res_data.success)
             {
@@ -407,7 +408,7 @@ export class franchise_registerComponent {
             this.stor_data=stordata
             if(this.setting_data.is_franchise_sms_verification == true || this.setting_data.is_franchise_mail_verification == true)
             {
-                this.helper.http.post(this.helper.POST_METHOD.ADMIN_OTP_VERIFICATION,{type:2, email:stordata.email, phone:stordata.phone}).map((res:Response) => res.json()).subscribe(res_data=>{
+                this.helper.http.post(this.helper.POST_METHOD.ADMIN_OTP_VERIFICATION,{type:2, email:stordata.email, phone:stordata.phone}).pipe(map((res:Response) => res.json())).subscribe(res_data=>{
                     this.myLoading=false;
                     
                     if(res_data.success == true)
@@ -520,7 +521,7 @@ export class franchise_registerComponent {
         this.formData.append('is_email_verified',this.franchise_register.is_email_verified);
         console.log("bhargav: ");
         console.log(this.helper.POST_METHOD.REGISTER);
-        this.helper.http.post(this.helper.POST_METHOD.REGISTER,this.formData).map((res:Response) => res.json()).subscribe(res_data=>{
+        this.helper.http.post(this.helper.POST_METHOD.REGISTER,this.formData).pipe(map((res:Response) => res.json())).subscribe(res_data=>{
 
             this.myLoading=false;
                             if(res_data.success == false)

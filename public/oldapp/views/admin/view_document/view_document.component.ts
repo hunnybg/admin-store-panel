@@ -2,6 +2,7 @@ import {Component, OnInit, ViewContainerRef} from '@angular/core';
 import {Response} from '@angular/http';
 import {Helper} from "../../helper";
 declare var jQuery: any;
+import { map } from 'rxjs/operators';
 
 export interface Document {
     unique_code: String,
@@ -68,7 +69,7 @@ export class ViewDocumentComponent implements OnInit {
 
 
 
-        this.helper.http.post('/admin/view_document_list', {id: this.id, type: this.type}).map((res_data: Response) => res_data.json()).subscribe(res_data => {
+        this.helper.http.post('/admin/view_document_list', {id: this.id, type: this.type}).pipe(map((res_data: Response) => res_data.json())).subscribe(res_data => {
             this.myLoading = false;
             console.log(res_data);
             if (res_data.success == false) {
@@ -182,7 +183,7 @@ export class ViewDocumentComponent implements OnInit {
                 this.formData.append('expired_date', this.documentlist.expired_date.formatted);
             }
 
-            this.helper.http.post('/admin/upload_document', this.formData).map((res_data: Response) => res_data.json()).subscribe(res_data => {
+            this.helper.http.post('/admin/upload_document', this.formData).pipe(map((res_data: Response) => res_data.json())).subscribe(res_data => {
 
                 this.formData = new FormData();
                 this.edit_document.fill("false")

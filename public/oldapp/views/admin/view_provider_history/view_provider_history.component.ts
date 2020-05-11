@@ -2,6 +2,7 @@ import {Component, OnInit, ViewContainerRef} from '@angular/core';
 import {Response} from '@angular/http';
 import {Helper} from "../../helper";
 declare var jQuery: any;
+import { map } from 'rxjs/operators';
 
 @Component({
     selector: 'app-view_provider_history',
@@ -85,7 +86,7 @@ export class ViewProviderHistoryComponent implements OnInit {
             start_date: this.start_date, end_date: this.end_date,
             sort_field: this.sort_field, sort_request: this.sort_request,
             search_field: this.search_field, search_value: this.search_value, page: this.page
-        }).map((res: Response) => res.json()).subscribe(res_data => {
+        }).pipe(map((res: Response) => res.json())).subscribe(res_data => {
             this.myLoading = false;
             if (res_data.success == false) {
 

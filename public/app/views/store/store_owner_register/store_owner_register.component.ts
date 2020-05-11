@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewContainerRef } from "@angular/core";
 import { Helper } from "../../store_helper";
 import { Response } from '@angular/http';
+import { map } from 'rxjs/operators';
 
 export interface StoreOwnerRegister {
     name: string,
@@ -50,7 +51,7 @@ export class StoreOwnerRegisterComponent implements OnInit {
             this.helper.message();
             return;
         } else {
-            this.helper.http.post(this.helper.POST_METHOD.STORE_OWNER_REGISTER, this.store_owner_register).map((res: Response) => res.json()).subscribe(res_data => {
+            this.helper.http.post(this.helper.POST_METHOD.STORE_OWNER_REGISTER, this.store_owner_register).pipe(map((res: Response) => res.json())).subscribe(res_data => {
                 this.myLoading = false;
                 if (res_data.success == false) {
                     this.helper.data.storage = {

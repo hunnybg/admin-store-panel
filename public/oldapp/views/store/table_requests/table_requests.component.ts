@@ -2,6 +2,7 @@ import { Component, ViewContainerRef, OnInit } from "@angular/core";
 import { Response } from '@angular/http';
 import { Helper } from "../../store_helper";
 declare var jQuery: any
+import { map } from 'rxjs/operators';
 
 @Component({
     selector: 'app-table-requests',
@@ -94,7 +95,7 @@ export class TableRequestsComponent implements OnInit {
             store_id: this.store_id, number_of_rec: this.number_of_rec,
             sort_field: this.sort_field, sort_table_request: this.sort_table_request, table_request_page_type: this.table_request_page_type,
             search_field: this.search_field, search_value: this.search_value, page: this.page
-        }).map((res: Response) => res.json()).subscribe(res_data => {
+        }).pipe(map((res: Response) => res.json())).subscribe(res_data => {
             this.myLoading = false;
             if (res_data.success == false) {
                 this.table_request_list = [];

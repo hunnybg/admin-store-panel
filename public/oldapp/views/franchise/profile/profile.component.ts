@@ -1,10 +1,11 @@
 import { Component, OnInit ,ViewContainerRef , ViewChild, Output, EventEmitter} from '@angular/core';
 import {Response } from '@angular/http';
-import {Observable} from 'rxjs/Rx';
+import {Observable} from 'rxjs';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import { ModalComponent } from 'ng2-bs3-modal/ng2-bs3-modal';
 import {Helper} from "../../franchise_helper";
+import { map } from 'rxjs/operators';
 declare var jQuery:any;
 declare var c3: any;
 
@@ -143,7 +144,7 @@ export class FranchiseProfileComponent implements OnInit {
             this.helper.router.navigate(['franchise/upload_document']);
         }
 
-        this.helper.http.post(this.helper.POST_METHOD.GET_SETTING_DETAIL,{}).map((response: Response) => response.json()) .subscribe(res_data => {
+        this.helper.http.post(this.helper.POST_METHOD.GET_SETTING_DETAIL,{}).pipe(map((response: Response) => response.json())) .subscribe(res_data => {
 
             this.setting_data=res_data.setting
 
@@ -155,7 +156,7 @@ export class FranchiseProfileComponent implements OnInit {
 
 
 
-        this.helper.http.post(this.helper.POST_METHOD.GET_FRANCHISE_DATA,{franchise_id:this.franchise_edit.franchise_id, server_token:this.franchise_edit.server_token}).map((response: Response) => response.json()) .subscribe(res_data => {
+        this.helper.http.post(this.helper.POST_METHOD.GET_FRANCHISE_DATA,{franchise_id:this.franchise_edit.franchise_id, server_token:this.franchise_edit.server_token}).pipe(map((response: Response) => response.json())) .subscribe(res_data => {
 
             this.myLoading=false;
             if(res_data.success == false)
@@ -342,7 +343,7 @@ export class FranchiseProfileComponent implements OnInit {
     {
         this.myLoading=true;
         var franchise = JSON.parse(localStorage.getItem('franchise'));
-        this.helper.http.post(this.helper.POST_METHOD.ADMIN_OTP_VERIFICATION,otp_json).map((res:Response) => res.json()).subscribe(res_data=>{
+        this.helper.http.post(this.helper.POST_METHOD.ADMIN_OTP_VERIFICATION,otp_json).pipe(map((res:Response) => res.json())).subscribe(res_data=>{
 
             this.myLoading=false;
             if(res_data.success == true)
@@ -423,7 +424,7 @@ export class FranchiseProfileComponent implements OnInit {
     otp_verified(otp_verified_json)
     {
         this.myLoading=true;
-        this.helper.http.post(this.helper.POST_METHOD.OTP_VERIFICATION,otp_verified_json).map((res:Response) => res.json()).subscribe(res_data=>{
+        this.helper.http.post(this.helper.POST_METHOD.OTP_VERIFICATION,otp_verified_json).pipe(map((res:Response) => res.json())).subscribe(res_data=>{
             this.myLoading=false;
             if(res_data.success == true)
             {
@@ -472,7 +473,7 @@ export class FranchiseProfileComponent implements OnInit {
         this.formData.append('social_id',franchise_data.social_id);
         this.formData.append('login_by',franchise_data.login_by);
 
-      this.helper.http.post(this.helper.POST_METHOD.UPDATE,this.formData).map((response: Response) => response.json()) .subscribe(res_data => {
+      this.helper.http.post(this.helper.POST_METHOD.UPDATE,this.formData).pipe(map((response: Response) => response.json())) .subscribe(res_data => {
 
           this.myLoading=false;
           this.franchise_edit.old_password="";

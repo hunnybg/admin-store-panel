@@ -1,6 +1,7 @@
 import {Component, OnInit, ViewContainerRef} from '@angular/core';
 import {Helper} from "../../helper";
 import {Response} from '@angular/http';
+import { map } from 'rxjs/operators';
 declare var jQuery: any;
 export interface AdminForgotPassword {
     email: String
@@ -35,7 +36,7 @@ export class AdminForgotPasswordComponent implements OnInit {
     }
     adminForgotPassword(forgotpassworddata) {
         this.myLoading = true;
-        this.helper.http.post('/api/admin/forgot_password', {email:forgotpassworddata.email.trim(), type: 1}).map((res: Response) => res.json()).subscribe(res_data => {
+        this.helper.http.post('/api/admin/forgot_password', {email:forgotpassworddata.email.trim(), type: 1}).pipe(map((res: Response) => res.json())).subscribe(res_data => {
        
             this.myLoading = false;
             if (res_data.success == false) {

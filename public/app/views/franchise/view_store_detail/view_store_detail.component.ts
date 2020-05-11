@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Http, Response} from '@angular/http';
-import {Observable} from 'rxjs/Rx';
+import {Observable} from 'rxjs';
+import { map } from 'rxjs/operators';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import {title, button, heading_title} from '../store_panel_string';
@@ -61,7 +62,7 @@ export class ViewFranchiseStoreDetailComponent implements OnInit {
         this.store_id = this.router_id.franchise.detail_store_id;
 
 
-        this.helper.http.post('/admin/get_store_data', {store_id: this.store_id}).map((res_data: Response) => res_data.json()).subscribe(res_data => {
+        this.helper.http.post('/admin/get_store_data', {store_id: this.store_id}).pipe(map((res_data: Response) => res_data.json())).subscribe(res_data => {
             console.log(res_data);
 
             if (res_data.success == false) {

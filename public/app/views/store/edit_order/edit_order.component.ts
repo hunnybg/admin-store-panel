@@ -3,6 +3,7 @@ import {Response } from '@angular/http';
 import {Helper} from "../../store_helper";
 declare var jQuery:any;
 import { ModalComponent } from 'ng2-bs3-modal/ng2-bs3-modal';
+import { map } from 'rxjs/operators';
 
 export interface CartProductItems{
     item_id: Object,
@@ -137,7 +138,7 @@ export class StoreEditOrderComponent implements OnInit {
             total_item_tax: 0
         }
 
-        this.helper.http.post(this.helper.POST_METHOD.GET_STORE_PRODUCT_ITEM_LIST,{store_id:this.store_id, server_token:this.server_token}).map((res:Response) => res.json()).subscribe(res_data=>{
+        this.helper.http.post(this.helper.POST_METHOD.GET_STORE_PRODUCT_ITEM_LIST,{store_id:this.store_id, server_token:this.server_token}).pipe(map((res:Response) => res.json())).subscribe(res_data=>{
 
             this.myLoading=false;
 
@@ -538,7 +539,7 @@ export class StoreEditOrderComponent implements OnInit {
             store_id: this.store_id,
             server_token: this.server_token,
             order_id: this.helper.router_id.store.order_id
-        }).map((res: Response) => res.json()).subscribe(res_data => {
+        }).pipe(map((res: Response) => res.json())).subscribe(res_data => {
                 this.myLoading = false;
                 console.log(res_data)
                 if(res_data.success){
@@ -642,7 +643,7 @@ export class StoreEditOrderComponent implements OnInit {
         }
         console.log(json)
 
-        this.helper.http.post(this.helper.POST_METHOD.STORE_UPDATE_ORDER, json).map((res: Response) => res.json()).subscribe(res_data => {
+        this.helper.http.post(this.helper.POST_METHOD.STORE_UPDATE_ORDER, json).pipe(map((res: Response) => res.json())).subscribe(res_data => {
                 this.myLoading = false;
 
                 if(res_data.success){

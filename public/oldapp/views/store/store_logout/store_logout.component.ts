@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {Helper} from "../../store_helper";
 import {Response } from '@angular/http';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-store_logout',
@@ -19,7 +20,7 @@ export class StoreLogoutComponent implements OnInit {
             var store = JSON.parse(localStorage.getItem('store'));
             if(store!==null)
             {
-                this.helper.http.post(this.helper.POST_METHOD.LOGOUT,{store_id:store._id}).map((res:Response) => res.json()).subscribe(res_data=>{
+                this.helper.http.post(this.helper.POST_METHOD.LOGOUT,{store_id:store._id}).pipe(map((res:Response) => res.json())).subscribe(res_data=>{
 
                     this.myLoading=false;
                         this.helper.tokenService.removeToken();

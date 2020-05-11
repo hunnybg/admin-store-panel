@@ -2,7 +2,8 @@ import { Component, OnInit,ViewContainerRef } from '@angular/core';
 import {Helper} from "../../franchise_helper";
 import { Http, Response } from '@angular/http';
 declare var jQuery:any;
-import { IMultiSelectOption } from 'angular-2-dropdown-multiselect';
+//import { IMultiSelectOption } from 'angular-2-dropdown-multiselect';
+import { map } from 'rxjs/operators';
 
 export interface AddProduct{
 
@@ -96,7 +97,7 @@ export class FranchiseProductsComponent implements OnInit {
         this.validation_message=this.helper.validation_message;
         this.addproductform=false;
 
-        this.helper.http.post(this.helper.POST_METHOD.GET_STORE_DATA,{store_ids:franchise.store_ids}).map((res:Response) => res.json()).subscribe(res_data=>{
+        this.helper.http.post(this.helper.POST_METHOD.GET_STORE_DATA,{store_ids:franchise.store_ids}).pipe(map((res:Response) => res.json())).subscribe(res_data=>{
             if(res_data.success == false)
             {
                 /*this.helper.data.storage = {
@@ -115,7 +116,7 @@ export class FranchiseProductsComponent implements OnInit {
         },
         (error: any) => {
         });
-        this.helper.http.post(this.helper.POST_METHOD.GET_PRODUCT_LIST,{franchise_id:this.add_product.franchise_id, server_token:this.add_product.server_token}).map((res:Response) => res.json()).subscribe(res_data=>{
+        this.helper.http.post(this.helper.POST_METHOD.GET_PRODUCT_LIST,{franchise_id:this.add_product.franchise_id, server_token:this.add_product.server_token}).pipe(map((res:Response) => res.json())).subscribe(res_data=>{
 
 
             this.myLoading=false;
@@ -154,7 +155,7 @@ export class FranchiseProductsComponent implements OnInit {
         });
 
         this.helper.http.post(this.helper.POST_METHOD.GET_IMAGE_SETTING, {
-        }).map((res_data: Response) => res_data.json()).subscribe(res_data => {
+        }).pipe(map((res_data: Response) => res_data.json())).subscribe(res_data => {
 
                 this.image_setting.image_ratio = res_data.image_setting.product_image_ratio;
                 this.image_setting.image_min_width = res_data.image_setting.product_image_min_width;
@@ -290,7 +291,7 @@ console.log(new_image.height);
         this.formData.append("franchise_id", franchise._id);
         this.formData.append("store_ids", this.add_product.store_ids);
         this.formData.append("server_token", franchise.server_token);
-        this.helper.http.post(this.helper.POST_METHOD.ADD_PRODUCT,this.formData).map((res:Response) => res.json()).subscribe(res_data=>{
+        this.helper.http.post(this.helper.POST_METHOD.ADD_PRODUCT,this.formData).pipe(map((res:Response) => res.json())).subscribe(res_data=>{
             this.addproductform=false
             this.add_product.name=""
             this.add_product.details=""

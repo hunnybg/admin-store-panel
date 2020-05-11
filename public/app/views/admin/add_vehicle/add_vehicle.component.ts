@@ -1,6 +1,7 @@
 import {Component, OnInit, ViewContainerRef, ViewChild} from '@angular/core';
 import {Response} from '@angular/http';
-import {Observable} from 'rxjs/Rx';
+import {Observable} from 'rxjs';
+import { map } from 'rxjs/operators';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import {Helper} from "../../helper";
@@ -144,7 +145,7 @@ export class AddVehicleComponent implements OnInit {
         this.vehicle_id = this.helper.router_id.admin.vehicle_id;
 
         this.helper.http.post('/api/admin/get_image_setting', {
-        }).map((res_data: Response) => res_data.json()).subscribe(res_data => {
+        }).pipe(map((res_data: Response) => res_data.json())).subscribe(res_data => {
 
             this.image_setting.image_ratio = res_data.image_setting.vehicle_image_ratio;
             this.image_setting.image_min_width = res_data.image_setting.vehicle_image_min_width;
@@ -183,14 +184,14 @@ export class AddVehicleComponent implements OnInit {
 
         if (this.vehicle_id == '') {
             this.type = "add";
-            this.helper.http.get('/admin/vehicle_list').map((res: Response) => res.json()).subscribe(res => this.vehicle_list = res, error => this.error = error);
+            this.helper.http.get('/admin/vehicle_list').pipe(map((res: Response) => res.json())).subscribe(res => this.vehicle_list = res, error => this.error = error);
 
             this.vehicle_exist = ""
         }
         else {
             jQuery('#add').hide();
             this.type = "edit";
-            this.helper.http.post('/admin/get_vehicle_detail', {vehicle_id: this.vehicle_id}).map((res_data: Response) => res_data.json()).subscribe(res_data => {
+            this.helper.http.post('/admin/get_vehicle_detail', {vehicle_id: this.vehicle_id}).pipe(map((res_data: Response) => res_data.json())).subscribe(res_data => {
 
                 if (res_data.success == false) {
                     this.helper.data.storage = {
@@ -379,7 +380,7 @@ export class AddVehicleComponent implements OnInit {
             this.formData.append("vehicle_name", vehicle_data.vehicle_name);
             this.formData.append("description", vehicle_data.description);
             this.formData.append("is_business", vehicle_data.is_business);
-            this.helper.http.post('/admin/add_vehicle_data', this.formData).map((res: Response) => res.json()).subscribe(res_data => {
+            this.helper.http.post('/admin/add_vehicle_data', this.formData).pipe(map((res: Response) => res.json())).subscribe(res_data => {
                 this.myLoading = false;
                 if (res_data.success == false) {
                     this.helper.data.storage = {
@@ -413,7 +414,7 @@ export class AddVehicleComponent implements OnInit {
             this.formData.append("is_business", vehicle_data.is_business);
             this.formData.append("vehicle_id", vehicle_data.vehicle_id);
 
-            this.helper.http.post('/admin/update_vehicle', this.formData).map((res: Response) => res.json()).subscribe(res_data => {
+            this.helper.http.post('/admin/update_vehicle', this.formData).pipe(map((res: Response) => res.json())).subscribe(res_data => {
                 this.myLoading = false;
                 if (res_data.success == false) {
                     this.helper.data.storage = {

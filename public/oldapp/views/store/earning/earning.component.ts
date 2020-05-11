@@ -2,6 +2,7 @@ import { Component, OnInit , ViewContainerRef } from '@angular/core';
 import {Response } from '@angular/http';
 import {Helper} from "../../store_helper";
 declare var jQuery:any;
+import { map } from 'rxjs/operators';
 
 export interface OrderTotal
 {
@@ -132,7 +133,7 @@ export class StoreEarningComponent implements OnInit {
             search_field: this.search_field,
             search_value: this.search_value,
             page: this.page
-        }).map((res: Response) => res.json()).subscribe(res_data => {
+        }).pipe(map((res: Response) => res.json())).subscribe(res_data => {
                 this.myLoading = false;
                 if (res_data.success == false) {
                     this.store_earning_list = [];
@@ -177,7 +178,7 @@ export class StoreEarningComponent implements OnInit {
             sort_order: this.sort_order,
             search_field: this.search_field,
             search_value: this.search_value
-        }).map((res: Response) => res.json()).subscribe(res_data => {
+        }).pipe(map((res: Response) => res.json())).subscribe(res_data => {
 
             if(res_data.success){
                 var json2csv = require('json2csv');

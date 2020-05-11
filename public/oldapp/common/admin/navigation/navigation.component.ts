@@ -3,6 +3,7 @@ import {Router} from '@angular/router';
 import {Http, Response} from '@angular/http';
 //import {Helper} from "../../../views/helper";
 import {Helper} from "../../../views/helper";
+import {map} from 'rxjs/operators';
 declare var jQuery: any;
 //import {title, button, heading_title, menu_title, sub_menu_title} from '../../../admin_panel_string';
 
@@ -50,11 +51,11 @@ export class NavigationComponent implements OnInit {
         this.admin_id = localStorage.getItem('admin_id');
         this.admin_token = localStorage.getItem('admin_token');
         
-        this.helper.http.post('/api/admin/get_setting_detail', {}).map((res: Response) => res.json()).subscribe(res_data => {
+        this.helper.http.post('/api/admin/get_setting_detail', {}).pipe(map((res: Response) => res.json())).subscribe(res_data => {
             this.app_name = res_data.setting.app_name;
         });
 
-        this.helper.http.post('/admin/check_auth', {admin_id: this.admin_id, admin_token: this.admin_token}).map((res_data: Response) => res_data.json()).subscribe(data => {
+        this.helper.http.post('/admin/check_auth', {admin_id: this.admin_id, admin_token: this.admin_token}).pipe(map((res_data: Response) => res_data.json())).subscribe(data => {
             console.log("Response ");
             if (data.success == true) {
                 if (data.admin.admin_type == 1) {

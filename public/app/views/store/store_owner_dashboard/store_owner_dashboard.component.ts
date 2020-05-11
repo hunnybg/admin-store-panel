@@ -2,6 +2,7 @@ import { Component, OnInit, ViewContainerRef } from "@angular/core";
 import { Helper } from "../../store_helper";
 import { Response } from '@angular/http';
 import { UUID } from 'angular2-uuid';
+import { map } from 'rxjs/operators';
 
 @Component({
     selector: 'app-store-owner-dashboard',
@@ -57,7 +58,7 @@ export class StoreOwnerDashboardComponent implements OnInit {
             server_token: this.server_token
         }
 
-        this.helper.http.post(this.helper.POST_METHOD.GET_STORE_OWNER_DETAIL, json).map((res: Response) => res.json()).subscribe(res_data => {
+        this.helper.http.post(this.helper.POST_METHOD.GET_STORE_OWNER_DETAIL, json).pipe(map((res: Response) => res.json())).subscribe(res_data => {
             this.myLoading = false;
             if (res_data.success == false) {
                 this.helper.data.storage = {
@@ -83,7 +84,7 @@ export class StoreOwnerDashboardComponent implements OnInit {
     }
 
     auto_login_store(id) {
-        this.helper.http.post(this.helper.POST_METHOD.LOGIN, { store_id: id }).map((res: Response) => res.json()).subscribe(res_data => {
+        this.helper.http.post(this.helper.POST_METHOD.LOGIN, { store_id: id }).pipe(map((res: Response) => res.json())).subscribe(res_data => {
 
             this.myLoading = false;
             if (res_data.success == false) {

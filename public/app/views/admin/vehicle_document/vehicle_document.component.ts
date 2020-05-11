@@ -42,7 +42,7 @@ export class VehicleDocumentComponent implements OnInit {
 //        this.myLoading = true;
 //        this.helper.http.post('/admin/provider_vehicle_list', {
 //            provider_id: this.provider_id
-//        }).map((res: Response) => res.json()).subscribe(res_data => {
+//        }).pipe(map((res: Response) => res.json())).subscribe(res_data => {
 //            this.myLoading = false;
 //            if (res_data.success == false) {
 //                this.vehicle_list = [];

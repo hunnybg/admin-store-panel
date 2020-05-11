@@ -2,6 +2,7 @@ import {Component, OnInit, ViewContainerRef} from '@angular/core';
 import {Http, Response} from '@angular/http';
 declare var jQuery: any;
 import {Helper} from "../../helper";
+import { map } from 'rxjs/operators';
 
 @Component({
     selector: 'app-admin_view_cart',
@@ -94,7 +95,7 @@ export class AdminViewCartComponent implements OnInit {
 
         if (this.order_id !== '') {
 
-            this.helper.http.post('/api/admin/get_order_data', {order_id: this.order_id}).map((res_data: Response) => res_data.json()).subscribe(res_data => {
+            this.helper.http.post('/api/admin/get_order_data', {order_id: this.order_id}).pipe(map((res_data: Response) => res_data.json())).subscribe(res_data => {
 
                 this.myLoading = false;
                 if (res_data.success == false) {

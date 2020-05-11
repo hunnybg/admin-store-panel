@@ -3,6 +3,7 @@ import { Helper } from "../../store_helper";
 declare var jQuery: any;
 declare var caleandar: any;
 import { Response } from '@angular/http';
+import { map } from 'rxjs/operators';
 
 
 @Component({
@@ -82,7 +83,7 @@ export class WorkCalendarComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   get_shifts_count() {
-    this.helper.http.post(this.helper.POST_METHOD.GET_MONTHLY_SHIFT_COUNT, { shift_date: this.shift_date, store_id: this.store_id }).map((res: Response) => res.json()).subscribe(res_data => {
+    this.helper.http.post(this.helper.POST_METHOD.GET_MONTHLY_SHIFT_COUNT, { shift_date: this.shift_date, store_id: this.store_id }).pipe(map((res: Response) => res.json())).subscribe(res_data => {
       if (res_data.success) {
         this.shift_counts = res_data.shift_times;
       } else {
@@ -94,7 +95,7 @@ export class WorkCalendarComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   get_monthly_total_work() {
-    this.helper.http.post(this.helper.POST_METHOD.GET_MONTHLY_TOTAL_WORK, { shift_date: this.shift_date, store_id: this.store_id }).map((res: Response) => res.json()).subscribe(res_data => {
+    this.helper.http.post(this.helper.POST_METHOD.GET_MONTHLY_TOTAL_WORK, { shift_date: this.shift_date, store_id: this.store_id }).pipe(map((res: Response) => res.json())).subscribe(res_data => {
       if (res_data.success) {
         this.whole_month_schedules = res_data.shifts;
       } else {
@@ -140,7 +141,7 @@ export class WorkCalendarComponent implements OnInit, AfterViewInit, OnDestroy {
 
   get_shifts_on_day(day) {
     this.shift_date = new Date(this.shift_date.setDate(day));
-    this.helper.http.post(this.helper.POST_METHOD.GET_SHIFT_ON_SPECIFIC_DAY, { shift_date: this.shift_date, store_id: this.store_id }).map((res: Response) => res.json()).subscribe(res_data => {
+    this.helper.http.post(this.helper.POST_METHOD.GET_SHIFT_ON_SPECIFIC_DAY, { shift_date: this.shift_date, store_id: this.store_id }).pipe(map((res: Response) => res.json())).subscribe(res_data => {
       if (res_data.success) {
         this.shifts = res_data.shifts
       } else {

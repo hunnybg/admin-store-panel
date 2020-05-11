@@ -1,9 +1,10 @@
 import {Component, OnInit, ViewContainerRef, ViewChild} from '@angular/core';
 import {Response} from '@angular/http';
-import {Observable} from 'rxjs/Rx';
+import {Observable} from 'rxjs';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import {Helper} from "../../helper";
+import { map } from 'rxjs/operators';
 declare var jQuery: any;
 import {ModalComponent} from 'ng2-bs3-modal/ng2-bs3-modal';
 import {ImageCropperComponent, CropperSettings, Bounds} from 'ng2-img-cropper';
@@ -201,7 +202,7 @@ export class AddDeliveryComponent implements OnInit {
 
 
         this.helper.http.post('/api/admin/get_image_setting', {
-        }).map((res_data: Response) => res_data.json()).subscribe(res_data => {
+        }).pipe(map((res_data: Response) => res_data.json())).subscribe(res_data => {
 
             this.image_setting.image_ratio = res_data.image_setting.delivery_image_ratio;
             this.image_setting.image_min_width = res_data.image_setting.delivery_image_min_width;
@@ -246,14 +247,14 @@ export class AddDeliveryComponent implements OnInit {
 
         if (this.delivery_id == '') {
             this.type = "add";
-            this.helper.http.get('/admin/delivery_list').map((res: Response) => res.json()).subscribe(res => this.delivery_list = res, error => this.error = error);
+            this.helper.http.get('/admin/delivery_list').pipe(map((res: Response) => res.json())).subscribe(res => this.delivery_list = res, error => this.error = error);
 
             this.delivery_exist = ""
         }
         else {
             jQuery('#add').hide();
             this.type = "edit";
-            this.helper.http.post('/admin/get_delivery_detail', {delivery_id: this.delivery_id}).map((res_data: Response) => res_data.json()).subscribe(res_data => {
+            this.helper.http.post('/admin/get_delivery_detail', {delivery_id: this.delivery_id}).pipe(map((res_data: Response) => res_data.json())).subscribe(res_data => {
 
                 if (res_data.success == false) {
                     this.helper.router.navigate(['admin/delivery']);
@@ -280,7 +281,7 @@ export class AddDeliveryComponent implements OnInit {
 
 
 
-        // this.helper.http.get('/admin/get_delivery_type').map((res: Response) => res.json()).subscribe(res => {
+        // this.helper.http.get('/admin/get_delivery_type').pipe(map((res: Response) => res.json())).subscribe(res => {
 
 
             this.delivery_type_list = this.helper.DELIVERY_TYPE;
@@ -579,7 +580,7 @@ export class AddDeliveryComponent implements OnInit {
 
             this.formData.append("famous_products_tags", this.add_delivery.famous_products_tags);
 
-            this.helper.http.post('/admin/add_delivery_data', this.formData).map((res: Response) => res.json()).subscribe(res_data => {
+            this.helper.http.post('/admin/add_delivery_data', this.formData).pipe(map((res: Response) => res.json())).subscribe(res_data => {
                 this.myLoading = false;
                 if (res_data.success == true) {
                     this.helper.data.storage = {
@@ -623,7 +624,7 @@ export class AddDeliveryComponent implements OnInit {
         this.formData.append("delivery_id", delivery_data.delivery_id);
         this.formData.append("sequence_number", delivery_data.sequence_number);
 
-        this.helper.http.post('/admin/update_delivery', this.formData).map((res: Response) => res.json()).subscribe(res_data => {
+        this.helper.http.post('/admin/update_delivery', this.formData).pipe(map((res: Response) => res.json())).subscribe(res_data => {
             this.myLoading = false;
             if (res_data.success == true) {
                 this.helper.data.storage = {

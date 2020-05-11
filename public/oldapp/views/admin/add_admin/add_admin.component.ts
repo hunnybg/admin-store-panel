@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Response} from '@angular/http';
-import {Observable} from 'rxjs/Rx';
+import {Observable} from 'rxjs';
+import { map } from 'rxjs/operators';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import {Helper} from "../../helper";
@@ -109,7 +110,7 @@ export class AddAdminComponent implements OnInit {
         else {
             jQuery('#add').hide();
             this.type = "edit";
-            this.helper.http.post('/admin/get_detail', {admin_id: this.admin_id}).map((res_data: Response) => res_data.json()).subscribe(res_data => {
+            this.helper.http.post('/admin/get_detail', {admin_id: this.admin_id}).pipe(map((res_data: Response) => res_data.json())).subscribe(res_data => {
 
                 if (res_data.success == false) {
                     this.helper.router.navigate(['admin/list']);
@@ -155,7 +156,7 @@ export class AddAdminComponent implements OnInit {
     AddAdmin(admin_data) {
         if (this.type == 'add') {
             this.myLoading = true;
-            this.helper.http.post('/admin/add', admin_data).map((res: Response) => res.json()).subscribe(res_data => {
+            this.helper.http.post('/admin/add', admin_data).pipe(map((res: Response) => res.json())).subscribe(res_data => {
                 this.myLoading = false;
                 if (res_data.success == true) {
                     this.helper.data.storage = {
@@ -187,7 +188,7 @@ export class AddAdminComponent implements OnInit {
 
     updateAdmin(admin_data) {
         this.myLoading = true;
-        this.helper.http.post('/admin/update', admin_data).map((res: Response) => res.json()).subscribe(res_data => {
+        this.helper.http.post('/admin/update', admin_data).pipe(map((res: Response) => res.json())).subscribe(res_data => {
             this.myLoading = false;
             if (res_data.success == true) {
                 this.helper.data.storage = {

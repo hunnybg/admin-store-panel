@@ -3,9 +3,10 @@ import {Router, ActivatedRoute, Params} from '@angular/router';
 import {Helper} from "../../helper";
 import {Response} from '@angular/http';
 declare var jQuery: any;
-import {Observable} from 'rxjs/Rx';
+import {Observable} from 'rxjs';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
+import { map } from 'rxjs/operators';
 
 export interface UserNewPassword {
     type: string,
@@ -69,7 +70,7 @@ export class UserNewPasswordComponent implements OnInit {
                     confirm_password: ""
                 }
 
-                 this.helper.http.post('/api/admin/check_detail', this.user_new_password).map((res: Response) => res.json()).subscribe(res_data => {
+                 this.helper.http.post('/api/admin/check_detail', this.user_new_password).pipe(map((res: Response) => res.json())).subscribe(res_data => {
                     this.myLoading=false;
                     console.log(res_data)
                     if(!res_data.success)
@@ -98,7 +99,7 @@ export class UserNewPasswordComponent implements OnInit {
 
     userNewPassword(newpassworddata) {
         this.myLoading = true;
-        this.helper.http.post('/api/admin/new_password', this.user_new_password).map((res: Response) => res.json()).subscribe(res_data => {
+        this.helper.http.post('/api/admin/new_password', this.user_new_password).pipe(map((res: Response) => res.json())).subscribe(res_data => {
             console.log(newpassworddata);
             this.myLoading = false;
             if (res_data.success == false) {

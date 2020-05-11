@@ -2,6 +2,7 @@ import { Component, OnInit , ViewContainerRef } from '@angular/core';
 import {Response } from '@angular/http';
 import {Helper} from "../../store_helper";
 declare var jQuery:any;
+import { map } from 'rxjs/operators';
 
 export interface StoreAnalyticDaily
 {
@@ -370,7 +371,7 @@ export class StorWeeklyEarningComponent implements OnInit {
 	store_weekly_earning(){
 		this.myLoading=true;
 		this.helper.http.post(this.helper.POST_METHOD.WEEKLY_EARNING,{store_id:this.store_id, server_token:this.server_token, start_date:this.start_date, end_date:this.end_date ,
-                                                        search_field:this.search_field,search_value:this.search_value}).map((res:Response) => res.json()).subscribe(res_data=>{
+                                                        search_field:this.search_field,search_value:this.search_value}).pipe(map((res:Response) => res.json())).subscribe(res_data=>{
             this.myLoading=false;    
             this.daily_start_date = JSON.parse(JSON.stringify(this.start_date)); 
             this.store_daily_earning()                                       	
@@ -508,7 +509,7 @@ export class StorWeeklyEarningComponent implements OnInit {
     {
         this.myLoading=true;
         this.helper.http.post(this.helper.POST_METHOD.DAILY_EARNING,{store_id:this.store_id, server_token:this.server_token, start_date:this.daily_start_date,
-            search_field:this.search_field,search_value:this.search_value}).map((res:Response) => res.json()).subscribe(res_data=>{
+            search_field:this.search_field,search_value:this.search_value}).pipe(map((res:Response) => res.json())).subscribe(res_data=>{
 
                 this.myLoading=false;
                 if(res_data.success == false)
@@ -608,7 +609,7 @@ export class StorWeeklyEarningComponent implements OnInit {
 
     export_excel() {
         this.helper.http.post(this.helper.POST_METHOD.WEEKLY_EARNING,{store_id:this.store_id, server_token:this.server_token, start_date:this.start_date, end_date:this.end_date ,
-            search_field:this.search_field,search_value:this.search_value}).map((res:Response) => res.json()).subscribe(res_data=>{
+            search_field:this.search_field,search_value:this.search_value}).pipe(map((res:Response) => res.json())).subscribe(res_data=>{
 
             var json2csv = require('json2csv');
 

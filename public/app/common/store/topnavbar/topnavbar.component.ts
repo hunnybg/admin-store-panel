@@ -7,6 +7,7 @@ import { ModalComponent } from 'ng2-bs3-modal/ng2-bs3-modal';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import { UUID } from 'angular2-uuid';
+import { map } from 'rxjs/operators';
 import { PushNotificationComponent } from 'ng2-notifications/ng2-notifications';
 
 @Component({
@@ -175,7 +176,7 @@ export class TopnavbarComponent implements OnInit {
         this.helper.http.post('/api/store/get_order_list', {
             store_id: this.store_id,
             server_token: this.server_token
-        }).map((res_data: Response) => res_data.json()).subscribe((res_data: any) => {
+        }).pipe(map((res_data: Response) => res_data.json())).subscribe((res_data: any) => {
             this.helper.router_id.store.new_order_list = res_data.new_order_list;
             this.helper.router_id.store.no_deliveryman_orders = res_data.no_deliveryman_orders;
         });
@@ -187,7 +188,7 @@ export class TopnavbarComponent implements OnInit {
     }
 
     new_order() {
-        this.helper.http.post('/api/store/store_notify_new_order', { store_id: this.store_id, server_token: this.server_token }).map((res_data: Response) => res_data.json()).subscribe((res_data: any) => {
+        this.helper.http.post('/api/store/store_notify_new_order', { store_id: this.store_id, server_token: this.server_token }).pipe(map((res_data: Response) => res_data.json())).subscribe((res_data: any) => {
 
             let display: any = jQuery('.modal').css('display');
             if (res_data.success == true) {

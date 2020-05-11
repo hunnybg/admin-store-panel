@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewContainerRef } from "@angular/core";
 import { Helper } from "../../helper";
 import { Http, Response } from '@angular/http';
+import { map } from 'rxjs/operators';
 
 declare var jQuery: any;
 
@@ -89,7 +90,7 @@ export class TicketComponent implements OnInit {
             number_of_rec: this.number_of_rec,
             sort_field: this.sort_field, sort_ticket: this.sort_ticket, ticket_page_type: this.ticket_page_type,
             search_field: this.search_field, search_value: this.search_value, page: this.page
-        }).map((res: Response) => res.json()).subscribe(res_data => {
+        }).pipe(map((res: Response) => res.json())).subscribe(res_data => {
             this.myLoading = false;
             if (res_data.success == false) {
                 this.ticket_list = [];
@@ -126,7 +127,7 @@ export class TicketComponent implements OnInit {
     }
 
     resolve_ticket(id) {
-        this.helper.http.post('/admin/resolve_ticket', { id: id }).map((res: Response) => res.json()).subscribe(res_data => {
+        this.helper.http.post('/admin/resolve_ticket', { id: id }).pipe(map((res: Response) => res.json())).subscribe(res_data => {
             this.myLoading = false;
             if(res_data.success){
                 let index = this.ticket_list.findIndex((ticket) => ticket._id == id);

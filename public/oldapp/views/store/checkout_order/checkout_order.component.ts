@@ -5,6 +5,7 @@ declare var jQuery:any;
 import { ModalComponent } from 'ng2-bs3-modal/ng2-bs3-modal';
 import {Location} from '@angular/common';
 import {UUID} from 'angular2-uuid';
+import { map } from 'rxjs/operators';
 
 export interface OrderPayment{
     _id: Object
@@ -181,7 +182,7 @@ export class StoreCheckoutOrderComponent implements OnInit {
 
         if(this.cart_data.cart.length > 0){
 
-            this.helper.http.post(this.helper.POST_METHOD.GET_COUNTRY_PHONE_NUMBER_LENGTH, {country_id: this.user_data.country_id}).map((response: Response) => response.json()).subscribe(res_data => {
+            this.helper.http.post(this.helper.POST_METHOD.GET_COUNTRY_PHONE_NUMBER_LENGTH, {country_id: this.user_data.country_id}).pipe(map((response: Response) => response.json())).subscribe(res_data => {
 
                 if(res_data.success){
                     this.minimum_phone_number_length = res_data.minimum_phone_number_length;
@@ -297,7 +298,7 @@ export class StoreCheckoutOrderComponent implements OnInit {
             store_id: this.store_id,
             server_token: this.server_token
         }
-        this.helper.http.post(this.helper.POST_METHOD.STORE_CHANGE_DELIVERY_ADDRESS, json).map((response: Response) => response.json()).subscribe(res_data => {
+        this.helper.http.post(this.helper.POST_METHOD.STORE_CHANGE_DELIVERY_ADDRESS, json).pipe(map((response: Response) => response.json())).subscribe(res_data => {
 
             if(res_data.success){
                 this.helper.user_cart.destination_address.location = this.delivery_location;
@@ -363,7 +364,7 @@ export class StoreCheckoutOrderComponent implements OnInit {
             delete json.cart_id;
         }
 
-        this.helper.http.post(this.helper.POST_METHOD.ADD_ITEM_IN_CART, json).map((res_data: Response) => res_data.json()) .subscribe(res_data => {
+        this.helper.http.post(this.helper.POST_METHOD.ADD_ITEM_IN_CART, json).pipe(map((res_data: Response) => res_data.json())) .subscribe(res_data => {
                 console.log(res_data)
                 if(res_data.success){
                     this.user_data.user_id = res_data.user_id;
@@ -431,7 +432,7 @@ export class StoreCheckoutOrderComponent implements OnInit {
             is_user_pick_up_order: this.ipickup_delivery
         }
         console.log(get_order_cart_invoice_json)
-        this.helper.http.post(this.helper.POST_METHOD.GET_ORDER_CART_INVOICE, get_order_cart_invoice_json).map((res_data: Response) => res_data.json()) .subscribe(res_data => {
+        this.helper.http.post(this.helper.POST_METHOD.GET_ORDER_CART_INVOICE, get_order_cart_invoice_json).pipe(map((res_data: Response) => res_data.json())) .subscribe(res_data => {
 
             this.myLoading = false;
             console.log(res_data)
@@ -573,7 +574,7 @@ export class StoreCheckoutOrderComponent implements OnInit {
             first_name: user_data.first_name,
             last_name: user_data.last_name
         }
-        this.helper.http.post(this.helper.POST_METHOD.GET_USER, json).map((res_data: Response) => res_data.json()).subscribe(res_data => {
+        this.helper.http.post(this.helper.POST_METHOD.GET_USER, json).pipe(map((res_data: Response) => res_data.json())).subscribe(res_data => {
 
             if(res_data.success){
                 this.user_data.user_id = res_data.user._id;
@@ -602,7 +603,7 @@ export class StoreCheckoutOrderComponent implements OnInit {
             order_payment_id: this.helper.user_cart.order_payment_id,
             is_payment_mode_cash: true
         }
-        this.helper.http.post(this.helper.POST_METHOD.PAY_ORDER_PAYMENT, json).map((res_data: Response) => res_data.json()).subscribe(res_data => {
+        this.helper.http.post(this.helper.POST_METHOD.PAY_ORDER_PAYMENT, json).pipe(map((res_data: Response) => res_data.json())).subscribe(res_data => {
 
                 if(res_data.success){
                     this.create_order_service();
@@ -630,7 +631,7 @@ export class StoreCheckoutOrderComponent implements OnInit {
             order_type: this.helper.ADMIN_DATA_ID.STORE,
             is_user_pick_up_order: this.ipickup_delivery
         }
-        this.helper.http.post(this.helper.POST_METHOD.CREATE_ORDER, json).map((res_data: Response) => res_data.json()).subscribe(res_data => {
+        this.helper.http.post(this.helper.POST_METHOD.CREATE_ORDER, json).pipe(map((res_data: Response) => res_data.json())).subscribe(res_data => {
 
             this.myLoading = false;
             if(res_data.success){

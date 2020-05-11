@@ -6,7 +6,7 @@ import {TranslateService} from 'ng2-translate';
 import {Helper} from "../../../views/helper";
 import {Http, Response} from '@angular/http';
 
-import {Observable} from 'rxjs/Rx';
+import {Observable} from 'rxjs';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 
@@ -56,7 +56,7 @@ export class TopnavbarComponent {
 //        this.admin_id = localStorage.getItem('admin_id');
 //        this.admin_token = localStorage.getItem('admin_token');
 //
-//        this.helper.http.post('/admin/check_auth', {admin_id: this.admin_id, admin_token: this.admin_token}).map((res_data: Response) => res_data.json()).subscribe(data => {
+//        this.helper.http.post('/admin/check_auth', {admin_id: this.admin_id, admin_token: this.admin_token}).pipe(map((res_data: Response) => res_data.json())).subscribe(data => {
 //            console.log("Response ");
 //            console.log(data);
 //            if (data.success == true) {

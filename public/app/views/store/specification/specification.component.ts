@@ -1,8 +1,10 @@
-import { Component, OnInit,ViewContainerRef, trigger, state ,transition, style, animate  } from '@angular/core';
+import { Component, OnInit,ViewContainerRef  } from '@angular/core';
 import {Response } from '@angular/http';
 import {Helper} from "../../store_helper";
 declare var jQuery:any;
 declare var swal: any;
+import { map } from 'rxjs/operators';
+import { trigger, state ,transition, style, animate } from '@angular/animations';
 
 export interface specification{
    name:string;
@@ -89,7 +91,7 @@ export class SpecificationComponent implements OnInit {
             {
                 this.store_id=store._id
                 this.server_token=store.server_token
-                this.helper.http.post(this.helper.POST_METHOD.GET_SPECIFICATION_GROUP,{product_id:this.product_id,store_id:store._id, server_token:store.server_token}).map((res_data: Response) => res_data.json()) .subscribe(res_data => {
+                this.helper.http.post(this.helper.POST_METHOD.GET_SPECIFICATION_GROUP,{product_id:this.product_id,store_id:store._id, server_token:store.server_token}).pipe(map((res_data: Response) => res_data.json())) .subscribe(res_data => {
 
                     this.myLoading=false;
                     if(res_data.success == false)
@@ -137,7 +139,7 @@ export class SpecificationComponent implements OnInit {
         this.specification_name="";
         this.new_specification_list.push(data.specification_name.trim())
 
-        this.helper.http.post(this.helper.POST_METHOD.ADD_SPECIFICATION_GROUP,{store_id:this.store_id, product_id:this.product_id,server_token:this.server_token,specification_group_name:this.new_specification_list}).map((response: Response) => response.json()) .subscribe(res_data => {
+        this.helper.http.post(this.helper.POST_METHOD.ADD_SPECIFICATION_GROUP,{store_id:this.store_id, product_id:this.product_id,server_token:this.server_token,specification_group_name:this.new_specification_list}).pipe(map((response: Response) => response.json())) .subscribe(res_data => {
 
             this.new_specification_list=[];
             this.myLoading=false;
@@ -197,7 +199,7 @@ export class SpecificationComponent implements OnInit {
           }).then(() => {
 
               this.myLoading=true;
-            this.helper.http.post(this.helper.POST_METHOD.DELETE_SPECIFICATION_GROUP,{store_id:this.store_id, product_id:this.product_id,server_token:this.server_token,specification_group_id:id}).map((response: Response) => response.json()) .subscribe(res_data => {
+            this.helper.http.post(this.helper.POST_METHOD.DELETE_SPECIFICATION_GROUP,{store_id:this.store_id, product_id:this.product_id,server_token:this.server_token,specification_group_id:id}).pipe(map((response: Response) => response.json())).subscribe(res_data => {
 
                 this.myLoading=false;
                 if(res_data.success)
@@ -266,7 +268,7 @@ export class SpecificationComponent implements OnInit {
         if(this.specification_name_arrays.length > 0)
         {
             this.myLoading=true;
-            this.helper.http.post(this.helper.POST_METHOD.ADD_SPECIFICATION,{specification_group_id: id , specification_name :this.specification_name_arrays ,product_id:this.product_id,store_id:store._id, server_token:store.server_token}).map((res_data: Response) => res_data.json()) .subscribe(res_data => {
+            this.helper.http.post(this.helper.POST_METHOD.ADD_SPECIFICATION,{specification_group_id: id , specification_name :this.specification_name_arrays ,product_id:this.product_id,store_id:store._id, server_token:store.server_token}).pipe(map((res_data: Response) => res_data.json())) .subscribe(res_data => {
                 
                 this.specification_name_arrays = [];
                 this.myLoading=false;
@@ -276,7 +278,7 @@ export class SpecificationComponent implements OnInit {
                     if(this.delete_specification_array.length > 0)
                     {
                         this.myLoading=true;
-                        this.helper.http.post(this.helper.POST_METHOD.DELETE_SPECIFICATION,{specification_group_id: id , specification_id :this.delete_specification_array ,product_id:this.product_id,store_id:store._id, server_token:store.server_token}).map((res_data: Response) => res_data.json()) .subscribe(res_data => {
+                        this.helper.http.post(this.helper.POST_METHOD.DELETE_SPECIFICATION,{specification_group_id: id , specification_id :this.delete_specification_array ,product_id:this.product_id,store_id:store._id, server_token:store.server_token}).pipe(map((res_data: Response) => res_data.json())) .subscribe(res_data => {
                             this.delete_specification_array = [];
                                 this.myLoading=false;
                             if(res_data.success)
@@ -316,7 +318,7 @@ export class SpecificationComponent implements OnInit {
         else if(this.delete_specification_array.length > 0)
         {
             this.myLoading=true;
-            this.helper.http.post(this.helper.POST_METHOD.DELETE_SPECIFICATION,{specification_group_id: id , specification_id :this.delete_specification_array ,product_id:this.product_id,store_id:store._id, server_token:store.server_token}).map((res_data: Response) => res_data.json()) .subscribe(res_data => {
+            this.helper.http.post(this.helper.POST_METHOD.DELETE_SPECIFICATION,{specification_group_id: id , specification_id :this.delete_specification_array ,product_id:this.product_id,store_id:store._id, server_token:store.server_token}).pipe(map((res_data: Response) => res_data.json())) .subscribe(res_data => {
                 this.delete_specification_array = [];
                 this.myLoading=false;
                 if(res_data.success)

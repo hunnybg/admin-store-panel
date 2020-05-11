@@ -1,8 +1,9 @@
 import {Component, OnInit, ViewContainerRef} from '@angular/core';
 import {Response} from '@angular/http';
-import {Observable} from 'rxjs/Rx';
+import {Observable} from 'rxjs';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
+import { map } from 'rxjs/operators';
 import {Helper} from "../../helper";
 declare var jQuery: any;
 
@@ -75,7 +76,7 @@ export class PaymentGatewayComponent implements OnInit {
 
         }
         this.payment_gateway_id = this.helper.router_id.admin.payment_gateway_id;
-        this.helper.http.get('/admin/payment_gateway_list').map((res: Response) => res.json()).subscribe(res => {
+        this.helper.http.get('/admin/payment_gateway_list').pipe(map((res: Response) => res.json())).subscribe(res => {
             this.payment_gateway_list = res.payment_gateway;
             console.log(this.payment_gateway_list);
 
@@ -86,7 +87,7 @@ export class PaymentGatewayComponent implements OnInit {
             this.update_payment_gateway.name = res_data.selected;
             this.payment_gateway_id = res_data.selected;
            
-            this.helper.http.post('/admin/get_payment_gateway_detail', {payment_gateway_id: res_data.selected}).map((res_data: Response) => res_data.json()).subscribe(res_data => {
+            this.helper.http.post('/admin/get_payment_gateway_detail', {payment_gateway_id: res_data.selected}).pipe(map((res_data: Response) => res_data.json())).subscribe(res_data => {
 
                 if (res_data.success == false) {
                     this.helper.data.storage = {
@@ -131,7 +132,7 @@ export class PaymentGatewayComponent implements OnInit {
     }
     
      UpdatePaymentGateway(payment_gateway_data) {
-        this.helper.http.post('/admin/update_payment_gateway', payment_gateway_data).map((res: Response) => res.json()).subscribe(res_data => {
+        this.helper.http.post('/admin/update_payment_gateway', payment_gateway_data).pipe(map((res: Response) => res.json())).subscribe(res_data => {
 
             if (res_data.success == true) {
                 this.helper.data.storage = {

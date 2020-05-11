@@ -1,11 +1,11 @@
 import {Component, OnInit} from '@angular/core';
 import {Response} from '@angular/http';
-import {Observable} from 'rxjs/Rx';
+import {Observable} from 'rxjs';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import {Helper} from "../../store_helper";
 declare var jQuery: any;
-
+import { map } from 'rxjs/operators';
 
 
 export interface AddPromocode {
@@ -223,7 +223,7 @@ export class StoreAddPromoCodeComponent implements OnInit {
             this.add_promo_code.promo_apply_on = [this.add_promo_code.store_id];
         }
         else {
-            this.helper.http.post('/admin/get_promo_detail', {promo_id: this.promo_id}).map((res_data: Response) => res_data.json()).subscribe(res_data => {
+            this.helper.http.post('/admin/get_promo_detail', {promo_id: this.promo_id}).pipe(map((res_data: Response) => res_data.json())).subscribe(res_data => {
 
                 if (res_data.success == false) {
                     this.helper.router.navigate(['admin/promotions']);
@@ -371,7 +371,7 @@ export class StoreAddPromoCodeComponent implements OnInit {
         this.helper.http.post(this.helper.POST_METHOD.GET_STORE_PRODUCT_ITEM_LIST, {
             store_id: this.add_promo_code.store_id,
             server_token: this.add_promo_code.server_token
-        }).map((res: Response) => res.json()).subscribe(res_data => {
+        }).pipe(map((res: Response) => res.json())).subscribe(res_data => {
             this.item_list = res_data.products;
         });
     }
@@ -380,7 +380,7 @@ export class StoreAddPromoCodeComponent implements OnInit {
         this.helper.http.post(this.helper.POST_METHOD.GET_PRODUCT_LIST, {
             store_id: this.add_promo_code.store_id,
             server_token: this.add_promo_code.server_token
-        }).map((res: Response) => res.json()).subscribe(res_data => {
+        }).pipe(map((res: Response) => res.json())).subscribe(res_data => {
             this.product_list = res_data.products;
         });
     }
@@ -426,7 +426,7 @@ export class StoreAddPromoCodeComponent implements OnInit {
             if (promo_code_data.promo_start_date != null) {
                 this.add_promo_code.promo_start_date = promo_code_data.promo_start_date.formatted;
             }
-            this.helper.http.post('/api/store/add_promo', this.add_promo_code).map((res: Response) => res.json()).subscribe(res_data => {
+            this.helper.http.post('/api/store/add_promo', this.add_promo_code).pipe(map((res: Response) => res.json())).subscribe(res_data => {
                     this.myLoading = false;
                     if (res_data.success == true) {
                         this.helper.data.storage = {
@@ -465,7 +465,7 @@ export class StoreAddPromoCodeComponent implements OnInit {
         promo_code_data.months =  this.add_promo_code.months;
         promo_code_data.weeks =  this.add_promo_code.weeks;
 
-        this.helper.http.post('/api/store/update_promo_code', promo_code_data).map((res: Response) => res.json()).subscribe(res_data => {
+        this.helper.http.post('/api/store/update_promo_code', promo_code_data).pipe(map((res: Response) => res.json())).subscribe(res_data => {
                 this.myLoading = false;
 
                 if (res_data.success) {
@@ -492,7 +492,7 @@ export class StoreAddPromoCodeComponent implements OnInit {
 
 
     check_promo_code(promo_code) {
-        this.helper.http.post('/api/store/check_promo_code', {store_id: this.add_promo_code.store_id, server_token: this.add_promo_code.server_token , promo_code_name: promo_code.trim()}).map((res: Response) => res.json()).subscribe(res_data => {
+        this.helper.http.post('/api/store/check_promo_code', {store_id: this.add_promo_code.store_id, server_token: this.add_promo_code.server_token , promo_code_name: promo_code.trim()}).pipe(map((res: Response) => res.json())).subscribe(res_data => {
 
             if (res_data.success == false) {
                 jQuery('#submit').attr('disabled', true);

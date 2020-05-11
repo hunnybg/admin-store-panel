@@ -2,6 +2,7 @@ import { Component, OnInit, ViewContainerRef, ViewChild } from "@angular/core";
 import { Helper } from "../../store_helper";
 import { ModalComponent } from 'ng2-bs3-modal/ng2-bs3-modal';
 import { Response } from '@angular/http';
+import { map } from 'rxjs/operators';
 
 declare var jQuery: any;
 declare var c3: any;
@@ -168,7 +169,7 @@ export class PaymentsComponent implements OnInit {
         this.formData.append('social_id', "");
         this.formData.append('address', address);
 
-        this.helper.http.post(this.helper.POST_METHOD.ADD_BANK_DETAILS, this.formData).map((res_data: Response) => res_data.json()).subscribe(res_data => {
+        this.helper.http.post(this.helper.POST_METHOD.ADD_BANK_DETAILS, this.formData).pipe(map((res_data: Response) => res_data.json())).subscribe(res_data => {
             console.log(res_data)
             if (res_data.success) {
                 this.helper.data.storage = {
@@ -200,7 +201,7 @@ export class PaymentsComponent implements OnInit {
     }
 
     getbankaccounts(id) {
-        this.helper.http.post(this.helper.POST_METHOD.GET_BANK_DETAILS, { id: id, type: this.helper.ADMIN_DATA_ID.STORE }).map((res_data: Response) => res_data.json()).subscribe(res_data => {
+        this.helper.http.post(this.helper.POST_METHOD.GET_BANK_DETAILS, { id: id, type: this.helper.ADMIN_DATA_ID.STORE }).pipe(map((res_data: Response) => res_data.json())).subscribe(res_data => {
             console.log(res_data)
             if (res_data.success == false) {
                 this.bank_detail_list = [];
@@ -245,7 +246,7 @@ export class PaymentsComponent implements OnInit {
                 bank_detail_id: this.bank_detail_id,
                 password: password
             }
-            this.helper.http.post(this.helper.POST_METHOD.DELETE_BANK_ACCOUNT, json).map((res_data: Response) => res_data.json()).subscribe(res_data => {
+            this.helper.http.post(this.helper.POST_METHOD.DELETE_BANK_ACCOUNT, json).pipe(map((res_data: Response) => res_data.json())).subscribe(res_data => {
                 console.log(res_data)
                 if (res_data.success) {
                     this.helper.data.storage = {
@@ -284,7 +285,7 @@ export class PaymentsComponent implements OnInit {
                 password: password,
                 amount: this.pay_to_store,
             }
-            this.helper.http.post(this.helper.POST_METHOD.WITHDRAW_EARNING, json).map((res_data: Response) => res_data.json()).subscribe(res_data => {
+            this.helper.http.post(this.helper.POST_METHOD.WITHDRAW_EARNING, json).pipe(map((res_data: Response) => res_data.json())).subscribe(res_data => {
                 console.log(res_data)
                 if (res_data.success) {
                     this.helper.data.storage = {
@@ -308,7 +309,7 @@ export class PaymentsComponent implements OnInit {
     }
 
     get_pay_to_store() {
-        this.helper.http.post(this.helper.POST_METHOD.GET_PAY_TO_STORE, { store_id: this.store_edit._id, server_token: this.store_edit.server_token }).map((response: Response) => response.json()).subscribe(res_data => {
+        this.helper.http.post(this.helper.POST_METHOD.GET_PAY_TO_STORE, { store_id: this.store_edit._id, server_token: this.store_edit.server_token }).pipe(map((response: Response) => response.json())).subscribe(res_data => {
             if (res_data.success) {
                 console.log(res_data);
                 this.pay_to_store = res_data.pay_to_store;
@@ -318,7 +319,7 @@ export class PaymentsComponent implements OnInit {
     }
 
     filter(page) {
-        this.helper.http.post(this.helper.POST_METHOD.GET_TRANSFERRED_HISTORY, { number_of_rec: 10,page: page , store_id: this.store_edit._id, server_token: this.store_edit.server_token }).map((response: Response) => response.json()).subscribe(res_data => {
+        this.helper.http.post(this.helper.POST_METHOD.GET_TRANSFERRED_HISTORY, { number_of_rec: 10,page: page , store_id: this.store_edit._id, server_token: this.store_edit.server_token }).pipe(map((response: Response) => response.json())).subscribe(res_data => {
             if (res_data.success) {
                 console.log(res_data);
                 this.tranferred_history = res_data.transfer_history;

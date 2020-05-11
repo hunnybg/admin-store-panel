@@ -3,6 +3,8 @@ import {Response} from '@angular/http';
 import {Helper} from "../../helper";
 declare var jQuery: any;
 import {ModalComponent} from 'ng2-bs3-modal/ng2-bs3-modal';
+import { map } from 'rxjs/operators';
+
 @Component({
     selector: 'app-wallet_request',
     templateUrl: './wallet_request.component.html',
@@ -106,7 +108,7 @@ export class WalletRequestComponent implements OnInit {
             start_date: this.start_date, end_date: this.end_date,
             sort_field: this.sort_field, sort_wallet_request: this.sort_wallet_request,
             search_field: this.search_field, search_value: this.search_value, page: this.page
-        }).map((res: Response) => res.json()).subscribe(res_data => {
+        }).pipe(map((res: Response) => res.json())).subscribe(res_data => {
             this.myLoading = false;
             if (res_data.success == false) {
                 this.wallet_request_list = [];
@@ -135,7 +137,7 @@ export class WalletRequestComponent implements OnInit {
             start_date: this.start_date, end_date: this.end_date,
             sort_field: this.sort_field, sort_wallet_request: this.sort_wallet_request,
             search_field: this.search_field, search_value: this.search_value, page: this.page
-        }).map((res: Response) => res.json()).subscribe(res_data => {
+        }).pipe(map((res: Response) => res.json())).subscribe(res_data => {
 
             this.myLoading = false;
             if (res_data.success == false) {
@@ -190,7 +192,7 @@ export class WalletRequestComponent implements OnInit {
     }
 
     TransferWalletRequestAmount(add_wallet_request_data) {
-        this.helper.http.post('/admin/transfer_wallet_request_amount', add_wallet_request_data).map((res: Response) => res.json()).subscribe(res_data => {
+        this.helper.http.post('/admin/transfer_wallet_request_amount', add_wallet_request_data).pipe(map((res: Response) => res.json())).subscribe(res_data => {
             if (res_data.success == true) {
                 this.helper.data.storage = {
                     "message": this.helper.MESSAGE_CODE[res_data.message],
@@ -208,7 +210,7 @@ export class WalletRequestComponent implements OnInit {
 
     CompleteWalletRequest(data) {
         this.myLoading = true;
-        this.helper.http.post('/admin/complete_wallet_request_amount', {id: data.wallet_request_id, wallet_status: data.wallet_status}).map((res: Response) => res.json()).subscribe(res_data => {
+        this.helper.http.post('/admin/complete_wallet_request_amount', {id: data.wallet_request_id, wallet_status: data.wallet_status}).pipe(map((res: Response) => res.json())).subscribe(res_data => {
 
             this.myLoading = false;
             if (res_data.success == false) {
@@ -236,7 +238,7 @@ export class WalletRequestComponent implements OnInit {
 
     AcceptWalletRequest(data) {
         this.myLoading = true;
-        this.helper.http.post('/admin/approve_wallet_request_amount', {id: data.wallet_request_id, wallet_status: data.wallet_status}).map((res: Response) => res.json()).subscribe(res_data => {
+        this.helper.http.post('/admin/approve_wallet_request_amount', {id: data.wallet_request_id, wallet_status: data.wallet_status}).pipe(map((res: Response) => res.json())).subscribe(res_data => {
 
             this.myLoading = false;
             if (res_data.success == false) {
@@ -265,7 +267,7 @@ export class WalletRequestComponent implements OnInit {
 
     CancleWalletRequest(data) {
         this.myLoading = true;
-        this.helper.http.post('/admin/cancel_wallet_request', {id: data.wallet_request_id, wallet_status: data.wallet_status, type: 1}).map((res: Response) => res.json()).subscribe(res_data => {
+        this.helper.http.post('/admin/cancel_wallet_request', {id: data.wallet_request_id, wallet_status: data.wallet_status, type: 1}).pipe(map((res: Response) => res.json())).subscribe(res_data => {
             this.myLoading = false;
             console.log(data);
             console.log(res_data.success);

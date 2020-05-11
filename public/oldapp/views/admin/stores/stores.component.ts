@@ -3,6 +3,7 @@ import {Helper} from "../../helper";
 import {Http, Response} from '@angular/http';
 declare var jQuery: any;
 import {ModalComponent} from 'ng2-bs3-modal/ng2-bs3-modal';
+import { map } from 'rxjs/operators';
 
 export interface Document {
     unique_code: String,
@@ -165,7 +166,7 @@ export class StoresComponent implements OnInit {
         this.helper.http.post('/admin/store_list_search_sort', {
             sort_field: this.sort_field, sort_store: this.sort_store, store_page_type: this.store_page_type,number_of_rec: this.number_of_rec,
             search_field: this.search_field, search_value: this.search_value, page: this.page
-        }).map((res: Response) => res.json()).subscribe(res_data => {
+        }).pipe(map((res: Response) => res.json())).subscribe(res_data => {
             this.myLoading = false;
             if (res_data.success == false) {
                 this.store_list = [];
@@ -215,7 +216,7 @@ export class StoresComponent implements OnInit {
         this.formData.append('is_email_verified', this.store_detail.is_email_verified);
         this.formData.append('is_phone_number_verified', this.store_detail.is_phone_number_verified);
         this.formData.append('is_document_uploaded', this.store_detail.is_document_uploaded);
-        this.helper.http.post('/admin/update_store', this.formData).map((response: Response) => response.json()).subscribe(res_data => {
+        this.helper.http.post('/admin/update_store', this.formData).pipe(map((response: Response) => response.json())).subscribe(res_data => {
             this.myLoading = false;
             this.formData = new FormData();
             if (res_data.success == false) {
@@ -245,7 +246,7 @@ export class StoresComponent implements OnInit {
     }
 
     AddWallet(add_wallet_data) {
-        this.helper.http.post('/admin/add_wallet', add_wallet_data).map((res: Response) => res.json()).subscribe(res_data => {
+        this.helper.http.post('/admin/add_wallet', add_wallet_data).pipe(map((res: Response) => res.json())).subscribe(res_data => {
 
             if (res_data.success == true) {
                 this.helper.data.storage = {
@@ -293,7 +294,7 @@ export class StoresComponent implements OnInit {
         this.content = "";
     }
     SendSms(sms_data) {
-        this.helper.http.post('/admin/send_sms', sms_data).map((res: Response) => res.json()).subscribe(res_data => {
+        this.helper.http.post('/admin/send_sms', sms_data).pipe(map((res: Response) => res.json())).subscribe(res_data => {
             if (res_data.success == true) {
                 this.helper.data.storage = {
                     "message": this.helper.MESSAGE_CODE[res_data.message],
@@ -322,7 +323,7 @@ export class StoresComponent implements OnInit {
         this.content = "";
     }
     SendNotification(notification_data) {
-        this.helper.http.post('/admin/send_notification', notification_data).map((res: Response) => res.json()).subscribe(res_data => {
+        this.helper.http.post('/admin/send_notification', notification_data).pipe(map((res: Response) => res.json())).subscribe(res_data => {
             if (res_data.success == true) {
                 this.helper.data.storage = {
                     "message": this.helper.MESSAGE_CODE[res_data.message],
@@ -347,7 +348,7 @@ export class StoresComponent implements OnInit {
         this.helper.http.post('/admin/approve_decline_store', {
             store_id: store_id,
             store_page_type: store_page_type
-        }).map((res: Response) => res.json()).subscribe(res_data => {
+        }).pipe(map((res: Response) => res.json())).subscribe(res_data => {
 
             if (res_data.success == false) {
 
@@ -378,7 +379,7 @@ export class StoresComponent implements OnInit {
     get_document_list(){
         this.is_edit = false;
         this.selected_tab = 2;
-        this.helper.http.post('/admin/view_document_list', {id: this.store_detail._id, type: 2}).map((res_data: Response) => res_data.json()).subscribe(res_data => {
+        this.helper.http.post('/admin/view_document_list', {id: this.store_detail._id, type: 2}).pipe(map((res_data: Response) => res_data.json())).subscribe(res_data => {
                 this.myLoading = false;
                 if (res_data.success == false) {
                     this.document_list = [];
@@ -473,7 +474,7 @@ export class StoresComponent implements OnInit {
                 this.formData.append('expired_date', this.documentlist.expired_date.formatted);
             }
 
-            this.helper.http.post('/admin/upload_document', this.formData).map((res_data: Response) => res_data.json()).subscribe(res_data => {
+            this.helper.http.post('/admin/upload_document', this.formData).pipe(map((res_data: Response) => res_data.json())).subscribe(res_data => {
 
                 this.formData = new FormData();
                 this.edit_document.fill("false")
@@ -543,7 +544,7 @@ export class StoresComponent implements OnInit {
         this.helper.http.post('/admin/store_list_search_sort', {
             sort_field: this.sort_field, sort_store: this.sort_store, store_page_type: this.store_page_type,
             search_field: this.search_field, search_value: this.search_value
-        }).map((res: Response) => res.json()).subscribe(res_data => {
+        }).pipe(map((res: Response) => res.json())).subscribe(res_data => {
 
             var json2csv = require('json2csv');
             res_data.stores.forEach((store, index) => {
@@ -581,7 +582,7 @@ export class StoresComponent implements OnInit {
         this.helper.http.post('/admin/store_list_search_sort', {
             sort_field: this.sort_field, sort_store: this.sort_store, store_page_type: this.store_page_type,
             search_field: this.search_field, search_value: this.search_value
-        }).map((res: Response) => res.json()).subscribe(res_data => {
+        }).pipe(map((res: Response) => res.json())).subscribe(res_data => {
 
             var json_data = [];
             var json2excel = require('js2excel');
@@ -627,7 +628,7 @@ export class StoresComponent implements OnInit {
     get_referral_history(){
         this.is_edit = false;
         this.selected_tab = 3;
-        this.helper.http.post('/admin/get_user_referral_history', {id: this.store_detail._id, type: this.helper.ADMIN_DATA_ID.STORE}).map((res_data: Response) => res_data.json()).subscribe(res_data => {
+        this.helper.http.post('/admin/get_user_referral_history', {id: this.store_detail._id, type: this.helper.ADMIN_DATA_ID.STORE}).pipe(map((res_data: Response) => res_data.json())).subscribe(res_data => {
                 this.myLoading = false;
                 console.log(res_data)
                 if (res_data.success == false) {
@@ -647,7 +648,7 @@ export class StoresComponent implements OnInit {
         this.is_edit = false;
         this.selected_tab = 4;
         this.myLoading = true;
-        this.helper.http.post('/admin/new_get_bank_detail', {id: this.store_detail._id, type: this.helper.ADMIN_DATA_ID.STORE}).map((res_data: Response) => res_data.json()).subscribe(res_data => {
+        this.helper.http.post('/admin/new_get_bank_detail', {id: this.store_detail._id, type: this.helper.ADMIN_DATA_ID.STORE}).pipe(map((res_data: Response) => res_data.json())).subscribe(res_data => {
                 this.myLoading = false;
                 console.log(res_data)
                 if (res_data.success == false) {
@@ -667,7 +668,7 @@ export class StoresComponent implements OnInit {
         this.is_edit = false;
         this.selected_tab = 5;
         this.myLoading = true;
-        this.helper.http.post('/admin/get_store_review_history', {store_id: this.store_detail._id}).map((res_data: Response) => res_data.json()).subscribe(res_data => {
+        this.helper.http.post('/admin/get_store_review_history', {store_id: this.store_detail._id}).pipe(map((res_data: Response) => res_data.json())).subscribe(res_data => {
                 this.myLoading = false;
                 if (res_data.success == false) {
                     this.review_list = [];

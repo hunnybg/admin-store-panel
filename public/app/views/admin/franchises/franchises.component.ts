@@ -3,6 +3,8 @@ import {Helper} from "../../helper";
 import {Http, Response} from '@angular/http';
 declare var jQuery: any;
 import {ModalComponent} from 'ng2-bs3-modal/ng2-bs3-modal';
+import { map } from 'rxjs/operators';
+
 @Component({
     selector: 'app-franchises',
     templateUrl: './franchises.component.html',
@@ -97,7 +99,7 @@ export class FranchisesComponent implements OnInit {
         this.helper.http.post('/admin/franchise_list_search_sort', {
             sort_field: this.sort_field, sort_franchises: this.sort_franchises, store_page_type: this.store_page_type,
             search_field: this.search_field, search_value: this.search_value, page: this.page
-        }).map((res: Response) => res.json()).subscribe(res_data => {
+        }).pipe(map((res: Response) => res.json())).subscribe(res_data => {
             this.myLoading = false;
             if (res_data.success == false) {
 
@@ -134,7 +136,7 @@ export class FranchisesComponent implements OnInit {
         this.content = "";
     }
     SendSms(sms_data) {
-        this.helper.http.post('/admin/send_sms', sms_data).map((res: Response) => res.json()).subscribe(res_data => {
+        this.helper.http.post('/admin/send_sms', sms_data).pipe(map((res: Response) => res.json())).subscribe(res_data => {
             if (res_data.success == true) {
                 this.helper.data.storage = {
                     "message": this.helper.MESSAGE_CODE[res_data.message],
@@ -160,7 +162,7 @@ console.log("sdfsdfsdfsdf");
         this.helper.http.post('/admin/approve_decline_franchises', {
             franchises_id: franchises_id,
             store_page_type: store_page_type
-        }).map((res: Response) => res.json()).subscribe(res_data => {
+        }).pipe(map((res: Response) => res.json())).subscribe(res_data => {
 
             if (res_data.success == false) {
 

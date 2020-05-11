@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Response} from '@angular/http';
-import {Observable} from 'rxjs/Rx';
+import {Observable} from 'rxjs';
+import { map } from 'rxjs/operators';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import {Helper} from "../../helper";
@@ -141,7 +142,7 @@ export class AddCityComponent implements OnInit {
     ngOnInit() {
         this.admin_profit_mode_on_delivery_list = this.helper.ADMIN_PROFIT_ON_DELIVERYS;
 
-        this.helper.http.get('admin/get_delivery_type').map((res: Response) => res.json()).subscribe(res_data => {
+        this.helper.http.get('admin/get_delivery_type').pipe(map((res: Response) => res.json())).subscribe(res_data => {
             this.delivery_type_list = res_data.delivery_type;
             if(this.delivery_type_list.length==1){
                 this.add_service.delivery_type_id = this.delivery_type_list[0]._id
@@ -220,7 +221,7 @@ export class AddCityComponent implements OnInit {
         }
 
         this.city_id = this.helper.router_id.admin.city_id;
-        this.helper.http.get('/admin/get_server_country_list').map((res: Response) => res.json()).subscribe(res => {
+        this.helper.http.get('/admin/get_server_country_list').pipe(map((res: Response) => res.json())).subscribe(res => {
             this.country_list = res.countries,
                 this.deliveries_in_city_list = res.delivery,
                 this.payment_gateway_list = res.payment_gateway
@@ -489,7 +490,7 @@ export class AddCityComponent implements OnInit {
         directionsDisplay.setMap(this.map);
         directionsDisplay.setMap(this.city_radius_map);
         this.buildColorPalette();
-        this.helper.http.get('/admin/city_list').map((res: Response) => res.json()).subscribe(res => {
+        this.helper.http.get('/admin/city_list').pipe(map((res: Response) => res.json())).subscribe(res => {
             this.city_list = res;
             res.cities.forEach((city)=>{
                 if(city._id !== this.city_id) {
@@ -544,7 +545,7 @@ export class AddCityComponent implements OnInit {
         else {
             jQuery('.add').hide();
             this.type = "edit";
-            this.helper.http.post('/admin/get_city_detail', {city_id: this.city_id}).map((res_data: Response) => res_data.json()).subscribe(res_data => {
+            this.helper.http.post('/admin/get_city_detail', {city_id: this.city_id}).pipe(map((res_data: Response) => res_data.json())).subscribe(res_data => {
 
                 if (res_data.success == false) {
 
@@ -802,7 +803,7 @@ export class AddCityComponent implements OnInit {
 
         this.add_city.country_id = countryid
         this.check_city(this.add_city.city_name, this.add_city.city_code)
-        this.helper.http.post('/admin/get_country_timezone', {countryid: countryid}).map((res: Response) => res.json()).subscribe(data => {
+        this.helper.http.post('/admin/get_country_timezone', {countryid: countryid}).pipe(map((res: Response) => res.json())).subscribe(data => {
 
             this.timezone_list = data.country_timezone
             this.add_city.timezone = this.timezone_list[0];
@@ -865,7 +866,7 @@ export class AddCityComponent implements OnInit {
 
 
 
-            this.helper.http.post('/admin/add_city_data', citydata).map((res: Response) => res.json()).subscribe(res_data => {
+            this.helper.http.post('/admin/add_city_data', citydata).pipe(map((res: Response) => res.json())).subscribe(res_data => {
                 this.myLoading = false;
                 if (res_data.success == true) {
 
@@ -899,11 +900,11 @@ export class AddCityComponent implements OnInit {
         this.myLoading = true;
         city_data.city_zone = this.city_zone;
         city_data.city_locations = this.add_city.city_locations;
-        this.helper.http.post('/admin/update_city', city_data).map((res: Response) => res.json()).subscribe(res_data => {
+        this.helper.http.post('/admin/update_city', city_data).pipe(map((res: Response) => res.json())).subscribe(res_data => {
             this.myLoading = false;
             if (res_data.success == true) {
                 //     this.formData.append('city_id',city_data.city_id);
-                //     this.helper.http.post('/admin/update_city_zone', this.formData).map((res: Response) => res.json()).subscribe(res_data => {
+                //     this.helper.http.post('/admin/update_city_zone', this.formData).pipe(map((res: Response) => res.json())).subscribe(res_data => {
                 //
                 // if (res_data.success == true) {
 
@@ -927,7 +928,7 @@ export class AddCityComponent implements OnInit {
     }
 
     check_city(city, city_code) {
-        this.helper.http.post('/admin/check_city', {country_id: this.add_city.country_id, city_name: city.trim(), city_code: city_code.trim()}).map((res: Response) => res.json()).subscribe(res_data => {
+        this.helper.http.post('/admin/check_city', {country_id: this.add_city.country_id, city_name: city.trim(), city_code: city_code.trim()}).pipe(map((res: Response) => res.json())).subscribe(res_data => {
 
             if (res_data.success == false) {
                 jQuery('#submit').attr('disabled', true);
@@ -973,7 +974,7 @@ export class AddCityComponent implements OnInit {
     get_service_list(city_id) {
         this.myLoading=true;
         this.helper.http.post('/admin/service_list', {city_id: city_id
-        }).map((res: Response) => res.json()).subscribe(res_data => {
+        }).pipe(map((res: Response) => res.json())).subscribe(res_data => {
                 this.myLoading = false;
                 if (res_data.success == false) {
                     this.service_list = [];
@@ -993,7 +994,7 @@ export class AddCityComponent implements OnInit {
 
     get_vehicle_list(cityid) {
         this.add_service.city_id = cityid
-        this.helper.http.post('/api/admin/get_vehicle_list', {city_id: cityid}).map((res: Response) => res.json()).subscribe(res_data => {
+        this.helper.http.post('/api/admin/get_vehicle_list', {city_id: cityid}).pipe(map((res: Response) => res.json())).subscribe(res_data => {
 
             var vehicles_list = res_data.vehicles;
             var services_list = res_data.services;

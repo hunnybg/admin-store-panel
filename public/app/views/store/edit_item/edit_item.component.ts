@@ -5,6 +5,7 @@ declare var jQuery:any;
 declare var swal: any;
 import { ModalComponent } from 'ng2-bs3-modal/ng2-bs3-modal';
 import {ImageCropperComponent, CropperSettings} from 'ng2-img-cropper';
+import { map } from 'rxjs/operators';
 
 export interface EditItem{
     store_id: Object,
@@ -166,7 +167,7 @@ export class EditItemComponent implements OnInit {
                 item_id: this.item_id,
                 store_id: store._id,
                 server_token: store.server_token
-            }).map((res_data: Response) => res_data.json()).subscribe(res_data => {
+            }).pipe(map((res_data: Response) => res_data.json())).subscribe(res_data => {
                     this.myLoading = false;
                     if (res_data.success == false) {
                         this.helper.data.storage = {
@@ -199,7 +200,7 @@ export class EditItemComponent implements OnInit {
                 });
 
             this.helper.http.post(this.helper.POST_METHOD.GET_IMAGE_SETTING, {
-            }).map((res_data: Response) => res_data.json()).subscribe(res_data => {
+            }).pipe(map((res_data: Response) => res_data.json())).subscribe(res_data => {
 
                 this.image_setting.image_ratio = res_data.image_setting.item_image_ratio;
                     this.image_setting.image_min_width = res_data.image_setting.item_image_min_width;
@@ -344,7 +345,7 @@ export class EditItemComponent implements OnInit {
         this.edit_item.type = 1;
         this.edit_item.is_required = false;
 
-        this.helper.http.post(this.helper.POST_METHOD.GET_SPECIFICATION_LISTS, json).map((res_data: Response) => res_data.json()).subscribe(res_data => {
+        this.helper.http.post(this.helper.POST_METHOD.GET_SPECIFICATION_LISTS, json).pipe(map((res_data: Response) => res_data.json())).subscribe(res_data => {
 
                 if (res_data.success == false) {
                     if (res_data.error_code == 999) {
@@ -451,7 +452,7 @@ export class EditItemComponent implements OnInit {
             specification_group_id: specification._id
         }
 
-        this.helper.http.post(this.helper.POST_METHOD.GET_SPECIFICATION_LISTS, json).map((res_data: Response) => res_data.json()).subscribe(res_data => {
+        this.helper.http.post(this.helper.POST_METHOD.GET_SPECIFICATION_LISTS, json).pipe(map((res_data: Response) => res_data.json())).subscribe(res_data => {
 
                 if (res_data.success == false) {
                     setTimeout(() => {
@@ -587,7 +588,7 @@ export class EditItemComponent implements OnInit {
             this.spec_list_error=0;
             var store = JSON.parse(localStorage.getItem('store'));
 
-            this.helper.http.post(this.helper.POST_METHOD.GET_ITEM_DATA,{item_id:this.item_id,store_id:store._id, server_token:store.server_token}).map((res_data: Response) => res_data.json()) .subscribe(res_data => {
+            this.helper.http.post(this.helper.POST_METHOD.GET_ITEM_DATA,{item_id:this.item_id,store_id:store._id, server_token:store.server_token}).pipe(map((res_data: Response) => res_data.json())) .subscribe(res_data => {
                     if(res_data.success == false)
                     {
                         if(res_data.error_code == 999)
@@ -700,7 +701,7 @@ export class EditItemComponent implements OnInit {
     {
         this.myLoading=true;
         itemdata.name=itemdata.name.trim();
-        this.helper.http.post(this.helper.POST_METHOD.UPDATE_ITEM,itemdata).map((res:Response) => res.json()).subscribe(res_data=>{
+        this.helper.http.post(this.helper.POST_METHOD.UPDATE_ITEM,itemdata).pipe(map((res:Response) => res.json())).subscribe(res_data=>{
 
             
             if(res_data.success == true)
@@ -748,7 +749,7 @@ export class EditItemComponent implements OnInit {
         });
 
         this.formData.append("item_id", this.item_id);
-        this.helper.http.post(this.helper.POST_METHOD.UPDATE_ITEM_IMAGE,this.formData).map((res:Response) => res.json()).subscribe(res_data=>{
+        this.helper.http.post(this.helper.POST_METHOD.UPDATE_ITEM_IMAGE,this.formData).pipe(map((res:Response) => res.json())).subscribe(res_data=>{
             
             if(res_data.success==false)
             {
@@ -778,7 +779,7 @@ export class EditItemComponent implements OnInit {
     delete_image_service()
     {
         this.helper.http.post(this.helper.POST_METHOD.DELETE_ITEM_IMAGE,{store_id:this.edit_item.store_id , server_token:this.edit_item.server_token,
-                                                                                    _id:this.item_id , image_url:this.deleted_image_url}).map((res:Response) => res.json()).subscribe(res_data=>{
+                                                                                    _id:this.item_id , image_url:this.deleted_image_url}).pipe(map((res:Response) => res.json())).subscribe(res_data=>{
                this.myLoading=false;       
             if(res_data.success==false)
             {

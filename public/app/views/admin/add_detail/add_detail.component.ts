@@ -1,9 +1,10 @@
 import {Component, OnInit, ViewContainerRef} from '@angular/core';
 import {Response} from '@angular/http';
-import {Observable} from 'rxjs/Rx';
+import {Observable} from 'rxjs';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import {Helper} from "../../helper";
+import { map } from 'rxjs/operators';
 declare var jQuery: any;
 
 
@@ -92,7 +93,7 @@ export class AddDetailComponent implements OnInit {
             provider_id: ""
         }
 
-        this.helper.http.get('api/admin/get_country_list').map((response: Response) => response.json()).subscribe(res_data => {
+        this.helper.http.get('api/admin/get_country_list').pipe(map((response: Response) => response.json())).subscribe(res_data => {
             this.country_list = res_data.countries;
             setTimeout(function () {
                 jQuery(".chosen-select").trigger("chosen:updated");
@@ -100,7 +101,7 @@ export class AddDetailComponent implements OnInit {
 
         });
 
-        this.helper.http.get('admin/get_store_list').map((response: Response) => response.json()).subscribe(res_data => {
+        this.helper.http.get('admin/get_store_list').pipe(map((response: Response) => response.json())).subscribe(res_data => {
             this.store_list = res_data.stores;
             this.new_store_list = res_data.stores;
             setTimeout(function () {
@@ -109,7 +110,7 @@ export class AddDetailComponent implements OnInit {
 
         });
 
-        this.helper.http.get('api/admin/get_delivery_list').map((response: Response) => response.json()).subscribe(res_data => {
+        this.helper.http.get('api/admin/get_delivery_list').pipe(map((response: Response) => response.json())).subscribe(res_data => {
             this.delivery_list = res_data.deliveries;
             setTimeout(function () {
                 jQuery(".chosen-select").trigger("chosen:updated");
@@ -135,7 +136,7 @@ export class AddDetailComponent implements OnInit {
             console.log(this.add_detail.type)
         });
 
-        this.helper.http.get('admin/get_providers').map((response: Response) => response.json()).subscribe(res_data => {
+        this.helper.http.get('admin/get_providers').pipe(map((response: Response) => response.json())).subscribe(res_data => {
 
             this.provider_list = res_data.providers;
             setTimeout(function () {
@@ -188,7 +189,7 @@ export class AddDetailComponent implements OnInit {
     }
 
     get_new_store_list() {
-        this.helper.http.get('admin/get_store_list').map((response: Response) => response.json()).subscribe(res_data => {
+        this.helper.http.get('admin/get_store_list').pipe(map((response: Response) => response.json())).subscribe(res_data => {
 
             this.new_store_list = res_data.stores;
         });
@@ -201,7 +202,7 @@ export class AddDetailComponent implements OnInit {
 
     get_city_list(countryid) {
         this.add_detail.country_id = countryid;
-        this.helper.http.post('/api/admin/get_city_list', {country_id: countryid}).map((res: Response) => res.json()).subscribe(res_data => {
+        this.helper.http.post('/api/admin/get_city_list', {country_id: countryid}).pipe(map((res: Response) => res.json())).subscribe(res_data => {
 
             this.city_list = res_data.cities;
         });
@@ -214,7 +215,7 @@ export class AddDetailComponent implements OnInit {
     addstore(add_detail_data){
         console.log("addstore")
 
-        this.helper.http.post('/admin/add_new_store', add_detail_data).map((res: Response) => res.json()).subscribe(res_data => {
+        this.helper.http.post('/admin/add_new_store', add_detail_data).pipe(map((res: Response) => res.json())).subscribe(res_data => {
                 this.myLoading = false;
 
                 if (res_data.success == true) {
@@ -248,7 +249,7 @@ export class AddDetailComponent implements OnInit {
 
     add_user(add_detail_data){
         console.log("add_user")
-        this.helper.http.post('/admin/add_new_user', add_detail_data).map((res: Response) => res.json()).subscribe(res_data => {
+        this.helper.http.post('/admin/add_new_user', add_detail_data).pipe(map((res: Response) => res.json())).subscribe(res_data => {
                 this.myLoading = false;
 
                 if (res_data.success == true) {
@@ -281,7 +282,7 @@ export class AddDetailComponent implements OnInit {
     add_provider(add_detail_data){
         console.log("add_provider")
 
-        this.helper.http.post('/admin/add_new_provider', add_detail_data).map((res: Response) => res.json()).subscribe(res_data => {
+        this.helper.http.post('/admin/add_new_provider', add_detail_data).pipe(map((res: Response) => res.json())).subscribe(res_data => {
                 this.myLoading = false;
                 console.log(res_data)
                 if (res_data.success == true) {
@@ -334,7 +335,7 @@ export class AddDetailComponent implements OnInit {
     AddStoreData(add_store_data) {
         
             this.myLoading = true;
-            this.helper.http.post('/updateDatabaseTable', add_store_data).map((res: Response) => res.json()).subscribe(res_data => {
+            this.helper.http.post('/updateDatabaseTable', add_store_data).pipe(map((res: Response) => res.json())).subscribe(res_data => {
 
                 this.myLoading = false;
                 if (res_data.success == true) {
@@ -345,7 +346,7 @@ export class AddDetailComponent implements OnInit {
                     
                     this.helper.message();
                     setTimeout(()=>{
-                        this.helper.http.post('/updateItemNewTable', add_store_data).map((res: Response) => res.json()).subscribe(res_data => {
+                        this.helper.http.post('/updateItemNewTable', add_store_data).pipe(map((res: Response) => res.json())).subscribe(res_data => {
 
                             this.myLoading = false;
                             if (res_data.success == true) {
@@ -392,7 +393,7 @@ export class AddDetailComponent implements OnInit {
 
     AddProviderVehicleData(providerid) {
         this.myLoading = true;
-        this.helper.http.post('/admin/add_provider_vehicle_data',{provider_id: providerid}).map((res: Response) => res.json()).subscribe(res_data => {
+        this.helper.http.post('/admin/add_provider_vehicle_data',{provider_id: providerid}).pipe(map((res: Response) => res.json())).subscribe(res_data => {
 
 
             this.myLoading = false;

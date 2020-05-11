@@ -3,6 +3,7 @@ import {Response } from '@angular/http';
 import {Helper} from "../../store_helper";
 declare var jQuery:any;
 import { ModalComponent } from 'ng2-bs3-modal/ng2-bs3-modal';
+import { map } from 'rxjs/operators';
 
 export interface CartProductItems{
     item_id: Object,
@@ -148,7 +149,7 @@ export class StoreCreateOrderComponent implements OnInit {
 
         });
 
-        this.helper.http.post(this.helper.POST_METHOD.GET_STORE_PRODUCT_ITEM_LIST,{store_id:this.store_id, server_token:this.server_token}).map((res:Response) => res.json()).subscribe(res_data=>{
+        this.helper.http.post(this.helper.POST_METHOD.GET_STORE_PRODUCT_ITEM_LIST,{store_id:this.store_id, server_token:this.server_token}).pipe(map((res:Response) => res.json())).subscribe(res_data=>{
 
                 this.myLoading=false;
                 if(res_data.success == false)

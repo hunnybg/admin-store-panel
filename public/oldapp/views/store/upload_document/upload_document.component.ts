@@ -2,6 +2,7 @@ import { Component, OnInit,ViewContainerRef} from '@angular/core';
 import {Response } from '@angular/http';
 import {Helper} from "../../store_helper";
 declare var jQuery:any;
+import { map } from 'rxjs/operators';
 
 export interface Document{
     unique_code: string,
@@ -62,7 +63,7 @@ export class StoreUploadDocumentComponent implements OnInit {
             this.server_token=store.server_token
         }
 
-        this.helper.http.post(this.helper.POST_METHOD.GET_DOCUMENT_LIST,{type:2 ,id:this.store_id, server_token:this.server_token}).map((res_data: Response) => res_data.json()) .subscribe(res_data => {
+        this.helper.http.post(this.helper.POST_METHOD.GET_DOCUMENT_LIST,{type:2 ,id:this.store_id, server_token:this.server_token}).pipe(map((res_data: Response) => res_data.json())) .subscribe(res_data => {
           
           this.myLoading=false;
         	if(res_data.success == false)
@@ -179,7 +180,7 @@ export class StoreUploadDocumentComponent implements OnInit {
                   this.formData.append('expired_date',this.documentlist.expired_date.formatted);
               }
 
-            this.helper.http.post(this.helper.POST_METHOD.UPLOAD_DOCUMENT,this.formData).map((res_data: Response) => res_data.json()) .subscribe(res_data => {
+            this.helper.http.post(this.helper.POST_METHOD.UPLOAD_DOCUMENT,this.formData).pipe(map((res_data: Response) => res_data.json())) .subscribe(res_data => {
 
               this.formData = new FormData();
               this.edit_document.fill("false")

@@ -4,7 +4,8 @@ import {Response } from '@angular/http';
 declare var jQuery:any;
 import {Helper} from "../../../views/franchise_helper";
 import { ModalComponent } from 'ng2-bs3-modal/ng2-bs3-modal';
-import {Observable} from 'rxjs/Rx';
+import {Observable} from 'rxjs';
+import { map } from 'rxjs/operators';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import { UUID } from 'angular2-uuid';
@@ -157,7 +158,7 @@ export class TopnavbarComponent implements OnInit {
 
     new_order()
     {
-        this.helper.http.post('/api/franchise/franchise_notify_new_order',{franchise_id:this.franchise_id, server_token:this.server_token}).map((res_data: Response) => res_data.json()).subscribe((res_data: any) => {
+        this.helper.http.post('/api/franchise/franchise_notify_new_order',{franchise_id:this.franchise_id, server_token:this.server_token}).pipe(map((res_data: Response) => res_data.json())).subscribe((res_data: any) => {
 
                 let display:any = jQuery('.modal').css('display');
                 if(res_data.success==true)

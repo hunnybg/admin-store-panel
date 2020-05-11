@@ -2,7 +2,7 @@ import {Component, OnInit, ViewContainerRef} from '@angular/core';
 import {Response} from '@angular/http';
 import {Helper} from "../../helper";
 declare var jQuery: any;
-
+import { map } from 'rxjs/operators';
 
 export interface Provider_Vehicle {
     vehicle_name: String,
@@ -76,7 +76,7 @@ export class ProviderVehicleComponent implements OnInit {
             admin_service_id: null
         }
 
-        this.helper.http.get('/admin/vehicle_list_for_provider').map((res: Response) => res.json()).subscribe(res => {
+        this.helper.http.get('/admin/vehicle_list_for_provider').pipe(map((res: Response) => res.json())).subscribe(res => {
             this.vehicle_service_list = res.vehicles;
             setTimeout(function () {
                 jQuery("#admin_vehicle_id").trigger("chosen:updated");
@@ -92,14 +92,14 @@ export class ProviderVehicleComponent implements OnInit {
 
         this.helper.http.post('/admin/provider_vehicle_list', {
             provider_id: this.provider_id
-        }).map((res: Response) => res.json()).subscribe(res_data => {
+        }).pipe(map((res: Response) => res.json())).subscribe(res_data => {
             this.myLoading = false;
             if (res_data.success == false) {
                 this.vehicle_list = [];
             }
             else {
                 this.vehicle_list = res_data.provider_vehicles;
-                this.helper.http.get('/admin/vehicle_list_for_provider').map((res: Response) => res.json()).subscribe(res => {
+                this.helper.http.get('/admin/vehicle_list_for_provider').pipe(map((res: Response) => res.json())).subscribe(res => {
                     this.vehicle_service_list = res.vehicles;
                     setTimeout(function () {
                         jQuery("#admin_vehicle_id").trigger("chosen:updated");
@@ -111,7 +111,7 @@ export class ProviderVehicleComponent implements OnInit {
                     console.log("main vehicle");
                     this.get_document_list(vehicle._id, 9, vehicle.provider_id);
 
-                    this.helper.http.get('/admin/vehicle_list_for_provider').map((res: Response) => res.json()).subscribe(res => {
+                    this.helper.http.get('/admin/vehicle_list_for_provider').pipe(map((res: Response) => res.json())).subscribe(res => {
                         this.vehicle_service_list = res.vehicles;
                         setTimeout(function () {
                             jQuery("#admin_vehicle_id").trigger("chosen:updated");
@@ -129,7 +129,7 @@ export class ProviderVehicleComponent implements OnInit {
 
 
     get_document_list(id, type, user_type_id) {
-        this.helper.http.post('/admin/view_document_list', {id: id, type: type, user_type_id: user_type_id}).map((res: Response) => res.json()).subscribe(res_data => {
+        this.helper.http.post('/admin/view_document_list', {id: id, type: type, user_type_id: user_type_id}).pipe(map((res: Response) => res.json())).subscribe(res_data => {
 
             this.document_list = res_data.documents;
         });
@@ -147,7 +147,7 @@ export class ProviderVehicleComponent implements OnInit {
         this.provider_vehicle_list.service_id = vehicle.service_id;
         this.provider_vehicle_list.admin_service_id = vehicle.admin_service_id;
 
-        this.helper.http.get('/admin/vehicle_list_for_provider').map((res: Response) => res.json()).subscribe(res => {
+        this.helper.http.get('/admin/vehicle_list_for_provider').pipe(map((res: Response) => res.json())).subscribe(res => {
             this.vehicle_service_list = res.vehicles;
             setTimeout(function () {
                 jQuery("#admin_vehicle_id").trigger("chosen:updated");
@@ -177,7 +177,7 @@ export class ProviderVehicleComponent implements OnInit {
             service_id: this.provider_vehicle_list.service_id,
             admin_service_id: this.provider_vehicle_list.admin_service_id
 
-        }).map((res: Response) => res.json()).subscribe(res_data => {
+        }).pipe(map((res: Response) => res.json())).subscribe(res_data => {
             this.myLoading = false;
             this.edit_vehicle.fill("false");
             if (res_data.success == true) {
@@ -206,7 +206,7 @@ export class ProviderVehicleComponent implements OnInit {
 
 
     onChangeVehicle(id, event) {
-        this.helper.http.post('/admin/provider_vehicle_approve_decline', {vehicle_id: id, is_approved: event}).map((res: Response) => res.json()).subscribe(res_data => {
+        this.helper.http.post('/admin/provider_vehicle_approve_decline', {vehicle_id: id, is_approved: event}).pipe(map((res: Response) => res.json())).subscribe(res_data => {
 
             if (res_data.success == false) {
 

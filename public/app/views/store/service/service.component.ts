@@ -3,7 +3,7 @@ import {Helper} from "../../helper";
 import {Http, Response} from '@angular/http';
 import {StoreAddServiceComponent} from "../add_service/add_service.component";
 declare var jQuery: any;
-
+import { map } from 'rxjs/operators';
 
 @Component({
     selector: 'app-service',
@@ -87,7 +87,7 @@ export class StoreServiceComponent implements OnInit {
             type_id: this.store_id,
             sort_field: this.sort_field, sort_service: this.sort_service,
             search_field: this.search_field, search_value: this.search_value, page: this.page
-        }).map((res: Response) => res.json()).subscribe(res_data => {
+        }).pipe(map((res: Response) => res.json())).subscribe(res_data => {
             this.myLoading = false;
             if (res_data.success == false) {
 
@@ -120,7 +120,7 @@ export class StoreServiceComponent implements OnInit {
 
     change_default(index, event){
         if(event){
-            this.helper.http.post('/admin/select_default_service', {service_id: this.service_list[index]._id, is_default: event, type_id: this.service_list[index].type_id, city_id: this.service_list[index].city_id}).map((res: Response) => res.json()).subscribe(res_data => {
+            this.helper.http.post('/admin/select_default_service', {service_id: this.service_list[index]._id, is_default: event, type_id: this.service_list[index].type_id, city_id: this.service_list[index].city_id}).pipe(map((res: Response) => res.json())).subscribe(res_data => {
                 this.filter(this.page);
             });
         } else {

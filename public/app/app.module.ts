@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { HttpModule, JsonpModule } from '@angular/http';
+import { HttpClientModule, HttpClientJsonpModule } from '@angular/common/http';
 import { RouterModule } from "@angular/router";
 import { LocationStrategy, HashLocationStrategy } from '@angular/common';
 import { Router_id } from "./views/routing_hidden_id";
@@ -16,7 +16,7 @@ import { AppComponent } from './app.component';
 
 import { Data } from "./views/data";
 
-import { SpinnerModule } from 'angular2-spinner/dist';
+import { SpinnerModule } from 'angular2-spinner';
 
 import { MassNotificationModule } from "./views/admin/mass_notification/mass_notification.module";
 
@@ -242,8 +242,8 @@ import { StoreOwnerDashboardrModule } from './views/store/store_owner_dashboard/
     imports: [
 
         BrowserModule,
-        HttpModule,
-        JsonpModule,
+        HttpClientModule,
+        HttpClientJsonpModule,
         FormsModule,
         UiSwitchModule,
         Ng2Bs3ModalModule,

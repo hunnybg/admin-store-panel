@@ -2,7 +2,8 @@ import {OnInit, Component, ViewContainerRef, ViewChild} from '@angular/core';
 import {Helper} from "../../helper";
 import {Http, Response} from '@angular/http';
 declare var jQuery: any;
-import {Observable} from 'rxjs/Rx';
+import {Observable} from 'rxjs';
+import { map } from 'rxjs/operators';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import {Router} from '@angular/router';
@@ -29,7 +30,7 @@ export class admin_loginComponent implements OnInit {
     }
 
     check_verify(logindata) {
-        this.helper.http.post('/login', logindata).map((res: Response) => res.json()).subscribe(res_data => {
+        this.helper.http.post('/login', logindata).pipe(map((res: Response) => res.json())).subscribe(res_data => {
             this.myLoading = false;
             if (res_data.success == true) {
                 localStorage.setItem('admin_id', res_data.admin_data._id);

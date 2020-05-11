@@ -1,6 +1,7 @@
 import {Component, OnInit, ViewContainerRef} from '@angular/core';
 import {Response} from '@angular/http';
 import {Helper} from "../../helper";
+import { map } from 'rxjs/operators';
 declare var jQuery: any;
 
 declare var swal: any;
@@ -71,7 +72,7 @@ export class AdvertiseComponent implements OnInit {
 
         });
 
-        this.helper.http.post('/admin/advertise_list', {}).map((res: Response) => res.json()).subscribe(res_data => {
+        this.helper.http.post('/admin/advertise_list', {}).pipe(map((res: Response) => res.json())).subscribe(res_data => {
 
 
             this.myLoading = false;
@@ -109,7 +110,7 @@ export class AdvertiseComponent implements OnInit {
     }
     get_city_list(countryid) {
         this.selected_country = countryid;
-        this.helper.http.post('/api/admin/get_city_list', {country_id: countryid}).map((res: Response) => res.json()).subscribe(res_data => {
+        this.helper.http.post('/api/admin/get_city_list', {country_id: countryid}).pipe(map((res: Response) => res.json())).subscribe(res_data => {
 
             this.city_list = res_data.cities
         });
@@ -121,7 +122,7 @@ export class AdvertiseComponent implements OnInit {
     get_visible_advertise_list(is_ads_visible) {
 
         this.selected_is_ads_visible = is_ads_visible;
-        this.helper.http.post('/admin/get_visible_advertiset', {is_ads_visible: is_ads_visible}).map((res: Response) => res.json()).subscribe(res_data => {
+        this.helper.http.post('/admin/get_visible_advertiset', {is_ads_visible: is_ads_visible}).pipe(map((res: Response) => res.json())).subscribe(res_data => {
 
             this.filtered_country_list = res_data.advertises;
         });
@@ -159,7 +160,7 @@ export class AdvertiseComponent implements OnInit {
             this.filtered_country_list[index].advertises_detail.splice(advertise_index, 1);
             this.helper.http.post('/admin/delete_advertise', {
                 advertise_id: advertise_id
-            }).map((res: Response) => res.json()).subscribe(res_data => {
+            }).pipe(map((res: Response) => res.json())).subscribe(res_data => {
                 if (res_data.success == true) {
                     this.helper.data.storage = {
                         "message": this.helper.MESSAGE_CODE[res_data.message],
@@ -186,7 +187,7 @@ export class AdvertiseComponent implements OnInit {
     }
 
     onChange(id, event) {
-        this.helper.http.post('/admin/change_advertise_visibility', {advertise_id: id, is_ads_visible: event}).map((res: Response) => res.json()).subscribe(res_data => {
+        this.helper.http.post('/admin/change_advertise_visibility', {advertise_id: id, is_ads_visible: event}).pipe(map((res: Response) => res.json())).subscribe(res_data => {
 
             if (res_data.success == false) {
 
@@ -199,7 +200,7 @@ export class AdvertiseComponent implements OnInit {
 
     onChange_visible(event) {
         console.log(event);
-        this.helper.http.post('/admin/get_visible_advertise', {is_ads_visible: event}).map((res: Response) => res.json()).subscribe(res_data => {
+        this.helper.http.post('/admin/get_visible_advertise', {is_ads_visible: event}).pipe(map((res: Response) => res.json())).subscribe(res_data => {
             console.log(res_data.success);
             if (res_data.success == true) {
                 this.filtered_country_list = res_data.countries;

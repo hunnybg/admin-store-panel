@@ -3,6 +3,7 @@ import {Response } from '@angular/http';
 import {Helper} from "../../franchise_helper";
 declare var jQuery:any;
 import { ModalComponent } from 'ng2-bs3-modal/ng2-bs3-modal';
+import { map } from 'rxjs/operators';
 
 @Component({
     selector: 'app-history',
@@ -135,7 +136,7 @@ export class FranchiseStoreHistoryComponent implements OnInit {
         this.page=page;
         this.helper.http.post(this.helper.POST_METHOD.HISTORY,{franchise_id:this.franchise_id, server_token:this.server_token, start_date:this.start_date,end_date:this.end_date,
                                                         sort_field:this.sort_field,sort_order:this.sort_order,
-                                                        search_field:this.search_field,search_value:this.search_value,page:this.page }).map((res:Response) => res.json()).subscribe(res_data=>{
+                                                        search_field:this.search_field,search_value:this.search_value,page:this.page }).pipe(map((res:Response) => res.json())).subscribe(res_data=>{
 
             this.myLoading=false;
             if(res_data.success == false)
@@ -190,7 +191,7 @@ export class FranchiseStoreHistoryComponent implements OnInit {
                 order_id: this.order_id
              }
         }
-        this.helper.http.post(method , json).map((res: Response) => res.json()).subscribe(res_data => {
+        this.helper.http.post(method , json).pipe(map((res: Response) => res.json())).subscribe(res_data => {
 
             this.myLoading=false;
             if(res_data.success) {

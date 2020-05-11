@@ -1,8 +1,10 @@
-import { Component, OnInit,ViewContainerRef, trigger, state ,transition, style, animate  } from '@angular/core';
+import { Component, OnInit,ViewContainerRef } from '@angular/core';
 import {Response } from '@angular/http';
 import {Helper} from "../../franchise_helper";
 declare var jQuery:any;
 declare var swal: any;
+import { map } from 'rxjs/operators';
+import { trigger, state ,transition, style, animate } from '@angular/animations';
 
 export interface specification{
    name:string;
@@ -89,7 +91,7 @@ export class FranchiseSpecificationComponent implements OnInit {
             {
                 this.franchise_id=franchise._id
                 this.server_token=franchise.server_token
-                this.helper.http.post(this.helper.POST_METHOD.GET_SPECIFICATION_GROUP,{product_id:this.product_id,franchise_id:franchise._id, server_token:franchise.server_token}).map((res_data: Response) => res_data.json()) .subscribe(res_data => {
+                this.helper.http.post(this.helper.POST_METHOD.GET_SPECIFICATION_GROUP,{product_id:this.product_id,franchise_id:franchise._id, server_token:franchise.server_token}).pipe(map((res_data: Response) => res_data.json())) .subscribe(res_data => {
 
                     this.myLoading=false;
                     if(res_data.success == false)
@@ -137,7 +139,7 @@ export class FranchiseSpecificationComponent implements OnInit {
         this.specification_name="";
         this.new_specification_list.push(data.specification_name.trim())
 
-        this.helper.http.post(this.helper.POST_METHOD.ADD_SPECIFICATION_GROUP,{franchise_id:this.franchise_id, product_id:this.product_id,server_token:this.server_token,specification_group_name:this.new_specification_list}).map((response: Response) => response.json()) .subscribe(res_data => {
+        this.helper.http.post(this.helper.POST_METHOD.ADD_SPECIFICATION_GROUP,{franchise_id:this.franchise_id, product_id:this.product_id,server_token:this.server_token,specification_group_name:this.new_specification_list}).pipe(map((response: Response) => response.json())) .subscribe(res_data => {
 console.log(res_data);
             this.new_specification_list=[];
             this.myLoading=false;
@@ -197,7 +199,7 @@ console.log(res_data);
           }).then(() => {
 
               this.myLoading=true;
-            this.helper.http.post(this.helper.POST_METHOD.DELETE_SPECIFICATION_GROUP,{franchise_id:this.franchise_id, product_id:this.product_id,server_token:this.server_token,specification_group_id:id}).map((response: Response) => response.json()) .subscribe(res_data => {
+            this.helper.http.post(this.helper.POST_METHOD.DELETE_SPECIFICATION_GROUP,{franchise_id:this.franchise_id, product_id:this.product_id,server_token:this.server_token,specification_group_id:id}).pipe(map((response: Response) => response.json())) .subscribe(res_data => {
 
                 this.myLoading=false;
                 if(res_data.success)
@@ -267,7 +269,7 @@ console.log(res_data);
         if(this.specification_name_arrays.length > 0)
         {
             this.myLoading=true;
-            this.helper.http.post(this.helper.POST_METHOD.ADD_SPECIFICATION,{specification_group_id: id , specification_name :this.specification_name_arrays ,product_id:this.product_id,franchise_id:franchise._id, server_token:franchise.server_token}).map((res_data: Response) => res_data.json()) .subscribe(res_data => {
+            this.helper.http.post(this.helper.POST_METHOD.ADD_SPECIFICATION,{specification_group_id: id , specification_name :this.specification_name_arrays ,product_id:this.product_id,franchise_id:franchise._id, server_token:franchise.server_token}).pipe(map((res_data: Response) => res_data.json())) .subscribe(res_data => {
                 
                 this.specification_name_arrays = [];
                 this.myLoading=false;
@@ -277,7 +279,7 @@ console.log(res_data);
                     if(this.delete_specification_array.length > 0)
                     {
                         this.myLoading=true;
-                        this.helper.http.post(this.helper.POST_METHOD.DELETE_SPECIFICATION,{specification_group_id: id , specification_id :this.delete_specification_array ,product_id:this.product_id,franchise_id:franchise._id, server_token:franchise.server_token}).map((res_data: Response) => res_data.json()) .subscribe(res_data => {
+                        this.helper.http.post(this.helper.POST_METHOD.DELETE_SPECIFICATION,{specification_group_id: id , specification_id :this.delete_specification_array ,product_id:this.product_id,franchise_id:franchise._id, server_token:franchise.server_token}).pipe(map((res_data: Response) => res_data.json())) .subscribe(res_data => {
                             this.delete_specification_array = [];
                                 this.myLoading=false;
                             if(res_data.success)
@@ -317,7 +319,7 @@ console.log(res_data);
         else if(this.delete_specification_array.length > 0)
         {
             this.myLoading=true;
-            this.helper.http.post(this.helper.POST_METHOD.DELETE_SPECIFICATION,{specification_group_id: id , specification_id :this.delete_specification_array ,product_id:this.product_id,franchise_id:franchise._id, server_token:franchise.server_token}).map((res_data: Response) => res_data.json()) .subscribe(res_data => {
+            this.helper.http.post(this.helper.POST_METHOD.DELETE_SPECIFICATION,{specification_group_id: id , specification_id :this.delete_specification_array ,product_id:this.product_id,franchise_id:franchise._id, server_token:franchise.server_token}).pipe(map((res_data: Response) => res_data.json())) .subscribe(res_data => {
                 this.delete_specification_array = [];
                 this.myLoading=false;
                 if(res_data.success)

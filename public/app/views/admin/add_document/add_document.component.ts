@@ -1,9 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 import {Response} from '@angular/http';
-import {Observable} from 'rxjs/Rx';
+import {Observable} from 'rxjs';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import {Helper} from "../../helper";
+import { map } from 'rxjs/operators';
 declare var jQuery: any;
 
 
@@ -89,7 +90,7 @@ export class AddDocumentComponent implements OnInit {
 
         }
         this.document_id = this.helper.router_id.admin.document_id
-        this.helper.http.get('/admin/get_server_country_list').map((res: Response) => res.json()).subscribe(res => {
+        this.helper.http.get('/admin/get_server_country_list').pipe(map((res: Response) => res.json())).subscribe(res => {
             this.country_list = res.countries
 
         });
@@ -114,7 +115,7 @@ export class AddDocumentComponent implements OnInit {
         else {
             jQuery('.add').hide();
             this.type = "edit";
-            this.helper.http.post('/admin/get_document_detail', {document_id: this.document_id}).map((res_data: Response) => res_data.json()).subscribe(res_data => {
+            this.helper.http.post('/admin/get_document_detail', {document_id: this.document_id}).pipe(map((res_data: Response) => res_data.json())).subscribe(res_data => {
 
                 if (res_data.success == false) {
 
@@ -163,7 +164,7 @@ export class AddDocumentComponent implements OnInit {
     AddDocument(document_data) {
         if (this.type == 'add') {
             this.myLoading = true;
-            this.helper.http.post('/admin/add_document_data', document_data).map((res: Response) => res.json()).subscribe(res_data => {
+            this.helper.http.post('/admin/add_document_data', document_data).pipe(map((res: Response) => res.json())).subscribe(res_data => {
 
                 this.myLoading = false;
                 if (res_data.success == true) {
@@ -194,7 +195,7 @@ export class AddDocumentComponent implements OnInit {
     }
     updateDocument(document_data) {
         this.myLoading = true;
-        this.helper.http.post('/admin/update_document', document_data).map((res: Response) => res.json()).subscribe(res_data => {
+        this.helper.http.post('/admin/update_document', document_data).pipe(map((res: Response) => res.json())).subscribe(res_data => {
             this.myLoading = false;
             if (res_data.success == true) {
                 this.helper.data.storage = {

@@ -2,6 +2,7 @@ import { Component, OnInit, ViewContainerRef } from "@angular/core";
 import { Helper } from "../../helper";
 import { Http, Response } from '@angular/http';
 declare var jQuery: any;
+import { map } from 'rxjs/operators';
 
 @Component({
     selector: 'app-admin-request-assistance',
@@ -86,7 +87,7 @@ export class AdminRequestAssistanceComponent implements OnInit{
             number_of_rec: this.number_of_rec,
             sort_field: this.sort_field, sort_ra: this.sort_ra, ra_page_type: this.ra_page_type,
             search_field: this.search_field, search_value: this.search_value, page: this.page
-        }).map((res: Response) => res.json()).subscribe(res_data => {
+        }).pipe(map((res: Response) => res.json())).subscribe(res_data => {
             this.myLoading = false;
             console.log(res_data)
             if (res_data.success == false) {

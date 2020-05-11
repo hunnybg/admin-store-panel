@@ -1,5 +1,5 @@
 import { Component,ElementRef,OnInit } from '@angular/core';
-import { Http, Response } from '@angular/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Data } from "./data";
 import { Router, ActivatedRoute,  NavigationExtras} from '@angular/router';
 import { TokenService } from 'angular2-auth';
@@ -82,7 +82,7 @@ export class Helper {
     public PROMO_RECURSION: any = PROMO_RECURSION;
     public for_forgot_password:boolean = false;
     
-   	constructor(public trans:TranslateService, public http:Http , public route: ActivatedRoute ,  public  router_id: Router_id, public toastr: ToastsManager , public router: Router,  public elementRef:ElementRef, public data: Data, public tokenService: TokenService) {
+   	constructor(public trans:TranslateService, public http:HttpClient , public route: ActivatedRoute ,  public  router_id: Router_id, public toastr: ToastsManager , public router: Router,  public elementRef:ElementRef, public data: Data, public tokenService: TokenService) {
 
             
     }

@@ -1,6 +1,7 @@
 import {Component, OnInit, ViewChild,ViewContainerRef} from '@angular/core';
 import {Response} from '@angular/http';
-import {Observable} from 'rxjs/Rx';
+import {Observable} from 'rxjs';
+import { map } from 'rxjs/operators';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 
@@ -261,7 +262,7 @@ export class DashboardComponent implements OnInit {
             total_cities: 0
         }
 
-        this.helper.http.get('api/admin/get_country_list').map((response: Response) => response.json()).subscribe(res_data => {
+        this.helper.http.get('api/admin/get_country_list').pipe(map((response: Response) => response.json())).subscribe(res_data => {
                 this.country_list = res_data.countries
 
             },
@@ -275,7 +276,7 @@ export class DashboardComponent implements OnInit {
 
         });
 
-        this.helper.http.post('/admin/dashboard/last_six_month_payment_detail', {}).map((res_data: Response) => res_data.json()).subscribe(res_data => {
+        this.helper.http.post('/admin/dashboard/last_six_month_payment_detail', {}).pipe(map((res_data: Response) => res_data.json())).subscribe(res_data => {
 
             if (res_data.success) {
                 this.pieChartData = [res_data.order_detail.total_other_payment.toFixed(2),
@@ -287,7 +288,7 @@ export class DashboardComponent implements OnInit {
         });
 
 
-        this.helper.http.post('/admin/dashboard/last_fifteen_day_order_detail', {}).map((res_data: Response) => res_data.json()).subscribe(res_data => {
+        this.helper.http.post('/admin/dashboard/last_fifteen_day_order_detail', {}).pipe(map((res_data: Response) => res_data.json())).subscribe(res_data => {
 
             if (res_data.success) {
                 let labels: string[] = [];
@@ -306,7 +307,7 @@ export class DashboardComponent implements OnInit {
 
         });
 
-        this.helper.http.post('/admin/dashboard/last_six_month_earning_detail', {}).map((res_data: Response) => res_data.json()).subscribe(res_data => {
+        this.helper.http.post('/admin/dashboard/last_six_month_earning_detail', {}).pipe(map((res_data: Response) => res_data.json())).subscribe(res_data => {
 
             if (res_data.success) {
                 let labels: string[] = [];
@@ -358,7 +359,7 @@ export class DashboardComponent implements OnInit {
                 }
             }
         });
-        this.helper.http.post('/admin/dashboard/monthly_payment_detail', {}).map((res_data: Response) => res_data.json()).subscribe(res_data => {
+        this.helper.http.post('/admin/dashboard/monthly_payment_detail', {}).pipe(map((res_data: Response) => res_data.json())).subscribe(res_data => {
 
 
 
@@ -404,7 +405,7 @@ export class DashboardComponent implements OnInit {
             }
         });
 
-        this.helper.http.post('/admin/dashboard/country_chart', {}).map((res_data: Response) => res_data.json()).subscribe(res_data => {
+        this.helper.http.post('/admin/dashboard/country_chart', {}).pipe(map((res_data: Response) => res_data.json())).subscribe(res_data => {
 
             var label = ['x'];
             var array = []
@@ -456,7 +457,7 @@ export class DashboardComponent implements OnInit {
 
     order_details() {
         this.myLoading = true;
-        this.helper.http.post('/admin/dashboard/order_detail', {country_id: this.selected_country , start_date:this.start_date, end_date:this.end_date}).map((res_data: Response) => res_data.json()).subscribe(res_data => {
+        this.helper.http.post('/admin/dashboard/order_detail', {country_id: this.selected_country , start_date:this.start_date, end_date:this.end_date}).pipe(map((res_data: Response) => res_data.json())).subscribe(res_data => {
 
             if (res_data.success) {
                 this.order_detail = res_data.order_detail;

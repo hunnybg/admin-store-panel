@@ -4,6 +4,7 @@ import { ModalComponent } from "ng2-bs3-modal/components/modal";
 import { Http, Response } from '@angular/http';
 declare var jQuery: any;
 declare var swal: any;
+import { map } from 'rxjs/operators';
 
 @Component({
     selector: 'app-vaiters',
@@ -185,7 +186,7 @@ export class VaitersComponent implements OnInit {
             this.formData.append('password', password);
             this.formData.append('store_id', this.store_id);
             this.formData.append('image_url', this.new_image);
-            this.helper.http.post('/store/add_new_vaiter', this.formData).map((res_data: Response) => res_data.json()).subscribe(res_data => {
+            this.helper.http.post('/store/add_new_vaiter', this.formData).pipe(map((res_data: Response) => res_data.json())).subscribe(res_data => {
                 this.myLoading = false;
                 console.log(res_data);
                 if (res_data.success) {
@@ -240,7 +241,7 @@ export class VaitersComponent implements OnInit {
             number_of_rec: this.number_of_rec,
             sort_field: this.sort_field, sort_vaiter: this.sort_vaiter, vaiter_page_type: this.vaiter_page_type,
             search_field: this.search_field, search_value: this.search_value, page: this.page
-        }).map((res: Response) => res.json()).subscribe(res_data => {
+        }).pipe(map((res: Response) => res.json())).subscribe(res_data => {
             this.myLoading = false;
             console.log(res_data)
             if (res_data.success == false) {
@@ -270,7 +271,7 @@ export class VaitersComponent implements OnInit {
     //         store_id: this.store_id,
     //         sort_field: this.sort_field, sort_vaiter: this.sort_vaiter, vaiter_page_type: this.vaiter_page_type,
     //         search_field: this.search_field, search_value: this.search_value
-    //     }).map((res: Response) => res.json()).subscribe(res_data => {
+    //     }).pipe(map((res: Response) => res.json())).subscribe(res_data => {
     //         console.log(res_data)
     //         var json2csv = require('json2csv');
 
@@ -318,7 +319,7 @@ export class VaitersComponent implements OnInit {
         this.helper.http.post('/store/vaiter_approve_decline', {
             vaiter_id: vaiter_id,
             vaiter_page_type: vaiter_page_type
-        }).map((res: Response) => res.json()).subscribe(res_data => {
+        }).pipe(map((res: Response) => res.json())).subscribe(res_data => {
 
             if (res_data.success == false) {
                 this.helper.data.storage = {
@@ -345,7 +346,7 @@ export class VaitersComponent implements OnInit {
     }
 
     AddWallet(add_wallet_data) {
-        this.helper.http.post('/admin/add_wallet', add_wallet_data).map((res: Response) => res.json()).subscribe(res_data => {
+        this.helper.http.post('/admin/add_wallet', add_wallet_data).pipe(map((res: Response) => res.json())).subscribe(res_data => {
             if (res_data.success == true) {
                 this.helper.data.storage = {
                     "message": this.helper.MESSAGE_CODE[res_data.message],
@@ -384,7 +385,7 @@ export class VaitersComponent implements OnInit {
         this.formData.append('employee_type', this.vaiter_detail.employee_type);
         // this.formData.append('image_url', this.new_image);
 
-        this.helper.http.post('/store/update_vaiter', this.formData).map((response: Response) => response.json()).subscribe(res_data => {
+        this.helper.http.post('/store/update_vaiter', this.formData).pipe(map((response: Response) => response.json())).subscribe(res_data => {
             this.myLoading = false;
             if (res_data.success == false) {
                 this.helper.data.storage = {
@@ -416,7 +417,7 @@ export class VaitersComponent implements OnInit {
             cancelButtonColor: '#d33',
             confirmButtonText: 'Yes, delete it!'
         }).then(() => {
-            this.helper.http.post('/store/delete/vaiter', { id: id }).map((response: Response) => response.json()).subscribe(res_data => {
+            this.helper.http.post('/store/delete/vaiter', { id: id }).pipe(map((response: Response) => response.json())).subscribe(res_data => {
                 if (res_data.success == true) {
                     this.helper.data.storage = {
                         "message": "Vaiter Deleted Succesfully",

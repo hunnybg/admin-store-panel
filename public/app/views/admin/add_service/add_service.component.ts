@@ -1,9 +1,10 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {Response} from '@angular/http';
-import {Observable} from 'rxjs/Rx';
+import {Observable} from 'rxjs';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import {Helper} from "../../helper";
+import { map } from 'rxjs/operators';
 declare var jQuery: any;
 declare var swal: any;
 import { ModalComponent } from 'ng2-bs3-modal/ng2-bs3-modal';
@@ -171,12 +172,12 @@ export class AddServiceComponent implements OnInit {
         }
         this.service_id = this.helper.router_id.admin.service_id;
 
-        this.helper.http.get('/admin/get_server_country_list').map((res: Response) => res.json()).subscribe(res_data => {
+        this.helper.http.get('/admin/get_server_country_list').pipe(map((res: Response) => res.json())).subscribe(res_data => {
             this.country_list = res_data.countries
         });
 
 
-        // this.helper.http.get('admin/get_delivery_type').map((res: Response) => res.json()).subscribe(res_data => {
+        // this.helper.http.get('admin/get_delivery_type').pipe(map((res: Response) => res.json())).subscribe(res_data => {
 
             this.delivery_type_list = this.helper.DELIVERY_TYPE;
             if(this.delivery_type_list.length==1){
@@ -307,7 +308,7 @@ export class AddServiceComponent implements OnInit {
         else {
             jQuery('.add').hide();
             this.type = "edit";
-            this.helper.http.post('/admin/get_service_detail', {service_id: this.service_id}).map((res_data: Response) => res_data.json()).subscribe(res_data => {
+            this.helper.http.post('/admin/get_service_detail', {service_id: this.service_id}).pipe(map((res_data: Response) => res_data.json())).subscribe(res_data => {
 
                 if (res_data.success == false) {
                     this.helper.router.navigate(['admin/service']);
@@ -455,7 +456,7 @@ export class AddServiceComponent implements OnInit {
     }
 
     get_zone_list(city_id) {
-        this.helper.http.post('/admin/get_zone_detail', {city_id: city_id}).map((res_data: Response) => res_data.json()).subscribe(res_data => {
+        this.helper.http.post('/admin/get_zone_detail', {city_id: city_id}).pipe(map((res_data: Response) => res_data.json())).subscribe(res_data => {
 
             if (res_data.success) {
                 this.helper.data.storage = {
@@ -491,7 +492,7 @@ export class AddServiceComponent implements OnInit {
     add_zone_price() {
         this.add_zone.city_id = this.add_service.city_id;
 
-        this.helper.http.post('/admin/add_zone_price', this.add_zone).map((res_data: Response) => res_data.json()).subscribe(res_data => {
+        this.helper.http.post('/admin/add_zone_price', this.add_zone).pipe(map((res_data: Response) => res_data.json())).subscribe(res_data => {
 
             if (res_data.success) {
 
@@ -525,7 +526,7 @@ export class AddServiceComponent implements OnInit {
             _id: data._id,
             price: Number(data.price)
         }
-        this.helper.http.post('/admin/update_zone_price', json).map((res_data: Response) => res_data.json()).subscribe(res_data => {
+        this.helper.http.post('/admin/update_zone_price', json).pipe(map((res_data: Response) => res_data.json())).subscribe(res_data => {
 
             if (res_data.success) {
                 this.helper.data.storage = {
@@ -570,7 +571,7 @@ export class AddServiceComponent implements OnInit {
 
     get_city_lists(countryid) {
         this.add_service.country_id = countryid
-        this.helper.http.post('/api/admin/get_city_lists', {country_id: countryid}).map((res: Response) => res.json()).subscribe(res_data => {
+        this.helper.http.post('/api/admin/get_city_lists', {country_id: countryid}).pipe(map((res: Response) => res.json())).subscribe(res_data => {
             console.log(res_data)
             if(res_data.success) {
                 this.city_list = res_data.cities;
@@ -598,7 +599,7 @@ export class AddServiceComponent implements OnInit {
     get_vehicle_list(cityid) {
         this.add_service.city_id = cityid
         if(cityid){
-            this.helper.http.post('/api/admin/get_vehicle_list', {city_id: cityid, delivery_type: this.add_service.delivery_type}).map((res: Response) => res.json()).subscribe(res_data => {
+            this.helper.http.post('/api/admin/get_vehicle_list', {city_id: cityid, delivery_type: this.add_service.delivery_type}).pipe(map((res: Response) => res.json())).subscribe(res_data => {
                 var vehicles_list = res_data.vehicles;
                 var services_list = res_data.services;
                 var vehicle_array = [];
@@ -629,7 +630,7 @@ export class AddServiceComponent implements OnInit {
 
     get_delivery_list(cityid) {
         this.add_service.city_id = cityid
-        this.helper.http.post('/api/admin/get_delivery_list_for_city', {city_id: cityid}).map((res: Response) => res.json()).subscribe(res_data => {
+        this.helper.http.post('/api/admin/get_delivery_list_for_city', {city_id: cityid}).pipe(map((res: Response) => res.json())).subscribe(res_data => {
 
             this.delivery_list = res_data.deliveries
         });
@@ -645,7 +646,7 @@ export class AddServiceComponent implements OnInit {
             console.log(servicedata)
             console.log(this.add_service.delivery_type)
             servicedata.delivery_type = this.add_service.delivery_type;
-            this.helper.http.post('/admin/add_service_data', servicedata).map((res: Response) => res.json()).subscribe(res_data => {
+            this.helper.http.post('/admin/add_service_data', servicedata).pipe(map((res: Response) => res.json())).subscribe(res_data => {
                 this.myLoading = false;
                 if (res_data.success == true) {
                     this.helper.data.storage = {
@@ -677,7 +678,7 @@ export class AddServiceComponent implements OnInit {
         delete service_data.vehicle_id;
         delete service_data.country_id;
         delete service_data.city_id;
-        this.helper.http.post('/admin/update_service', service_data).map((res: Response) => res.json()).subscribe(res_data => {
+        this.helper.http.post('/admin/update_service', service_data).pipe(map((res: Response) => res.json())).subscribe(res_data => {
             this.myLoading = false;
             if (res_data.success == true) {
 

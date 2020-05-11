@@ -2,6 +2,7 @@ import { Component, OnInit, ElementRef, NgZone, ViewChild  } from '@angular/core
 import { MapsAPILoader } from 'angular2-google-maps/core';
 import {Helper} from "../../franchise_helper";
 import {Response } from '@angular/http';
+import { map } from 'rxjs/operators';
 
 @Component({
     selector: 'app-track_delivery_man',
@@ -72,7 +73,7 @@ export class FranchiseStoreTrackDeliveryManComponent implements OnInit {
 
         if(this.order_id !== "")
         {
-          this.helper.http.post(this.helper.POST_METHOD.PROVIDER_LOCATION_TRACK,{order_id:this.order_id,franchise_id:this.franchise_id, server_token:this.server_token}).map((res_data: Response) => res_data.json()) .subscribe(res_data => {
+          this.helper.http.post(this.helper.POST_METHOD.PROVIDER_LOCATION_TRACK,{order_id:this.order_id,franchise_id:this.franchise_id, server_token:this.server_token}).pipe(map((res_data: Response) => res_data.json())) .subscribe(res_data => {
             this.myLoading=false;
             if(res_data.success == false)
             {
@@ -120,7 +121,7 @@ export class FranchiseStoreTrackDeliveryManComponent implements OnInit {
           this.interval=setInterval(() => {
 
 
-              this.helper.http.post(this.helper.POST_METHOD.PROVIDER_LOCATION_TRACK,{order_id:this.order_id,franchise_id:this.franchise_id, server_token:this.server_token}).map((res_data: Response) => res_data.json()) .subscribe(res_data => {
+              this.helper.http.post(this.helper.POST_METHOD.PROVIDER_LOCATION_TRACK,{order_id:this.order_id,franchise_id:this.franchise_id, server_token:this.server_token}).pipe(map((res_data: Response) => res_data.json())) .subscribe(res_data => {
 
                 if(res_data.success == false)
                 {

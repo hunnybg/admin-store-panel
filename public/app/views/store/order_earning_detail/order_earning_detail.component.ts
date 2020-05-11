@@ -3,6 +3,7 @@ import {Response } from '@angular/http';
 import {Helper} from "../../store_helper";
 declare var jQuery:any;
 import * as moment from 'moment-timezone';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-order_earning_detail',
@@ -136,7 +137,7 @@ export class OrderEarningDetailComponent implements OnInit {
 
         if(this.order_id !== "")
         {
-	        this.helper.http.post(this.helper.POST_METHOD.GET_ORDER_DETAIL, {order_id: this.order_id , store_id:this.store_id , server_token:this.server_token}).map((res_data: Response) => res_data.json()).subscribe(res_data => {
+	        this.helper.http.post(this.helper.POST_METHOD.GET_ORDER_DETAIL, {order_id: this.order_id , store_id:this.store_id , server_token:this.server_token}).pipe(map((res_data: Response) => res_data.json())).subscribe(res_data => {
 
 	            console.log(res_data)
                 this.myLoading=false;

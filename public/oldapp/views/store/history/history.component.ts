@@ -4,6 +4,7 @@ import { Helper } from "../../store_helper";
 declare var jQuery: any;
 import { ModalComponent } from 'ng2-bs3-modal/ng2-bs3-modal';
 import * as moment from 'moment-timezone';
+import { map } from 'rxjs/operators';
 
 @Component({
     selector: 'app-history',
@@ -226,7 +227,7 @@ export class StoreHistoryComponent implements OnInit {
             store_id: this.store_id, server_token: this.server_token, start_date: this.start_date, end_date: this.end_date,
             payment_status: this.payment_status, created_by: this.created_by, pickup_type: this.pickup_type, order_type: this.order_type,
             order_status_id: this.order_status_id, search_field: this.search_field, search_value: this.search_value, page: this.page
-        }).map((res: Response) => res.json()).subscribe(res_data => {
+        }).pipe(map((res: Response) => res.json())).subscribe(res_data => {
 
             this.myLoading = false;
             if (res_data.success == false) {
@@ -292,7 +293,7 @@ export class StoreHistoryComponent implements OnInit {
                 order_id: this.order_id
             }
         }
-        this.helper.http.post(method, json).map((res: Response) => res.json()).subscribe(res_data => {
+        this.helper.http.post(method, json).pipe(map((res: Response) => res.json())).subscribe(res_data => {
 
             this.myLoading = false;
             if (res_data.success) {
@@ -333,7 +334,7 @@ export class StoreHistoryComponent implements OnInit {
             store_id: this.store_id, server_token: this.server_token, start_date: this.start_date, end_date: this.end_date,
             order_status_id: this.order_status_id, payment_status: this.payment_status, created_by: this.created_by, pickup_type: this.pickup_type, order_type: this.order_type,
             search_field: this.search_field, search_value: this.search_value
-        }).map((res: Response) => res.json()).subscribe(res => {
+        }).pipe(map((res: Response) => res.json())).subscribe(res => {
 
             var json2csv = require('json2csv');
 

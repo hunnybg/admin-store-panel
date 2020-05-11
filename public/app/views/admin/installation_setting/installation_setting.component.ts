@@ -1,9 +1,10 @@
 import {Component, OnInit, ViewContainerRef} from '@angular/core';
 import {Response} from '@angular/http';
-import {Observable} from 'rxjs/Rx';
+import {Observable} from 'rxjs';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import {Helper} from "../../helper";
+import { map } from 'rxjs/operators';
 
 
 @Component({
@@ -34,7 +35,7 @@ export class InstallationSettingComponent implements OnInit {
 
         var admin_id = localStorage.getItem('admin_id');
         if (admin_id != "" || admin_id != undefined) {
-            this.helper.http.post('/admin/get_detail', {admin_id: admin_id}).map((res_data: Response) => res_data.json()).subscribe(res_data => {
+            this.helper.http.post('/admin/get_detail', {admin_id: admin_id}).pipe(map((res_data: Response) => res_data.json())).subscribe(res_data => {
 
                 if (res_data.success == true) {
                     if (res_data.admin.admin_type == 3) {
@@ -106,7 +107,7 @@ export class InstallationSettingComponent implements OnInit {
 
     addImage(image_data) {
         //this.store_logo = "web_images/store_logos.png";
-        this.helper.http.post('/admin/upload_logo_images', this.formData).map((res: Response) => res.json()).subscribe(res_data => {
+        this.helper.http.post('/admin/upload_logo_images', this.formData).pipe(map((res: Response) => res.json())).subscribe(res_data => {
 
 
             this.helper.data.storage = {

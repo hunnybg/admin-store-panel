@@ -2,7 +2,7 @@ import {Component, OnInit, ViewContainerRef} from '@angular/core';
 import {Helper} from "../../helper";
 import {Http, Response} from '@angular/http';
 declare var jQuery: any;
-
+import { map } from 'rxjs/operators';
 
 @Component({
     selector: 'app-service',
@@ -77,7 +77,7 @@ export class ServiceComponent implements OnInit {
         this.helper.http.post('/admin/service_list', {
             sort_field: this.sort_field, sort_service: this.sort_service,
             search_field: this.search_field, search_value: this.search_value, page: this.page
-        }).map((res: Response) => res.json()).subscribe(res_data => {
+        }).pipe(map((res: Response) => res.json())).subscribe(res_data => {
             this.myLoading = false;
             if (res_data.success == false) {
 
@@ -111,7 +111,7 @@ export class ServiceComponent implements OnInit {
 
     change_default(index, event){
         // if(event){
-            this.helper.http.post('/admin/select_default_service', {service_id: this.service_list[index]._id, delivery_type_id: this.service_list[index].delivery_type_id, is_default: event, type_id: this.service_list[index].type_id, city_id: this.service_list[index].city_id}).map((res: Response) => res.json()).subscribe(res_data => {
+            this.helper.http.post('/admin/select_default_service', {service_id: this.service_list[index]._id, delivery_type_id: this.service_list[index].delivery_type_id, is_default: event, type_id: this.service_list[index].type_id, city_id: this.service_list[index].city_id}).pipe(map((res: Response) => res.json())).subscribe(res_data => {
                 this.filter(this.page);
             });
         // } else {

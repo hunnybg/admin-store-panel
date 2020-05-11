@@ -2,6 +2,7 @@ import { Component, OnInit , ViewContainerRef } from '@angular/core';
 import {Response } from '@angular/http';
 import {Helper} from "../../store_helper";
 declare var jQuery:any;
+import { map } from 'rxjs/operators';
 
 export interface StoreAnalyticDaily
 {
@@ -160,7 +161,7 @@ export class StoreDailyEarningComponent implements OnInit {
     {
         this.myLoading=true;
         this.helper.http.post(this.helper.POST_METHOD.DAILY_EARNING,{store_id:this.store_id, server_token:this.server_token, start_date:this.start_date,
-            search_field:this.search_field,search_value:this.search_value}).map((res:Response) => res.json()).subscribe(res_data=>{
+            search_field:this.search_field,search_value:this.search_value}).pipe(map((res:Response) => res.json())).subscribe(res_data=>{
 
                 this.myLoading=false;
                 if(res_data.success == false)
@@ -253,7 +254,7 @@ export class StoreDailyEarningComponent implements OnInit {
 
     export_excel() {
         this.helper.http.post(this.helper.POST_METHOD.DAILY_EARNING,{store_id:this.store_id, server_token:this.server_token, start_date:this.start_date,
-            search_field:this.search_field,search_value:this.search_value}).map((res:Response) => res.json()).subscribe(res_data=>{
+            search_field:this.search_field,search_value:this.search_value}).pipe(map((res:Response) => res.json())).subscribe(res_data=>{
             var json2csv = require('json2csv');
 
             var fieldNames  = ['Order ID','Payment By','Total','Service Fees','Order Fees','Store Profit',

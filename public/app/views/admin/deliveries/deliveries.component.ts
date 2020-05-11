@@ -4,6 +4,7 @@ import {Helper} from "../../helper";
 declare var jQuery: any;
 import * as moment from 'moment-timezone';
 import {ModalComponent} from "ng2-bs3-modal/ng2-bs3-modal";
+import { map } from 'rxjs/operators';
 
 @Component({
     selector: 'app-deliveries',
@@ -143,7 +144,7 @@ export class DeliveriesComponent implements OnInit {
         this.page=page;
         this.helper.http.post('/api/admin/delivery_list_search_sort',{request_status:this.request_status, payment_status: this.payment_status,
             search_field:this.search_field,search_value:this.search_value,page:this.page
-        }).map((res:Response) => res.json()).subscribe(res_data=>{
+        }).pipe(map((res:Response) => res.json())).subscribe(res_data=>{
 
                 this.myLoading = false;
                 if(res_data.success == false)
@@ -176,7 +177,7 @@ export class DeliveriesComponent implements OnInit {
     orderDetail()
     {
         this.helper.http.post('/api/admin/delivery_list_search_sort',{store_id:this.store_id,  payment_status: this.payment_status,server_token:this.server_token,request_status: this.request_status,
-            search_field:this.search_field,search_value:this.search_value,page:this.page }).map((res:Response) => res.json()).subscribe(res_data=>{
+            search_field:this.search_field,search_value:this.search_value,page:this.page }).pipe(map((res:Response) => res.json())).subscribe(res_data=>{
 
             this.myLoading = false;
             if(res_data.success == false)
@@ -376,7 +377,7 @@ export class DeliveriesComponent implements OnInit {
     //delivery_export_csv
     delivery_export_csv() {
         this.helper.http.post('/api/admin/delivery_list_search_sort',{store_id:this.store_id,  payment_status: this.payment_status,server_token:this.server_token,request_status: this.request_status,
-            search_field: this.search_field, search_value: this.search_value}).map((res:Response) => res.json()).subscribe(res_data=>{
+            search_field: this.search_field, search_value: this.search_value}).pipe(map((res:Response) => res.json())).subscribe(res_data=>{
 
 
             var json2csv = require('json2csv');
@@ -469,7 +470,7 @@ export class DeliveriesComponent implements OnInit {
     orderAssignProvider(data) {
         this.order_id = data.order_id;
         this.myLoading = true;
-        this.helper.http.post('/api/store/get_vehicle_list', {order_id: this.order_id, city_id: data.city_id, delivery_type: data.delivery_type, store_id: this.store_id, server_token: this.server_token}).map((res: Response) => res.json()).subscribe(res_data => {
+        this.helper.http.post('/api/store/get_vehicle_list', {order_id: this.order_id, city_id: data.city_id, delivery_type: data.delivery_type, store_id: this.store_id, server_token: this.server_token}).pipe(map((res: Response) => res.json())).subscribe(res_data => {
             this.myLoading = false;
             if(res_data.success){
                 this.vehicles = res_data.vehicles;
@@ -492,7 +493,7 @@ export class DeliveriesComponent implements OnInit {
             this.helper.router_id.store.no_deliveryman_orders.splice(index, 1);
         }
         let json = {store_id: this.store_id, server_token: this.server_token, order_id: this.order_id, vehicle_id: this.vehicle_id}
-        this.helper.http.post('/api/store/create_request', json).map((res: Response) => res.json()).subscribe(res_data => {
+        this.helper.http.post('/api/store/create_request', json).pipe(map((res: Response) => res.json())).subscribe(res_data => {
             this.myLoading = false;
             if(res_data.success == false)
             {
@@ -533,7 +534,7 @@ export class DeliveriesComponent implements OnInit {
     delivery_export_excel() {
         this.helper.http.post('/api/admin/deliveries_export_excel', {
             search_field: this.search_field, search_value: this.search_value
-        }).map((res: Response) => res.json()).subscribe(res_data => {
+        }).pipe(map((res: Response) => res.json())).subscribe(res_data => {
             if (res_data.success == true) {
                 var json2excel = require('js2excel');
                 let data = res_data.requests;
@@ -556,7 +557,7 @@ export class DeliveriesComponent implements OnInit {
     complete_request(data){
         data.type = 1;
         console.log(data)
-        this.helper.http.post('/api/provider/complete_request', data).map((res:Response) => res.json()).subscribe(res_data=>{
+        this.helper.http.post('/api/provider/complete_request', data).pipe(map((res:Response) => res.json())).subscribe(res_data=>{
             console.log(res_data)
             
             if(res_data.success){

@@ -2,6 +2,7 @@ import { Component, OnInit, ViewContainerRef } from "@angular/core";
 import { Helper } from "../../store_helper";
 import { Response } from '@angular/http';
 import { TICKET_STATUS } from "../../../constant";
+import { map } from 'rxjs/operators';
 
 @Component({
     selector: 'app-contact-admin',
@@ -85,7 +86,7 @@ export class ContactAdminComponent implements OnInit {
             user_type: this.helper.ADMIN_DATA_ID.STORE,
             user_id: this.store_id
         }
-        this.helper.http.post(this.helper.POST_METHOD.GET_TICKET_LISTS, json).map((res: Response) => res.json()).subscribe(res_data => {
+        this.helper.http.post(this.helper.POST_METHOD.GET_TICKET_LISTS, json).pipe(map((res: Response) => res.json())).subscribe(res_data => {
             this.myLoading = false;
             if (res_data.success == false) {
                 this.ticket_list = [];
@@ -125,7 +126,7 @@ export class ContactAdminComponent implements OnInit {
             user_type: this.helper.ADMIN_DATA_ID.STORE
         }
 
-        this.helper.http.post(this.helper.POST_METHOD.CREATE_TICKET, json).map((res: Response) => res.json()).subscribe(res_data => {
+        this.helper.http.post(this.helper.POST_METHOD.CREATE_TICKET, json).pipe(map((res: Response) => res.json())).subscribe(res_data => {
             console.log(res_data)
             if (!res_data.success) {
                 this.myLoading = false;

@@ -1,10 +1,11 @@
 import {Component, OnInit, ViewContainerRef} from '@angular/core';
 import {Response} from '@angular/http';
-import {Observable} from 'rxjs/Rx';
+import {Observable} from 'rxjs';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import {Helper} from "../../helper";
 declare var jQuery: any;
+import { map } from 'rxjs/operators';
 
 export interface UpdateSms {
     sms_unique_title: String,
@@ -69,7 +70,7 @@ export class SmsComponent implements OnInit {
             sms_content: "",
             is_send: true
         }
-        this.helper.http.post('/admin/get_sms_gateway_detail', {}).map((res: Response) => res.json()).subscribe(res_data => {
+        this.helper.http.post('/admin/get_sms_gateway_detail', {}).pipe(map((res: Response) => res.json())).subscribe(res_data => {
             console.log(res_data);
             this.sms_configuration.sms_auth_id = res_data.sms_gateway_detail.sms_auth_id,
                 this.sms_configuration.sms_auth_token = res_data.sms_gateway_detail.sms_auth_token,
@@ -78,7 +79,7 @@ export class SmsComponent implements OnInit {
 
         });
         this.sms_id = this.helper.router_id.admin.sms_id
-        this.helper.http.get('/admin/sms_list').map((res: Response) => res.json()).subscribe(res => {
+        this.helper.http.get('/admin/sms_list').pipe(map((res: Response) => res.json())).subscribe(res => {
             this.sms_list = res.sms_details
 
         });
@@ -86,7 +87,7 @@ export class SmsComponent implements OnInit {
 
             this.update_sms.sms_unique_title = res_data.selected;
             this.sms_id = res_data.selected;
-            this.helper.http.post('/admin/get_sms_detail', {sms_id: res_data.selected}).map((res_data: Response) => res_data.json()).subscribe(res_data => {
+            this.helper.http.post('/admin/get_sms_detail', {sms_id: res_data.selected}).pipe(map((res_data: Response) => res_data.json())).subscribe(res_data => {
 
                 if (res_data.success == false) {
                     this.helper.data.storage = {
@@ -123,7 +124,7 @@ export class SmsComponent implements OnInit {
     
     
      SmsConfiguration(smsconfigurationdata) {
-        this.helper.http.post('/admin/update_sms_configuration', smsconfigurationdata).map((res: Response) => res.json()).subscribe(res_data => {
+        this.helper.http.post('/admin/update_sms_configuration', smsconfigurationdata).pipe(map((res: Response) => res.json())).subscribe(res_data => {
             console.log(res_data.success);
             if (res_data.success == true) {
                 this.helper.data.storage = {
@@ -147,7 +148,7 @@ export class SmsComponent implements OnInit {
 
 
     UpdateSms(sms_data) {
-        this.helper.http.post('/admin/update_sms', sms_data).map((res: Response) => res.json()).subscribe(res_data => {
+        this.helper.http.post('/admin/update_sms', sms_data).pipe(map((res: Response) => res.json())).subscribe(res_data => {
 
             if (res_data.success == true) {
                 this.helper.data.storage = {

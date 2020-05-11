@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewContainerRef } from "@angular/core";
 import { Helper } from "../../store_helper";
 import { Response } from '@angular/http';
-
+import { map } from 'rxjs/operators';
 declare var jQuery: any;
 
 @Component({
@@ -75,7 +75,7 @@ export class VaiterEarningComponent implements OnInit {
 
     get_vaiter_list() {
         this.myLoading = true;
-        this.helper.http.post(this.helper.POST_METHOD.GET_ALL_VAITERS, { store_id: this.store_id, server_token: this.server_token }).map((res: Response) => res.json()).subscribe(res_data => {
+        this.helper.http.post(this.helper.POST_METHOD.GET_ALL_VAITERS, { store_id: this.store_id, server_token: this.server_token }).pipe(map((res: Response) => res.json())).subscribe(res_data => {
             this.myLoading = false;
             console.log(res_data)
             if (res_data.success) {
@@ -104,7 +104,7 @@ export class VaiterEarningComponent implements OnInit {
             end_date: this.end_date.formatted,
             vaiter_id: this.search_field,
         }
-        this.helper.http.post(this.helper.POST_METHOD.GET_TIP_EARNING, json).map((res: Response) => res.json()).subscribe(res_data => {
+        this.helper.http.post(this.helper.POST_METHOD.GET_TIP_EARNING, json).pipe(map((res: Response) => res.json())).subscribe(res_data => {
             this.myLoading = false;
             console.log(res_data)
             if (res_data.success) {

@@ -2,6 +2,7 @@ import {Component, OnInit, ViewContainerRef} from '@angular/core';
 import {Helper} from "../../helper";
 import {Http, Response} from '@angular/http';
 declare var swal: any;
+import { map } from 'rxjs/operators';
 
 @Component({
     selector: 'app-admin',
@@ -28,7 +29,7 @@ export class AdminComponent implements OnInit {
 
     ngOnInit() {
         this.helper.message();
-        this.helper.http.get('admin/lists').map((res: Response) => res.json()).subscribe(data => {
+        this.helper.http.get('admin/lists').pipe(map((res: Response) => res.json())).subscribe(data => {
             this.myLoading = false;
 
             if (data.success == false) {
@@ -66,7 +67,7 @@ export class AdminComponent implements OnInit {
             cancelButtonColor: '#d33',
             confirmButtonText: 'Yes, delete it!'
         }).then(() => {
-            this.helper.http.post('/admin/delete', {admin_id: id}).map((response: Response) => response.json()).subscribe(res_data => {
+            this.helper.http.post('/admin/delete', {admin_id: id}).pipe(map((response: Response) => response.json())).subscribe(res_data => {
                 if (res_data.success == true) {
                     this.helper.data.storage = {
                         "message": this.helper.MESSAGE_CODE[res_data.message],

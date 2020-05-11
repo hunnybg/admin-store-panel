@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { HttpModule, JsonpModule } from '@angular/http';
+import { HttpClientModule, HttpClientJsonpModule } from '@angular/common/http';
 import { RouterModule } from "@angular/router";
 import { LocationStrategy, HashLocationStrategy } from '@angular/common';
 import { Router_id } from "./views/routing_hidden_id";
@@ -10,6 +10,7 @@ import { ChartsModule } from 'ng2-charts';
 import { ImageCropperModule } from 'ng2-img-cropper';
 import { UiSwitchModule } from 'angular2-ui-switch'
 import { Ng2Bs3ModalModule } from 'ng2-bs3-modal/ng2-bs3-modal';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { ROUTES } from "./app.routes";
 import { AppComponent } from './app.component';
@@ -240,8 +241,8 @@ import { ContactAdminModule } from './views/store/contact_admin/contact_admin.mo
     imports: [
 
         BrowserModule,
-        HttpModule,
-        JsonpModule,
+        HttpClientModule,
+        HttpClientJsonpModule,
         FormsModule,
         UiSwitchModule,
         Ng2Bs3ModalModule,
@@ -421,7 +422,8 @@ import { ContactAdminModule } from './views/store/contact_admin/contact_admin.mo
         StoreCreateOrderModule,
         StoreCheckoutOrderModule,
         ImageCropperModule,
-
+        BrowserModule,
+        BrowserAnimationsModule,
 
         RouterModule.forRoot(ROUTES),
         TranslateModule.forRoot()

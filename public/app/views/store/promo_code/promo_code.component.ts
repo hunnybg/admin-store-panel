@@ -2,6 +2,7 @@ import {Component, OnInit, ViewContainerRef} from '@angular/core';
 import {Helper} from "../../store_helper";
 import {Http, Response} from '@angular/http';
 declare var jQuery: any;
+import { map } from 'rxjs/operators';
 
 @Component({
     selector: 'app-promo_code',
@@ -81,7 +82,7 @@ export class StorePromoCodeComponent implements OnInit {
         this.helper.http.post('/api/store/search_sort_promo_code_list', {
             sort_field: this.sort_field, sort_promo_code: this.sort_promo_code, store_id: this.store_id, server_token: this.server_token,
             search_field: this.search_field, search_value: this.search_value, page: this.page
-        }).map((res: Response) => res.json()).subscribe(res_data => {
+        }).pipe(map((res: Response) => res.json())).subscribe(res_data => {
             console.log(res_data)
             this.myLoading = false;
             if (res_data.success == false) {
@@ -104,7 +105,7 @@ export class StorePromoCodeComponent implements OnInit {
     promocode_active_deactive(state, promo_id) {
         this.helper.http.post('/admin/promocode_active_deactive', {
             promo_id: promo_id, state: state
-        }).map((res: Response) => res.json()).subscribe(res_data => {
+        }).pipe(map((res: Response) => res.json())).subscribe(res_data => {
             console.log(promo_id);
             console.log(state);
             if (res_data.success == true) {

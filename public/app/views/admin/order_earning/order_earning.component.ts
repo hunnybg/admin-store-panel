@@ -1,7 +1,7 @@
 import {Component, OnInit, ViewContainerRef} from '@angular/core';
 import {Response} from '@angular/http';
 import {Helper} from "../../helper";
-
+import { map } from 'rxjs/operators';
 declare var jQuery: any;
 
 @Component({
@@ -90,7 +90,7 @@ export class OrderEarningComponent implements OnInit {
         this.helper.http.post('/admin/get_order_earning', {
             start_date: this.start_date, end_date: this.end_date,
             search_field: this.search_field, search_value: this.search_value, page: this.page
-        }).map((res: Response) => res.json()).subscribe(res_data => {
+        }).pipe(map((res: Response) => res.json())).subscribe(res_data => {
             this.myLoading = false;
             if (res_data.success == false) {
                 this.order_list = [];
@@ -132,7 +132,7 @@ export class OrderEarningComponent implements OnInit {
             search_field: this.search_field,
             search_value: this.search_value
 
-        }).map((res: Response) => res.json()).subscribe(res_data => {
+        }).pipe(map((res: Response) => res.json())).subscribe(res_data => {
 
             var json2csv = require('json2csv');
 
@@ -227,7 +227,7 @@ export class OrderEarningComponent implements OnInit {
             search_field: this.search_field,
             search_value: this.search_value
 
-        }).map((res: Response) => res.json()).subscribe(res_data => {
+        }).pipe(map((res: Response) => res.json())).subscribe(res_data => {
 
             var json_data = [];
             var json2excel = require('js2excel');

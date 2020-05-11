@@ -4,6 +4,7 @@ import {Helper} from "../../franchise_helper";
 declare var jQuery:any;
 declare var swal: any;
 import { ModalComponent } from 'ng2-bs3-modal/ng2-bs3-modal';
+import { map } from 'rxjs/operators';
 
 export interface FranchiseStoreRegister{
 
@@ -119,7 +120,7 @@ export class AddFranchiseStoreComponent implements OnInit {
             is_email_verified : false
 
         }
-        this.helper.http.get(this.helper.GET_METHOD.GET_COUNTRY_LIST).map((response: Response) => response.json()) .subscribe(res_data => {
+        this.helper.http.get(this.helper.GET_METHOD.GET_COUNTRY_LIST).pipe(map((response: Response) => response.json())) .subscribe(res_data => {
 
             this.country_list = res_data.countries;
             setTimeout(function() {
@@ -130,7 +131,7 @@ export class AddFranchiseStoreComponent implements OnInit {
         (error: any) => {
                 this.helper.http_status(error)
         });
-        this.helper.http.post(this.helper.POST_METHOD.GET_SETTING_DETAIL,{}).map((response: Response) => response.json()) .subscribe(res_data => {
+        this.helper.http.post(this.helper.POST_METHOD.GET_SETTING_DETAIL,{}).pipe(map((response: Response) => response.json())) .subscribe(res_data => {
             this.myLoading=false;
             this.setting_data=res_data.setting
 
@@ -239,7 +240,7 @@ export class AddFranchiseStoreComponent implements OnInit {
         this.store_register.store_delivery_id = '';
         this.store_register.city_id='';
         this.myLoading=true;
-        this.helper.http.post(this.helper.POST_METHOD.GET_CITY_LIST,{country_id:countryid}).map((res:Response) => res.json()).subscribe(res_data=>{
+        this.helper.http.post(this.helper.POST_METHOD.GET_CITY_LIST,{country_id:countryid}).pipe(map((res:Response) => res.json())).subscribe(res_data=>{
             this.myLoading=false;
             if(res_data.success)
             {
@@ -312,7 +313,7 @@ export class AddFranchiseStoreComponent implements OnInit {
         this.myLoading=true;
         this.store_register.city_id=cityid;
         this.store_register.store_delivery_id = '';
-        this.helper.http.post(this.helper.POST_METHOD.GET_DELIVERY_LIST_FOR_CITY,{city_id:cityid}).map((res:Response) => res.json()).subscribe(res_data=>{
+        this.helper.http.post(this.helper.POST_METHOD.GET_DELIVERY_LIST_FOR_CITY,{city_id:cityid}).pipe(map((res:Response) => res.json())).subscribe(res_data=>{
             this.myLoading=false;
             if(res_data.success)
             {
@@ -341,7 +342,7 @@ export class AddFranchiseStoreComponent implements OnInit {
             this.stor_data=stordata
             if(this.setting_data.is_store_sms_verification == true || this.setting_data.is_store_mail_verification == true)
             {
-                this.helper.http.post(this.helper.POST_METHOD.ADMIN_OTP_VERIFICATION,{type:2, email:stordata.email, phone:stordata.phone}).map((res:Response) => res.json()).subscribe(res_data=>{
+                this.helper.http.post(this.helper.POST_METHOD.ADMIN_OTP_VERIFICATION,{type:2, email:stordata.email, phone:stordata.phone}).pipe(map((res:Response) => res.json())).subscribe(res_data=>{
                     this.myLoading=false;
                     if(res_data.success == true)
                     {
@@ -457,7 +458,7 @@ export class AddFranchiseStoreComponent implements OnInit {
         this.formData.append('is_phone_number_verified',store_data.is_phone_number_verified);
         this.formData.append('is_email_verified',store_data.is_email_verified);
 
-        this.helper.http.post(this.helper.POST_METHOD.STORE_REGISTER,this.formData).map((res:Response) => res.json()).subscribe(res_data=>{
+        this.helper.http.post(this.helper.POST_METHOD.STORE_REGISTER,this.formData).pipe(map((res:Response) => res.json())).subscribe(res_data=>{
 
             this.myLoading=false;
             console.log(res_data);

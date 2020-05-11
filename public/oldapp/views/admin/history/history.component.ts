@@ -4,6 +4,7 @@ import { Helper } from "../../helper";
 import * as moment from 'moment-timezone';
 declare var jQuery: any;
 import { ModalComponent } from 'ng2-bs3-modal/ng2-bs3-modal';
+import { map } from 'rxjs/operators';
 
 @Component({
     selector: 'app-history',
@@ -176,7 +177,7 @@ export class HistoryComponent implements OnInit {
         this.helper.http.post('/api/admin/history', {
             start_date: this.start_date, end_date: this.end_date, payment_status: this.payment_status, created_by: this.created_by, pickup_type: this.pickup_type,
             order_status_id: this.order_status_id, search_field: this.search_field, search_value: this.search_value, order_type: this.order_type
-        }).map((res: Response) => res.json()).subscribe(res_data => {
+        }).pipe(map((res: Response) => res.json())).subscribe(res_data => {
 
 
             var json2csv = require('json2csv');
@@ -282,7 +283,7 @@ export class HistoryComponent implements OnInit {
         this.helper.http.post('/api/admin/history', {
             start_date: this.start_date, end_date: this.end_date,
             search_field: this.search_field, search_value: this.search_value
-        }).map((res: Response) => res.json()).subscribe(res_data => {
+        }).pipe(map((res: Response) => res.json())).subscribe(res_data => {
 
             var json_data = [];
             var json2excel = require('js2excel');
@@ -370,7 +371,7 @@ export class HistoryComponent implements OnInit {
         this.helper.http.post('/api/admin/history', {
             start_date: this.start_date, end_date: this.end_date, created_by: this.created_by, payment_status: this.payment_status, pickup_type: this.pickup_type,
             order_status_id: this.order_status_id, search_field: this.search_field, search_value: this.search_value, page: this.page, order_type: this.order_type
-        }).map((res: Response) => res.json()).subscribe(res_data => {
+        }).pipe(map((res: Response) => res.json())).subscribe(res_data => {
             console.log(res_data)
             this.myLoading = false;
             if (res_data.success == false) {
@@ -395,7 +396,7 @@ export class HistoryComponent implements OnInit {
 
     show_review(order_id) {
         console.log(order_id)
-        this.helper.http.post('/admin/get_review_detail', { order_id: order_id }).map((res: Response) => res.json()).subscribe(res_data => {
+        this.helper.http.post('/admin/get_review_detail', { order_id: order_id }).pipe(map((res: Response) => res.json())).subscribe(res_data => {
             if (res_data.success) {
                 this.review_detail = res_data.review_detail;
                 console.log(this.review_detail)

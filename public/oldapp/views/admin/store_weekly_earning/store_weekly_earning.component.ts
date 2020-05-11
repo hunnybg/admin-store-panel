@@ -3,6 +3,7 @@ import {Response} from '@angular/http';
 import {Helper} from "../../helper";
 declare var jQuery: any;
 import {ModalComponent} from 'ng2-bs3-modal/ng2-bs3-modal';
+import { map } from 'rxjs/operators';
 
 export interface StoreAnalyticDaily
 {
@@ -242,7 +243,7 @@ export class StoreWeeklyEarningComponent implements OnInit {
             date7:null
         }
 
-        this.helper.http.post('/api/admin/get_setting_detail', {}).map((res: Response) => res.json()).subscribe(res_data => {
+        this.helper.http.post('/api/admin/get_setting_detail', {}).pipe(map((res: Response) => res.json())).subscribe(res_data => {
 
            if (res_data.success == true) {
                 this.registered_date = res_data.setting.created_at;
@@ -335,7 +336,7 @@ export class StoreWeeklyEarningComponent implements OnInit {
             start_date: this.start_date, end_date: this.end_date,
 
             search_field: this.search_field, search_value: this.search_value, page: this.page
-        }).map((res: Response) => res.json()).subscribe(res_data => {
+        }).pipe(map((res: Response) => res.json())).subscribe(res_data => {
             this.myLoading = false;
 
             if (res_data.success == false) {
@@ -372,7 +373,7 @@ export class StoreWeeklyEarningComponent implements OnInit {
         this.amount = null;
     }
     AdminPayToStore(add_amount) {
-        this.helper.http.post('/admin/admin_paid_to_store', add_amount).map((res: Response) => res.json()).subscribe(res_data => {
+        this.helper.http.post('/admin/admin_paid_to_store', add_amount).pipe(map((res: Response) => res.json())).subscribe(res_data => {
 
             if (res_data.success == true) {
                 this.helper.data.storage = {
@@ -397,7 +398,7 @@ export class StoreWeeklyEarningComponent implements OnInit {
             end_date: this.end_date,
             search_field: this.search_field,
             search_value: ''
-        }).map((res: Response) => res.json()).subscribe(res_data => {
+        }).pipe(map((res: Response) => res.json())).subscribe(res_data => {
             this.myLoading = false;
            
             if(res_data.success == false)
@@ -538,7 +539,7 @@ export class StoreWeeklyEarningComponent implements OnInit {
         this.helper.http.post('/admin/store_weekly_earning', {
             start_date: this.start_date, end_date: this.end_date,
             search_field: this.search_field, search_value: this.search_value
-        }).map((res: Response) => res.json()).subscribe(res_data => {
+        }).pipe(map((res: Response) => res.json())).subscribe(res_data => {
             var json2csv = require('json2csv');
             res_data.store_weekly_earnings.forEach((store_weekly_earning, index) => {
 
@@ -617,7 +618,7 @@ export class StoreWeeklyEarningComponent implements OnInit {
         this.helper.http.post('/admin/store_weekly_earning', {
             start_date: this.start_date, end_date: this.end_date,
             search_field: this.search_field, search_value: this.search_value
-        }).map((res: Response) => res.json()).subscribe(res_data => {
+        }).pipe(map((res: Response) => res.json())).subscribe(res_data => {
             var json_data = [];
             var json2excel = require('js2excel');
             res_data.store_weekly_earnings.forEach((store_weekly_earning, index) => {
@@ -670,7 +671,7 @@ export class StoreWeeklyEarningComponent implements OnInit {
 
 
     //    store_weekly_earning_export_excel() {
-    //        this.helper.http.get('/admin/export_excel_store_weekly_earning').map((res: Response) => res.json()).subscribe(res => {
+    //        this.helper.http.get('/admin/export_excel_store_weekly_earning').pipe(map((res: Response) => res.json())).subscribe(res => {
     //
     //        window.open(res.path);
     //            

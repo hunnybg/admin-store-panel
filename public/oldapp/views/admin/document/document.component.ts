@@ -1,7 +1,7 @@
 import {Component, OnInit, ViewContainerRef} from '@angular/core';
 import {Helper} from "../../helper";
 import {Http, Response} from '@angular/http';
-
+import { map } from 'rxjs/operators';
 
 declare var jQuery: any;
 @Component({
@@ -78,7 +78,7 @@ export class DocumentComponent implements OnInit {
         this.helper.http.post('/admin/document_list', {
             sort_field: this.sort_field, sort_document: this.sort_document,
             search_field: this.search_field, search_value: this.search_value, page: this.page
-        }).map((res: Response) => res.json()).subscribe(res_data => {
+        }).pipe(map((res: Response) => res.json())).subscribe(res_data => {
             this.myLoading = false;
             if (res_data.success == false) {
 

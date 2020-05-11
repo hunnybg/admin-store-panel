@@ -2,6 +2,7 @@ import { Component, OnInit , ViewContainerRef} from '@angular/core';
 import {Helper} from "../../franchise_helper";
 import {Response} from '@angular/http';
 declare var jQuery:any;
+import { map } from 'rxjs/operators';
 
 export interface FranchiseForgotPassword{
         email: String    
@@ -51,7 +52,7 @@ export class FranchiseForgotPasswordComponent implements OnInit {
     storeForgotPassword(forgotpassworddata)
     {
         this.myLoading=true;
-        this.helper.http.post(this.helper.POST_METHOD.FORGOT_PASSWORD,{email:forgotpassworddata.email.trim(), type:2}).map((res:Response) => res.json()).subscribe(res_data=>{
+        this.helper.http.post(this.helper.POST_METHOD.FORGOT_PASSWORD,{email:forgotpassworddata.email.trim(), type:2}).pipe(map((res:Response) => res.json())).subscribe(res_data=>{
             
             this.myLoading=false;
                         if(res_data.success == false)

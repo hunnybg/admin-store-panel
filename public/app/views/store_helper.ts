@@ -16,6 +16,7 @@ import { validation_message } from './store/store_panel_validation_message';
 import { GET_METHOD, POST_METHOD } from './store/store_http_methods';
 import { StoreCart } from './store/cart';
 import { Response } from '@angular/http';
+import { map } from 'rxjs/operators';
 
 @Component({
     selector: 'helper'
@@ -192,7 +193,7 @@ export class Helper {
             pickup_addresses: this.user_cart.cart_data.pickup_addresses
         }
 
-        this.http.post(this.POST_METHOD.ADD_ITEM_IN_CART, json).map((res_data: Response) => res_data.json()).subscribe(res_data => {
+        this.http.post(this.POST_METHOD.ADD_ITEM_IN_CART, json).pipe(map((res_data: Response) => res_data.json())).subscribe(res_data => {
 
             if (res_data.success) {
                 this.user_cart.cart_data.cart_id = res_data.cart_id;

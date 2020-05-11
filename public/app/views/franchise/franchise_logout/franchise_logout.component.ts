@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {Helper} from "../../franchise_helper";
 import {Response } from '@angular/http';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-franchise_logout',
@@ -19,7 +20,7 @@ export class FranchiseLogoutComponent implements OnInit {
             var franchise = JSON.parse(localStorage.getItem('franchise'));
             if(franchise!==null)
             {
-                this.helper.http.post(this.helper.POST_METHOD.LOGOUT,{franchise_id:franchise._id}).map((res:Response) => res.json()).subscribe(res_data=>{
+                this.helper.http.post(this.helper.POST_METHOD.LOGOUT,{franchise_id:franchise._id}).pipe(map((res:Response) => res.json())).subscribe(res_data=>{
 
                     this.myLoading=false;
                         this.helper.tokenService.removeToken();

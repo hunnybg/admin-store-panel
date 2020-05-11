@@ -6,6 +6,7 @@ import { ModalComponent } from 'ng2-bs3-modal/ng2-bs3-modal';
 import * as moment from 'moment-timezone';
 declare var google: any;
 declare var swal: any;
+import { map } from 'rxjs/operators';
 
 @Component({
     selector: 'app-delivery',
@@ -153,7 +154,7 @@ export class StoreDeliveryComponent implements OnInit {
         this.myLoading = true;
         this.page=page;
         this.helper.http.post(this.helper.POST_METHOD.DELIVERY_LIST_SEARCH_SORT,{store_id:this.store_id, server_token:this.server_token,request_status:this.request_status,
-                                                       search_field:this.search_field,search_value:this.search_value,page:this.page }).map((res:Response) => res.json()).subscribe(res_data=>{
+                                                       search_field:this.search_field,search_value:this.search_value,page:this.page }).pipe(map((res:Response) => res.json())).subscribe(res_data=>{
 
                 this.myLoading = false;
             if(res_data.success == false)
@@ -320,7 +321,7 @@ export class StoreDeliveryComponent implements OnInit {
     orderDetail()
     {
         this.helper.http.post(this.helper.POST_METHOD.DELIVERY_LIST_SEARCH_SORT,{store_id:this.store_id, server_token:this.server_token,request_status: this.request_status,
-                                                       search_field:this.search_field,search_value:this.search_value,page:this.page }).map((res:Response) => res.json()).subscribe(res_data=>{
+                                                       search_field:this.search_field,search_value:this.search_value,page:this.page }).pipe(map((res:Response) => res.json())).subscribe(res_data=>{
 
             this.myLoading = false;                                             
             if(res_data.success == false)
@@ -378,7 +379,7 @@ export class StoreDeliveryComponent implements OnInit {
             confirmButtonText: 'Yes, delete it!'
           }).then(() => {
                 this.myLoading = true;   
-                this.helper.http.post(this.helper.POST_METHOD.STORE_CANCEL_OR_REJECT_ORDER,{store_id:this.store_id, server_token:this.server_token,order_id:data.order_id, order_status:data.order_status}).map((res:Response) => res.json()).subscribe(res_data=>{
+                this.helper.http.post(this.helper.POST_METHOD.STORE_CANCEL_OR_REJECT_ORDER,{store_id:this.store_id, server_token:this.server_token,order_id:data.order_id, order_status:data.order_status}).pipe(map((res:Response) => res.json())).subscribe(res_data=>{
                     this.myLoading = false;   
                     if(res_data.success == false)
                     {
@@ -408,7 +409,7 @@ export class StoreDeliveryComponent implements OnInit {
     CancleRequest(data , provider_id)
     {
         this.myLoading = true;   
-        this.helper.http.post(this.helper.POST_METHOD.CANCEL_REQUEST,{store_id:this.store_id, server_token:this.server_token,request_id:data.request_id, provider_id:provider_id}).map((res:Response) => res.json()).subscribe(res_data=>{
+        this.helper.http.post(this.helper.POST_METHOD.CANCEL_REQUEST,{store_id:this.store_id, server_token:this.server_token,request_id:data.request_id, provider_id:provider_id}).pipe(map((res:Response) => res.json())).subscribe(res_data=>{
             this.myLoading = false;   
             if(res_data.success == false)
             {
@@ -443,7 +444,7 @@ export class StoreDeliveryComponent implements OnInit {
         this.order_id = data.order_id;
         this.delivery_type = data.delivery_type;
         this.myLoading = true;
-        this.helper.http.post(this.helper.POST_METHOD.GET_VEHICLE_LIST, {order_id: this.order_id, delivery_type: this.delivery_type, store_id: this.store_id, server_token: this.server_token}).map((res: Response) => res.json()).subscribe(res_data => {
+        this.helper.http.post(this.helper.POST_METHOD.GET_VEHICLE_LIST, {order_id: this.order_id, delivery_type: this.delivery_type, store_id: this.store_id, server_token: this.server_token}).pipe(map((res: Response) => res.json())).subscribe(res_data => {
             this.myLoading = false;
             if(res_data.success){
                 this.vehicles = res_data.vehicles;
@@ -466,7 +467,7 @@ export class StoreDeliveryComponent implements OnInit {
             this.helper.router_id.store.no_deliveryman_orders.splice(index, 1);
         }
         let json = {store_id: this.store_id, server_token: this.server_token, order_id: this.order_id, vehicle_id: this.vehicle_id}
-        this.helper.http.post(this.helper.POST_METHOD.CREATE_REQUEST, json).map((res: Response) => res.json()).subscribe(res_data => {
+        this.helper.http.post(this.helper.POST_METHOD.CREATE_REQUEST, json).pipe(map((res: Response) => res.json())).subscribe(res_data => {
                 this.myLoading = false;
                 if(res_data.success == false)
                 {
@@ -511,7 +512,7 @@ export class StoreDeliveryComponent implements OnInit {
     set_payment_status_by_store(boolean)
     {
         this.myLoading = true;   
-        this.helper.http.post(this.helper.POST_METHOD.ORDER_PAYMENT_STATUS_SET_ON_CASH_ON_DELIVERY,{store_id:this.store_id, is_order_price_paid_by_store:boolean, server_token:this.server_token,order_payment_id:this.order_payment_id}).map((res:Response) => res.json()).subscribe(res_data=>{
+        this.helper.http.post(this.helper.POST_METHOD.ORDER_PAYMENT_STATUS_SET_ON_CASH_ON_DELIVERY,{store_id:this.store_id, is_order_price_paid_by_store:boolean, server_token:this.server_token,order_payment_id:this.order_payment_id}).pipe(map((res:Response) => res.json())).subscribe(res_data=>{
             this.myLoading = false;   
             if(res_data.success)
             {
@@ -547,7 +548,7 @@ export class StoreDeliveryComponent implements OnInit {
     complete_request(data){
         data.type = 1;
         console.log(data)
-        this.helper.http.post(this.helper.POST_METHOD.COMPLETE_REQUEST, data).map((res:Response) => res.json()).subscribe(res_data=>{
+        this.helper.http.post(this.helper.POST_METHOD.COMPLETE_REQUEST, data).pipe(map((res:Response) => res.json())).subscribe(res_data=>{
             console.log(res_data)
             
             if(res_data.success){

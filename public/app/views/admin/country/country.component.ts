@@ -2,7 +2,7 @@ import {Component, OnInit, ViewContainerRef} from '@angular/core';
 import {Http, Response} from '@angular/http';
 import {Helper} from "../../helper";
 declare var jQuery: any;
-
+import { map } from 'rxjs/operators';
 
 @Component({
     selector: 'app-country',
@@ -33,7 +33,7 @@ export class countryComponent implements OnInit {
 
     ngOnInit() {
         this.helper.message();
-        this.helper.http.get('admin/country_list').map((res: Response) => res.json()).subscribe(data => {
+        this.helper.http.get('admin/country_list').pipe(map((res: Response) => res.json())).subscribe(data => {
             this.myLoading = false;
             if (data.success == false) {
                 this.country_list = [];
@@ -74,7 +74,7 @@ export class countryComponent implements OnInit {
     
 
     is_business_change(id, event) {
-        this.helper.http.post('/admin/country_toggle_change', {country_id: id, is_business: event}).map((res: Response) => res.json()).subscribe(res_data => {
+        this.helper.http.post('/admin/country_toggle_change', {country_id: id, is_business: event}).pipe(map((res: Response) => res.json())).subscribe(res_data => {
 
             if (res_data.success == false) {
 
@@ -84,7 +84,7 @@ export class countryComponent implements OnInit {
     }
 
     is_referral_user_change(id, event) {
-        this.helper.http.post('/admin/country_toggle_change', {country_id: id, is_referral_user: event}).map((res: Response) => res.json()).subscribe(res_data => {
+        this.helper.http.post('/admin/country_toggle_change', {country_id: id, is_referral_user: event}).pipe(map((res: Response) => res.json())).subscribe(res_data => {
 
             if (res_data.success == false) {
 
@@ -94,7 +94,7 @@ export class countryComponent implements OnInit {
     }
 
     is_referral_store_change(id, event) {
-        this.helper.http.post('/admin/country_toggle_change', {country_id: id, is_referral_store: event}).map((res: Response) => res.json()).subscribe(res_data => {
+        this.helper.http.post('/admin/country_toggle_change', {country_id: id, is_referral_store: event}).pipe(map((res: Response) => res.json())).subscribe(res_data => {
 
             if (res_data.success == false) {
 
@@ -103,7 +103,7 @@ export class countryComponent implements OnInit {
 
     }
     is_referral_provider_change(id, event) {
-        this.helper.http.post('/admin/country_toggle_change', {country_id: id, is_referral_provider: event}).map((res: Response) => res.json()).subscribe(res_data => {
+        this.helper.http.post('/admin/country_toggle_change', {country_id: id, is_referral_provider: event}).pipe(map((res: Response) => res.json())).subscribe(res_data => {
 
             if (res_data.success == false) {
 

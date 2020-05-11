@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Response} from '@angular/http';
-import {Observable} from 'rxjs/Rx';
+import {Observable} from 'rxjs';
+import { map } from 'rxjs/operators';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import {Helper} from "../../helper";
@@ -146,11 +147,11 @@ export class AddPromoCodeComponent implements OnInit {
             is_promo_apply_on_completed_order: false
         }
         this.promo_id = this.helper.router_id.admin.promo_id
-        this.helper.http.get('api/admin/get_country_list').map((response: Response) => response.json()).subscribe(res_data => {
+        this.helper.http.get('api/admin/get_country_list').pipe(map((response: Response) => response.json())).subscribe(res_data => {
             this.country_list = res_data.countries;
 
         });
-        this.helper.http.get('api/admin/get_delivery_list').map((response: Response) => response.json()).subscribe(res_data => {
+        this.helper.http.get('api/admin/get_delivery_list').pipe(map((response: Response) => response.json())).subscribe(res_data => {
             this.delivery_list = res_data.deliveries;
 
             setTimeout(() => {
@@ -236,7 +237,7 @@ export class AddPromoCodeComponent implements OnInit {
             this.add_promo_code.promo_for = res_data.selected;
             this.add_promo_code.promo_apply_on = [];
             if (res_data.selected == this.helper.ADMIN_PROMO_FOR_ID.DELIVERIES) {
-                this.helper.http.get('api/admin/get_delivery_list').map((response: Response) => response.json()).subscribe(res_data => {
+                this.helper.http.get('api/admin/get_delivery_list').pipe(map((response: Response) => response.json())).subscribe(res_data => {
                     this.delivery_list = res_data.deliveries;
 
                     setTimeout(() => {
@@ -330,7 +331,7 @@ export class AddPromoCodeComponent implements OnInit {
             // jQuery('#promo_for').hide();
 
 
-            this.helper.http.post('/admin/get_promo_detail', {promo_id: this.promo_id}).map((res_data: Response) => res_data.json()).subscribe(res_data => {
+            this.helper.http.post('/admin/get_promo_detail', {promo_id: this.promo_id}).pipe(map((res_data: Response) => res_data.json())).subscribe(res_data => {
 
                 if (res_data.success == false) {
                     this.helper.router.navigate(['admin/promotions']);
@@ -430,7 +431,7 @@ export class AddPromoCodeComponent implements OnInit {
     get_product_list(city_id) {
         this.helper.http.post('/admin/product_for_city_store', {
             city_id: this.add_promo_code.city_id
-        }).map((res: Response) => res.json()).subscribe(res_data => {
+        }).pipe(map((res: Response) => res.json())).subscribe(res_data => {
             this.product_list = res_data.city;
             console.log(this.product_list)
 
@@ -473,7 +474,7 @@ export class AddPromoCodeComponent implements OnInit {
     get_item_list(city_id) {
         this.helper.http.post('/admin/item_for_city_store', {
             city_id: this.add_promo_code.city_id
-        }).map((res: Response) => res.json()).subscribe(res_data => {
+        }).pipe(map((res: Response) => res.json())).subscribe(res_data => {
             console.log(res_data)
             console.log(this.item_list)
             this.item_list = res_data.city;
@@ -509,7 +510,7 @@ export class AddPromoCodeComponent implements OnInit {
 
     get_city_list(countryid) {
         this.add_promo_code.country_id = countryid;
-        this.helper.http.post('/api/admin/get_city_list', {country_id: countryid}).map((res: Response) => res.json()).subscribe(res_data => {
+        this.helper.http.post('/api/admin/get_city_list', {country_id: countryid}).pipe(map((res: Response) => res.json())).subscribe(res_data => {
 
             this.city_list = res_data.cities
         });
@@ -522,7 +523,7 @@ export class AddPromoCodeComponent implements OnInit {
     get_store_list(city_id) {
 
         this.add_promo_code.city_id = city_id;
-        this.helper.http.post('admin/get_store_list_for_city', {city_id: city_id}).map((res: Response) => res.json()).subscribe(res_data => {
+        this.helper.http.post('admin/get_store_list_for_city', {city_id: city_id}).pipe(map((res: Response) => res.json())).subscribe(res_data => {
 
             this.store_list = res_data.stores
         });
@@ -584,7 +585,7 @@ export class AddPromoCodeComponent implements OnInit {
             this.myLoading = true;
             promo_code_data.promo_apply_on = this.add_promo_code.promo_apply_on;
 
-            this.helper.http.post('/admin/add_promo_code_data', promo_code_data).map((res: Response) => res.json()).subscribe(res_data => {
+            this.helper.http.post('/admin/add_promo_code_data', promo_code_data).pipe(map((res: Response) => res.json())).subscribe(res_data => {
                 this.myLoading = false;
 
                 if (res_data.success == true) {
@@ -619,7 +620,7 @@ export class AddPromoCodeComponent implements OnInit {
         promo_code_data.months =  this.add_promo_code.months;
         promo_code_data.weeks =  this.add_promo_code.weeks;
 
-        this.helper.http.post('/admin/update_promo_code', promo_code_data).map((res: Response) => res.json()).subscribe(res_data => {
+        this.helper.http.post('/admin/update_promo_code', promo_code_data).pipe(map((res: Response) => res.json())).subscribe(res_data => {
             this.myLoading = false;
             if (res_data.success == true) {
                 this.helper.data.storage = {
@@ -647,7 +648,7 @@ export class AddPromoCodeComponent implements OnInit {
 
     check_promo_code(promo_code) {
 
-        this.helper.http.post('/admin/check_promo_code', {country_id: this.add_promo_code.country_id, city_id: this.add_promo_code.city_id, promo_code_name: promo_code.trim()}).map((res: Response) => res.json()).subscribe(res_data => {
+        this.helper.http.post('/admin/check_promo_code', {country_id: this.add_promo_code.country_id, city_id: this.add_promo_code.city_id, promo_code_name: promo_code.trim()}).pipe(map((res: Response) => res.json())).subscribe(res_data => {
 
             if (res_data.success == false) {
                 jQuery('#submit').attr('disabled', true);

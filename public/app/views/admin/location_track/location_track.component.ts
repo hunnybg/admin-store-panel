@@ -2,9 +2,10 @@ import {Component, OnInit} from '@angular/core';
 
 import {Helper} from "../../helper";
 import {Response} from '@angular/http';
-import {Observable} from 'rxjs/Rx';
+import {Observable} from 'rxjs';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
+import { map } from 'rxjs/operators';
 
 declare var google: any;
 declare var jQuery: any;
@@ -87,7 +88,7 @@ export class LocationTrackComponent implements OnInit {
             });
             directionsDisplay.setMap(this.map);
 
-            this.helper.http.get('api/admin/get_country_list').map((res: Response) => res.json()).subscribe(res_data => {
+            this.helper.http.get('api/admin/get_country_list').pipe(map((res: Response) => res.json())).subscribe(res_data => {
 
                 if (res_data.success) {
                     this.country_list = res_data.countries;
@@ -108,7 +109,7 @@ export class LocationTrackComponent implements OnInit {
 
             });
 
-            // this.helper.http.get('admin/order_list_location_track').map((res: Response) => res.json()).subscribe(res_data => {
+            // this.helper.http.get('admin/order_list_location_track').pipe(map((res: Response) => res.json())).subscribe(res_data => {
 
             //     this.order_list = res_data.orders;
 
@@ -135,7 +136,7 @@ export class LocationTrackComponent implements OnInit {
                 jQuery(this.helper.elementRef.nativeElement).find('#order').on('change', (evnt, res_data) => {
                     this.id = res_data.selected;
                     this.type = 1;
-                    this.helper.http.post('/admin/deliveryman_track', {id: this.id, type: this.type}).map((res: Response) => res.json()).subscribe(res_data => {
+                    this.helper.http.post('/admin/deliveryman_track', {id: this.id, type: this.type}).pipe(map((res: Response) => res.json())).subscribe(res_data => {
                         if(this.provider_markers_order){
                             this.provider_markers_order.setMap(null);
                         }
@@ -163,7 +164,7 @@ export class LocationTrackComponent implements OnInit {
                     }
                     this.id = res_data.selected;
                     this.type = 0;
-                    this.helper.http.post('/admin/deliveryman_track', {id: this.id, type: this.type}).map((res: Response) => res.json()).subscribe(res_data => {
+                    this.helper.http.post('/admin/deliveryman_track', {id: this.id, type: this.type}).pipe(map((res: Response) => res.json())).subscribe(res_data => {
 
                         if (res_data.success) {
                             this.provider = res_data.provider;
@@ -190,7 +191,7 @@ export class LocationTrackComponent implements OnInit {
     }
 
     get_city_list(countryid) {
-        this.helper.http.post('/api/admin/get_city_list', {country_id: countryid}).map((res: Response) => res.json()).subscribe(res_data => {
+        this.helper.http.post('/api/admin/get_city_list', {country_id: countryid}).pipe(map((res: Response) => res.json())).subscribe(res_data => {
 
             this.city_list = res_data.cities;
         });
@@ -201,7 +202,7 @@ export class LocationTrackComponent implements OnInit {
 
 
     get_provider_list(cityid) {
-        this.helper.http.post('/admin/get_provider_list_for_city', {city_id: cityid}).map((res: Response) => res.json()).subscribe(res_data => {
+        this.helper.http.post('/admin/get_provider_list_for_city', {city_id: cityid}).pipe(map((res: Response) => res.json())).subscribe(res_data => {
             this.provider_list = res_data.providers;
         });
         setTimeout(function () {
@@ -210,7 +211,7 @@ export class LocationTrackComponent implements OnInit {
     }
 
     get_order_list(cityid) {
-        this.helper.http.post('/admin/order_list_location_track', {city_id: cityid}).map((res: Response) => res.json()).subscribe(res_data => {
+        this.helper.http.post('/admin/order_list_location_track', {city_id: cityid}).pipe(map((res: Response) => res.json())).subscribe(res_data => {
             if(res_data.success){
                 this.order_list = res_data.orders;
             } else {
@@ -316,7 +317,7 @@ export class LocationTrackComponent implements OnInit {
         var lat;
         var lng;
         // this.interval = setInterval(() => {
-            this.helper.http.post('/admin/deliveryman_track', {id: this.id, type: this.type}).map((res: Response) => res.json()).subscribe(res_data => {
+            this.helper.http.post('/admin/deliveryman_track', {id: this.id, type: this.type}).pipe(map((res: Response) => res.json())).subscribe(res_data => {
 
                 if (res_data.success == false) {
                     this.helper.data.storage = {

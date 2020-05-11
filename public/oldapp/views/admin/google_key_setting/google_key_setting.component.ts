@@ -1,6 +1,7 @@
 import {Component, OnInit, ViewContainerRef} from '@angular/core';
 import {Http, Response} from '@angular/http';
-import {Observable} from 'rxjs/Rx';
+import {Observable} from 'rxjs';
+import { map } from 'rxjs/operators';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import {Helper} from "../../helper";
@@ -60,7 +61,7 @@ export class GoogleKeySettingComponent implements OnInit {
 
         var admin_id = localStorage.getItem('admin_id');
         if (admin_id != "" || admin_id != undefined) {
-            this.helper.http.post('/admin/get_detail', {admin_id: admin_id}).map((res_data: Response) => res_data.json()).subscribe(res_data => {
+            this.helper.http.post('/admin/get_detail', {admin_id: admin_id}).pipe(map((res_data: Response) => res_data.json())).subscribe(res_data => {
                 console.log(res_data.success);
                 console.log(res_data.admin.admin_type);
                 if (res_data.success == true) {
@@ -70,7 +71,7 @@ export class GoogleKeySettingComponent implements OnInit {
                 }
             });
         }
-        this.helper.http.post('/api/admin/get_app_keys', {}).map((res: Response) => res.json()).subscribe(res_data => {
+        this.helper.http.post('/api/admin/get_app_keys', {}).pipe(map((res: Response) => res.json())).subscribe(res_data => {
             console.log(res_data);
              this.myLoading = false;
             this.update_app_key_setting.android_user_app_gcm_key = res_data.app_keys.android_user_app_gcm_key,
@@ -94,7 +95,7 @@ export class GoogleKeySettingComponent implements OnInit {
         this.heading_title = this.helper.heading_title;
     }
     UpdateAppKeySetting(appkeydata) {
-        this.helper.http.post('/admin/update_google_key_setting', appkeydata).map((res: Response) => res.json()).subscribe(res_data => {
+        this.helper.http.post('/admin/update_google_key_setting', appkeydata).pipe(map((res: Response) => res.json())).subscribe(res_data => {
             this.myLoading = false;
             this.helper.data.storage = {
                 "message": this.helper.MESSAGE_CODE[res_data.message],

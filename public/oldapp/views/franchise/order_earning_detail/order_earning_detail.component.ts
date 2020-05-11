@@ -2,7 +2,7 @@ import { Component, OnInit , ViewContainerRef } from '@angular/core';
 import {Response } from '@angular/http';
 import {Helper} from "../../franchise_helper";
 declare var jQuery:any;
-
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-order_earning_detail',
@@ -136,7 +136,7 @@ export class FranchiseOrderEarningDetailComponent implements OnInit {
 
         if(this.order_id !== "")
         {
-	        this.helper.http.post(this.helper.POST_METHOD.GET_ORDER_DATA, {order_id: this.order_id , franchise_id:this.franchise_id , server_token:this.server_token}).map((res_data: Response) => res_data.json()).subscribe(res_data => {
+	        this.helper.http.post(this.helper.POST_METHOD.GET_ORDER_DATA, {order_id: this.order_id , franchise_id:this.franchise_id , server_token:this.server_token}).pipe(map((res_data: Response) => res_data.json())).subscribe(res_data => {
 
                 this.myLoading=false;
 	        	if(!res_data.success)

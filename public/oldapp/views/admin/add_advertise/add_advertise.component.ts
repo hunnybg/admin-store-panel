@@ -1,6 +1,7 @@
 import {Component, OnInit, ViewContainerRef, ViewChild} from '@angular/core';
 import {Response} from '@angular/http';
-import {Observable} from 'rxjs/Rx';
+import {Observable} from 'rxjs';
+import { map } from 'rxjs/operators';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import {Helper} from "../../helper";
@@ -174,7 +175,7 @@ export class AddAdvertiseComponent implements OnInit {
 
         this.advertise_id = this.helper.router_id.admin.advertise_id;
 
-        this.helper.http.get('/admin/get_server_country_list').map((res: Response) => res.json()).subscribe(res_data => {
+        this.helper.http.get('/admin/get_server_country_list').pipe(map((res: Response) => res.json())).subscribe(res_data => {
             this.country_list = res_data.countries
         });
         jQuery(this.helper.elementRef.nativeElement).find('#country').on('change', (evnt, res_data) => {
@@ -214,7 +215,7 @@ export class AddAdvertiseComponent implements OnInit {
 
 
         this.helper.http.post('/api/admin/get_image_setting', {
-        }).map((res_data: Response) => res_data.json()).subscribe(res_data => {
+        }).pipe(map((res_data: Response) => res_data.json())).subscribe(res_data => {
             this.image_setting.image_ratio = res_data.image_setting.ads_banner_image_ratio;
             this.image_setting.image_min_width = res_data.image_setting.ads_banner_image_min_width;
             this.image_setting.image_max_width = res_data.image_setting.ads_banner_image_max_width;
@@ -251,14 +252,14 @@ export class AddAdvertiseComponent implements OnInit {
 
         if (this.advertise_id == '') {
             this.type = "add";
-            this.helper.http.get('/admin/advertise_list').map((res: Response) => res.json()).subscribe(res => this.advertise_list = res, error => this.error = error);
+            this.helper.http.get('/admin/advertise_list').pipe(map((res: Response) => res.json())).subscribe(res => this.advertise_list = res, error => this.error = error);
 
             this.advertise_exist = ""
         }
         else {
             jQuery('.add').hide();
             this.type = "edit";
-            this.helper.http.post('/admin/get_advertise_detail', {advertise_id: this.advertise_id}).map((res_data: Response) => res_data.json()).subscribe(res_data => {
+            this.helper.http.post('/admin/get_advertise_detail', {advertise_id: this.advertise_id}).pipe(map((res_data: Response) => res_data.json())).subscribe(res_data => {
 
                 if (res_data.success == false) {
 
@@ -323,7 +324,7 @@ export class AddAdvertiseComponent implements OnInit {
 
     get_city_list(countryid) {
         this.add_advertise.country_id = countryid;
-        this.helper.http.post('/api/admin/get_city_list', {country_id: countryid}).map((res: Response) => res.json()).subscribe(res_data => {
+        this.helper.http.post('/api/admin/get_city_list', {country_id: countryid}).pipe(map((res: Response) => res.json())).subscribe(res_data => {
 
             this.city_list = res_data.cities;
         });
@@ -333,7 +334,7 @@ export class AddAdvertiseComponent implements OnInit {
     }
     get_store_list(countryid) {
         this.add_advertise.country_id = countryid;
-        this.helper.http.post('/admin/get_store_list_for_country', {country_id: countryid}).map((res: Response) => res.json()).subscribe(res_data => {
+        this.helper.http.post('/admin/get_store_list_for_country', {country_id: countryid}).pipe(map((res: Response) => res.json())).subscribe(res_data => {
 
             this.store_list = res_data.stores;
         });
@@ -344,7 +345,7 @@ export class AddAdvertiseComponent implements OnInit {
 
     get_store_list_for_city(city_id) {
         this.add_advertise.city_id = city_id;
-        this.helper.http.post('/admin/get_store_list_for_city', {city_id: city_id}).map((res: Response) => res.json()).subscribe(res_data => {
+        this.helper.http.post('/admin/get_store_list_for_city', {city_id: city_id}).pipe(map((res: Response) => res.json())).subscribe(res_data => {
 
             this.store_list = res_data.stores;
         });
@@ -356,7 +357,7 @@ export class AddAdvertiseComponent implements OnInit {
     get_image_setting_detail(ads_type) {
         this.add_advertise.ads_type = ads_type;
         this.helper.http.post('/api/admin/get_image_setting', {
-        }).map((res_data: Response) => res_data.json()).subscribe(res_data => {
+        }).pipe(map((res_data: Response) => res_data.json())).subscribe(res_data => {
             if (this.add_advertise.ads_type == 1) {
                 this.image_setting.image_ratio = res_data.image_setting.ads_banner_image_ratio;
                 this.image_setting.image_min_width = res_data.image_setting.ads_banner_image_min_width;
@@ -580,7 +581,7 @@ export class AddAdvertiseComponent implements OnInit {
             if (this.add_advertise.is_ads_redirect_to_store == true) {
                 this.formData.append("store_id", this.add_advertise.store_id);
             }
-            this.helper.http.post('/admin/add_advertise', this.formData).map((res: Response) => res.json()).subscribe(res_data => {
+            this.helper.http.post('/admin/add_advertise', this.formData).pipe(map((res: Response) => res.json())).subscribe(res_data => {
                 this.myLoading = false;
 
                 if (res_data.success == true) {
@@ -634,7 +635,7 @@ export class AddAdvertiseComponent implements OnInit {
         }
         this.formData.append("advertise_id", advertise_data.advertise_id);
 
-        this.helper.http.post('/admin/update_advertise', this.formData).map((res: Response) => res.json()).subscribe(res_data => {
+        this.helper.http.post('/admin/update_advertise', this.formData).pipe(map((res: Response) => res.json())).subscribe(res_data => {
             this.myLoading = false;
             if (res_data.success == true) {
 

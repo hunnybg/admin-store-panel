@@ -1,9 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 import {Http, Response} from '@angular/http';
-import {Observable} from 'rxjs/Rx';
+import {Observable} from 'rxjs';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import {Helper} from "../../helper";
+import { map } from 'rxjs/operators';
 declare var jQuery: any;
 
 export interface CreateMassNotification {
@@ -90,7 +91,7 @@ export class MassNotificationComponent implements OnInit {
             delivery: ''
         }
         this.get_mass_notification_list(1);
-        this.helper.http.get('/admin/get_server_country_list').map((res: Response) => res.json()).subscribe(res_data => {
+        this.helper.http.get('/admin/get_server_country_list').pipe(map((res: Response) => res.json())).subscribe(res_data => {
             this.country_list = res_data.countries;
             setTimeout(() => {
                 jQuery('#country').trigger('chosen:updated');
@@ -106,7 +107,7 @@ export class MassNotificationComponent implements OnInit {
 
     get_city_list(countryid) {
         this.create_mass_notification.country = countryid;
-        this.helper.http.post('/api/admin/get_city_list', {country_id: countryid}).map((res: Response) => res.json()).subscribe(res_data => {
+        this.helper.http.post('/api/admin/get_city_list', {country_id: countryid}).pipe(map((res: Response) => res.json())).subscribe(res_data => {
 
             this.city_list = res_data.cities;
         });
@@ -131,7 +132,7 @@ export class MassNotificationComponent implements OnInit {
         }
         this.page = JSON.parse(JSON.stringify(page));
         this.page_number = JSON.parse(JSON.stringify(page));
-        this.helper.http.post('/admin/get_mass_notification_list', {page: page, user_type: this.user_type}).map((res: Response) => res.json()).subscribe(res_data => {
+        this.helper.http.post('/admin/get_mass_notification_list', {page: page, user_type: this.user_type}).pipe(map((res: Response) => res.json())).subscribe(res_data => {
             if (res_data.success) {
                 this.total_page = res_data.pages;
                 this.total_pages = Array(res_data.pages).fill((x, i) => i).map((x, i) => i + 1)
@@ -144,7 +145,7 @@ export class MassNotificationComponent implements OnInit {
     }
 
     get_delivery_list() {
-        this.helper.http.get('/admin/delivery_list').map((res: Response) => res.json()).subscribe(res => {
+        this.helper.http.get('/admin/delivery_list').pipe(map((res: Response) => res.json())).subscribe(res => {
 
             this.delivery_list = res.deliveries;
             setTimeout(() => {
@@ -161,7 +162,7 @@ export class MassNotificationComponent implements OnInit {
     generate_mass_notification() {
         console.log("generate_mass_notification");
         console.log(this.create_mass_notification);
-        this.helper.http.post('/admin/create_mass_notifications', this.create_mass_notification).map((res: Response) => res.json()).subscribe(res_data => {
+        this.helper.http.post('/admin/create_mass_notifications', this.create_mass_notification).pipe(map((res: Response) => res.json())).subscribe(res_data => {
             console.log(res_data);
             if (res_data.success) {
 

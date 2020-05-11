@@ -2,7 +2,7 @@ import {Component, OnInit, ViewChild, ViewContainerRef} from '@angular/core';
 import {Response} from '@angular/http';
 
 import {Helper} from "../../helper";
-
+import { map } from 'rxjs/operators';
 declare var jQuery: any;
 import {ModalComponent} from 'ng2-bs3-modal/ng2-bs3-modal';
 
@@ -247,7 +247,7 @@ export class ProviderWeeklyEarningComponent implements OnInit {
         }
 
 
-        this.helper.http.post('/api/admin/get_setting_detail', {}).map((res: Response) => res.json()).subscribe(res_data => {
+        this.helper.http.post('/api/admin/get_setting_detail', {}).pipe(map((res: Response) => res.json())).subscribe(res_data => {
 
             if (res_data.success == true) {
                 this.registered_date = res_data.setting.created_at;
@@ -334,7 +334,7 @@ export class ProviderWeeklyEarningComponent implements OnInit {
             start_date: this.start_date, end_date: this.end_date,
             //sort_field: this.sort_field, sort_weekly_earning: this.sort_weekly_earning,
             search_field: this.search_field, search_value: this.search_value, page: this.page
-        }).map((res: Response) => res.json()).subscribe(res_data => {
+        }).pipe(map((res: Response) => res.json())).subscribe(res_data => {
 
                 this.myLoading = false;
                 if (res_data.success == false) {
@@ -366,7 +366,7 @@ export class ProviderWeeklyEarningComponent implements OnInit {
         this.amount = null;
     }
     AdminPayToProvider(add_amount) {
-        this.helper.http.post('/admin/admin_paid_to_provider', add_amount).map((res: Response) => res.json()).subscribe(res_data => {
+        this.helper.http.post('/admin/admin_paid_to_provider', add_amount).pipe(map((res: Response) => res.json())).subscribe(res_data => {
 
             if (res_data.success == true) {
                 this.helper.data.storage = {
@@ -393,7 +393,7 @@ export class ProviderWeeklyEarningComponent implements OnInit {
             start_date: this.start_date, end_date: this.end_date,
             //sort_field: this.sort_field, sort_weekly_earning: this.sort_weekly_earning,
             search_field: this.search_field, search_value: this.search_value
-        }).map((res: Response) => res.json()).subscribe(res_data => {
+        }).pipe(map((res: Response) => res.json())).subscribe(res_data => {
 
             var json2csv = require('json2csv');
             res_data.provider_weekly_earnings.forEach((provider_weekly_earning, index) => {
@@ -471,7 +471,7 @@ export class ProviderWeeklyEarningComponent implements OnInit {
         this.helper.http.post('/admin/provider_weekly_earning', {
             start_date: this.start_date, end_date: this.end_date,
             search_field: this.search_field, search_value: this.search_value
-        }).map((res: Response) => res.json()).subscribe(res_data => {
+        }).pipe(map((res: Response) => res.json())).subscribe(res_data => {
 
             var json_data = [];
             var json2excel = require('js2excel');
@@ -531,7 +531,7 @@ export class ProviderWeeklyEarningComponent implements OnInit {
             end_date: this.end_date,
             search_field: this.search_field,
             search_value: ''
-        }).map((res: Response) => res.json()).subscribe(res_data => {
+        }).pipe(map((res: Response) => res.json())).subscribe(res_data => {
             this.myLoading = false;
 
             if (res_data.success == false) {
